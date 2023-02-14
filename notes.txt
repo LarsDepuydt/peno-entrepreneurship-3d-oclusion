@@ -1,0 +1,1 @@
+- change near and far clipping plane for better performance
