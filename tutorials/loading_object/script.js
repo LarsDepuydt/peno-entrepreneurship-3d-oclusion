@@ -13,11 +13,13 @@ document.body.appendChild( renderer.domElement );
 
 // load object
 const loader = new OBJLoader();
+var lowerjaw;
 loader.load(
     './assets/lowerjaw.obj',
     // called when resource is loaded
     function (object) {
-        scene.add(object);
+        lowerjaw = object;
+        scene.add(lowerjaw);
     },
     // called when loading in progress
     function (xhr) {
@@ -40,6 +42,7 @@ camera.position.z = 3;
 // render loop
 function animate() {
     requestAnimationFrame( animate );   // tells the browser that we want to run animate again when the screen is refreshed
+    lowerjaw.rotation.y += 0.01;
     renderer.render( scene, camera );
 }
 animate();
