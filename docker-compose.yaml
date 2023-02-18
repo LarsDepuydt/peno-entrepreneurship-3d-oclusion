@@ -1,0 +1,32 @@
+version: "3.8"
+
+services:
+  db: 
+    image: postgres:15.2
+    ports:
+      - "5430:5432"
+    environment:
+      POSTGRES_PASSWORD: &postgres_password "docker1"
+      POSTGRES_USER: &postgres_user "docker"
+      POSTGRES_DB: &db_name "patient_server"
+    volumes:
+      - "dbdata://var/lib/psotgresql/data"
+  server:
+    build:
+      context: ./backend
+    image: 'patient_server'
+    ports:
+      - "3000:3000"
+    environment:
+      DB_PASSWORD: &postgres_password
+      DB_USER: &postgres_user
+      DB_NAME: &db_name
+    links:
+      - db
+  # web:
+  #   build:
+  #     context: ./frontend
+  #   ports:
+  #     - "8080:8080"
+volumes:
+  dbdata:
