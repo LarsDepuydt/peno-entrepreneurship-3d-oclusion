@@ -7,6 +7,6 @@ plugins:
   - plugin: go
     out: backend/gen/proto
     opt: paths=source_relative
-  - plugin: connect go
+  - plugin: connect-go
     out: backend/gen/proto
     opt: paths=source_relative

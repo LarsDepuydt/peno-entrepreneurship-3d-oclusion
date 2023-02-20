@@ -14,4 +14,4 @@ logs:
 
 .PHONY: buf
 buf:
-	@docker compose run --rm app "buf generate"
+	@docker compose run --rm app "buf lint && buf generate"
