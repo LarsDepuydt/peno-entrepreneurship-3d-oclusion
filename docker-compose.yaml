@@ -17,6 +17,7 @@ services:
       context: .
       dockerfile: Dockerfile
       target: dev
+    working_dir: /usr/src/app/
     volumes:
       - .:/usr/src/app
       - gomod-cache:/go/pkg/mod
