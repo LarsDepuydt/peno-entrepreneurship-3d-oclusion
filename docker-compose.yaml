@@ -11,9 +11,10 @@ services:
       POSTGRES_DB: &db_name "patient_server"
     volumes:
       - "dbdata://var/lib/psotgresql/data"
-  server:
+  backend:
     build:
-      context: ./backend
+      context: .
+      dockerfile: Dockerfile
     image: 'patient_server'
     ports:
       - "3000:3000"
