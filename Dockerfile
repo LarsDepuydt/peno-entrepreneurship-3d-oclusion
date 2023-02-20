@@ -24,7 +24,7 @@ RUN go install google.golang.org/protobuf/cmd/protoc-gen-go@latest && \
     go install google.golang.org/grpc/cmd/protoc-gen-go-grpc@v1.2.0 && \
     go install github.com/bufbuild/connect-go/cmd/protoc-gen-connect-go@latest
 
-WORKDIR /workdir
+WORKDIR /usr/src/app
 
 ################################
 # Build backend

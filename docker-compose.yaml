@@ -11,23 +11,38 @@ services:
       POSTGRES_DB: &db_name "patient_server"
     volumes:
       - "dbdata://var/lib/psotgresql/data"
-  backend:
+  app:
+    &app
     build:
       context: .
       dockerfile: Dockerfile
+      target: dev
+    volumes:
+      - .:/usr/src/app
+      - gomod-cache:/go/pkg/mod
+      - gobuild-cache:/.cache/go-build
+    entrypoint: "bash -c"
+  backend:
+    <<: *app
     image: 'patient_server'
-    ports:
-      - "3000:3000"
     environment:
       DB_PASSWORD: &postgres_password
       DB_USER: &postgres_user
       DB_NAME: &db_name
     links:
       - db
+    restart: always
+    working_dir: /usr/src/app/backend
+    ports:
+      - "3000:3000"
+    entrypoint: "nodemon --ext go,yaml --signal SIGTERM --exec go run cmd/main.go"
   # web:
   #   build:
   #     context: ./frontend
   #   ports:
   #     - "8080:8080"
 volumes:
-  dbdata:
+  dbdata: {}
+  gomod-cache: {}
+  gobuild-cache: {}
+ 
