@@ -35,7 +35,7 @@ services:
     restart: always
     working_dir: /usr/src/app/backend
     ports:
-      - "3000:3000"
+      - "8080:8080"
     entrypoint: "nodemon --ext go,yaml --signal SIGTERM --exec go run cmd/main.go"
   # web:
   #   build:

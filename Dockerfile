@@ -35,9 +35,8 @@ FROM dev AS backend-builder
 WORKDIR /usr/src/app
 
 # pre-copy/cache go.mod for pre-downloading dependencies and only redownloading them in subsequent builds if they change
-# COPY go.mod go.sum ./
 WORKDIR /usr/src/app/backend
-COPY ./backend/go.mod ./
+COPY ./backend/go.mod ./backend/go.sum ./
 RUN --mount=type=cache,mode=0777,target=/go/pkg/mod go mod download
 
 COPY backend backend
