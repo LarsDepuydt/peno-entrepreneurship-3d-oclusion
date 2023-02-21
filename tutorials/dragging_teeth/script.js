@@ -73,7 +73,7 @@ function init() {
     scene.add( group );
 
 
-    // load object
+    // load lower jaw
     const loader = new OBJLoader();
     var lowerjaw;
     loader.load(
@@ -82,9 +82,10 @@ function init() {
         function (object) {
             lowerjaw = object;
             lowerjaw.position.x = 0
-            lowerjaw.position.y = 1
-            lowerjaw.position.z = 1.075
+            lowerjaw.position.y = 2
+            lowerjaw.position.z = 0.12
             lowerjaw.rotation.x = 1.5 * Math.PI
+            //lowerjaw.rotation.y = Math.PI
             lowerjaw.scale.setScalar(0.01);
             group.add(lowerjaw);
 
@@ -102,6 +103,35 @@ function init() {
         }
     );
  
+    // load upper jaw
+    //const loader2 = new OBJLoader();
+    var upperjaw;
+    loader.load(
+        '../../assets/upperjaw_holger.obj',
+        // called when resource is loaded y=green, x=red, z=blue
+        function (object) {
+            upperjaw = object;
+            upperjaw.position.x = 0
+            upperjaw.position.y = 2
+            upperjaw.position.z = 0.12
+            upperjaw.rotation.x = 1.5 * Math.PI
+            //upperjaw.rotation.y = Math.PI
+            upperjaw.scale.setScalar(0.01);
+            group.add(upperjaw);
+
+            console.log("Object3D? " + upperjaw.isObject3D);
+            console.log("Mesh?")
+        },
+        
+        // called when loading in progress
+        function (xhr) {
+            console.log( (xhr.loaded / xhr.total * 100 ) + '% loaded');
+        },
+        // called when loading has errors
+        function (error) {
+            console.log('An error happened while loading');
+        }
+    );
  
 
     // add renderer and enable VR
