@@ -36,6 +36,9 @@ function init() {
     controls.target.set( 0, 1.6, 0 );
     controls.update();
 
+    // axis
+    var axesHelper = new THREE.AxesHelper( 5 );
+    scene.add( axesHelper );
 
     // add floor
     const floorGeometry = new THREE.PlaneGeometry( 4, 4 );
@@ -69,13 +72,13 @@ function init() {
     group = new THREE.Group();
     scene.add( group );
 
-    const geometries = [
-        new THREE.BoxGeometry( 0.2, 0.2, 0.2 ),
-        new THREE.ConeGeometry( 0.2, 0.2, 64 ),
-        new THREE.CylinderGeometry( 0.2, 0.2, 0.2, 64 ),
-        new THREE.IcosahedronGeometry( 0.2, 8 ),
-        new THREE.TorusGeometry( 0.2, 0.04, 64, 32 )
-    ];
+    // const geometries = [
+    //     new THREE.BoxGeometry( 0.2, 0.2, 0.2 ),
+    //     new THREE.ConeGeometry( 0.2, 0.2, 64 ),
+    //     new THREE.CylinderGeometry( 0.2, 0.2, 0.2, 64 ),
+    //     new THREE.IcosahedronGeometry( 0.2, 8 ),
+    //     new THREE.TorusGeometry( 0.2, 0.04, 64, 32 )
+    // ];
 
     // for ( let i = 0; i < 50; i ++ ) {
 
@@ -110,9 +113,14 @@ function init() {
      var lowerjaw;
      loader.load(
          '../../assets/lowerjaw_holger.obj',
-         // called when resource is loaded
+         // called when resource is loaded y=green, x=red, z=blue
          function (object) {
              lowerjaw = object;
+             lowerjaw.position.x = 0
+             lowerjaw.position.y = 1
+             lowerjaw.position.z = 1.075
+             lowerjaw.rotation.x = 1.5 * Math.PI
+             lowerjaw.scale.setScalar(0.01);
              group.add(lowerjaw);
          },
          
