@@ -20,6 +20,7 @@ loader.load(
     function (object) {
         lowerjaw = object;
         scene.add(lowerjaw);
+        animate();
     },
     // called when loading in progress
     function (xhr) {
@@ -45,4 +46,3 @@ function animate() {
     lowerjaw.rotation.y += 0.01;
     renderer.render( scene, camera );
 }
-animate();
