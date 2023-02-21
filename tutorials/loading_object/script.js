@@ -15,7 +15,7 @@ document.body.appendChild( renderer.domElement );
 const loader = new OBJLoader();
 var lowerjaw;
 loader.load(
-    './assets/lowerjaw.obj',
+    '../../assets/lowerjaw_holger.obj',
     // called when resource is loaded
     function (object) {
         lowerjaw = object;
@@ -37,7 +37,7 @@ const directionalLight = new THREE.DirectionalLight(0xffffff, 5);
 scene.add(ambientLight);
 scene.add(directionalLight);
 
-camera.position.z = 3;
+camera.position.z = 100;
 
 // render loop
 function animate() {
