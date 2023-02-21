@@ -1,6 +1,6 @@
 .PHONY: up
 up:
-	@docker compose up -d --build --force-recreate backend
+	@docker compose up -d --build --force-recreate backend frontend
 
 .PHONY: down
 down:
@@ -16,8 +16,10 @@ logs:
 buf:
 	@docker compose run --rm app "buf lint && buf generate"
 
+.PHONY: shell
+shell:
+	@docker compose run --rm app /bin/bash
 
-.PHONY: database_up
-database_up:
-	@docker exec -it peno-entrepreneurship-3d-oclusion-db-1 psql -U docker -W patient_server -f /usr/src/app/database/migrations/database.up.sql
-	
+.PHONY: install_frontend
+install_frontend:
+	@docker compose run --workdir /usr/src/app/frontend --rm app "yarn install"

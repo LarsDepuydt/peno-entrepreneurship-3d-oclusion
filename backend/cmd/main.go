@@ -8,17 +8,17 @@ import (
 
 type Server struct{}
 
-// func (s *Server) Scan(
-// 	ctx context.Context,
-// 	req *connect.Request[threedoclusionv1.ScanRequest],
-// ) (*connect.Response[threedoclusionv1.ScanResponse], error) {
-// 	log.Println("Request headers: ", req.Header())
-// 	res := connect.newResponse(&threedoclusionv1.ScanResponse{
-// 		Name: fmt.Sprintf("Hello, %s!", req.Msg.Id),
-// 	})
-// 	res.Header().Set("Scan-Version", "v1")
-// 	return res, nil
-// }
+func (s *Server) Scan(
+	ctx context.Context,
+	req *connect.Request[threedoclusionv1.ScanRequest],
+) (*connect.Response[threedoclusionv1.ScanResponse], error) {
+	log.Println("Request headers: ", req.Header())
+	res := connect.NewResponse(&threedoclusionv1.ScanResponse{
+		Name: fmt.Sprintf("Hello, %s!", req.Msg.Id),
+	})
+	res.Header().Set("Scan-Version", "v1")
+	return res, nil
+}
 
 func main() {
 	// server := &Server{}
