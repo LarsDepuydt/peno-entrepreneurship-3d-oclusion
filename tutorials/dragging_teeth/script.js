@@ -77,33 +77,56 @@ function init() {
         new THREE.TorusGeometry( 0.2, 0.04, 64, 32 )
     ];
 
-    for ( let i = 0; i < 50; i ++ ) {
+    // for ( let i = 0; i < 50; i ++ ) {
 
-        const geometry = geometries[ Math.floor( Math.random() * geometries.length ) ];
-        const material = new THREE.MeshStandardMaterial( {
-            color: Math.random() * 0xffffff,
-            roughness: 0.7,
-            metalness: 0.0
-        } );
+    //     const geometry = geometries[ Math.floor( Math.random() * geometries.length ) ];
+    //     const material = new THREE.MeshStandardMaterial( {
+    //         color: Math.random() * 0xffffff,
+    //         roughness: 0.7,
+    //         metalness: 0.0
+    //     } );
 
-        const object = new THREE.Mesh( geometry, material );
+    //     const object = new THREE.Mesh( geometry, material );
 
-        object.position.x = Math.random() * 4 - 2;
-        object.position.y = Math.random() * 2;
-        object.position.z = Math.random() * 4 - 2;
+    //     object.position.x = Math.random() * 4 - 2;
+    //     object.position.y = Math.random() * 2;
+    //     object.position.z = Math.random() * 4 - 2;
 
-        object.rotation.x = Math.random() * 2 * Math.PI;
-        object.rotation.y = Math.random() * 2 * Math.PI;
-        object.rotation.z = Math.random() * 2 * Math.PI;
+    //     object.rotation.x = Math.random() * 2 * Math.PI;
+    //     object.rotation.y = Math.random() * 2 * Math.PI;
+    //     object.rotation.z = Math.random() * 2 * Math.PI;
 
-        object.scale.setScalar( Math.random() + 0.5 );
+    //     object.scale.setScalar( Math.random() + 0.5 );
 
-        object.castShadow = true;
-        object.receiveShadow = true;
+    //     object.castShadow = true;
+    //     object.receiveShadow = true;
 
-        group.add( object );
+    //     group.add( object );
 
-    }
+    // }
+
+     // load object
+     const loader = new OBJLoader();
+     var lowerjaw;
+     loader.load(
+         '../../assets/lowerjaw_holger.obj',
+         // called when resource is loaded
+         function (object) {
+             lowerjaw = object;
+             group.add(lowerjaw);
+         },
+         
+         // called when loading in progress
+         function (xhr) {
+             console.log( (xhr.loaded / xhr.total * 100 ) + '% loaded');
+         },
+         // called when loading has errors
+         function (error) {
+             console.log('An error happened while loading');
+         }
+     );
+ 
+ 
 
     // add renderer and enable VR
 
