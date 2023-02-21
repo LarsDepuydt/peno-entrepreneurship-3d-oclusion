@@ -20,9 +20,9 @@ func (s *Server) Scan(
 	ctx context.Context,
 	req *connect.Request[threedoclusionv1.ScanRequest],
 ) (*connect.Response[threedoclusionv1.ScanResponse], error) {
-	log.Println("Request haders: ", req.Header())
+	log.Println("Request headers: ", req.Header())
 	res := connect.newResponse(&threedoclusionv1.ScanResponse{
-		name: fmt.Sprintf("Hello, %s!", req.Msg.Id),
+		Name: fmt.Sprintf("Hello, %s!", req.Msg.Id),
 	})
 	res.Header().Set("Scan-Version", "v1")
 	return res, nil
@@ -33,8 +33,9 @@ func main() {
 	mux := http.NewServeMux()
 	path, handler := threedoclusionv1connect.NewScanServiceHandler(server)
 	mux.Handle(path, handler)
-	http.ListenAndServe("localhost:8080",
-	// Use h2c so we can serve HTTP/2 without TLS.
-	h2c.NewHandler(mux, &http2.Server{}),
-)
+	http.ListenAndServe(
+		"0.0.0.0:8080",
+		// Use h2c so we can serve HTTP/2 without TLS.
+		h2c.NewHandler(mux, &http2.Server{}),
+	)
 }
