@@ -37,13 +37,20 @@ services:
     ports:
       - "8080:8080"
     entrypoint: "nodemon --ext go,yaml --signal SIGTERM --exec go run cmd/main.go"
-  # web:
-  #   build:
-  #     context: ./frontend
-  #   ports:
-  #     - "8080:8080"
+  frontend:
+    <<: *app
+    links:
+      - backend
+    restart: always
+    working_dir: /usr/src/app/frontend
+    ports: 
+    - "3000:3000"
+    volumes:
+    - node_modules:/usr/src/app/my-app/node_modules
+    entrypoint: "yarn dev"
 volumes:
   dbdata: {}
   gomod-cache: {}
   gobuild-cache: {}
+  node_modules: {}
  

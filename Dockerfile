@@ -47,6 +47,15 @@ RUN --mount=type=cache,mode=0777,target=/go/pkg/mod \
     CGO_ENABLED=0 GOOS=linux go build -o serve ./backend/cmd/main.go
 
 ################################
+# Build frontend
+################################
+WORKDIR /usr/src/app/frontend
+COPY package*.json ./
+COPY yarn.lock ./
+RUN yarn install
+COPY . .
+
+################################
 # Run backend
 ################################
 

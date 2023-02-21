@@ -1,6 +1,6 @@
 .PHONY: up
 up:
-	@docker compose up -d --build --force-recreate backend
+	@docker compose up -d --build --force-recreate backend frontend
 
 .PHONY: down
 down:
