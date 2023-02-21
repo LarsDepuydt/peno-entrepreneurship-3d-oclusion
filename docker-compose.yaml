@@ -10,6 +10,7 @@ services:
       POSTGRES_USER: &postgres_user "docker"
       POSTGRES_DB: &db_name "patient_server"
     volumes:
+      - ./database:/usr/src/app/database
       - "dbdata:/var/lib/psotgresql/data"
   app:
     &app
