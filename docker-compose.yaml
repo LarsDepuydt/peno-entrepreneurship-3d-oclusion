@@ -4,14 +4,14 @@ services:
   db: 
     image: postgres:15.2
     ports:
-      - "5430:5432"
+      - "5432:5432"
     environment:
       POSTGRES_PASSWORD: &postgres_password "docker1"
       POSTGRES_USER: &postgres_user "docker"
       POSTGRES_DB: &db_name "patient_server"
     volumes:
       - ./database:/usr/src/app/database
-      - "dbdata:/var/lib/psotgresql/data"
+      - "dbdata:/var/lib/posixtgresql/data"
   app:
     &app
     build:
