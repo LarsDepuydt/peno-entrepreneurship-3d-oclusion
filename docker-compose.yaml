@@ -11,7 +11,9 @@ services:
       POSTGRES_DB: &db_name "patient_server"
     volumes:
       - ./database:/usr/src/app/database
-      - "dbdata:/var/lib/psotgresql/data"
+      - "dbdata:/var/lib/postgresql/data"
+      # only for local development, TODO: find a fix for prod
+      - ./database/migrations/database.up.sql:/docker-entrypoint-initdb.d/create_tables.sql
   app:
     &app
     build:
@@ -45,13 +47,10 @@ services:
     restart: always
     working_dir: /usr/src/app/frontend
     ports: 
-    - "3000:3000"
-    volumes:
-    - node_modules:/usr/src/app/my-app/node_modules
+      - "3000:3000"
     entrypoint: "yarn dev"
 volumes:
   dbdata: {}
   gomod-cache: {}
   gobuild-cache: {}
-  node_modules: {}
  

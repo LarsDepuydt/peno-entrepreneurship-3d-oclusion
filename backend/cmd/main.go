@@ -21,7 +21,7 @@ func (s *Server) Scan(
 	req *connect.Request[threedoclusionv1.ScanRequest],
 ) (*connect.Response[threedoclusionv1.ScanResponse], error) {
 	log.Println("Request headers: ", req.Header())
-	res := connect.newResponse(&threedoclusionv1.ScanResponse{
+	res := connect.NewResponse(&threedoclusionv1.ScanResponse{
 		Name: fmt.Sprintf("Hello, %s!", req.Msg.Id),
 	})
 	res.Header().Set("Scan-Version", "v1")
