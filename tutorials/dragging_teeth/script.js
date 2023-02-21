@@ -72,67 +72,35 @@ function init() {
     group = new THREE.Group();
     scene.add( group );
 
-    // const geometries = [
-    //     new THREE.BoxGeometry( 0.2, 0.2, 0.2 ),
-    //     new THREE.ConeGeometry( 0.2, 0.2, 64 ),
-    //     new THREE.CylinderGeometry( 0.2, 0.2, 0.2, 64 ),
-    //     new THREE.IcosahedronGeometry( 0.2, 8 ),
-    //     new THREE.TorusGeometry( 0.2, 0.04, 64, 32 )
-    // ];
 
-    // for ( let i = 0; i < 50; i ++ ) {
+    // load object
+    const loader = new OBJLoader();
+    var lowerjaw;
+    loader.load(
+        '../../assets/lowerjaw_holger.obj',
+        // called when resource is loaded y=green, x=red, z=blue
+        function (object) {
+            lowerjaw = object;
+            lowerjaw.position.x = 0
+            lowerjaw.position.y = 1
+            lowerjaw.position.z = 1.075
+            lowerjaw.rotation.x = 1.5 * Math.PI
+            lowerjaw.scale.setScalar(0.01);
+            group.add(lowerjaw);
 
-    //     const geometry = geometries[ Math.floor( Math.random() * geometries.length ) ];
-    //     const material = new THREE.MeshStandardMaterial( {
-    //         color: Math.random() * 0xffffff,
-    //         roughness: 0.7,
-    //         metalness: 0.0
-    //     } );
-
-    //     const object = new THREE.Mesh( geometry, material );
-
-    //     object.position.x = Math.random() * 4 - 2;
-    //     object.position.y = Math.random() * 2;
-    //     object.position.z = Math.random() * 4 - 2;
-
-    //     object.rotation.x = Math.random() * 2 * Math.PI;
-    //     object.rotation.y = Math.random() * 2 * Math.PI;
-    //     object.rotation.z = Math.random() * 2 * Math.PI;
-
-    //     object.scale.setScalar( Math.random() + 0.5 );
-
-    //     object.castShadow = true;
-    //     object.receiveShadow = true;
-
-    //     group.add( object );
-
-    // }
-
-     // load object
-     const loader = new OBJLoader();
-     var lowerjaw;
-     loader.load(
-         '../../assets/lowerjaw_holger.obj',
-         // called when resource is loaded y=green, x=red, z=blue
-         function (object) {
-             lowerjaw = object;
-             lowerjaw.position.x = 0
-             lowerjaw.position.y = 1
-             lowerjaw.position.z = 1.075
-             lowerjaw.rotation.x = 1.5 * Math.PI
-             lowerjaw.scale.setScalar(0.01);
-             group.add(lowerjaw);
-         },
-         
-         // called when loading in progress
-         function (xhr) {
-             console.log( (xhr.loaded / xhr.total * 100 ) + '% loaded');
-         },
-         // called when loading has errors
-         function (error) {
-             console.log('An error happened while loading');
-         }
-     );
+            console.log("Object3D? " + lowerjaw.isObject3D);
+            console.log("Mesh?")
+        },
+        
+        // called when loading in progress
+        function (xhr) {
+            console.log( (xhr.loaded / xhr.total * 100 ) + '% loaded');
+        },
+        // called when loading has errors
+        function (error) {
+            console.log('An error happened while loading');
+        }
+    );
  
  
 
@@ -258,7 +226,7 @@ function getIntersections( controller ) {
     raycaster.ray.origin.setFromMatrixPosition( controller.matrixWorld );
     raycaster.ray.direction.set( 0, 0, - 1 ).applyMatrix4( tempMatrix );
 
-    return raycaster.intersectObjects( group.children, false );
+    return raycaster.intersectObjects( group.children, true );
 
 }
 
@@ -308,7 +276,6 @@ function cleanIntersected() {
 function animate() {
 
     renderer.setAnimationLoop( render );
-
 }
 
 function render() {
@@ -319,5 +286,4 @@ function render() {
     intersectObjects( controller2 );
 
     renderer.render( scene, camera );
-
 }
