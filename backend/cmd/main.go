@@ -1,7 +1,6 @@
 package main
 
 import (
-	"database/sql"
 	"fmt"
 
 	_ "github.com/lib/pq"
@@ -22,6 +21,7 @@ type Server struct{}
 // }
 
 func main() {
+	fmt.Println("starten van main")
 	// server := &Server{}
 	// mux := http.NewServeMux()
 	// path, handler := threedoclusionv1connect.NewScanServiceHandler(server)
@@ -37,37 +37,12 @@ func main() {
 
 	fmt.Println("starten van toevoeging")
 
-	err := AddPatient(id, bite)
+	err := alterTag(id, bite, true)
+
 	if err != nil {
 		fmt.Println(err)
 	}
 
 	fmt.Println("toevoegen succesvol")
-
-}
-
-func AddPatient(id int, bite string) error {
-	// Connect to the database
-	db, err := sql.Open("postgres", "host=host.docker.internal port=5432 user=docker password=docker1 dbname=patient_server sslmode=disable")
-	if err != nil {
-		return err
-	}
-	defer db.Close()
-
-	// Prepare a statement with placeholders for the values
-	stmt, err := db.Prepare("INSERT INTO tag (id, bite) VALUES ($1, $2)")
-	if err != nil {
-		return err
-	}
-	defer stmt.Close()
-
-	// Perform database modifications
-	_, err = stmt.Exec(id, bite)
-	if err != nil {
-		return err
-	}
-
-	fmt.Println("Row added successfully")
-	return nil
 
 }
