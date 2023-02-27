@@ -1,8 +1,11 @@
 package main
 
 import (
+	"context"
 	"database/sql"
 	"fmt"
+	"log"
+	"net/http"
 
 	"github.com/bufbuild/connect-go"
 	"github.com/rs/cors"
