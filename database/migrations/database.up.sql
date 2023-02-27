@@ -1,6 +1,7 @@
 CREATE TABLE patient ( 
     id SERIAL PRIMARY KEY, 
-    name text,
+    first_name text,
+    last_name text,
     pinned bit,
     notes text
 );

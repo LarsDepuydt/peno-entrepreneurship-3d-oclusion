@@ -34,15 +34,22 @@ func main() {
 
 	id := 111
 	bite := "overbeet"
+	firstname := "Dag"
+	lastname := "Malstaf"
 
-	fmt.Println("starten van toevoeging")
+	fmt.Println("starten van toevoeging tag")
 
-	err := alterTag(id, bite, true)
+	err1 := alterTag(id, bite, true)
 
-	if err != nil {
-		fmt.Println(err)
+	if err1 != nil {
+		fmt.Println(err1)
 	}
 
-	fmt.Println("toevoegen succesvol")
+	fmt.Println("starten van toevoeging patient")
+
+	err2 := alterPatient(id, firstname, lastname)
+	if err2 != nil {
+		fmt.Println(err2)
+	}
 
 }
