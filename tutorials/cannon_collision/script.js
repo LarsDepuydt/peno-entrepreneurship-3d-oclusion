@@ -23,7 +23,8 @@ let raycaster;
 
 
 
-init();
+initThree();
+initCannon();
 animate();
 
 
@@ -210,6 +211,16 @@ function initThree() {
 
     window.addEventListener( 'resize', onWindowResize );
 
+}
+
+
+function initCannon() {
+    world = new CANNON.World();
+    world.gravity.set(0,0,0);
+    world.broadphase = new CANNON.NaiveBroadphase();
+    world.solver.iterations = 10;
+
+    lowerjaw_shape = CannonUtils.CreateTrimesh()
 }
 
 

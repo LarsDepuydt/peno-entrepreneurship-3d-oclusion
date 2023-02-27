@@ -1,0 +1,6 @@
+{
+  "dependencies": {
+    "cannon": "^0.6.2",
+    "cannon-utils": "^0.1.4"
+  }
+}
