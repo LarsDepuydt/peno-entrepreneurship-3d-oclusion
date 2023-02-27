@@ -3,6 +3,8 @@ package main
 import (
 	"fmt"
 
+	//db "dbFunctions"
+
 	_ "github.com/lib/pq"
 )
 
@@ -36,10 +38,13 @@ func main() {
 	bite := "overbeet"
 	firstname := "Dag"
 	lastname := "Malstaf"
+	pinned := 1
+
+	notes := "test note"
 
 	fmt.Println("starten van toevoeging tag")
 
-	err1 := alterTag(id, bite, true)
+	err1 := AlterTag(id, bite, true)
 
 	if err1 != nil {
 		fmt.Println(err1)
@@ -47,7 +52,7 @@ func main() {
 
 	fmt.Println("starten van toevoeging patient")
 
-	err2 := alterPatient(id, firstname, lastname)
+	err2 := AlterPatient(id, firstname, lastname, pinned, notes, true)
 	if err2 != nil {
 		fmt.Println(err2)
 	}

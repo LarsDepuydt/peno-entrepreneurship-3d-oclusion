@@ -9,7 +9,7 @@ import (
 
 // connect to database function
 // always close database with : defer database.Close()
-func connectToDataBase() (*sql.DB, error) {
+func ConnectToDataBase() (*sql.DB, error) {
 	fmt.Print("Connecting to database")
 
 	database, error := sql.Open("postgres", "host=host.docker.internal port=5432 user=docker password=docker1 dbname=patient_server sslmode=disable")
@@ -25,8 +25,8 @@ func connectToDataBase() (*sql.DB, error) {
 // true = add
 // false = remove
 
-func alterPatient(id int, first_name string, last_name string, pinned int, notes string, action bool) error {
-	database, error := connectToDataBase()
+func AlterPatient(id int, first_name string, last_name string, pinned int, notes string, action bool) error {
+	database, error := ConnectToDataBase()
 
 	if database == nil || error != nil {
 		return error
@@ -74,9 +74,9 @@ func alterPatient(id int, first_name string, last_name string, pinned int, notes
 // true = add
 // false = remove
 
-func alterTag(id int, bite string, action bool) error {
+func AlterTag(id int, bite string, action bool) error {
 	// Connect to the database
-	database, error := connectToDataBase()
+	database, error := ConnectToDataBase()
 
 	if database == nil || error != nil {
 		return error
