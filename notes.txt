@@ -1,1 +1,3 @@
 - change near and far clipping plane for better performance
+
+- error "disallowed MIME type" wil gewoon zeggen dat hij de file niet vindt
