@@ -5,7 +5,7 @@ import { XRControllerModelFactory } from 'three/addons/webxr/XRControllerModelFa
 import { OBJLoader } from 'three/addons/loaders/OBJLoader.js';
 import * as CANNON from 'cannon';
 import { MeshBVH, acceleratedRaycast } from 'three-mesh-bvh';
-import { Mesh } from 'three';
+import * as CannonUtils from 'cannon-utils';
 
 
 let container;
@@ -20,7 +20,7 @@ let controls, group;
 
 let raycaster;
 
-
+let world, mass, body, shape;
 
 
 initThree();
@@ -215,12 +215,13 @@ function initThree() {
 
 
 function initCannon() {
+    body = CANNON.Body({mass: 1});
     world = new CANNON.World();
     world.gravity.set(0,0,0);
     world.broadphase = new CANNON.NaiveBroadphase();
     world.solver.iterations = 10;
 
-    lowerjaw_shape = CannonUtils.CreateTrimesh()
+    lowerjaw_shape = CannonUtils.CreateTriMesh(lowerjaw.children[0].geometry);
 }
 
 
