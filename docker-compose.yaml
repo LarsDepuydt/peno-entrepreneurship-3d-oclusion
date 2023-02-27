@@ -4,7 +4,7 @@ services:
   db: 
     image: postgres:15.2
     ports:
-      - "5430:5432"
+      - "5432:5432"
     environment:
       POSTGRES_PASSWORD: &postgres_password "docker1"
       POSTGRES_USER: &postgres_user "docker"
