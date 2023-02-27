@@ -35,7 +35,7 @@ func AlterPatient(id int, first_name string, last_name string, pinned int, notes
 	// adding a patient
 	if action {
 		// Prepare a statement with placeholders for the values
-		statement, error := database.Prepare("INSERT INTO patient (id, first_name, last_name, pinned, notes) VALUES ($1, $2)")
+		statement, error := database.Prepare("INSERT INTO patient (id, first_name, last_name, pinned, notes) VALUES ($1, $2, $3, $4, $5)")
 		if error != nil {
 			return error
 		}
@@ -55,7 +55,7 @@ func AlterPatient(id int, first_name string, last_name string, pinned int, notes
 		// Prepare a statement with placeholders for the condition
 		statement := "DELETE FROM patient WHERE id = $1"
 
-		// Execute the statement with the parameter value adding a tag
+		// Execute the statement with the parameter
 		_, error = database.Exec(statement, id)
 		if error != nil {
 			return error
@@ -105,13 +105,63 @@ func AlterTag(id int, bite string, action bool) error {
 		// Prepare a statement with placeholders for the condition
 		statement := "DELETE FROM tag WHERE id = $1"
 
-		// Execute the statement with the parameter value adding a tag
+		// Execute the statement with the parameter
 		_, error = database.Exec(statement, id)
 		if error != nil {
 			return error
 		}
 
 		fmt.Println("Deleted tag succesfully")
+		return nil
+
+	}
+
+	return nil
+
+}
+
+// add or remove a scan to the database
+// true = add
+// false = remove
+
+func AlterScan(id int, scan_file string, scan_date string, action bool) error {
+	// Connect to the database
+	database, error := ConnectToDataBase()
+
+	if database == nil || error != nil {
+		return error
+	}
+
+	// adding a scan
+	if action {
+		// Prepare a statement with placeholders for the values
+		statement, error := database.Prepare("INSERT INTO scan (id, scan_file, scan_date) VALUES ($1, $2, $3)")
+		if error != nil {
+			return error
+		}
+		defer statement.Close()
+
+		// Perform database modifications, adding a tag
+		_, error = statement.Exec(id, scan_file, scan_date)
+		if error != nil {
+			return error
+		}
+
+		fmt.Println("Added scan succesfully")
+		return nil
+
+	} else if !action {
+
+		// Prepare a statement with placeholders for the condition
+		statement := "DELETE FROM scan WHERE id = $1"
+
+		// Execute the statement with the parameter
+		_, error = database.Exec(statement, id)
+		if error != nil {
+			return error
+		}
+
+		fmt.Println("Deleted scan succesfully")
 		return nil
 
 	}
