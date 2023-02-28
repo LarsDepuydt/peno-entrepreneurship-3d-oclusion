@@ -5,24 +5,48 @@ package threedoclusion.v1;
 option go_package = "github.com/LarsDepuydt/peno-entrepreneurship-3d-oclusie";
 
 service ScanService {
-  rpc Scan(ScanRequest) returns (ScanResponse) {}
-  rpc Tag(TagRequest) returns (TagResponse) {}
+  rpc AddScan(AddScanRequest) returns (AddScanResponse) {}
+  rpc DeleteScan(DeleteScanRequest) returns (DeleteScanResponse) {}
+
+  rpc AddTag(AddTagRequest) returns (AddTagResponse) {}
+  rpc DeleteTag(DeleteTagRequest) returns (DeleteTagResponse) {}
 }
 
-message ScanRequest {
+
+// add tag 
+message AddTagRequest {
+  string id = 1;
+  string bite = 2;
+}
+
+message AddTagResponse {
+  string message = 1;
+}
+
+// remove tag 
+message DeleteTagRequest {
   string id = 1;
 }
 
-message ScanResponse {
-  string name = 1;
+message DeleteTagResponse {
+  string message = 1;
 }
 
-message TagRequest {
+message AddScanRequest {
+  string id = 1;
+  string scan_file = 2;
+  string scan_date = 3;
+
+}
+
+message AddScanResponse {
+  string message = 1;
+}
+
+message DeleteScanRequest{
   string id = 1;
 }
 
-message TagResponse {
-  string id = 1;
-  string color = 2;
-  string text = 3;
+message DeleteScanResponse {
+  string message = 1;
 }

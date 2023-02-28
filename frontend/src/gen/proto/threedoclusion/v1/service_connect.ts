@@ -3,7 +3,7 @@
 /* eslint-disable */
 // @ts-nocheck
 
-import { ScanRequest, ScanResponse, TagRequest, TagResponse } from "./service_pb.js";
+import { AddScanRequest, AddScanResponse, AddTagRequest, AddTagResponse, DeleteScanRequest, DeleteScanResponse, DeleteTagRequest, DeleteTagResponse } from "./service_pb.js";
 import { MethodKind } from "@bufbuild/protobuf";
 
 /**
@@ -13,21 +13,39 @@ export const ScanService = {
   typeName: "threedoclusion.v1.ScanService",
   methods: {
     /**
-     * @generated from rpc threedoclusion.v1.ScanService.Scan
+     * @generated from rpc threedoclusion.v1.ScanService.AddScan
      */
-    scan: {
-      name: "Scan",
-      I: ScanRequest,
-      O: ScanResponse,
+    addScan: {
+      name: "AddScan",
+      I: AddScanRequest,
+      O: AddScanResponse,
       kind: MethodKind.Unary,
     },
     /**
-     * @generated from rpc threedoclusion.v1.ScanService.Tag
+     * @generated from rpc threedoclusion.v1.ScanService.DeleteScan
      */
-    tag: {
-      name: "Tag",
-      I: TagRequest,
-      O: TagResponse,
+    deleteScan: {
+      name: "DeleteScan",
+      I: DeleteScanRequest,
+      O: DeleteScanResponse,
+      kind: MethodKind.Unary,
+    },
+    /**
+     * @generated from rpc threedoclusion.v1.ScanService.AddTag
+     */
+    addTag: {
+      name: "AddTag",
+      I: AddTagRequest,
+      O: AddTagResponse,
+      kind: MethodKind.Unary,
+    },
+    /**
+     * @generated from rpc threedoclusion.v1.ScanService.DeleteTag
+     */
+    deleteTag: {
+      name: "DeleteTag",
+      I: DeleteTagRequest,
+      O: DeleteTagResponse,
       kind: MethodKind.Unary,
     },
   }

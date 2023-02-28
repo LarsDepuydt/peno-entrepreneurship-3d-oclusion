@@ -7,108 +7,213 @@ import type { BinaryReadOptions, FieldList, JsonReadOptions, JsonValue, PartialM
 import { Message, proto3 } from "@bufbuild/protobuf";
 
 /**
- * @generated from message threedoclusion.v1.ScanRequest
+ * add tag 
+ *
+ * @generated from message threedoclusion.v1.AddTagRequest
  */
-export declare class ScanRequest extends Message<ScanRequest> {
-  /**
-   * @generated from field: string id = 1;
-   */
-  id: string;
-
-  constructor(data?: PartialMessage<ScanRequest>);
-
-  static readonly runtime: typeof proto3;
-  static readonly typeName = "threedoclusion.v1.ScanRequest";
-  static readonly fields: FieldList;
-
-  static fromBinary(bytes: Uint8Array, options?: Partial<BinaryReadOptions>): ScanRequest;
-
-  static fromJson(jsonValue: JsonValue, options?: Partial<JsonReadOptions>): ScanRequest;
-
-  static fromJsonString(jsonString: string, options?: Partial<JsonReadOptions>): ScanRequest;
-
-  static equals(a: ScanRequest | PlainMessage<ScanRequest> | undefined, b: ScanRequest | PlainMessage<ScanRequest> | undefined): boolean;
-}
-
-/**
- * @generated from message threedoclusion.v1.ScanResponse
- */
-export declare class ScanResponse extends Message<ScanResponse> {
-  /**
-   * @generated from field: string name = 1;
-   */
-  name: string;
-
-  constructor(data?: PartialMessage<ScanResponse>);
-
-  static readonly runtime: typeof proto3;
-  static readonly typeName = "threedoclusion.v1.ScanResponse";
-  static readonly fields: FieldList;
-
-  static fromBinary(bytes: Uint8Array, options?: Partial<BinaryReadOptions>): ScanResponse;
-
-  static fromJson(jsonValue: JsonValue, options?: Partial<JsonReadOptions>): ScanResponse;
-
-  static fromJsonString(jsonString: string, options?: Partial<JsonReadOptions>): ScanResponse;
-
-  static equals(a: ScanResponse | PlainMessage<ScanResponse> | undefined, b: ScanResponse | PlainMessage<ScanResponse> | undefined): boolean;
-}
-
-/**
- * @generated from message threedoclusion.v1.TagRequest
- */
-export declare class TagRequest extends Message<TagRequest> {
-  /**
-   * @generated from field: string id = 1;
-   */
-  id: string;
-
-  constructor(data?: PartialMessage<TagRequest>);
-
-  static readonly runtime: typeof proto3;
-  static readonly typeName = "threedoclusion.v1.TagRequest";
-  static readonly fields: FieldList;
-
-  static fromBinary(bytes: Uint8Array, options?: Partial<BinaryReadOptions>): TagRequest;
-
-  static fromJson(jsonValue: JsonValue, options?: Partial<JsonReadOptions>): TagRequest;
-
-  static fromJsonString(jsonString: string, options?: Partial<JsonReadOptions>): TagRequest;
-
-  static equals(a: TagRequest | PlainMessage<TagRequest> | undefined, b: TagRequest | PlainMessage<TagRequest> | undefined): boolean;
-}
-
-/**
- * @generated from message threedoclusion.v1.TagResponse
- */
-export declare class TagResponse extends Message<TagResponse> {
+export declare class AddTagRequest extends Message<AddTagRequest> {
   /**
    * @generated from field: string id = 1;
    */
   id: string;
 
   /**
-   * @generated from field: string color = 2;
+   * @generated from field: string bite = 2;
    */
-  color: string;
+  bite: string;
 
-  /**
-   * @generated from field: string text = 3;
-   */
-  text: string;
-
-  constructor(data?: PartialMessage<TagResponse>);
+  constructor(data?: PartialMessage<AddTagRequest>);
 
   static readonly runtime: typeof proto3;
-  static readonly typeName = "threedoclusion.v1.TagResponse";
+  static readonly typeName = "threedoclusion.v1.AddTagRequest";
   static readonly fields: FieldList;
 
-  static fromBinary(bytes: Uint8Array, options?: Partial<BinaryReadOptions>): TagResponse;
+  static fromBinary(bytes: Uint8Array, options?: Partial<BinaryReadOptions>): AddTagRequest;
 
-  static fromJson(jsonValue: JsonValue, options?: Partial<JsonReadOptions>): TagResponse;
+  static fromJson(jsonValue: JsonValue, options?: Partial<JsonReadOptions>): AddTagRequest;
 
-  static fromJsonString(jsonString: string, options?: Partial<JsonReadOptions>): TagResponse;
+  static fromJsonString(jsonString: string, options?: Partial<JsonReadOptions>): AddTagRequest;
 
-  static equals(a: TagResponse | PlainMessage<TagResponse> | undefined, b: TagResponse | PlainMessage<TagResponse> | undefined): boolean;
+  static equals(a: AddTagRequest | PlainMessage<AddTagRequest> | undefined, b: AddTagRequest | PlainMessage<AddTagRequest> | undefined): boolean;
+}
+
+/**
+ * @generated from message threedoclusion.v1.AddTagResponse
+ */
+export declare class AddTagResponse extends Message<AddTagResponse> {
+  /**
+   * @generated from field: string message = 1;
+   */
+  message: string;
+
+  constructor(data?: PartialMessage<AddTagResponse>);
+
+  static readonly runtime: typeof proto3;
+  static readonly typeName = "threedoclusion.v1.AddTagResponse";
+  static readonly fields: FieldList;
+
+  static fromBinary(bytes: Uint8Array, options?: Partial<BinaryReadOptions>): AddTagResponse;
+
+  static fromJson(jsonValue: JsonValue, options?: Partial<JsonReadOptions>): AddTagResponse;
+
+  static fromJsonString(jsonString: string, options?: Partial<JsonReadOptions>): AddTagResponse;
+
+  static equals(a: AddTagResponse | PlainMessage<AddTagResponse> | undefined, b: AddTagResponse | PlainMessage<AddTagResponse> | undefined): boolean;
+}
+
+/**
+ * remove tag 
+ *
+ * @generated from message threedoclusion.v1.DeleteTagRequest
+ */
+export declare class DeleteTagRequest extends Message<DeleteTagRequest> {
+  /**
+   * @generated from field: string id = 1;
+   */
+  id: string;
+
+  constructor(data?: PartialMessage<DeleteTagRequest>);
+
+  static readonly runtime: typeof proto3;
+  static readonly typeName = "threedoclusion.v1.DeleteTagRequest";
+  static readonly fields: FieldList;
+
+  static fromBinary(bytes: Uint8Array, options?: Partial<BinaryReadOptions>): DeleteTagRequest;
+
+  static fromJson(jsonValue: JsonValue, options?: Partial<JsonReadOptions>): DeleteTagRequest;
+
+  static fromJsonString(jsonString: string, options?: Partial<JsonReadOptions>): DeleteTagRequest;
+
+  static equals(a: DeleteTagRequest | PlainMessage<DeleteTagRequest> | undefined, b: DeleteTagRequest | PlainMessage<DeleteTagRequest> | undefined): boolean;
+}
+
+/**
+ * @generated from message threedoclusion.v1.DeleteTagResponse
+ */
+export declare class DeleteTagResponse extends Message<DeleteTagResponse> {
+  /**
+   * @generated from field: string message = 1;
+   */
+  message: string;
+
+  constructor(data?: PartialMessage<DeleteTagResponse>);
+
+  static readonly runtime: typeof proto3;
+  static readonly typeName = "threedoclusion.v1.DeleteTagResponse";
+  static readonly fields: FieldList;
+
+  static fromBinary(bytes: Uint8Array, options?: Partial<BinaryReadOptions>): DeleteTagResponse;
+
+  static fromJson(jsonValue: JsonValue, options?: Partial<JsonReadOptions>): DeleteTagResponse;
+
+  static fromJsonString(jsonString: string, options?: Partial<JsonReadOptions>): DeleteTagResponse;
+
+  static equals(a: DeleteTagResponse | PlainMessage<DeleteTagResponse> | undefined, b: DeleteTagResponse | PlainMessage<DeleteTagResponse> | undefined): boolean;
+}
+
+/**
+ * @generated from message threedoclusion.v1.AddScanRequest
+ */
+export declare class AddScanRequest extends Message<AddScanRequest> {
+  /**
+   * @generated from field: string id = 1;
+   */
+  id: string;
+
+  /**
+   * @generated from field: string scan_file = 2;
+   */
+  scanFile: string;
+
+  /**
+   * @generated from field: string scan_date = 3;
+   */
+  scanDate: string;
+
+  constructor(data?: PartialMessage<AddScanRequest>);
+
+  static readonly runtime: typeof proto3;
+  static readonly typeName = "threedoclusion.v1.AddScanRequest";
+  static readonly fields: FieldList;
+
+  static fromBinary(bytes: Uint8Array, options?: Partial<BinaryReadOptions>): AddScanRequest;
+
+  static fromJson(jsonValue: JsonValue, options?: Partial<JsonReadOptions>): AddScanRequest;
+
+  static fromJsonString(jsonString: string, options?: Partial<JsonReadOptions>): AddScanRequest;
+
+  static equals(a: AddScanRequest | PlainMessage<AddScanRequest> | undefined, b: AddScanRequest | PlainMessage<AddScanRequest> | undefined): boolean;
+}
+
+/**
+ * @generated from message threedoclusion.v1.AddScanResponse
+ */
+export declare class AddScanResponse extends Message<AddScanResponse> {
+  /**
+   * @generated from field: string message = 1;
+   */
+  message: string;
+
+  constructor(data?: PartialMessage<AddScanResponse>);
+
+  static readonly runtime: typeof proto3;
+  static readonly typeName = "threedoclusion.v1.AddScanResponse";
+  static readonly fields: FieldList;
+
+  static fromBinary(bytes: Uint8Array, options?: Partial<BinaryReadOptions>): AddScanResponse;
+
+  static fromJson(jsonValue: JsonValue, options?: Partial<JsonReadOptions>): AddScanResponse;
+
+  static fromJsonString(jsonString: string, options?: Partial<JsonReadOptions>): AddScanResponse;
+
+  static equals(a: AddScanResponse | PlainMessage<AddScanResponse> | undefined, b: AddScanResponse | PlainMessage<AddScanResponse> | undefined): boolean;
+}
+
+/**
+ * @generated from message threedoclusion.v1.DeleteScanRequest
+ */
+export declare class DeleteScanRequest extends Message<DeleteScanRequest> {
+  /**
+   * @generated from field: string id = 1;
+   */
+  id: string;
+
+  constructor(data?: PartialMessage<DeleteScanRequest>);
+
+  static readonly runtime: typeof proto3;
+  static readonly typeName = "threedoclusion.v1.DeleteScanRequest";
+  static readonly fields: FieldList;
+
+  static fromBinary(bytes: Uint8Array, options?: Partial<BinaryReadOptions>): DeleteScanRequest;
+
+  static fromJson(jsonValue: JsonValue, options?: Partial<JsonReadOptions>): DeleteScanRequest;
+
+  static fromJsonString(jsonString: string, options?: Partial<JsonReadOptions>): DeleteScanRequest;
+
+  static equals(a: DeleteScanRequest | PlainMessage<DeleteScanRequest> | undefined, b: DeleteScanRequest | PlainMessage<DeleteScanRequest> | undefined): boolean;
+}
+
+/**
+ * @generated from message threedoclusion.v1.DeleteScanResponse
+ */
+export declare class DeleteScanResponse extends Message<DeleteScanResponse> {
+  /**
+   * @generated from field: string message = 1;
+   */
+  message: string;
+
+  constructor(data?: PartialMessage<DeleteScanResponse>);
+
+  static readonly runtime: typeof proto3;
+  static readonly typeName = "threedoclusion.v1.DeleteScanResponse";
+  static readonly fields: FieldList;
+
+  static fromBinary(bytes: Uint8Array, options?: Partial<BinaryReadOptions>): DeleteScanResponse;
+
+  static fromJson(jsonValue: JsonValue, options?: Partial<JsonReadOptions>): DeleteScanResponse;
+
+  static fromJsonString(jsonString: string, options?: Partial<JsonReadOptions>): DeleteScanResponse;
+
+  static equals(a: DeleteScanResponse | PlainMessage<DeleteScanResponse> | undefined, b: DeleteScanResponse | PlainMessage<DeleteScanResponse> | undefined): boolean;
 }
 

@@ -5,40 +5,74 @@
 
 import { createQueryService } from "@bufbuild/connect-query";
 import { MethodKind } from "@bufbuild/protobuf";
-import { ScanRequest, ScanResponse, TagRequest, TagResponse } from "./service_pb.js";
+import { AddScanRequest, AddScanResponse, AddTagRequest, AddTagResponse, DeleteScanRequest, DeleteScanResponse, DeleteTagRequest, DeleteTagResponse } from "./service_pb.js";
 
 export const typeName = "threedoclusion.v1.ScanService";
 
 /**
- * @generated from rpc threedoclusion.v1.ScanService.Scan
+ * @generated from rpc threedoclusion.v1.ScanService.AddScan
  */
-export const scan = createQueryService({
+export const addScan = createQueryService({
   service: {
     methods: {
-      scan: {
-        name: "Scan",
+      addScan: {
+        name: "AddScan",
         kind: MethodKind.Unary,
-        I: ScanRequest,
-        O: ScanResponse,
+        I: AddScanRequest,
+        O: AddScanResponse,
       },
     },
     typeName: "threedoclusion.v1.ScanService",
   },
-}).scan;
+}).addScan;
 
 /**
- * @generated from rpc threedoclusion.v1.ScanService.Tag
+ * @generated from rpc threedoclusion.v1.ScanService.DeleteScan
  */
-export const tag = createQueryService({
+export const deleteScan = createQueryService({
   service: {
     methods: {
-      tag: {
-        name: "Tag",
+      deleteScan: {
+        name: "DeleteScan",
         kind: MethodKind.Unary,
-        I: TagRequest,
-        O: TagResponse,
+        I: DeleteScanRequest,
+        O: DeleteScanResponse,
       },
     },
     typeName: "threedoclusion.v1.ScanService",
   },
-}).tag;
+}).deleteScan;
+
+/**
+ * @generated from rpc threedoclusion.v1.ScanService.AddTag
+ */
+export const addTag = createQueryService({
+  service: {
+    methods: {
+      addTag: {
+        name: "AddTag",
+        kind: MethodKind.Unary,
+        I: AddTagRequest,
+        O: AddTagResponse,
+      },
+    },
+    typeName: "threedoclusion.v1.ScanService",
+  },
+}).addTag;
+
+/**
+ * @generated from rpc threedoclusion.v1.ScanService.DeleteTag
+ */
+export const deleteTag = createQueryService({
+  service: {
+    methods: {
+      deleteTag: {
+        name: "DeleteTag",
+        kind: MethodKind.Unary,
+        I: DeleteTagRequest,
+        O: DeleteTagResponse,
+      },
+    },
+    typeName: "threedoclusion.v1.ScanService",
+  },
+}).deleteTag;

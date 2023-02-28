@@ -6,44 +6,89 @@
 import { proto3 } from "@bufbuild/protobuf";
 
 /**
- * @generated from message threedoclusion.v1.ScanRequest
+ * add tag 
+ *
+ * @generated from message threedoclusion.v1.AddTagRequest
  */
-export const ScanRequest = proto3.makeMessageType(
-  "threedoclusion.v1.ScanRequest",
+export const AddTagRequest = proto3.makeMessageType(
+  "threedoclusion.v1.AddTagRequest",
+  () => [
+    { no: 1, name: "id", kind: "scalar", T: 9 /* ScalarType.STRING */ },
+    { no: 2, name: "bite", kind: "scalar", T: 9 /* ScalarType.STRING */ },
+  ],
+);
+
+/**
+ * @generated from message threedoclusion.v1.AddTagResponse
+ */
+export const AddTagResponse = proto3.makeMessageType(
+  "threedoclusion.v1.AddTagResponse",
+  () => [
+    { no: 1, name: "message", kind: "scalar", T: 9 /* ScalarType.STRING */ },
+  ],
+);
+
+/**
+ * remove tag 
+ *
+ * @generated from message threedoclusion.v1.DeleteTagRequest
+ */
+export const DeleteTagRequest = proto3.makeMessageType(
+  "threedoclusion.v1.DeleteTagRequest",
   () => [
     { no: 1, name: "id", kind: "scalar", T: 9 /* ScalarType.STRING */ },
   ],
 );
 
 /**
- * @generated from message threedoclusion.v1.ScanResponse
+ * @generated from message threedoclusion.v1.DeleteTagResponse
  */
-export const ScanResponse = proto3.makeMessageType(
-  "threedoclusion.v1.ScanResponse",
+export const DeleteTagResponse = proto3.makeMessageType(
+  "threedoclusion.v1.DeleteTagResponse",
   () => [
-    { no: 1, name: "name", kind: "scalar", T: 9 /* ScalarType.STRING */ },
+    { no: 1, name: "message", kind: "scalar", T: 9 /* ScalarType.STRING */ },
   ],
 );
 
 /**
- * @generated from message threedoclusion.v1.TagRequest
+ * @generated from message threedoclusion.v1.AddScanRequest
  */
-export const TagRequest = proto3.makeMessageType(
-  "threedoclusion.v1.TagRequest",
+export const AddScanRequest = proto3.makeMessageType(
+  "threedoclusion.v1.AddScanRequest",
+  () => [
+    { no: 1, name: "id", kind: "scalar", T: 9 /* ScalarType.STRING */ },
+    { no: 2, name: "scan_file", kind: "scalar", T: 9 /* ScalarType.STRING */ },
+    { no: 3, name: "scan_date", kind: "scalar", T: 9 /* ScalarType.STRING */ },
+  ],
+);
+
+/**
+ * @generated from message threedoclusion.v1.AddScanResponse
+ */
+export const AddScanResponse = proto3.makeMessageType(
+  "threedoclusion.v1.AddScanResponse",
+  () => [
+    { no: 1, name: "message", kind: "scalar", T: 9 /* ScalarType.STRING */ },
+  ],
+);
+
+/**
+ * @generated from message threedoclusion.v1.DeleteScanRequest
+ */
+export const DeleteScanRequest = proto3.makeMessageType(
+  "threedoclusion.v1.DeleteScanRequest",
   () => [
     { no: 1, name: "id", kind: "scalar", T: 9 /* ScalarType.STRING */ },
   ],
 );
 
 /**
- * @generated from message threedoclusion.v1.TagResponse
+ * @generated from message threedoclusion.v1.DeleteScanResponse
  */
-export const TagResponse = proto3.makeMessageType(
-  "threedoclusion.v1.TagResponse",
+export const DeleteScanResponse = proto3.makeMessageType(
+  "threedoclusion.v1.DeleteScanResponse",
   () => [
-    { no: 1, name: "id", kind: "scalar", T: 9 /* ScalarType.STRING */ },
-    { no: 2, name: "color", kind: "scalar", T: 9 /* ScalarType.STRING */ },
-    { no: 3, name: "text", kind: "scalar", T: 9 /* ScalarType.STRING */ },
+    { no: 1, name: "message", kind: "scalar", T: 9 /* ScalarType.STRING */ },
   ],
 );
 

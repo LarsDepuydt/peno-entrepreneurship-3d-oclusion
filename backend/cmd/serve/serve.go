@@ -4,10 +4,10 @@ import (
 	"context"
 	"net/http"
 
-	"github.com/LarsDepuydt/peno-entrepreneurship-3d-oclusie/cmd/scans"
-	"github.com/LarsDepuydt/peno-entrepreneurship-3d-oclusie/cmd/tags"
-	threedoclusionv1 "github.com/LarsDepuydt/peno-entrepreneurship-3d-oclusie/gen/proto/threedoclusion/v1"
-	"github.com/LarsDepuydt/peno-entrepreneurship-3d-oclusie/gen/proto/threedoclusion/v1/threedoclusionv1connect"
+	"github.com/LarsDepuydt/peno-entrepreneurship-3d-oclusion/cmd/scans"
+	"github.com/LarsDepuydt/peno-entrepreneurship-3d-oclusion/cmd/tags"
+	threedoclusionv1 "github.com/LarsDepuydt/peno-entrepreneurship-3d-oclusion/gen/proto/threedoclusion/v1"
+	"github.com/LarsDepuydt/peno-entrepreneurship-3d-oclusion/gen/proto/threedoclusion/v1/threedoclusionv1connect"
 	"github.com/bufbuild/connect-go"
 	"github.com/rs/cors"
 	"golang.org/x/net/http2"
@@ -19,10 +19,10 @@ type ServerStruct struct{}
 func setCors(mux http.Handler) http.Handler {
 	muxHandler := cors.Default().Handler(mux)
 	c := cors.New(cors.Options{
-		AllowedOrigins: []string{"*"},
+		AllowedOrigins:   []string{"*"},
 		AllowCredentials: true,
-		AllowedHeaders: []string{"Connect-Protocol-Version", "Content-Type"},
-		Debug: true, // Enable Debugging for testing, consider disabling in production
+		AllowedHeaders:   []string{"Connect-Protocol-Version", "Content-Type"},
+		Debug:            true, // Enable Debugging for testing, consider disabling in production
 	})
 	muxHandler = c.Handler(muxHandler)
 
@@ -31,7 +31,7 @@ func setCors(mux http.Handler) http.Handler {
 
 func Server() {
 	server := &ServerStruct{}
-	
+
 	mux := http.NewServeMux()
 	path, handler := threedoclusionv1connect.NewScanServiceHandler(server)
 	mux.Handle(path, handler)
@@ -45,17 +45,30 @@ func Server() {
 	)
 }
 
-func (s *ServerStruct) Scan(
+func (s *ServerStruct) AddScan(
 	ctx context.Context,
-	req *connect.Request[threedoclusionv1.ScanRequest],
-) (*connect.Response[threedoclusionv1.ScanResponse], error) {
+	req *connect.Request[threedoclusionv1.AddScanRequest],
+) (*connect.Response[threedoclusionv1.AddScanResponse], error) {
 	return scans.GetScanById(req)
 }
 
-func (s *ServerStruct) Tag(
+func (s *ServerStruct) DeleteScan(
 	ctx context.Context,
-	req *connect.Request[threedoclusionv1.TagRequest],
-) (*connect.Response[threedoclusionv1.TagResponse], error) {
+	req *connect.Request[threedoclusionv1.DeleteScanRequest],
+) (*connect.Response[threedoclusionv1.DeleteScanResponse], error) {
 	return tags.GetTagById(req)
 }
 
+func (s *ServerStruct) AddTag(
+	ctx context.Context,
+	req *connect.Request[threedoclusionv1.AddTagRequest],
+) (*connect.Response[threedoclusionv1.AddTagResponse], error) {
+	return tags.AddTag(req)
+}
+
+func (s *ServerStruct) DeleteTag(
+	ctx context.Context,
+	req *connect.Request[threedoclusionv1.DeleteTagRequest],
+) (*connect.Response[threedoclusionv1.DeleteTagResponse], error) {
+	return tags.DeleteTag(req)
+}
