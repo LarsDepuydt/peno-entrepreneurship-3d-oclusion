@@ -5,8 +5,9 @@ import { XRControllerModelFactory } from 'three/addons/webxr/XRControllerModelFa
 import { OBJLoader } from 'three/addons/loaders/OBJLoader.js';
 import * as CANNON from 'cannon-es';
 import { MeshBVH, acceleratedRaycast } from 'three-mesh-bvh';
-import * as CannonUtils from 'cannon-utils';
+import { default as CannonUtils } from 'cannon-utils';
 
+console.dir(CannonUtils);
 
 let container;
 let camera, scene, renderer;
@@ -22,8 +23,8 @@ let raycaster;
 
 let world, mass, body, shape;
 
-let lowerjaw, lowerjaw_bvh, lowerjaw_shape;
-let upperjaw, upperjaw_bvh, upperjaw_shape;
+let lowerjaw, lowerjaw_bvh, lowerjaw_shape, lowerjaw_cannon_mesh;
+let upperjaw, upperjaw_bvh, upperjaw_shape, upperjaw_cannon_mesh;
 
 
 initThree();
@@ -89,7 +90,7 @@ function initThree() {
     loader.load(
         '../../assets/lowerjaw_holger.obj',
         // called when resource is loaded y=green, x=red, z=blue
-        function (object) {
+        function (object) {         // lowerjaw is a 'Group', which is a subclass of 'Object3D'
             lowerjaw = object;
             lowerjaw.position.x = 0
             lowerjaw.position.y = 2
@@ -99,23 +100,20 @@ function initThree() {
             lowerjaw.scale.setScalar(0.01);
             group.add(lowerjaw);
             //lowerjaw_bvh = new MeshBVH(object);
-
-            console.log("Object3D? " + lowerjaw.isObject3D);
-            console.log("Group? " + lowerjaw.isGroup);
-            console.log("Mesh? " + lowerjaw.isMesh)
-            lowerjaw.traverse(function(o) {if (o.isMesh) console.log(o.geometry);})
-            printTree(lowerjaw);
-
-            lowerjaw_shape = CannonUtils.CreateTriMesh(lowerjaw.children[0].geometry);
+            
+            let lowerjaw_mesh = getFirstMesh(lowerjaw);
+            console.log(lowerjaw_mesh);
+            lowerjaw_cannon_mesh = threeMeshToCannonMesh(lowerjaw_mesh);
+            console.log("loading lowerjaw succeeded");
         },
         
         // called when loading in progress
         function (xhr) {
-            console.log( (xhr.loaded / xhr.total * 100 ) + '% loaded');
+            console.log( "lowerjaw " + (xhr.loaded / xhr.total * 100 ) + '% loaded');
         },
         // called when loading has errors
         function (error) {
-            console.log('An error happened while loading: ' + error);
+            console.log('An error happened while loading lowerjaw: ' + error);
         }
     );
  
@@ -133,20 +131,20 @@ function initThree() {
             upperjaw.scale.setScalar(0.01);
             group.add(upperjaw);
             //upperjaw_bvh = new MeshBVH(object);
-
-            console.log("Object3D? " + upperjaw.isObject3D);
-            console.log("Mesh?");
-
-            upperjaw_shape = CannonUtils.CreateTriMesh(upperjaw.children[0].geometry);
+            
+            let upperjaw_mesh = getFirstMesh(upperjaw);
+            console.log(upperjaw_mesh);
+            upperjaw_cannon_mesh = threeMeshToCannonMesh(upperjaw_mesh);
+            console.log("loading upperjaw succeeded")
         },
         
         // called when loading in progress
         function (xhr) {
-            console.log( (xhr.loaded / xhr.total * 100 ) + '% loaded');
+            console.log( "upperjaw " + (xhr.loaded / xhr.total * 100 ) + '% loaded');
         },
         // called when loading has errors
         function (error) {
-            console.log('An error happened while loading: ' + error);
+            console.log('An error happened while loading upperjaw: ' + error);
         }
     );
  
@@ -339,6 +337,55 @@ function printTree(object, depth=0) {
     for (const o of object.children) {
         printTree(o, depth+1);
     }
+}
+
+
+function getFirstMesh(object) {
+    if (object.isMesh) {
+        return object;
+    } else {
+        let mesh;
+        for (const o of object.children) {
+            mesh = getFirstMesh(o);
+            if (mesh !== null) {
+                return mesh;
+            }
+        }
+        return null;
+    }
+}
+
+
+// function threeMeshToCannonMesh(mesh) {
+//     let position = mesh.geometry.attributes.position.array;
+//     const vertices = [];
+//     for (let i = 0; i < position.length; i += 3) {
+//         vertices.push(new CANNON.Vec3(position[i], position[i + 1], position[i + 2]))
+//     }
+//     const faces = [];
+//     for (let i = 0; i < position.length / 3; i += 3) {
+//         faces.push([i, i + 1, i + 2])
+//     }
+//     const icosahedronShape = new CANNON.ConvexPolyhedron({
+//         vertices: vertices,
+//         faces: faces,
+//     })
+//     const icosahedronBody = new CANNON.Body({ mass: 1 })
+//     icosahedronBody.addShape(icosahedronShape)
+//     icosahedronBody.position.x = mesh.position.x
+//     icosahedronBody.position.y = mesh.position.y
+//     icosahedronBody.position.z = mesh.position.z
+//     world.addBody(icosahedronBody)
+// }
+
+function threeMeshToCannonMesh(mesh) {
+    let vertices = mesh.geometry.attributes.position.array;
+
+    const indices = [];
+    for (let i = 0; i < vertices.length / 3; i += 3) {
+        indices.push([i, i + 1, i + 2]);
+    }
+    return new CANNON.Trimesh(vertices, indices);
 }
 
 
