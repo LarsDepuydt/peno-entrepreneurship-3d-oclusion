@@ -54,3 +54,61 @@ export declare class ScanResponse extends Message<ScanResponse> {
   static equals(a: ScanResponse | PlainMessage<ScanResponse> | undefined, b: ScanResponse | PlainMessage<ScanResponse> | undefined): boolean;
 }
 
+/**
+ * @generated from message threedoclusion.v1.TagRequest
+ */
+export declare class TagRequest extends Message<TagRequest> {
+  /**
+   * @generated from field: string id = 1;
+   */
+  id: string;
+
+  constructor(data?: PartialMessage<TagRequest>);
+
+  static readonly runtime: typeof proto3;
+  static readonly typeName = "threedoclusion.v1.TagRequest";
+  static readonly fields: FieldList;
+
+  static fromBinary(bytes: Uint8Array, options?: Partial<BinaryReadOptions>): TagRequest;
+
+  static fromJson(jsonValue: JsonValue, options?: Partial<JsonReadOptions>): TagRequest;
+
+  static fromJsonString(jsonString: string, options?: Partial<JsonReadOptions>): TagRequest;
+
+  static equals(a: TagRequest | PlainMessage<TagRequest> | undefined, b: TagRequest | PlainMessage<TagRequest> | undefined): boolean;
+}
+
+/**
+ * @generated from message threedoclusion.v1.TagResponse
+ */
+export declare class TagResponse extends Message<TagResponse> {
+  /**
+   * @generated from field: string id = 1;
+   */
+  id: string;
+
+  /**
+   * @generated from field: string color = 2;
+   */
+  color: string;
+
+  /**
+   * @generated from field: string text = 3;
+   */
+  text: string;
+
+  constructor(data?: PartialMessage<TagResponse>);
+
+  static readonly runtime: typeof proto3;
+  static readonly typeName = "threedoclusion.v1.TagResponse";
+  static readonly fields: FieldList;
+
+  static fromBinary(bytes: Uint8Array, options?: Partial<BinaryReadOptions>): TagResponse;
+
+  static fromJson(jsonValue: JsonValue, options?: Partial<JsonReadOptions>): TagResponse;
+
+  static fromJsonString(jsonString: string, options?: Partial<JsonReadOptions>): TagResponse;
+
+  static equals(a: TagResponse | PlainMessage<TagResponse> | undefined, b: TagResponse | PlainMessage<TagResponse> | undefined): boolean;
+}
+

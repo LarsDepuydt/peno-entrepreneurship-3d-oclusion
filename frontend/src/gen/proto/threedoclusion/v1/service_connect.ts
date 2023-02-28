@@ -3,7 +3,7 @@
 /* eslint-disable */
 // @ts-nocheck
 
-import { ScanRequest, ScanResponse } from "./service_pb.js";
+import { ScanRequest, ScanResponse, TagRequest, TagResponse } from "./service_pb.js";
 import { MethodKind } from "@bufbuild/protobuf";
 
 /**
@@ -19,6 +19,15 @@ export const ScanService = {
       name: "Scan",
       I: ScanRequest,
       O: ScanResponse,
+      kind: MethodKind.Unary,
+    },
+    /**
+     * @generated from rpc threedoclusion.v1.ScanService.Tag
+     */
+    tag: {
+      name: "Tag",
+      I: TagRequest,
+      O: TagResponse,
       kind: MethodKind.Unary,
     },
   }
