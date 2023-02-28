@@ -51,28 +51,4 @@ func main() {
 		// Use h2c so we can serve HTTP/2 without TLS.
 		h2c.NewHandler(muxHandler, &http2.Server{}),
 	)
-
-	id := 111
-	bite := "overbeet"
-	firstname := "Dag"
-	lastname := "Malstaf"
-	pinned := 1
-
-	notes := "test note"
-
-	fmt.Println("starten van toevoeging tag")
-
-	err1 := AlterTag(id, bite, true)
-
-	if err1 != nil {
-		fmt.Println(err1)
-	}
-
-	fmt.Println("starten van toevoeging patient")
-
-	err2 := AlterPatient(id, firstname, lastname, pinned, notes, true)
-	if err2 != nil {
-		fmt.Println(err2)
-	}
-
 }
