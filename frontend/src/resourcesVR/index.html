@@ -1,0 +1,17 @@
+<!DOCTYPE html>
+<html>
+    <head>
+		<meta charset="UTF-8">
+		<meta http-equiv="Refresh" content="0; url='https://tonite.dance/'" />
+		<title>VR Page</title>
+		<link rel="manifest" href="../manifest.json"/> <!-- Necessary if we want to make a PWA -->
+	</head>
+	<body>
+		<h1>VR Page</h1>
+	</body>
+	<script>
+		if('serviceWorker' in navigator) {
+		  navigator.serviceWorker.register('../sw.js');
+		}
+	</script>
+</html>
