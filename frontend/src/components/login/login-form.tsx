@@ -1,8 +1,12 @@
-import { Formik, Field, Form, FormikHelpers } from 'formik';
+import { Formik, Field, Form} from 'formik';
 // most popular open source form library
 
 import { useRouter } from 'next/router';
-import styles from './login-form.module.css'
+import Image from 'next/image'
+import styles from '@/styles/LoginForm.module.css'
+
+
+import reluLogo from "../../../public/relu-logo-small.png";
 
 
 
@@ -17,25 +21,17 @@ export default function LoginForm() {
 
     return (
       <div className={styles.login_box + ' p-3'}>
-        <h1 className="display-6 mb-3">Login</h1>
+        <Image className={styles.small_logo} src={reluLogo} alt="relu logo"/>
+
+        {/* <h1 className="display-6 mb-3">Login</h1> */}
+
         <Formik
           initialValues={{
             username: '',
             password: '',
           }}
 
-          onSubmit={(
-            values: Values,
-            { setSubmitting }: FormikHelpers<Values>
-          ) => {
-            // setTimeout(() => {
-            //   alert(JSON.stringify(values, null, 2));
-            //   setSubmitting(false);
-            // }, 500);
-            
-
-            router.push('/page2')
-          }}
+          onSubmit={() => {router.push('/page2')}}
 
         >
           <Form>
@@ -47,7 +43,7 @@ export default function LoginForm() {
               <Field className="form-control" id="password" name="password" placeholder="Password" type="password" />
             </div>
 
-            <button type="submit" className="btn btn-primary">Login</button>
+            <button type="submit" className= "btn btn-primary btn-large" >Login</button>
           </Form>
         </Formik>
       </div>
