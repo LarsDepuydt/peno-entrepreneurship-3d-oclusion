@@ -3,7 +3,7 @@ import { OrbitControls } from 'three/addons/controls/OrbitControls.js';
 import { VRButton } from 'three/addons/webxr/VRButton.js';
 import { XRControllerModelFactory } from 'three/addons/webxr/XRControllerModelFactory.js';
 import { OBJLoader } from 'three/addons/loaders/OBJLoader.js';
-import * as CANNON from 'cannon';
+import * as CANNON from 'cannon-es';
 import { MeshBVH, acceleratedRaycast } from 'three-mesh-bvh';
 import * as CannonUtils from 'cannon-utils';
 
@@ -21,6 +21,9 @@ let controls, group;
 let raycaster;
 
 let world, mass, body, shape;
+
+let lowerjaw, lowerjaw_bvh, lowerjaw_shape;
+let upperjaw, upperjaw_bvh, upperjaw_shape;
 
 
 initThree();
@@ -83,8 +86,6 @@ function initThree() {
 
     // load lower jaw
     const loader = new OBJLoader();
-    var lowerjaw;
-    var lowerjaw_bvh;
     loader.load(
         '../../assets/lowerjaw_holger.obj',
         // called when resource is loaded y=green, x=red, z=blue
@@ -104,6 +105,8 @@ function initThree() {
             console.log("Mesh? " + lowerjaw.isMesh)
             lowerjaw.traverse(function(o) {if (o.isMesh) console.log(o.geometry);})
             printTree(lowerjaw);
+
+            lowerjaw_shape = CannonUtils.CreateTriMesh(lowerjaw.children[0].geometry);
         },
         
         // called when loading in progress
@@ -112,14 +115,11 @@ function initThree() {
         },
         // called when loading has errors
         function (error) {
-            console.log('An error happened while loading');
+            console.log('An error happened while loading: ' + error);
         }
     );
  
     // load upper jaw
-    //const loader2 = new OBJLoader();
-    var upperjaw;
-    var upperjaw_bvh;
     loader.load(
         '../../assets/upperjaw_holger.obj',
         // called when resource is loaded y=green, x=red, z=blue
@@ -132,10 +132,12 @@ function initThree() {
             //upperjaw.rotation.y = Math.PI
             upperjaw.scale.setScalar(0.01);
             group.add(upperjaw);
-            upperjaw_bvh = new MeshBVH(object);
+            //upperjaw_bvh = new MeshBVH(object);
 
             console.log("Object3D? " + upperjaw.isObject3D);
-            console.log("Mesh?")
+            console.log("Mesh?");
+
+            upperjaw_shape = CannonUtils.CreateTriMesh(upperjaw.children[0].geometry);
         },
         
         // called when loading in progress
@@ -144,7 +146,7 @@ function initThree() {
         },
         // called when loading has errors
         function (error) {
-            console.log('An error happened while loading');
+            console.log('An error happened while loading: ' + error);
         }
     );
  
@@ -215,13 +217,11 @@ function initThree() {
 
 
 function initCannon() {
-    body = CANNON.Body({mass: 1});
+    body = new CANNON.Body({mass: 1});
     world = new CANNON.World();
     world.gravity.set(0,0,0);
     world.broadphase = new CANNON.NaiveBroadphase();
     world.solver.iterations = 10;
-
-    lowerjaw_shape = CannonUtils.CreateTriMesh(lowerjaw.children[0].geometry);
 }
 
 
