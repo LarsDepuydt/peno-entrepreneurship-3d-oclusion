@@ -5,8 +5,19 @@ managed:
     default: github.com/LarsDepuydt/peno-entrepreneurship-3d-oclusie/gen/proto
 plugins:
   - plugin: go
-    out: backend/gen/
+    out: backend/gen/proto
     opt: paths=source_relative
   - plugin: connect-go
-    out: backend/gen/
+    out: backend/gen/proto
     opt: paths=source_relative
+  - plugin: es
+    path: frontend/node_modules/.bin/protoc-gen-es
+    out: frontend/src/gen/proto
+  - plugin: connect-es
+    path: frontend/node_modules/.bin/protoc-gen-connect-es
+    out: frontend/src/gen/proto
+    opt: target=ts
+  - name: connect-query
+    path: frontend/node_modules/.bin/protoc-gen-connect-query
+    out: frontend/src/gen/proto
+    opt: target=ts
