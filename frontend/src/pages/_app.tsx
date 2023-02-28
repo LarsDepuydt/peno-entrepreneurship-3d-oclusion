@@ -9,6 +9,7 @@ const queryClient = new QueryClient();
 
 export default function App({ Component, pageProps }: AppProps) {
   const transport = createConnectTransport({
+    baseUrl: "http://0.0.0.0:8080",
   });
 
   return (

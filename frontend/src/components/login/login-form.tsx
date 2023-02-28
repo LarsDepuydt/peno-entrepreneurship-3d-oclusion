@@ -23,7 +23,7 @@ export default function LoginForm() {
       <div className={styles.login_box + ' p-3'}>
         <Image className={styles.small_logo} src={reluLogo} alt="relu logo"/>
 
-        {/* <h1 className="display-6 mb-3">Login</h1> */}
+        
 
         <Formik
           initialValues={{
