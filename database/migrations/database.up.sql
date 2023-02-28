@@ -1,6 +1,7 @@
 CREATE TABLE patient ( 
     id SERIAL PRIMARY KEY, 
-    name text,
+    first_name text,
+    last_name text,
     pinned bit,
     notes text
 );
@@ -8,15 +9,15 @@ CREATE TABLE patient (
 CREATE TABLE dentist (
     id SERIAL PRIMARY KEY,
     email text,
-    password text,
-    fname text,
-    lname text
+    pass_word text,
+    first_name text,
+    last_name text
 );
 
 CREATE TABLE scan (
     id SERIAL PRIMARY KEY,
-    file text,
-    date date
+    scan_file text,
+    scan_date date
 );
 
 CREATE TABLE tag (
