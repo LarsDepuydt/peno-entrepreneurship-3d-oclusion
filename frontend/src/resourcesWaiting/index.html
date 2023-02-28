@@ -7,7 +7,7 @@
     <title>Waiting</title>
     <link rel="stylesheet" href="./style.css">
     <link rel="icon" href="./favicon.ico" type="image/x-icon">
-    <link rel="manifest" href="../manifest.json"/>
+    <link rel="manifest" href="../../../backend/manifest.json"/> <!--WERKT MISSCHIEN NIET-->
   </head>
   <body>
     <main>
@@ -74,7 +74,7 @@
     </script>
     <script>
 			if('serviceWorker' in navigator) {
-			  navigator.serviceWorker.register('../sw.js');
+			  navigator.serviceWorker.register('../../../backend/sw.js');
 			}
 		</script>
   </body>
