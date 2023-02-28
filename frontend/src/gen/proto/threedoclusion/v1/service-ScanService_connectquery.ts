@@ -5,7 +5,7 @@
 
 import { createQueryService } from "@bufbuild/connect-query";
 import { MethodKind } from "@bufbuild/protobuf";
-import { ScanRequest, ScanResponse } from "./service_pb.js";
+import { ScanRequest, ScanResponse, TagRequest, TagResponse } from "./service_pb.js";
 
 export const typeName = "threedoclusion.v1.ScanService";
 
@@ -25,3 +25,20 @@ export const scan = createQueryService({
     typeName: "threedoclusion.v1.ScanService",
   },
 }).scan;
+
+/**
+ * @generated from rpc threedoclusion.v1.ScanService.Tag
+ */
+export const tag = createQueryService({
+  service: {
+    methods: {
+      tag: {
+        name: "Tag",
+        kind: MethodKind.Unary,
+        I: TagRequest,
+        O: TagResponse,
+      },
+    },
+    typeName: "threedoclusion.v1.ScanService",
+  },
+}).tag;

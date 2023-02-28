@@ -28,6 +28,7 @@ const (
 // ScanServiceClient is a client for the threedoclusion.v1.ScanService service.
 type ScanServiceClient interface {
 	Scan(context.Context, *connect_go.Request[v1.ScanRequest]) (*connect_go.Response[v1.ScanResponse], error)
+	Tag(context.Context, *connect_go.Request[v1.TagRequest]) (*connect_go.Response[v1.TagResponse], error)
 }
 
 // NewScanServiceClient constructs a client for the threedoclusion.v1.ScanService service. By
@@ -45,12 +46,18 @@ func NewScanServiceClient(httpClient connect_go.HTTPClient, baseURL string, opts
 			baseURL+"/threedoclusion.v1.ScanService/Scan",
 			opts...,
 		),
+		tag: connect_go.NewClient[v1.TagRequest, v1.TagResponse](
+			httpClient,
+			baseURL+"/threedoclusion.v1.ScanService/Tag",
+			opts...,
+		),
 	}
 }
 
 // scanServiceClient implements ScanServiceClient.
 type scanServiceClient struct {
 	scan *connect_go.Client[v1.ScanRequest, v1.ScanResponse]
+	tag  *connect_go.Client[v1.TagRequest, v1.TagResponse]
 }
 
 // Scan calls threedoclusion.v1.ScanService.Scan.
@@ -58,9 +65,15 @@ func (c *scanServiceClient) Scan(ctx context.Context, req *connect_go.Request[v1
 	return c.scan.CallUnary(ctx, req)
 }
 
+// Tag calls threedoclusion.v1.ScanService.Tag.
+func (c *scanServiceClient) Tag(ctx context.Context, req *connect_go.Request[v1.TagRequest]) (*connect_go.Response[v1.TagResponse], error) {
+	return c.tag.CallUnary(ctx, req)
+}
+
 // ScanServiceHandler is an implementation of the threedoclusion.v1.ScanService service.
 type ScanServiceHandler interface {
 	Scan(context.Context, *connect_go.Request[v1.ScanRequest]) (*connect_go.Response[v1.ScanResponse], error)
+	Tag(context.Context, *connect_go.Request[v1.TagRequest]) (*connect_go.Response[v1.TagResponse], error)
 }
 
 // NewScanServiceHandler builds an HTTP handler from the service implementation. It returns the path
@@ -75,6 +88,11 @@ func NewScanServiceHandler(svc ScanServiceHandler, opts ...connect_go.HandlerOpt
 		svc.Scan,
 		opts...,
 	))
+	mux.Handle("/threedoclusion.v1.ScanService/Tag", connect_go.NewUnaryHandler(
+		"/threedoclusion.v1.ScanService/Tag",
+		svc.Tag,
+		opts...,
+	))
 	return "/threedoclusion.v1.ScanService/", mux
 }
 
@@ -83,4 +101,8 @@ type UnimplementedScanServiceHandler struct{}
 
 func (UnimplementedScanServiceHandler) Scan(context.Context, *connect_go.Request[v1.ScanRequest]) (*connect_go.Response[v1.ScanResponse], error) {
 	return nil, connect_go.NewError(connect_go.CodeUnimplemented, errors.New("threedoclusion.v1.ScanService.Scan is not implemented"))
+}
+
+func (UnimplementedScanServiceHandler) Tag(context.Context, *connect_go.Request[v1.TagRequest]) (*connect_go.Response[v1.TagResponse], error) {
+	return nil, connect_go.NewError(connect_go.CodeUnimplemented, errors.New("threedoclusion.v1.ScanService.Tag is not implemented"))
 }
