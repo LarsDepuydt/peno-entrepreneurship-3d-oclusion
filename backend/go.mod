@@ -7,6 +7,9 @@ require (
 	golang.org/x/net v0.7.0
 	golang.org/x/text v0.7.0 // indirect
 	google.golang.org/protobuf v1.28.1
+	
 )
 
 require github.com/rs/cors v1.8.3
+require github.com/lib/pq v1.10.7
+
