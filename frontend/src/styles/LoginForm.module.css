@@ -1,0 +1,14 @@
+module 
+
+.login_box {
+    width: 340px;
+
+    background-color: #fff;
+}
+
+.small_logo {
+    width: auto;
+    text-align: center;
+    margin-bottom: 50px;
+    
+}

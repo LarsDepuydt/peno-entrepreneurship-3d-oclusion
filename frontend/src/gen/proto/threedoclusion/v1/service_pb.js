@@ -25,3 +25,25 @@ export const ScanResponse = proto3.makeMessageType(
   ],
 );
 
+/**
+ * @generated from message threedoclusion.v1.TagRequest
+ */
+export const TagRequest = proto3.makeMessageType(
+  "threedoclusion.v1.TagRequest",
+  () => [
+    { no: 1, name: "id", kind: "scalar", T: 9 /* ScalarType.STRING */ },
+  ],
+);
+
+/**
+ * @generated from message threedoclusion.v1.TagResponse
+ */
+export const TagResponse = proto3.makeMessageType(
+  "threedoclusion.v1.TagResponse",
+  () => [
+    { no: 1, name: "id", kind: "scalar", T: 9 /* ScalarType.STRING */ },
+    { no: 2, name: "color", kind: "scalar", T: 9 /* ScalarType.STRING */ },
+    { no: 3, name: "text", kind: "scalar", T: 9 /* ScalarType.STRING */ },
+  ],
+);
+
