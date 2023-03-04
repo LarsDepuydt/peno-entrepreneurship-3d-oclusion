@@ -2,7 +2,6 @@ import React, { useState } from "react"
 import { Formik, Field, Form} from 'formik';
 
 import styles from '@/styles/Modal.module.css'
-import ModalContent from './modal-content'
 import styleL from '@/styles/LoginForm.module.css'
 
 
@@ -15,6 +14,10 @@ interface patientValues {
 
 
 export default function ModalForm() {
+
+  const handleSubmit = (e: { preventDefault: () => void; }) => {
+    e.preventDefault();
+    console.log("button clicked"); }
 
     const [modal, setModal] = useState(false);
     // modal is not toggled at first
@@ -51,8 +54,8 @@ export default function ModalForm() {
                 
                 // onSubmit={() => {console.log(Values)}}
                 onSubmit={(values) => {
-                    
                     console.log(values)
+                    toggleModal
                     
                 }}
               >
@@ -65,19 +68,17 @@ export default function ModalForm() {
                     <Field className="form-control" id="patientLastName" name="patientLastName" placeholder="Last Name" />
                   </div>
 
-        
-                  {/* <div className="mb-3">
-                    <Field className="form-control" id="patientLastName" name="patientLastName" placeholder="Last Name" />
-                  </div> */}
 
                   <div className="mb-3">
                     <Field className="form-control" id="patientID" name="patientID" placeholder="Patient ID" type="patientID" />
                   </div>
       
-                  <button onClick={toggleModal} type="submit" className= "btn btn-primary btn-large" >Add patient</button>
+                  <button onSubmit={(values) => {console.log(values), toggleModal}} type="submit" className= "btn btn-primary btn-large" >Add patient</button>
 
                 </Form>
               </Formik>
+
+              {/* <button onClick={toggleModal} onSubmit={(values) => {console.log(values)}} type="button" className= "btn btn-primary btn-large" >Add patient</button> */}
             </div>
 
 

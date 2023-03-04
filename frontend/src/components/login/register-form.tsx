@@ -13,6 +13,7 @@ import reluLogo from "../../../public/relu-logo-small.png";
 interface Values {
     username: string;
     password: string;
+    reppassword: string;
 }
 
 export default function LoginForm() {   
@@ -30,6 +31,7 @@ export default function LoginForm() {
           initialValues={{
             username: '',
             password: '',
+            reppassword: '',
           }}
 
           onSubmit={() => {router.push('/patient-page')}}
@@ -45,7 +47,11 @@ export default function LoginForm() {
               <Field className="form-control" id="password" name="password" placeholder="Password" type="password" />
             </div>
 
-            <button type="submit" className= "btn btn-primary btn-large" >Login</button>
+            <div className="mb-3">
+              <Field className="form-control" id="reppassword" name="reppassword" placeholder="Repeat Password" type="password" />
+            </div>
+
+            <button type="submit" className= "btn btn-primary btn-large" >Register</button>
           </Form>
         </Formik>
       </div>

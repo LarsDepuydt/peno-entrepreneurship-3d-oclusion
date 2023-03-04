@@ -4,6 +4,7 @@ import { Inter } from '@next/font/google'
 import styles from '@/styles/Home.module.css'
 
 import LoginForm from '../components/login/login-form'
+import RegForm from '../components/login/register-form'
 
 
 const inter = Inter({ subsets: ['latin'] })
@@ -19,6 +20,7 @@ export default function Home() {
       </Head>
       <main className="vh-100 d-flex justify-content-center align-items-center">
         <LoginForm/>
+        {/* <RegForm/> */}
       </main>
     </>
   )
