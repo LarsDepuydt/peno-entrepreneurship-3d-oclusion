@@ -6,7 +6,7 @@
 import { proto3 } from "@bufbuild/protobuf";
 
 /**
- * add tag 
+ * TAGS
  *
  * @generated from message threedoclusion.v1.AddTagRequest
  */
@@ -29,8 +29,6 @@ export const AddTagResponse = proto3.makeMessageType(
 );
 
 /**
- * remove tag 
- *
  * @generated from message threedoclusion.v1.DeleteTagRequest
  */
 export const DeleteTagRequest = proto3.makeMessageType(
@@ -51,6 +49,68 @@ export const DeleteTagResponse = proto3.makeMessageType(
 );
 
 /**
+ * @generated from message threedoclusion.v1.GetAllTagsRequest
+ */
+export const GetAllTagsRequest = proto3.makeMessageType(
+  "threedoclusion.v1.GetAllTagsRequest",
+  () => [
+    { no: 1, name: "table_name", kind: "scalar", T: 9 /* ScalarType.STRING */ },
+  ],
+);
+
+/**
+ * @generated from message threedoclusion.v1.GetAllTagsResponse
+ */
+export const GetAllTagsResponse = proto3.makeMessageType(
+  "threedoclusion.v1.GetAllTagsResponse",
+  () => [
+    { no: 1, name: "message", kind: "scalar", T: 9 /* ScalarType.STRING */ },
+  ],
+);
+
+/**
+ * @generated from message threedoclusion.v1.GetTagByIDRequest
+ */
+export const GetTagByIDRequest = proto3.makeMessageType(
+  "threedoclusion.v1.GetTagByIDRequest",
+  () => [
+    { no: 1, name: "id", kind: "scalar", T: 9 /* ScalarType.STRING */ },
+  ],
+);
+
+/**
+ * @generated from message threedoclusion.v1.GetTagByIDResponse
+ */
+export const GetTagByIDResponse = proto3.makeMessageType(
+  "threedoclusion.v1.GetTagByIDResponse",
+  () => [
+    { no: 1, name: "message", kind: "scalar", T: 9 /* ScalarType.STRING */ },
+  ],
+);
+
+/**
+ * @generated from message threedoclusion.v1.GetAllTagsByTypeRequest
+ */
+export const GetAllTagsByTypeRequest = proto3.makeMessageType(
+  "threedoclusion.v1.GetAllTagsByTypeRequest",
+  () => [
+    { no: 1, name: "type", kind: "scalar", T: 9 /* ScalarType.STRING */ },
+  ],
+);
+
+/**
+ * @generated from message threedoclusion.v1.GetAllTagsByTypeResponse
+ */
+export const GetAllTagsByTypeResponse = proto3.makeMessageType(
+  "threedoclusion.v1.GetAllTagsByTypeResponse",
+  () => [
+    { no: 1, name: "message", kind: "scalar", T: 9 /* ScalarType.STRING */ },
+  ],
+);
+
+/**
+ * SCANS
+ *
  * @generated from message threedoclusion.v1.AddScanRequest
  */
 export const AddScanRequest = proto3.makeMessageType(
@@ -87,6 +147,66 @@ export const DeleteScanRequest = proto3.makeMessageType(
  */
 export const DeleteScanResponse = proto3.makeMessageType(
   "threedoclusion.v1.DeleteScanResponse",
+  () => [
+    { no: 1, name: "message", kind: "scalar", T: 9 /* ScalarType.STRING */ },
+  ],
+);
+
+/**
+ * @generated from message threedoclusion.v1.GetAllScansRequest
+ */
+export const GetAllScansRequest = proto3.makeMessageType(
+  "threedoclusion.v1.GetAllScansRequest",
+  () => [
+    { no: 1, name: "message", kind: "scalar", T: 9 /* ScalarType.STRING */ },
+  ],
+);
+
+/**
+ * @generated from message threedoclusion.v1.GetAllScansResponse
+ */
+export const GetAllScansResponse = proto3.makeMessageType(
+  "threedoclusion.v1.GetAllScansResponse",
+  () => [
+    { no: 1, name: "message", kind: "scalar", T: 9 /* ScalarType.STRING */ },
+  ],
+);
+
+/**
+ * @generated from message threedoclusion.v1.GetScanByIDRequest
+ */
+export const GetScanByIDRequest = proto3.makeMessageType(
+  "threedoclusion.v1.GetScanByIDRequest",
+  () => [
+    { no: 1, name: "id", kind: "scalar", T: 9 /* ScalarType.STRING */ },
+  ],
+);
+
+/**
+ * @generated from message threedoclusion.v1.GetScanByIDResponse
+ */
+export const GetScanByIDResponse = proto3.makeMessageType(
+  "threedoclusion.v1.GetScanByIDResponse",
+  () => [
+    { no: 1, name: "message", kind: "scalar", T: 9 /* ScalarType.STRING */ },
+  ],
+);
+
+/**
+ * @generated from message threedoclusion.v1.GetScanByDateRequest
+ */
+export const GetScanByDateRequest = proto3.makeMessageType(
+  "threedoclusion.v1.GetScanByDateRequest",
+  () => [
+    { no: 1, name: "date", kind: "scalar", T: 9 /* ScalarType.STRING */ },
+  ],
+);
+
+/**
+ * @generated from message threedoclusion.v1.GetScanByDateResponse
+ */
+export const GetScanByDateResponse = proto3.makeMessageType(
+  "threedoclusion.v1.GetScanByDateResponse",
   () => [
     { no: 1, name: "message", kind: "scalar", T: 9 /* ScalarType.STRING */ },
   ],

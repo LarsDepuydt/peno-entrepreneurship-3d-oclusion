@@ -45,6 +45,7 @@ func Server() {
 	)
 }
 
+// SCANS
 func (s *ServerStruct) AddScan(
 	ctx context.Context,
 	req *connect.Request[threedoclusionv1.AddScanRequest],
@@ -56,9 +57,31 @@ func (s *ServerStruct) DeleteScan(
 	ctx context.Context,
 	req *connect.Request[threedoclusionv1.DeleteScanRequest],
 ) (*connect.Response[threedoclusionv1.DeleteScanResponse], error) {
-	return tags.GetTagById(req)
+	return scans.DeleteScan(req)
 }
 
+func (s *ServerStruct) GetAllScans(
+	ctx context.Context,
+	req *connect.Request[threedoclusionv1.GetAllScansRequest],
+) (*connect.Response[threedoclusionv1.GetAllScansResponse], error) {
+	return scans.GetAllScans(req)
+}
+
+func (s *ServerStruct) GetScanById(
+	ctx context.Context,
+	req *connect.Request[threedoclusionv1.GetScanByIDRequest],
+) (*connect.Response[threedoclusionv1.GetScanByIDResponse], error) {
+	return scans.GetScanById(req)
+}
+
+func (s *ServerStruct) GetScanByDate(
+	ctx context.Context,
+	req *connect.Request[threedoclusionv1.GetScanByDateRequest],
+) (*connect.Response[threedoclusionv1.GetScanByDateResponse], error) {
+	return scans.GetScanByDate(req)
+}
+
+// TAGS
 func (s *ServerStruct) AddTag(
 	ctx context.Context,
 	req *connect.Request[threedoclusionv1.AddTagRequest],
@@ -71,4 +94,25 @@ func (s *ServerStruct) DeleteTag(
 	req *connect.Request[threedoclusionv1.DeleteTagRequest],
 ) (*connect.Response[threedoclusionv1.DeleteTagResponse], error) {
 	return tags.DeleteTag(req)
+}
+
+func (s *ServerStruct) GetAllTags(
+	ctx context.Context,
+	req *connect.Request[threedoclusionv1.GetAllTagsRequest],
+) (*connect.Response[threedoclusionv1.GetAllTagsResponse], error) {
+	return tags.GetAllTags(req)
+}
+
+func (s *ServerStruct) GetTagById(
+	ctx context.Context,
+	req *connect.Request[threedoclusionv1.GetTagByIDRequest],
+) (*connect.Response[threedoclusionv1.GetTagByIDResponse], error) {
+	return tags.GetTagById(req)
+}
+
+func (s *ServerStruct) GetAllTagsByType(
+	ctx context.Context,
+	req *connect.Request[threedoclusionv1.GetAllTagsByTypeRequest],
+) (*connect.Response[threedoclusionv1.GetAllTagsByTypeResponse], error) {
+	return tags.GetAllTagsByType(req)
 }

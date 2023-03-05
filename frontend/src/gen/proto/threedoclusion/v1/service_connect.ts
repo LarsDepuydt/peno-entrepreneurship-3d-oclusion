@@ -3,7 +3,7 @@
 /* eslint-disable */
 // @ts-nocheck
 
-import { AddScanRequest, AddScanResponse, AddTagRequest, AddTagResponse, DeleteScanRequest, DeleteScanResponse, DeleteTagRequest, DeleteTagResponse } from "./service_pb.js";
+import { AddScanRequest, AddScanResponse, AddTagRequest, AddTagResponse, DeleteScanRequest, DeleteScanResponse, DeleteTagRequest, DeleteTagResponse, GetAllScansRequest, GetAllScansResponse, GetAllTagsByTypeRequest, GetAllTagsByTypeResponse, GetAllTagsRequest, GetAllTagsResponse, GetScanByDateRequest, GetScanByDateResponse, GetScanByIDRequest, GetScanByIDResponse, GetTagByIDRequest, GetTagByIDResponse } from "./service_pb.js";
 import { MethodKind } from "@bufbuild/protobuf";
 
 /**
@@ -31,6 +31,33 @@ export const ScanService = {
       kind: MethodKind.Unary,
     },
     /**
+     * @generated from rpc threedoclusion.v1.ScanService.GetAllScans
+     */
+    getAllScans: {
+      name: "GetAllScans",
+      I: GetAllScansRequest,
+      O: GetAllScansResponse,
+      kind: MethodKind.Unary,
+    },
+    /**
+     * @generated from rpc threedoclusion.v1.ScanService.GetScanByID
+     */
+    getScanByID: {
+      name: "GetScanByID",
+      I: GetScanByIDRequest,
+      O: GetScanByIDResponse,
+      kind: MethodKind.Unary,
+    },
+    /**
+     * @generated from rpc threedoclusion.v1.ScanService.GetScanByDate
+     */
+    getScanByDate: {
+      name: "GetScanByDate",
+      I: GetScanByDateRequest,
+      O: GetScanByDateResponse,
+      kind: MethodKind.Unary,
+    },
+    /**
      * @generated from rpc threedoclusion.v1.ScanService.AddTag
      */
     addTag: {
@@ -46,6 +73,33 @@ export const ScanService = {
       name: "DeleteTag",
       I: DeleteTagRequest,
       O: DeleteTagResponse,
+      kind: MethodKind.Unary,
+    },
+    /**
+     * @generated from rpc threedoclusion.v1.ScanService.GetAllTags
+     */
+    getAllTags: {
+      name: "GetAllTags",
+      I: GetAllTagsRequest,
+      O: GetAllTagsResponse,
+      kind: MethodKind.Unary,
+    },
+    /**
+     * @generated from rpc threedoclusion.v1.ScanService.GetTagByID
+     */
+    getTagByID: {
+      name: "GetTagByID",
+      I: GetTagByIDRequest,
+      O: GetTagByIDResponse,
+      kind: MethodKind.Unary,
+    },
+    /**
+     * @generated from rpc threedoclusion.v1.ScanService.GetAllTagsByType
+     */
+    getAllTagsByType: {
+      name: "GetAllTagsByType",
+      I: GetAllTagsByTypeRequest,
+      O: GetAllTagsByTypeResponse,
       kind: MethodKind.Unary,
     },
   }
