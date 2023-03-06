@@ -1,3 +1,5 @@
+module
+
 
 .login_box {
     width: 340px;
@@ -11,3 +13,14 @@
     margin-bottom: 50px;
     
 }
+
+.redirect {
+    display: flex;
+    column-gap: 20px;
+    justify-content: space-between;
+    
+}
+
+.btn {
+    background-color: orange;
+  }

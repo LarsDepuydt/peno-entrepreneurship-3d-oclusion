@@ -4,13 +4,12 @@ import { Formik, Field, Form} from 'formik';
 import styles from '@/styles/Modal.module.css'
 import styleL from '@/styles/LoginForm.module.css'
 
-import 'bootstrap/dist/css/bootstrap.css'
 
+// no formik; how to add files + tags? with button (onClick) + css?
 
 interface patientValues {
-    patientFirstName: string;
-    patientLastName: string;
-    patientID: string;
+    scanName: string;
+    scanTags: string;
     //images: array[]
 }
 
@@ -34,7 +33,7 @@ export default function ModalForm() {
     <button 
     onClick={toggleModal}
     className={styles.btn_modal}>
-        Add Patient
+        Add Scan
     </button>
 
     {/* short circuit operator */}
@@ -47,9 +46,8 @@ export default function ModalForm() {
               
               <Formik
                 initialValues={{
-                  patientFirstName: '',
-                  patientLastName: '',
-                  patientID: '',
+                  scanName: '',
+                  scanTags: '',
                 }}
                 
 
@@ -63,19 +61,14 @@ export default function ModalForm() {
               >
                 <Form>
                   <div className="mb-3">
-                    <Field className="form-control" id="patientFirstName" name="patientFirstName" placeholder="First Name" />
+                    <Field className="form-control" id="scanName" name="scanName" placeholder="Scan Name" />
                   </div>
 
                   <div className="mb-3">
-                    <Field className="form-control" id="patientLastName" name="patientLastName" placeholder="Last Name" />
-                  </div>
-
-
-                  <div className="mb-3">
-                    <Field className="form-control" id="patientID" name="patientID" placeholder="Patient ID" type="patientID" />
+                    <Field className="form-control" id="scanTags" name="scanTags" placeholder="Scan Tags" />
                   </div>
       
-                  <button type="submit" className= "btn btn-primary btn-large" >Save patient</button>
+                  <button type="submit" className= "btn btn-primary btn-large" >Save scans</button>
 
                 </Form>
               </Formik>

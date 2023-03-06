@@ -21,6 +21,10 @@ export default function LoginForm() {
 
     const router = useRouter();
 
+    const toLogin = () => {
+      router.push('/login-page')    
+  }
+
     return (
       <div className={styles.login_box + ' p-3'}>
         <Image className={styles.small_logo} src={reluLogo} alt="relu logo"/>
@@ -51,9 +55,14 @@ export default function LoginForm() {
               <Field className="form-control" id="reppassword" name="reppassword" placeholder="Repeat Password" type="password" />
             </div>
 
+            <div className ={styles.redirect}>
             <button type="submit" className= "btn btn-primary btn-large" >Register</button>
+            <button type="button" className= "btn btn-primary btn-large" onClick={toLogin} >Login instead</button>
+            </div>
           </Form>
         </Formik>
+
+      
       </div>
     );
   };

@@ -4,6 +4,7 @@ import { Formik, Field, Form} from 'formik';
 import { useRouter } from 'next/router';
 import Image from 'next/image'
 import styles from '@/styles/LoginForm.module.css'
+import 'bootstrap/dist/css/bootstrap.css'
 
 
 import reluLogo from "../../../public/relu-logo-small.png";
@@ -19,6 +20,10 @@ export default function LoginForm() {
 
 
     const router = useRouter();
+
+    const toRegister = () => {
+      router.push('/register-page')     
+  }
 
     return (
       <div className={styles.login_box + ' p-3'}>
@@ -44,10 +49,16 @@ export default function LoginForm() {
             <div className="mb-3">
               <Field className="form-control" id="password" name="password" placeholder="Password" type="password" />
             </div>
-
-            <button type="submit" className= "btn btn-primary btn-large" >Login</button>
+            
+            <div className ={styles.redirect}>
+            <button type="submit" className="btn btn-primary btn-large" >Login</button>
+            <button type="button" className= "btn btn-primary btn-large" onClick={toRegister} >Register instead</button>
+            {/* [bootstrap.btn, btn-primary, btn-large].join(" ") */}
+            </div>
           </Form>
         </Formik>
+
+
       </div>
     );
   };
