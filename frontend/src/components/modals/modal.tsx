@@ -52,10 +52,10 @@ export default function ModalForm() {
                 
 
                 
-                // onSubmit={() => {console.log(Values)}}
+                // on Submit we console the values + close the popup tab
                 onSubmit={(values) => {
                     console.log(values)
-                    toggleModal
+                    setModal(!modal)
                     
                 }}
               >
@@ -73,18 +73,14 @@ export default function ModalForm() {
                     <Field className="form-control" id="patientID" name="patientID" placeholder="Patient ID" type="patientID" />
                   </div>
       
-                  <button onSubmit={(values) => {console.log(values), toggleModal}} type="submit" className= "btn btn-primary btn-large" >Add patient</button>
+                  <button type="submit" className= "btn btn-primary btn-large" >Save patient</button>
 
                 </Form>
               </Formik>
 
-              {/* <button onClick={toggleModal} onSubmit={(values) => {console.log(values)}} type="button" className= "btn btn-primary btn-large" >Add patient</button> */}
+              {/* <button onSubmit={(values) => {console.log(values); toggleModal}} type="submit" className= "btn btn-primary btn-large" >Save patient</button> */}
             </div>
-
-
-            {/* <button 
-             className={styles.close_modal}> 
-            add patient </button> */}
+            
         </div>
         
     </div>
