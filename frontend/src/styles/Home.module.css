@@ -1,3 +1,5 @@
+@import '~react-image-gallery/styles/css/image-gallery.css';
+
 .main {
   display: flex;
   flex-direction: column;
