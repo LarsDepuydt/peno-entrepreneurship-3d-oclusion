@@ -4,6 +4,7 @@ package threedoclusion.v1;
 
 option go_package = "github.com/LarsDepuydt/peno-entrepreneurship-3d-oclusie";
 
+
 service ScanService {
   rpc AddScan(AddScanRequest) returns (AddScanResponse) {}
   rpc DeleteScan(DeleteScanRequest) returns (DeleteScanResponse) {}
@@ -24,7 +25,7 @@ service ScanService {
 
 // TAGS
 message AddTagRequest {
-  string id = 1;
+  int64 id = 1;
   string bite = 2;
 }
 
@@ -33,7 +34,7 @@ message AddTagResponse {
 }
 
 message DeleteTagRequest {
-  string id = 1;
+  int64 id = 1;
 }
 
 message DeleteTagResponse {
@@ -46,14 +47,18 @@ message GetAllTagsRequest {
 
 message GetAllTagsResponse {
   string message = 1;
+  repeated int64 id_data = 2;
+  repeated string bite_data = 3;
 }
 
 message GetTagByIDRequest {
-  string id = 1;
+  int64 id = 1;
 }
 
 message GetTagByIDResponse {
   string message = 1;
+  int64 id = 2;
+  string bite = 3;
 }
 
 message GetAllTagsByTypeRequest {
@@ -62,12 +67,14 @@ message GetAllTagsByTypeRequest {
 
 message GetAllTagsByTypeResponse {
   string message = 1;
+  string bite = 2;
+  repeated int64 id_data = 3;
 }
 
 
 // SCANS
 message AddScanRequest {
-  string id = 1;
+  int64 id = 1;
   string scan_file = 2;
   string scan_date = 3;
 
@@ -78,7 +85,7 @@ message AddScanResponse {
 }
 
 message DeleteScanRequest{
-  string id = 1;
+  int64 id = 1;
 }
 
 message DeleteScanResponse {
@@ -92,15 +99,20 @@ message GetAllScansRequest {
 
 message GetAllScansResponse {
   string message = 1;
-
+  repeated int64 id_data =  2;
+  repeated string scan_data = 3;
+  repeated string scan_dates = 4;
 }
 
 message GetScanByIDRequest {
-  string id = 1;
+  int64 id = 1;
 }
 
 message GetScanByIDResponse {
   string message = 1;
+  int64 id =  2;
+  string scan_data = 3;
+  string scan_date = 4;
 }
 
 message GetScanByDateRequest {
@@ -109,5 +121,8 @@ message GetScanByDateRequest {
 
 message GetScanByDateResponse {
   string message = 1 ;
+  repeated int64 id_data =  2;
+  repeated string scan_data = 3;
+  repeated string scan_dates = 4;
 }
 

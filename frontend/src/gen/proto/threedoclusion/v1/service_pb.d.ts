@@ -13,9 +13,9 @@ import { Message, proto3 } from "@bufbuild/protobuf";
  */
 export declare class AddTagRequest extends Message<AddTagRequest> {
   /**
-   * @generated from field: string id = 1;
+   * @generated from field: int64 id = 1;
    */
-  id: string;
+  id: bigint;
 
   /**
    * @generated from field: string bite = 2;
@@ -66,9 +66,9 @@ export declare class AddTagResponse extends Message<AddTagResponse> {
  */
 export declare class DeleteTagRequest extends Message<DeleteTagRequest> {
   /**
-   * @generated from field: string id = 1;
+   * @generated from field: int64 id = 1;
    */
-  id: string;
+  id: bigint;
 
   constructor(data?: PartialMessage<DeleteTagRequest>);
 
@@ -142,6 +142,16 @@ export declare class GetAllTagsResponse extends Message<GetAllTagsResponse> {
    */
   message: string;
 
+  /**
+   * @generated from field: repeated int64 id_data = 2;
+   */
+  idData: bigint[];
+
+  /**
+   * @generated from field: repeated string bite_data = 3;
+   */
+  biteData: string[];
+
   constructor(data?: PartialMessage<GetAllTagsResponse>);
 
   static readonly runtime: typeof proto3;
@@ -162,9 +172,9 @@ export declare class GetAllTagsResponse extends Message<GetAllTagsResponse> {
  */
 export declare class GetTagByIDRequest extends Message<GetTagByIDRequest> {
   /**
-   * @generated from field: string id = 1;
+   * @generated from field: int64 id = 1;
    */
-  id: string;
+  id: bigint;
 
   constructor(data?: PartialMessage<GetTagByIDRequest>);
 
@@ -189,6 +199,16 @@ export declare class GetTagByIDResponse extends Message<GetTagByIDResponse> {
    * @generated from field: string message = 1;
    */
   message: string;
+
+  /**
+   * @generated from field: int64 id = 2;
+   */
+  id: bigint;
+
+  /**
+   * @generated from field: string bite = 3;
+   */
+  bite: string;
 
   constructor(data?: PartialMessage<GetTagByIDResponse>);
 
@@ -238,6 +258,16 @@ export declare class GetAllTagsByTypeResponse extends Message<GetAllTagsByTypeRe
    */
   message: string;
 
+  /**
+   * @generated from field: string bite = 2;
+   */
+  bite: string;
+
+  /**
+   * @generated from field: repeated int64 id_data = 3;
+   */
+  idData: bigint[];
+
   constructor(data?: PartialMessage<GetAllTagsByTypeResponse>);
 
   static readonly runtime: typeof proto3;
@@ -260,9 +290,9 @@ export declare class GetAllTagsByTypeResponse extends Message<GetAllTagsByTypeRe
  */
 export declare class AddScanRequest extends Message<AddScanRequest> {
   /**
-   * @generated from field: string id = 1;
+   * @generated from field: int64 id = 1;
    */
-  id: string;
+  id: bigint;
 
   /**
    * @generated from field: string scan_file = 2;
@@ -318,9 +348,9 @@ export declare class AddScanResponse extends Message<AddScanResponse> {
  */
 export declare class DeleteScanRequest extends Message<DeleteScanRequest> {
   /**
-   * @generated from field: string id = 1;
+   * @generated from field: int64 id = 1;
    */
-  id: string;
+  id: bigint;
 
   constructor(data?: PartialMessage<DeleteScanRequest>);
 
@@ -394,6 +424,21 @@ export declare class GetAllScansResponse extends Message<GetAllScansResponse> {
    */
   message: string;
 
+  /**
+   * @generated from field: repeated int64 id_data = 2;
+   */
+  idData: bigint[];
+
+  /**
+   * @generated from field: repeated string scan_data = 3;
+   */
+  scanData: string[];
+
+  /**
+   * @generated from field: repeated string scan_dates = 4;
+   */
+  scanDates: string[];
+
   constructor(data?: PartialMessage<GetAllScansResponse>);
 
   static readonly runtime: typeof proto3;
@@ -414,9 +459,9 @@ export declare class GetAllScansResponse extends Message<GetAllScansResponse> {
  */
 export declare class GetScanByIDRequest extends Message<GetScanByIDRequest> {
   /**
-   * @generated from field: string id = 1;
+   * @generated from field: int64 id = 1;
    */
-  id: string;
+  id: bigint;
 
   constructor(data?: PartialMessage<GetScanByIDRequest>);
 
@@ -441,6 +486,21 @@ export declare class GetScanByIDResponse extends Message<GetScanByIDResponse> {
    * @generated from field: string message = 1;
    */
   message: string;
+
+  /**
+   * @generated from field: int64 id = 2;
+   */
+  id: bigint;
+
+  /**
+   * @generated from field: string scan_data = 3;
+   */
+  scanData: string;
+
+  /**
+   * @generated from field: string scan_date = 4;
+   */
+  scanDate: string;
 
   constructor(data?: PartialMessage<GetScanByIDResponse>);
 
@@ -489,6 +549,21 @@ export declare class GetScanByDateResponse extends Message<GetScanByDateResponse
    * @generated from field: string message = 1;
    */
   message: string;
+
+  /**
+   * @generated from field: repeated int64 id_data = 2;
+   */
+  idData: bigint[];
+
+  /**
+   * @generated from field: repeated string scan_data = 3;
+   */
+  scanData: string[];
+
+  /**
+   * @generated from field: repeated string scan_dates = 4;
+   */
+  scanDates: string[];
 
   constructor(data?: PartialMessage<GetScanByDateResponse>);
 
