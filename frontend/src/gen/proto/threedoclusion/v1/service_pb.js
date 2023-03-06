@@ -158,7 +158,7 @@ export const DeleteScanResponse = proto3.makeMessageType(
 export const GetAllScansRequest = proto3.makeMessageType(
   "threedoclusion.v1.GetAllScansRequest",
   () => [
-    { no: 1, name: "message", kind: "scalar", T: 9 /* ScalarType.STRING */ },
+    { no: 1, name: "table_name", kind: "scalar", T: 9 /* ScalarType.STRING */ },
   ],
 );
 

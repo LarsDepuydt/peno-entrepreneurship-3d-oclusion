@@ -107,7 +107,7 @@ func GetAllTags(req *connect.Request[threedoclusionv1.GetAllTagsRequest]) (*conn
 	return res, nil
 }
 
-func GetTagById(req *connect.Request[threedoclusionv1.GetTagByIDRequest]) (*connect.Response[threedoclusionv1.GetTagByIDResponse], error) {
+func GetTagByID(req *connect.Request[threedoclusionv1.GetTagByIDRequest]) (*connect.Response[threedoclusionv1.GetTagByIDResponse], error) {
 	// Connect to the database
 	database, error := ConnectToDataBase()
 

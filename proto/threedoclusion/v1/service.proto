@@ -86,7 +86,7 @@ message DeleteScanResponse {
 }
 
 message GetAllScansRequest {
-  string message = 1;
+  string table_name = 1;
 
 }
 

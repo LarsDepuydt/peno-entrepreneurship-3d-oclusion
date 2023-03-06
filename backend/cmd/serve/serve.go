@@ -50,7 +50,7 @@ func (s *ServerStruct) AddScan(
 	ctx context.Context,
 	req *connect.Request[threedoclusionv1.AddScanRequest],
 ) (*connect.Response[threedoclusionv1.AddScanResponse], error) {
-	return scans.GetScanById(req)
+	return scans.AddScan(req)
 }
 
 func (s *ServerStruct) DeleteScan(
@@ -67,11 +67,11 @@ func (s *ServerStruct) GetAllScans(
 	return scans.GetAllScans(req)
 }
 
-func (s *ServerStruct) GetScanById(
+func (s *ServerStruct) GetScanByID(
 	ctx context.Context,
 	req *connect.Request[threedoclusionv1.GetScanByIDRequest],
 ) (*connect.Response[threedoclusionv1.GetScanByIDResponse], error) {
-	return scans.GetScanById(req)
+	return scans.GetScanByID(req)
 }
 
 func (s *ServerStruct) GetScanByDate(
@@ -103,11 +103,11 @@ func (s *ServerStruct) GetAllTags(
 	return tags.GetAllTags(req)
 }
 
-func (s *ServerStruct) GetTagById(
+func (s *ServerStruct) GetTagByID(
 	ctx context.Context,
 	req *connect.Request[threedoclusionv1.GetTagByIDRequest],
 ) (*connect.Response[threedoclusionv1.GetTagByIDResponse], error) {
-	return tags.GetTagById(req)
+	return tags.GetTagByID(req)
 }
 
 func (s *ServerStruct) GetAllTagsByType(

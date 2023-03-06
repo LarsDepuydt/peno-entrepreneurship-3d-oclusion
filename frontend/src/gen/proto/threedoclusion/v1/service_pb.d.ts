@@ -366,9 +366,9 @@ export declare class DeleteScanResponse extends Message<DeleteScanResponse> {
  */
 export declare class GetAllScansRequest extends Message<GetAllScansRequest> {
   /**
-   * @generated from field: string message = 1;
+   * @generated from field: string table_name = 1;
    */
-  message: string;
+  tableName: string;
 
   constructor(data?: PartialMessage<GetAllScansRequest>);
 
