@@ -63,7 +63,7 @@ func waitingStatusHandler(w http.ResponseWriter, r *http.Request, ch chan waitin
 		}{"DATA", response.Redirect, url}
 		conn.WriteJSON(jsonStruct)
 
-	case <-time.After(5 * time.Second): // Timeout after 30 sec
+	case <-time.After(30 * time.Second): // Timeout after 30 sec
 		eJSON := errorJson{"ERROR", "Timeout after 30 seconds"}
 		conn.WriteJSON(eJSON)
 	}
@@ -100,6 +100,7 @@ func clientRoutine(clientID int) {
 	})
 }
 
+/*
 func main() {
 	klanten := map[int]identify{ // Ids are used to identify the scan
 		325: {
@@ -135,3 +136,4 @@ func main() {
 	fmt.Println("Server listening on :8080")
 	http.ListenAndServe(":8080", nil)
 }
+*/

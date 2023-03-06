@@ -7,6 +7,9 @@ option go_package = "github.com/LarsDepuydt/peno-entrepreneurship-3d-oclusie";
 service ScanService {
   rpc Scan(ScanRequest) returns (ScanResponse) {}
   rpc Tag(TagRequest) returns (TagResponse) {}
+
+  rpc SendVR(SendToVRRequest) returns (SendToVRResponse) {}
+  rpc Waiting(WaitingRequest) returns (stream WaitingResponse) {}
 }
 
 message ScanRequest {
@@ -25,4 +28,22 @@ message TagResponse {
   string id = 1;
   string color = 2;
   string text = 3;
+}
+
+message SendToVRRequest {
+  int clientId = 1;
+  int scanId = 2;
+}
+
+message SendToVRResponse {
+  string feedback = 1;
+}
+
+message WaitingRequest {
+  int uniqueCode = 1;
+}
+
+message WaitingResponse {
+  bool redirect = 1;
+  string url = 2;
 }

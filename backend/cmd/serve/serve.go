@@ -8,6 +8,7 @@ import (
 	"github.com/LarsDepuydt/peno-entrepreneurship-3d-oclusie/cmd/tags"
 	threedoclusionv1 "github.com/LarsDepuydt/peno-entrepreneurship-3d-oclusie/gen/proto/threedoclusion/v1"
 	"github.com/LarsDepuydt/peno-entrepreneurship-3d-oclusie/gen/proto/threedoclusion/v1/threedoclusionv1connect"
+	"github.com/LarsDepuydt/peno-entrepreneurship-3d-oclusion/cmd/scans"
 	"github.com/bufbuild/connect-go"
 	"github.com/rs/cors"
 	"golang.org/x/net/http2"
@@ -19,10 +20,10 @@ type ServerStruct struct{}
 func setCors(mux http.Handler) http.Handler {
 	muxHandler := cors.Default().Handler(mux)
 	c := cors.New(cors.Options{
-		AllowedOrigins: []string{"*"},
+		AllowedOrigins:   []string{"*"},
 		AllowCredentials: true,
-		AllowedHeaders: []string{"Connect-Protocol-Version", "Content-Type"},
-		Debug: true, // Enable Debugging for testing, consider disabling in production
+		AllowedHeaders:   []string{"Connect-Protocol-Version", "Content-Type"},
+		Debug:            true, // Enable Debugging for testing, consider disabling in production
 	})
 	muxHandler = c.Handler(muxHandler)
 
@@ -31,7 +32,7 @@ func setCors(mux http.Handler) http.Handler {
 
 func Server() {
 	server := &ServerStruct{}
-	
+
 	mux := http.NewServeMux()
 	path, handler := threedoclusionv1connect.NewScanServiceHandler(server)
 	mux.Handle(path, handler)
@@ -59,3 +60,16 @@ func (s *ServerStruct) Tag(
 	return tags.GetTagById(req)
 }
 
+func (s *ServerStruct) SendVR(
+	ctx context.Context,
+	req *connect.Request[threedoclusionv1.SendToVRRequest],
+) (*connect.Response[threedoclusionv1.SendToVRResponse], error) {
+	return scans.SendToVR(req)
+}
+
+func (s *ServerStruct) Waiting(
+	ctx context.Context,
+	req *connect.Request[threedoclusionv1.waitingRequest],
+) (*connect.ServerStream[threedoclusionv1.waitingResponse], error) {
+	return scans.GetWaitingResponse(req)
+} // Server stream setup??
