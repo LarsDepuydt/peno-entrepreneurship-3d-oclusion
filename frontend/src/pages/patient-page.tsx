@@ -1,8 +1,14 @@
 import type { AppProps } from 'next/app'
 import 'bootstrap/dist/css/bootstrap.css'
 
-import Modal from '../components/modals/modal'
+import New_Patient from '../components/popups/new-patient'
+import Patient1 from '../components/image-button'
 
-export default function App({ Component, pageProps }: AppProps) {
-  return <Modal/>
+export default function PatientPage({ Component, pageProps }: AppProps) {
+  return (
+    <>
+    <Patient1/>
+    <New_Patient/>
+    </>
+  ) 
 }

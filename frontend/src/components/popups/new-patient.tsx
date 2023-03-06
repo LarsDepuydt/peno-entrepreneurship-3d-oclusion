@@ -15,9 +15,9 @@ interface patientValues {
 
 export default function ModalForm() {
 
-  const handleSubmit = (e: { preventDefault: () => void; }) => {
-    e.preventDefault();
-    console.log("button clicked"); }
+  // const handleSubmit = (e: { preventDefault: () => void; }) => {
+  //   e.preventDefault();
+  //   console.log("button clicked"); }
 
     const [modal, setModal] = useState(false);
     // modal is not toggled at first
