@@ -13,15 +13,11 @@ interface patientValues {
     
     pinned: boolean;
     notes: string;
-    //images: array[]
 }
 
 
 export default function ModalForm() {
 
-  // const handleSubmit = (e: { preventDefault: () => void; }) => {
-  //   e.preventDefault();
-  //   console.log("button clicked"); }
 
     const [modal, setModal] = useState(false);
     // modal is not toggled at first
@@ -31,20 +27,13 @@ export default function ModalForm() {
         setModal(!modal)    // change state f -> t and t -> f
     }
 
-  //   const togglePinned = () => {
-  //     setModal(!pinned)    // change state f -> t and t -> f
-  // }
 
     return (
         <>
 
-    <button 
-    onClick={toggleModal}
-    className={styles.btn_modal}>
-        Add Patient
-    </button>
-
-    {/* short circuit operator */}
+    <button onClick={toggleModal} className={styles.btn_modal}>Add Patient</button>
+    {/* translation files bekijken */}
+  
     {modal && (
         <div className={styles.modal}>
         <div className={styles.overlay}></div>
@@ -105,7 +94,6 @@ export default function ModalForm() {
                 )}
               </Formik>
 
-              {/* <button onSubmit={(values) => {console.log(values); toggleModal}} type="submit" className= "btn btn-primary btn-large" >Save patient</button> */}
             </div>
             
         </div>

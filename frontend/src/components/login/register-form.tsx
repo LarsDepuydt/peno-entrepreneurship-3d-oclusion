@@ -29,9 +29,7 @@ export default function LoginForm() {
 
     const router = useRouter();
 
-    const toLogin = () => {
-      router.push('/login-page')    
-  }
+    const toLogin = () => router.push('/login-page')    
 
     return (
       <div className={styles.login_box + ' p-3'}>
@@ -49,7 +47,7 @@ export default function LoginForm() {
 
           validationSchema={FormSchema}
 
-          onSubmit={() => {router.push('/patient-page')}}
+          onSubmit={() => {router.push('/patient')}}
 
       
         >

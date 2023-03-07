@@ -18,7 +18,7 @@ export default function ImageButton() {
     <div onClick={clickPatient}>
     <Image className={styles.patient_picture} src={teeth3d} alt="3d picture of teeth" width={100}/>
     </div>
-    <p>click on the image :)</p>
+    <p>Click on the image :)</p>
     </div>
     </> )
   }

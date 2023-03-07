@@ -5,21 +5,17 @@ import styles from '@/styles/Modal.module.css'
 import styleL from '@/styles/LoginForm.module.css'
 
 
-// no formik; how to add files + tags? with button (onClick) + css?
-
-
+// TODO add files + tags
 
 interface scanValues {
   scanID: string;
-
-
 }
 
 
 export default function ModalForm() {
 
     const [modal, setModal] = useState(false);
-    // modal is not toggled at first
+    // modal is not open at first
 
     const date = new Date();
       let day = date.getDate();
@@ -27,9 +23,7 @@ export default function ModalForm() {
       let year = date.getFullYear();
     let currentDate = `${month}-${day}-${year}`;
 
-    const toggleModal = () => {
-        setModal(!modal)    // change state f -> t and t -> f
-    }
+    const toggleModal = () => setModal(!modal)    // change state f -> t and t -> f
 
     return (
         <>
@@ -40,7 +34,6 @@ export default function ModalForm() {
         Add Scan
     </button>
 
-    {/* short circuit operator */}
     {modal && (
         <div className={styles.modal}>
         <div className={styles.overlay}></div>
@@ -52,7 +45,7 @@ export default function ModalForm() {
                 initialValues={{
                   scanID: '',
 
-                  //scanTags: '',
+
                 }}
                 
 
@@ -78,7 +71,6 @@ export default function ModalForm() {
                 </Form>
               </Formik>
 
-              {/* <button onSubmit={(values) => {console.log(values); toggleModal}} type="submit" className= "btn btn-primary btn-large" >Save patient</button> */}
             </div>
             
         </div>

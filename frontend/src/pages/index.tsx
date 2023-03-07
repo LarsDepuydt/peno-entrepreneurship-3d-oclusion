@@ -5,10 +5,6 @@ import styles from '@/styles/Home.module.css'
 
 import LoginPage from './login-page'
 
-// import "../styles/globals.css";
-// import type { AppProps } from "next/app";
-
-
 const inter = Inter({ subsets: ['latin'] })
 
 export default function Home() {

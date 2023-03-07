@@ -21,9 +21,7 @@ export default function LoginForm() {
 
     const router = useRouter();
 
-    const toRegister = () => {
-      router.push('/register-page')     
-  }
+    const toRegister = () => router.push('/register-page');
 
     return (
       <div className={styles.login_box + ' p-3'}>
@@ -37,7 +35,7 @@ export default function LoginForm() {
             password: '',
           }}
 
-          onSubmit={() => {router.push('/patient-page')}}
+          onSubmit={() => {router.push('/patient')}}
 
       
         >
@@ -53,7 +51,6 @@ export default function LoginForm() {
             <div className ={styles.loginbtn}>
             <button type="submit" className="btn btn-primary btn-large" >Login</button>
             <button type="button" className= "btn btn-primary btn-large" onClick={toRegister} >Register instead</button>
-            {/* [bootstrap.btn, btn-primary, btn-large].join(" ") */}
             </div>
           </Form>
         </Formik>

@@ -5,9 +5,6 @@ import styles from '@/styles/Home.module.css'
 
 import LoginForm from '../components/login/login-form'
 
-// import "../styles/globals.css";
-// import type { AppProps } from "next/app";
-
 
 const inter = Inter({ subsets: ['latin'] })
 
