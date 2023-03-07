@@ -27,6 +27,7 @@ let uj_group, uj_mesh, uj_shape, uj_body;
 
 let lj_loaded = false, uj_loaded = false;
 
+
 initCannon();
 initThree();
 
@@ -380,9 +381,14 @@ function updatePhysics() {
     // Step the physics world
     world.step(timeStep);
 
+    console.log("Cannon: ", lj_body.position);
+    console.log("Three: ", lj_mesh.position);
+
     // Copy coordinates from Cannon.js to Three.js
     lj_mesh.position.copy(lj_body.position);
     lj_mesh.quaternion.copy(lj_body.quaternion);
+    uj_mesh.position.copy(uj_body.position);
+    uj_mesh.quaternion.copy(uj_body.quaternion);
 }
 
 
