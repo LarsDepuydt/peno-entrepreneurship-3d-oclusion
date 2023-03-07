@@ -12,11 +12,11 @@ let camera, scene, renderer;
 let controller1, controller2;
 let controllerGrip1, controllerGrip2;
 
-let controls, group;
+let controls;
 
 let raycaster;
 
-let world, timeStep=1/60;
+let world, timeStep=1/10;
 
 
 let meshes = [], bodies = [];
@@ -28,6 +28,7 @@ let floor_shape, floor_body;
 // lj_body is een CANNON.Body
 let lj_group, lj_mesh, lj_shape, lj_body;
 let uj_group, uj_mesh, uj_shape, uj_body;
+let lj_sphere, uj_sphere;
 
 let lj_loaded = false, uj_loaded = false;
 
@@ -39,29 +40,33 @@ loadObjects();  // animation is started after both objects are loaded
 
 function initCannon() {
     world = new CANNON.World();
-    world.gravity.set(0,0,-10);
+    world.gravity.set(0,0,0);
     world.broadphase = new CANNON.NaiveBroadphase();
     world.solver.iterations = 10;
 
     lj_body = new CANNON.Body({mass: 1});
     uj_body = new CANNON.Body({mass: 1});
-    lj_body.position.set(0,0,200);
-    uj_body.position.set(0,0,200);
+    lj_body.position.set(0,0,2);
+    uj_body.position.set(0,0,1);
     lj_body.quaternion = new CANNON.Quaternion(0, 0, 0, 1);
     uj_body.quaternion = new CANNON.Quaternion(0, 0, 0, 1);
     world.addBody(lj_body);
     world.addBody(uj_body);
     bodies.push(lj_body);
     bodies.push(uj_body);
+    lj_body.addEventListener("collide", function(e) {
+        console.log("lj collided with body ", e.body);
+    })
 
     let collideConstraint;
-    //collideConstraint = new CANNON.Constraint(lj_body, uj_body, collideConnected=)
+    // collideConstraint = new CANNON.Constraint(lj_body, uj_body);
+    // world.addConstraint(collideConstraint);
 
     floor_body = new CANNON.Body({ mass: 0 });
     floor_shape = new CANNON.Plane();
     floor_body.addShape(floor_shape);
     // floor_body.quaternion.setFromAxisAngle(new CANNON.Vec3(1,0,0),-Math.PI/2);
-    world.addBody(floor_body);
+    //world.addBody(floor_body);
 }
 
 
@@ -100,6 +105,19 @@ function initThree() {
     // floor_body.position = floor.position;
     scene.add( floor );
 
+    // add spheres
+    const lj_sphere_geo = new THREE.SphereGeometry(0.1,10,5);
+    const uj_sphere_geo = new THREE.SphereGeometry(0.1,10,5);
+    const sphereMaterial = new THREE.MeshStandardMaterial( {
+        color: 0x0000ff,
+        roughness: 1.0,
+        metalness: 0.5
+    } );
+    lj_sphere = new THREE.Mesh( lj_sphere_geo, sphereMaterial);
+    uj_sphere = new THREE.Mesh( uj_sphere_geo, sphereMaterial);
+    scene.add(lj_sphere);
+    scene.add(uj_sphere);
+
 
     // light sources
     scene.add( new THREE.HemisphereLight( 0x808080, 0x606060 ) );
@@ -113,12 +131,6 @@ function initThree() {
     light.shadow.camera.left = - 2;
     light.shadow.mapSize.set( 4096, 4096 );
     scene.add( light );
-
-   
-    // add all objects to an object group
-
-    group = new THREE.Group();
-    scene.add( group );
  
 
     // add renderer and enable VR
@@ -172,18 +184,19 @@ function loadObjects() {
     // load lower jaw
     const loader = new OBJLoader();
     loader.load(
-        '../../assets/lowerjaw_holger.obj',
+        '../../assets/lower_ios_6.obj',
         // called when resource is loaded y=green, x=red, z=blue
         function (object) {         // lj_group is a 'Group', which is a subclass of 'Object3D'
             lj_group = object;
+            lj_group.scale.set(0.01, 0.01, 0.01);
+            // lj_group.scale.setScalar(0.01);
             lj_group.position.x = 0;
             lj_group.position.y = 0;
             lj_group.position.z = 0;
             lj_group.rotation.x = 1.5 * Math.PI;
             //lj_group.rotation.y = Math.PI
-            console.log(lj_group.quaternion);
-            lj_group.scale.setScalar(0.01);
-            group.add(lj_group);
+            console.log(lj_group);
+            scene.add(lj_group);
             
             lj_mesh = getFirstMesh(lj_group);
             //console.log(lj_mesh);
@@ -206,7 +219,7 @@ function loadObjects() {
  
     // load upper jaw
     loader.load(
-        '../../assets/upperjaw_holger.obj',
+        '../../assets/upper_ios_6.obj',
         // called when resource is loaded y=green, x=red, z=blue
         function (object) {
             uj_group = object;
@@ -216,7 +229,7 @@ function loadObjects() {
             uj_group.rotation.x = 1.5 * Math.PI;
             //uj_group.rotation.y = Math.PI
             uj_group.scale.setScalar(0.01);
-            group.add(uj_group);
+            scene.add(uj_group);
             
             uj_mesh = getFirstMesh(uj_group);
             //console.log(uj_mesh);
@@ -301,8 +314,10 @@ function updatePhysics() {
     // Copy coordinates from Cannon.js to Three.js
     lj_mesh.position.copy(lj_body.position);
     lj_mesh.quaternion.copy(lj_body.quaternion);
+    lj_sphere.position.copy(lj_body.position);
     uj_mesh.position.copy(uj_body.position);
     uj_mesh.quaternion.copy(uj_body.quaternion);
+    uj_sphere.position.copy(uj_body.position);
 }
 
 
