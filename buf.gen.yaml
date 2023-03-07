@@ -2,7 +2,7 @@ version: v1
 managed:
   enabled: true
   go_package_prefix:
-    default: github.com/LarsDepuydt/peno-entrepreneurship-3d-oclusie/gen/proto
+    default: github.com/LarsDepuydt/peno-entrepreneurship-3d-oclusion/gen/proto
 plugins:
   - plugin: go
     out: backend/gen/proto

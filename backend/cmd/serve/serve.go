@@ -19,10 +19,10 @@ type ServerStruct struct{}
 func setCors(mux http.Handler) http.Handler {
 	muxHandler := cors.Default().Handler(mux)
 	c := cors.New(cors.Options{
-		AllowedOrigins: []string{"*"},
+		AllowedOrigins:   []string{"*"},
 		AllowCredentials: true,
-		AllowedHeaders: []string{"Connect-Protocol-Version", "Content-Type"},
-		Debug: true, // Enable Debugging for testing, consider disabling in production
+		AllowedHeaders:   []string{"Connect-Protocol-Version", "Content-Type"},
+		Debug:            true, // Enable Debugging for testing, consider disabling in production
 	})
 	muxHandler = c.Handler(muxHandler)
 
@@ -31,7 +31,7 @@ func setCors(mux http.Handler) http.Handler {
 
 func Server() {
 	server := &ServerStruct{}
-	
+
 	mux := http.NewServeMux()
 	path, handler := threedoclusionv1connect.NewScanServiceHandler(server)
 	mux.Handle(path, handler)
@@ -45,17 +45,74 @@ func Server() {
 	)
 }
 
-func (s *ServerStruct) Scan(
+// SCANS
+func (s *ServerStruct) AddScan(
 	ctx context.Context,
-	req *connect.Request[threedoclusionv1.ScanRequest],
-) (*connect.Response[threedoclusionv1.ScanResponse], error) {
-	return scans.GetScanById(req)
+	req *connect.Request[threedoclusionv1.AddScanRequest],
+) (*connect.Response[threedoclusionv1.AddScanResponse], error) {
+	return scans.AddScan(req)
 }
 
-func (s *ServerStruct) Tag(
+func (s *ServerStruct) DeleteScan(
 	ctx context.Context,
-	req *connect.Request[threedoclusionv1.TagRequest],
-) (*connect.Response[threedoclusionv1.TagResponse], error) {
-	return tags.GetTagById(req)
+	req *connect.Request[threedoclusionv1.DeleteScanRequest],
+) (*connect.Response[threedoclusionv1.DeleteScanResponse], error) {
+	return scans.DeleteScan(req)
 }
 
+func (s *ServerStruct) GetAllScans(
+	ctx context.Context,
+	req *connect.Request[threedoclusionv1.GetAllScansRequest],
+) (*connect.Response[threedoclusionv1.GetAllScansResponse], error) {
+	return scans.GetAllScans(req)
+}
+
+func (s *ServerStruct) GetScanByID(
+	ctx context.Context,
+	req *connect.Request[threedoclusionv1.GetScanByIDRequest],
+) (*connect.Response[threedoclusionv1.GetScanByIDResponse], error) {
+	return scans.GetScanByID(req)
+}
+
+func (s *ServerStruct) GetScanByDate(
+	ctx context.Context,
+	req *connect.Request[threedoclusionv1.GetScanByDateRequest],
+) (*connect.Response[threedoclusionv1.GetScanByDateResponse], error) {
+	return scans.GetScanByDate(req)
+}
+
+// TAGS
+func (s *ServerStruct) AddTag(
+	ctx context.Context,
+	req *connect.Request[threedoclusionv1.AddTagRequest],
+) (*connect.Response[threedoclusionv1.AddTagResponse], error) {
+	return tags.AddTag(req)
+}
+
+func (s *ServerStruct) DeleteTag(
+	ctx context.Context,
+	req *connect.Request[threedoclusionv1.DeleteTagRequest],
+) (*connect.Response[threedoclusionv1.DeleteTagResponse], error) {
+	return tags.DeleteTag(req)
+}
+
+func (s *ServerStruct) GetAllTags(
+	ctx context.Context,
+	req *connect.Request[threedoclusionv1.GetAllTagsRequest],
+) (*connect.Response[threedoclusionv1.GetAllTagsResponse], error) {
+	return tags.GetAllTags(req)
+}
+
+func (s *ServerStruct) GetTagByID(
+	ctx context.Context,
+	req *connect.Request[threedoclusionv1.GetTagByIDRequest],
+) (*connect.Response[threedoclusionv1.GetTagByIDResponse], error) {
+	return tags.GetTagByID(req)
+}
+
+func (s *ServerStruct) GetAllTagsByType(
+	ctx context.Context,
+	req *connect.Request[threedoclusionv1.GetAllTagsByTypeRequest],
+) (*connect.Response[threedoclusionv1.GetAllTagsByTypeResponse], error) {
+	return tags.GetAllTagsByType(req)
+}
