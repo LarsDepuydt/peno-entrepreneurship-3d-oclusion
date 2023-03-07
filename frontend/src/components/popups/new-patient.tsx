@@ -2,7 +2,6 @@ import React, { useState } from "react"
 import { Formik, Field, Form, ErrorMessage} from 'formik';
 
 import styles from '@/styles/Modal.module.css'
-import styleL from '@/styles/LoginForm.module.css'
 
 import 'bootstrap/dist/css/bootstrap.css'
 
@@ -31,15 +30,17 @@ export default function ModalForm() {
     return (
         <>
 
-    <button onClick={toggleModal} className={styles.btn_modal}>Add Patient</button>
+    <div className={styles.btn_modal}>
+    <button onClick={toggleModal}  className="btn btn-primary btn-large btn-secondary">Add Patient</button>
     {/* translation files bekijken */}
+    </div>
   
     {modal && (
         <div className={styles.modal}>
         <div className={styles.overlay}></div>
         <div className={styles.modal_content}>
 
-        <div className={styleL.login_box + ' p-3'}>   
+        <div className={styles.login_box + ' p-3'}>   
               
               <Formik
                 initialValues={{
@@ -67,12 +68,14 @@ export default function ModalForm() {
                     <Field className="form-control" id="patientID" name="patientID" placeholder="Patient ID" type="patientID" />
                   </div>
 
+                  <div className={styles.firstandlast}>
                   <div className="mb-3">
                     <Field className="form-control" id="patientFirstName" name="patientFirstName" placeholder="First Name" />
                   </div>
 
                   <div className="mb-3">
                     <Field className="form-control" id="patientLastName" name="patientLastName" placeholder="Last Name" />
+                  </div>
                   </div>
 
                   <div className="form-group form-check">
@@ -85,7 +88,7 @@ export default function ModalForm() {
                     <Field className="form-control" id="notes" name="notes" placeholder="Additional notes" type="notes" />
                   </div>
       
-                  <div className ={styles.newbtn}>
+                  <div className ={styles.spacingbtn}>
                   <button type="submit" className= "btn btn-primary btn-large" >Save patient</button>
                   <button type="button" className= "btn btn-primary btn-large" onClick={toggleModal} >Exit</button>
                   </div>

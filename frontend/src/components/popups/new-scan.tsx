@@ -2,7 +2,6 @@ import React, { useState } from "react"
 import { Formik, Field, Form} from 'formik';
 
 import styles from '@/styles/Modal.module.css'
-import styleL from '@/styles/LoginForm.module.css'
 
 
 // TODO add files + tags
@@ -28,18 +27,17 @@ export default function ModalForm() {
     return (
         <>
 
-    <button 
-    onClick={toggleModal}
-    className={styles.btn_modal}>
-        Add Scan
-    </button>
+  <div className={styles.btn_modal}>
+    <button onClick={toggleModal}  className="btn btn-primary btn-large btn-secondary">Add Scans</button>
+    {/* translation files bekijken */}
+    </div>
 
     {modal && (
         <div className={styles.modal}>
         <div className={styles.overlay}></div>
         <div className={styles.modal_content}>
 
-        <div className={styleL.login_box + ' p-3'}>   
+        <div className={styles.login_box + ' p-3'}>   
               
               <Formik
                 initialValues={{
