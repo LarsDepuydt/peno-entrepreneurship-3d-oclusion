@@ -7,18 +7,19 @@ import styleL from '@/styles/LoginForm.module.css'
 
 // no formik; how to add files + tags? with button (onClick) + css?
 
-interface patientValues {
-    scanName: string;
-    scanTags: string;
-    //images: array[]
+interface scanValues {
+  scanID: string;
+
+  scanDay: number;
+  scanMonth: number;
+  scanYear: number;
+    //scanTags: string;
+
+    //scan: vr files
 }
 
 
 export default function ModalForm() {
-
-  // const handleSubmit = (e: { preventDefault: () => void; }) => {
-  //   e.preventDefault();
-  //   console.log("button clicked"); }
 
     const [modal, setModal] = useState(false);
     // modal is not toggled at first
@@ -46,8 +47,13 @@ export default function ModalForm() {
               
               <Formik
                 initialValues={{
-                  scanName: '',
-                  scanTags: '',
+                  scanID: '',
+
+                  scanDay: '',
+                  scanMonth: '',
+                  scanYear: '',
+
+                  //scanTags: '',
                 }}
                 
 
