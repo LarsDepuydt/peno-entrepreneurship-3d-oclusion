@@ -1,4 +1,5 @@
-module 
+module
+
 
 .login_box {
     width: 340px;
@@ -12,3 +13,14 @@ module
     margin-bottom: 50px;
     
 }
+
+.loginbtn {
+    display: flex;
+    column-gap: 20px;
+    justify-content: space-between;
+    
+}
+
+.btn {
+    background-color: orange;
+  }

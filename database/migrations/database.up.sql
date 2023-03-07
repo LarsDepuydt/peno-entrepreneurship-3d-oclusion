@@ -16,13 +16,12 @@ CREATE TABLE dentist (
 
 CREATE TABLE scan (
     id SERIAL PRIMARY KEY,
-    scan_file text,
-    scan_date date
+    scan text,
+    date date
 );
 
 CREATE TABLE tag (
     id SERIAL PRIMARY KEY,
     bite text
 );
-
 
