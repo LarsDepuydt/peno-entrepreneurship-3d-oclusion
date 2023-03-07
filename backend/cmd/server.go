@@ -6,6 +6,10 @@ import (
 	"net/http"
 	"time"
 
+	_ "github.com/lib/pq"
+	
+	
+
 	"github.com/gorilla/websocket"
 )
 
@@ -32,6 +36,47 @@ type errorJson struct {
 var upgrader = websocket.Upgrader{
 	ReadBufferSize:  1024,
 	WriteBufferSize: 1024,
+}
+
+// Get dentist id's
+func GetDentistIDs() (map[int]identify, error) {
+	// Connect to the database
+	db, error := ConnectToDataBase()
+
+
+	if db == nil || error != nil {
+		return error
+	}
+
+	klanten := make(map[int]identify)
+
+	// Execute the SQL query to retrieve the dentist information
+	rows, err := db.Query("SELECT id, name FROM dentist")
+	if err != nil {
+		log.Fatal(err)
+	}
+	defer rows.Close()
+
+	// Loop through the result set and map the data into the klanten map
+	for rows.Next() {
+		var id int
+		var first_name string
+		var last_name string
+		err := rows.Scan(&id, &first_name, &last_name)
+		if err != nil {
+			log.Fatal(err)
+		}
+		fullName := fmt.Sprintf("%s, %s", last_name, first_name)
+		klanten[id] = identify{name: fullName, id: id}
+	}
+	// Check for any errors in the result set
+	if err := rows.Err(); err != nil {
+		return nil, err
+	}
+
+	fmt.Println("Added dentist succesfully")
+	defer db.Close()
+	return klanten, nil
 }
 
 // Websocket implementation
@@ -111,6 +156,12 @@ func main() {
 			name: "Dover, Ben",
 			id:   928,
 		},
+	}
+
+	//Dit is de echte klanten lijn met db access
+	klanten, err := getDentistIDs()
+	if err != nil {
+    	log.Fatal(err)
 	}
 
 	for _, klant := range klanten { // index not necessary
