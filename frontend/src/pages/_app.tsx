@@ -1,15 +1,15 @@
-import '@/styles/globals.css'
+import '@/styles/globals.css';
 import { createConnectTransport } from '@bufbuild/connect-web';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
-import type { AppProps } from 'next/app'
-import 'bootstrap/dist/css/bootstrap.css'
-import { TransportProvider } from "@bufbuild/connect-query";
+import type { AppProps } from 'next/app';
+import 'bootstrap/dist/css/bootstrap.css';
+import { TransportProvider } from '@bufbuild/connect-query';
 
 const queryClient = new QueryClient();
 
 export default function App({ Component, pageProps }: AppProps) {
   const transport = createConnectTransport({
-    baseUrl: "http://0.0.0.0:8080",
+    baseUrl: 'http://0.0.0.0:8080',
   });
 
   return (
@@ -18,5 +18,5 @@ export default function App({ Component, pageProps }: AppProps) {
         <Component {...pageProps} />
       </QueryClientProvider>
     </TransportProvider>
-  )
+  );
 }
