@@ -20,6 +20,7 @@ let world, timeStep=1/60;
 
 
 let meshes = [], bodies = [];
+let floor_shape, floor_body;
 
 // lj_group is een THREE.Group < THREE.Object3D
 // lj_mesh is een THREE.Mesh
@@ -44,12 +45,23 @@ function initCannon() {
 
     lj_body = new CANNON.Body({mass: 1});
     uj_body = new CANNON.Body({mass: 1});
-    lj_body.position.set(0,2,0.12);
-    uj_body.position.set(0,2,0.12);
+    lj_body.position.set(0,0,200);
+    uj_body.position.set(0,0,200);
+    lj_body.quaternion = new CANNON.Quaternion(0, 0, 0, 1);
+    uj_body.quaternion = new CANNON.Quaternion(0, 0, 0, 1);
     world.addBody(lj_body);
     world.addBody(uj_body);
     bodies.push(lj_body);
     bodies.push(uj_body);
+
+    let collideConstraint;
+    //collideConstraint = new CANNON.Constraint(lj_body, uj_body, collideConnected=)
+
+    floor_body = new CANNON.Body({ mass: 0 });
+    floor_shape = new CANNON.Plane();
+    floor_body.addShape(floor_shape);
+    // floor_body.quaternion.setFromAxisAngle(new CANNON.Vec3(1,0,0),-Math.PI/2);
+    world.addBody(floor_body);
 }
 
 
@@ -83,7 +95,11 @@ function initThree() {
     const floor = new THREE.Mesh( floorGeometry, floorMaterial );
     floor.rotation.x = - Math.PI / 2;
     floor.receiveShadow = true;
+    // let q = floor.quaternion;
+    // floor_body.quaternion = new CANNON.Quaternion(q.x,q.y,q.z,q.w);
+    // floor_body.position = floor.position;
     scene.add( floor );
+
 
     // light sources
     scene.add( new THREE.HemisphereLight( 0x808080, 0x606060 ) );
@@ -97,7 +113,6 @@ function initThree() {
     light.shadow.camera.left = - 2;
     light.shadow.mapSize.set( 4096, 4096 );
     scene.add( light );
-
 
    
     // add all objects to an object group
@@ -161,11 +176,12 @@ function loadObjects() {
         // called when resource is loaded y=green, x=red, z=blue
         function (object) {         // lj_group is a 'Group', which is a subclass of 'Object3D'
             lj_group = object;
-            lj_group.position.x = 0
-            lj_group.position.y = 2
-            lj_group.position.z = 0.12
-            lj_group.rotation.x = 1.5 * Math.PI
+            lj_group.position.x = 0;
+            lj_group.position.y = 0;
+            lj_group.position.z = 0;
+            lj_group.rotation.x = 1.5 * Math.PI;
             //lj_group.rotation.y = Math.PI
+            console.log(lj_group.quaternion);
             lj_group.scale.setScalar(0.01);
             group.add(lj_group);
             
@@ -194,10 +210,10 @@ function loadObjects() {
         // called when resource is loaded y=green, x=red, z=blue
         function (object) {
             uj_group = object;
-            uj_group.position.x = 0
-            uj_group.position.y = 2
-            uj_group.position.z = 0.12
-            uj_group.rotation.x = 1.5 * Math.PI
+            uj_group.position.x = 0;
+            uj_group.position.y = 0;
+            uj_group.position.z = 0;
+            uj_group.rotation.x = 1.5 * Math.PI;
             //uj_group.rotation.y = Math.PI
             uj_group.scale.setScalar(0.01);
             group.add(uj_group);
@@ -205,7 +221,7 @@ function loadObjects() {
             uj_mesh = getFirstMesh(uj_group);
             //console.log(uj_mesh);
             uj_shape = threeMeshToCannonMesh(uj_mesh);
-            console.log("loading uj_group succeeded")
+            console.log("loading uj_group succeeded");
             uj_body.addShape(uj_shape);
             uj_loaded = true;
             startAnimation();
