@@ -5,11 +5,10 @@ import (
 	"log"
 	"net/http"
 	"time"
+	"database/sql"
 
 	_ "github.com/lib/pq"
 	
-	
-
 	"github.com/gorilla/websocket"
 )
 
@@ -38,6 +37,15 @@ var upgrader = websocket.Upgrader{
 	WriteBufferSize: 1024,
 }
 
+func ConnectToDataBase() (*sql.DB, error) {
+    database, error := sql.Open("postgres", "host=host.docker.internal port=5430 user=docker password=docker1 dbname=patient_server sslmode=disable")
+    fmt.Println("Connection succesfull")
+    if error != nil {
+        return nil, error
+    }
+    return database, nil
+}
+
 // Get dentist id's
 func GetDentistIDs() (map[int]identify, error) {
 	// Connect to the database
@@ -45,7 +53,7 @@ func GetDentistIDs() (map[int]identify, error) {
 
 
 	if db == nil || error != nil {
-		return error
+		return nil, error
 	}
 
 	klanten := make(map[int]identify)
