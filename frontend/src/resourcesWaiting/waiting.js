@@ -25,7 +25,7 @@ function afterSubmit(event) {
 function waitForResponse() {
     var client = new threedoclusionv1.ScanService('localhost:50051', grpc.credentials.createInsecure());
 
-    client.Waiting({}, function(err, response) {
+    client.Waiting({unique_code: 112}, function(err, response) {
         console.log('Message:', response.message);
         // Err
     });

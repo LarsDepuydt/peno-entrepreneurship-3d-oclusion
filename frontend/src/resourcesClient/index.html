@@ -12,34 +12,6 @@
 		</form>
 		<!-- Should probably make a request to retrieve scan ID or whatever so it knows what URL to send or base it off of the URL it resides in -->
 		<button id="redirect-button">Redirect</button>
-		<script>
-			var submitOK = false;
-			function afterSubmit(event){
-				event.preventDefault();
-				submitOK = true;
-			}
-
-			document.getElementById("redirect-button").addEventListener("click", function() {
-				if (submitOK) {
-    				fetch("/client/" + document.getElementById("code").value + "/button", {
-      					method: "POST",
-      					headers: {
-        					"cache-control": "no-store"
-      					}
-    				}) // If with database, extract scanID from URL; URL: /client/scanID and button fetch would be /client/scanID/button so window.location.href+"/button"
-					.then(response => {
-      				// Handle response
-    				})
-    				.catch(error => {
-      				// Handle error
-    				});
-  				}
-			});
-		</script>
-		<script>
-			if('serviceWorker' in navigator) {
-			  navigator.serviceWorker.register('../../../backend/sw.js');
-			}
-		</script>
+		<script src="./client.js"></script>
 	</body>
 	</html>

@@ -7,7 +7,7 @@
     <title>Waiting</title>
     <link rel="stylesheet" href="./style.css">
     <link rel="icon" href="./favicon.ico" type="image/x-icon">
-    <link rel="manifest" href="../../../backend/manifest.json"/> <!--WERKT MISSCHIEN NIET-->
+    <link rel="manifest" href="../../../backend/manifest.json"/>
   </head>
   <body>
     <main>
@@ -22,60 +22,6 @@
       Code: <input type="text" id="code" size="20" name="code"><br>
       <input type="submit" value="Submit"> 
     </form>
-    
-    <script>
-    function afterSubmit(event) {
-      event.preventDefault(); // prevent the form from reloading the page
-      /*
-      Other approach: use on action in the form to make a request to the server
-      Server will redirect from this page to a page that confirms whether the code was accepted
-      -> will later redirect from that page to the one you want: eg /VR/blabla
-      So one page in between
-      Can also use a push notification of some kind
-      */
-      var code = document.getElementById("code").value;
-      var submitOK = true;
-    
-      if (code.length > 10) {
-        alert("The code may have no more than 10 characters");
-        submitOK = false;
-      }
-
-      // Additional criteria
-    
-      if (submitOK) { // Trigger waiting procedure
-        waitForResponse();
-      }
-    }
-
-    function waitForResponse() {
-      const statusSocket = new WebSocket("ws://" + window.location.hostname + ":" + window.location.port + "/waiting/" + document.getElementById("code").value + "/status");
-      // wss:// doesn't work
-
-      // Handshake
-      statusSocket.onopen = (event) => {
-        console.log("Connection established");
-      };
-      // When receiving message
-      statusSocket.onmessage = (event) => {
-        const data = JSON.parse(event.data);
-        if (data.code == "ERROR"){
-          //throw new Error('Error ' + data.msg);
-          console.log("Error", data.msg);
-          // Handle error here
-        }
-        else if (data.code == "DATA"){
-          if (data.redirect) {
-            window.location.href = data.url;
-          }
-        }
-      }
-    }
-    </script>
-    <script>
-			if('serviceWorker' in navigator) {
-			  navigator.serviceWorker.register('../../../backend/sw.js');
-			}
-		</script>
+    <script src="./waiting.js"></script>
   </body>
 </html>
