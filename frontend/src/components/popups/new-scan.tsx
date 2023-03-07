@@ -7,15 +7,12 @@ import styleL from '@/styles/LoginForm.module.css'
 
 // no formik; how to add files + tags? with button (onClick) + css?
 
+
+
 interface scanValues {
   scanID: string;
 
-  scanDay: number;
-  scanMonth: number;
-  scanYear: number;
-    //scanTags: string;
 
-    //scan: vr files
 }
 
 
@@ -23,6 +20,12 @@ export default function ModalForm() {
 
     const [modal, setModal] = useState(false);
     // modal is not toggled at first
+
+    const date = new Date();
+      let day = date.getDate();
+      let month = date.getMonth() + 1;
+      let year = date.getFullYear();
+    let currentDate = `${month}-${day}-${year}`;
 
     const toggleModal = () => {
         setModal(!modal)    // change state f -> t and t -> f
@@ -49,31 +52,27 @@ export default function ModalForm() {
                 initialValues={{
                   scanID: '',
 
-                  scanDay: '',
-                  scanMonth: '',
-                  scanYear: '',
-
                   //scanTags: '',
                 }}
                 
 
                 
                 // on Submit we console the values + close the popup tab
+                // implicit date = currentDate
                 onSubmit={(values) => {
                     console.log(values)
+                    console.log(currentDate)
                     setModal(!modal)
                     
                 }}
               >
                 <Form>
                   <div className="mb-3">
-                    <Field className="form-control" id="scanName" name="scanName" placeholder="Scan Name" />
+                    <Field className="form-control" id="scanID" name="scanID" placeholder="Scan ID" />
                   </div>
 
-                  <div className="mb-3">
-                    <Field className="form-control" id="scanTags" name="scanTags" placeholder="Scan Tags" />
-                  </div>
-      
+                  <h3>scans to be added here </h3>
+
                   <button type="submit" className= "btn btn-primary btn-large" >Save scans</button>
 
                 </Form>

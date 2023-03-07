@@ -3,7 +3,7 @@ import Image from 'next/image'
 import { Inter } from '@next/font/google'
 import styles from '@/styles/Home.module.css'
 
-import LoginForm from './login-page'
+import LoginPage from './login-page'
 
 // import "../styles/globals.css";
 // import type { AppProps } from "next/app";
@@ -21,8 +21,7 @@ export default function Home() {
         <link rel="icon" href="/favicon.ico" />
       </Head>
       <main className="vh-100 d-flex justify-content-center align-items-center">
-        <LoginForm />
-        {/* <RegForm/> */}
+        <LoginPage />
       </main>
     </>
   )
