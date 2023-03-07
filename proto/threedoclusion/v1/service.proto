@@ -23,10 +23,10 @@ service ScanService {
 }
 
 
+
 // TAGS
 message AddTagRequest {
-  int64 id = 1;
-  string bite = 2;
+  string bite = 1;
 }
 
 message AddTagResponse {
@@ -46,9 +46,8 @@ message GetAllTagsRequest {
 }
 
 message GetAllTagsResponse {
-  string message = 1;
-  repeated int64 id_data = 2;
-  repeated string bite_data = 3;
+  repeated int64 id_data = 1;
+  repeated string bite_data = 2;
 }
 
 message GetTagByIDRequest {
@@ -56,9 +55,8 @@ message GetTagByIDRequest {
 }
 
 message GetTagByIDResponse {
-  string message = 1;
-  int64 id = 2;
-  string bite = 3;
+  int64 id = 1;
+  string bite = 2;
 }
 
 message GetAllTagsByTypeRequest {
@@ -66,17 +64,15 @@ message GetAllTagsByTypeRequest {
 }
 
 message GetAllTagsByTypeResponse {
-  string message = 1;
-  string bite = 2;
-  repeated int64 id_data = 3;
+  string bite = 1;
+  repeated int64 id_data = 2;
 }
 
 
 // SCANS
 message AddScanRequest {
-  int64 id = 1;
-  string scan_file = 2;
-  string scan_date = 3;
+  string scan_file = 1;
+  string scan_date = 2;
 
 }
 
@@ -98,10 +94,9 @@ message GetAllScansRequest {
 }
 
 message GetAllScansResponse {
-  string message = 1;
-  repeated int64 id_data =  2;
-  repeated string scan_data = 3;
-  repeated string scan_dates = 4;
+  repeated int64 id_data =  1;
+  repeated string scan_data = 2;
+  repeated string scan_dates = 3;
 }
 
 message GetScanByIDRequest {
@@ -109,10 +104,9 @@ message GetScanByIDRequest {
 }
 
 message GetScanByIDResponse {
-  string message = 1;
-  int64 id =  2;
-  string scan_data = 3;
-  string scan_date = 4;
+  int64 id =  1;
+  string scan_data = 2;
+  string scan_date = 3;
 }
 
 message GetScanByDateRequest {
@@ -120,9 +114,8 @@ message GetScanByDateRequest {
 }
 
 message GetScanByDateResponse {
-  string message = 1 ;
-  repeated int64 id_data =  2;
-  repeated string scan_data = 3;
-  repeated string scan_dates = 4;
+  repeated int64 id_data =  1;
+  repeated string scan_data = 2;
+  repeated string scan_dates = 3;
 }
 

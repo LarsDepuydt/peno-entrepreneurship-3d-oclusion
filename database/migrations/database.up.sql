@@ -1,5 +1,5 @@
 CREATE TABLE patient ( 
-    id integer PRIMARY KEY, 
+    id SERIAL PRIMARY KEY, 
     first_name text,
     last_name text,
     pinned bit,
@@ -7,7 +7,7 @@ CREATE TABLE patient (
 );
 
 CREATE TABLE dentist (
-    id integer PRIMARY KEY,
+    id SERIAL PRIMARY KEY,
     email text,
     pass_word text,
     first_name text,
@@ -15,13 +15,13 @@ CREATE TABLE dentist (
 );
 
 CREATE TABLE scan (
-    id integer PRIMARY KEY,
+    id SERIAL PRIMARY KEY,
     scan text,
     date date
 );
 
 CREATE TABLE tag (
-    id integer PRIMARY KEY,
+    id SERIAL PRIMARY KEY,
     bite text
 );
 

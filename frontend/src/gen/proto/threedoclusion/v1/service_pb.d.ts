@@ -13,12 +13,7 @@ import { Message, proto3 } from "@bufbuild/protobuf";
  */
 export declare class AddTagRequest extends Message<AddTagRequest> {
   /**
-   * @generated from field: int64 id = 1;
-   */
-  id: bigint;
-
-  /**
-   * @generated from field: string bite = 2;
+   * @generated from field: string bite = 1;
    */
   bite: string;
 
@@ -138,17 +133,12 @@ export declare class GetAllTagsRequest extends Message<GetAllTagsRequest> {
  */
 export declare class GetAllTagsResponse extends Message<GetAllTagsResponse> {
   /**
-   * @generated from field: string message = 1;
-   */
-  message: string;
-
-  /**
-   * @generated from field: repeated int64 id_data = 2;
+   * @generated from field: repeated int64 id_data = 1;
    */
   idData: bigint[];
 
   /**
-   * @generated from field: repeated string bite_data = 3;
+   * @generated from field: repeated string bite_data = 2;
    */
   biteData: string[];
 
@@ -196,17 +186,12 @@ export declare class GetTagByIDRequest extends Message<GetTagByIDRequest> {
  */
 export declare class GetTagByIDResponse extends Message<GetTagByIDResponse> {
   /**
-   * @generated from field: string message = 1;
-   */
-  message: string;
-
-  /**
-   * @generated from field: int64 id = 2;
+   * @generated from field: int64 id = 1;
    */
   id: bigint;
 
   /**
-   * @generated from field: string bite = 3;
+   * @generated from field: string bite = 2;
    */
   bite: string;
 
@@ -254,17 +239,12 @@ export declare class GetAllTagsByTypeRequest extends Message<GetAllTagsByTypeReq
  */
 export declare class GetAllTagsByTypeResponse extends Message<GetAllTagsByTypeResponse> {
   /**
-   * @generated from field: string message = 1;
-   */
-  message: string;
-
-  /**
-   * @generated from field: string bite = 2;
+   * @generated from field: string bite = 1;
    */
   bite: string;
 
   /**
-   * @generated from field: repeated int64 id_data = 3;
+   * @generated from field: repeated int64 id_data = 2;
    */
   idData: bigint[];
 
@@ -290,17 +270,12 @@ export declare class GetAllTagsByTypeResponse extends Message<GetAllTagsByTypeRe
  */
 export declare class AddScanRequest extends Message<AddScanRequest> {
   /**
-   * @generated from field: int64 id = 1;
-   */
-  id: bigint;
-
-  /**
-   * @generated from field: string scan_file = 2;
+   * @generated from field: string scan_file = 1;
    */
   scanFile: string;
 
   /**
-   * @generated from field: string scan_date = 3;
+   * @generated from field: string scan_date = 2;
    */
   scanDate: string;
 
@@ -420,22 +395,17 @@ export declare class GetAllScansRequest extends Message<GetAllScansRequest> {
  */
 export declare class GetAllScansResponse extends Message<GetAllScansResponse> {
   /**
-   * @generated from field: string message = 1;
-   */
-  message: string;
-
-  /**
-   * @generated from field: repeated int64 id_data = 2;
+   * @generated from field: repeated int64 id_data = 1;
    */
   idData: bigint[];
 
   /**
-   * @generated from field: repeated string scan_data = 3;
+   * @generated from field: repeated string scan_data = 2;
    */
   scanData: string[];
 
   /**
-   * @generated from field: repeated string scan_dates = 4;
+   * @generated from field: repeated string scan_dates = 3;
    */
   scanDates: string[];
 
@@ -483,22 +453,17 @@ export declare class GetScanByIDRequest extends Message<GetScanByIDRequest> {
  */
 export declare class GetScanByIDResponse extends Message<GetScanByIDResponse> {
   /**
-   * @generated from field: string message = 1;
-   */
-  message: string;
-
-  /**
-   * @generated from field: int64 id = 2;
+   * @generated from field: int64 id = 1;
    */
   id: bigint;
 
   /**
-   * @generated from field: string scan_data = 3;
+   * @generated from field: string scan_data = 2;
    */
   scanData: string;
 
   /**
-   * @generated from field: string scan_date = 4;
+   * @generated from field: string scan_date = 3;
    */
   scanDate: string;
 
@@ -546,22 +511,17 @@ export declare class GetScanByDateRequest extends Message<GetScanByDateRequest> 
  */
 export declare class GetScanByDateResponse extends Message<GetScanByDateResponse> {
   /**
-   * @generated from field: string message = 1;
-   */
-  message: string;
-
-  /**
-   * @generated from field: repeated int64 id_data = 2;
+   * @generated from field: repeated int64 id_data = 1;
    */
   idData: bigint[];
 
   /**
-   * @generated from field: repeated string scan_data = 3;
+   * @generated from field: repeated string scan_data = 2;
    */
   scanData: string[];
 
   /**
-   * @generated from field: repeated string scan_dates = 4;
+   * @generated from field: repeated string scan_dates = 3;
    */
   scanDates: string[];
 
