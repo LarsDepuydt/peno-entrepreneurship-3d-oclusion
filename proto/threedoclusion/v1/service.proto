@@ -2,7 +2,7 @@ syntax = "proto3";
 
 package threedoclusion.v1;
 
-option go_package = "github.com/LarsDepuydt/peno-entrepreneurship-3d-oclusie";
+option go_package = "github.com/LarsDepuydt/peno-entrepreneurship-3d-oclusion";
 
 service ScanService {
   rpc Scan(ScanRequest) returns (ScanResponse) {}
@@ -31,8 +31,8 @@ message TagResponse {
 }
 
 message SendToVRRequest {
-  int clientId = 1;
-  int scanId = 2;
+  int32 clientId = 1;
+  int32 scanId = 2;
 }
 
 message SendToVRResponse {
@@ -40,7 +40,7 @@ message SendToVRResponse {
 }
 
 message WaitingRequest {
-  int uniqueCode = 1;
+  int32 uniqueCode = 1;
 }
 
 message WaitingResponse {

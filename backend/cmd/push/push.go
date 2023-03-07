@@ -8,7 +8,7 @@ import (
 
 	"github.com/bufbuild/connect-go"
 
-	threedoclusionv1 "github.com/LarsDepuydt/peno-entrepreneurship-3d-oclusie/gen/proto/threedoclusion/v1"
+	threedoclusionv1 "github.com/LarsDepuydt/peno-entrepreneurship-3d-oclusion/gen/proto/threedoclusion/v1"
 )
 
 func SendToVR(req *connect.Request[threedoclusionv1.SendToVRRequest]) (*connect.Response[threedoclusionv1.SendToVRResponse], error) {
@@ -55,6 +55,14 @@ func GetWaitingResponse(req *connect.Request[threedoclusionv1.waitingRequest]) (
 		err := fmt.Errorf("Timeout after 30 sec")
 		return nil, err
 	}
+	return nil, nil
+
+	//c := http.Client{}
+	//connect.NewClient[*connect.Request[threedoclusionv1.waitingRequest], *connect.ServerStream[threedoclusionv1.waitingResponse]](c, "/w", connect.WithGRPC())
+
+	// https://github.com/bufbuild/connect-go/blob/6118a20be7a6ccd497b3960349c52ba42c85e439/client.go
+	//new(connect.ServerStream[threedoclusionv1.waitingResponse],
+
 } // TO DO: Report errors properly with connect responses? Is there an error handler?
 
 type waitingResponse struct { // If client sends more data can be expanded this way
@@ -111,3 +119,4 @@ func (map_instance *MapChannels) ReleaseChannel(clientID int) {
 }
 
 // TO DO: client side-code and gen with new schema
+//grpc.ServerStream.RecvMsg()

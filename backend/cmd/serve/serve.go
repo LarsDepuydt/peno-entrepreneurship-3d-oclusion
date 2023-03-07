@@ -4,11 +4,11 @@ import (
 	"context"
 	"net/http"
 
-	"github.com/LarsDepuydt/peno-entrepreneurship-3d-oclusie/cmd/scans"
-	"github.com/LarsDepuydt/peno-entrepreneurship-3d-oclusie/cmd/tags"
-	threedoclusionv1 "github.com/LarsDepuydt/peno-entrepreneurship-3d-oclusie/gen/proto/threedoclusion/v1"
-	"github.com/LarsDepuydt/peno-entrepreneurship-3d-oclusie/gen/proto/threedoclusion/v1/threedoclusionv1connect"
+	"github.com/LarsDepuydt/peno-entrepreneurship-3d-oclusion/cmd/push"
 	"github.com/LarsDepuydt/peno-entrepreneurship-3d-oclusion/cmd/scans"
+	"github.com/LarsDepuydt/peno-entrepreneurship-3d-oclusion/cmd/tags"
+	threedoclusionv1 "github.com/LarsDepuydt/peno-entrepreneurship-3d-oclusion/gen/proto/threedoclusion/v1"
+	"github.com/LarsDepuydt/peno-entrepreneurship-3d-oclusion/gen/proto/threedoclusion/v1/threedoclusionv1connect"
 	"github.com/bufbuild/connect-go"
 	"github.com/rs/cors"
 	"golang.org/x/net/http2"
@@ -64,12 +64,12 @@ func (s *ServerStruct) SendVR(
 	ctx context.Context,
 	req *connect.Request[threedoclusionv1.SendToVRRequest],
 ) (*connect.Response[threedoclusionv1.SendToVRResponse], error) {
-	return scans.SendToVR(req)
+	return push.SendToVR(req)
 }
 
 func (s *ServerStruct) Waiting(
 	ctx context.Context,
 	req *connect.Request[threedoclusionv1.waitingRequest],
 ) (*connect.ServerStream[threedoclusionv1.waitingResponse], error) {
-	return scans.GetWaitingResponse(req)
+	return push.GetWaitingResponse(req)
 } // Server stream setup??
