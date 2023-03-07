@@ -40,6 +40,10 @@ function initCannon() {
 
     lj_body = new CANNON.Body({mass: 1});
     uj_body = new CANNON.Body({mass: 1});
+    lj_body.position.set(0,2,0.12);
+    uj_body.position.set(0,2,0.12);
+    world.addBody(lj_body);
+    world.addBody(uj_body);
 }
 
 
@@ -381,8 +385,8 @@ function updatePhysics() {
     // Step the physics world
     world.step(timeStep);
 
-    console.log("Cannon: ", lj_body.position);
-    console.log("Three: ", lj_mesh.position);
+    // console.log("Cannon: ", lj_body.position);
+    // console.log("Three: ", lj_mesh.position);
 
     // Copy coordinates from Cannon.js to Three.js
     lj_mesh.position.copy(lj_body.position);
