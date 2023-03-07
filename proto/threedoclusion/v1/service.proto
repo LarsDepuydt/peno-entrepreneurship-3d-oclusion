@@ -41,7 +41,7 @@ message SendVRResponse {
 }
 
 message WaitingRequest {
-  int32 uniqueCode = 1;
+  int32 unique_code = 1;
 }
 
 message WaitingResponse {

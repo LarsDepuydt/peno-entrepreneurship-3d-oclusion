@@ -11,7 +11,7 @@ import (
 	threedoclusionv1 "github.com/LarsDepuydt/peno-entrepreneurship-3d-oclusion/gen/proto/threedoclusion/v1"
 )
 
-func SendToVR(req *connect.Request[threedoclusionv1.SendToVRRequest]) (*connect.Response[threedoclusionv1.SendToVRResponse], error) {
+func SendToVR(req *connect.Request[threedoclusionv1.SendVRRequest]) (*connect.Response[threedoclusionv1.SendVRResponse], error) {
 	log.Println("Request headers: ", req.Header())
 
 	// TO DO: Check if clientID and scanID are valid with database
@@ -21,7 +21,7 @@ func SendToVR(req *connect.Request[threedoclusionv1.SendToVRRequest]) (*connect.
 	redirectVRChannel := redirectVRChannels.GetChannel(req.Msg.ClientId)
 	redirectVRChannel <- response // Send response over the channel
 
-	res := connect.NewResponse(&threedoclusionv1.SendToVRResponse{
+	res := connect.NewResponse(&threedoclusionv1.SendVRResponse{
 		Feedback: "Succesfully sent request to redirect waiting VR headset",
 	})
 
@@ -30,19 +30,19 @@ func SendToVR(req *connect.Request[threedoclusionv1.SendToVRRequest]) (*connect.
 }
 
 // TO DO: Change into server-side streaming RPC to replace websocket functionality
-func GetWaitingResponse(req *connect.Request[threedoclusionv1.waitingRequest]) (*connect.ServerStream[threedoclusionv1.waitingResponse], error) {
+func GetWaitingResponse(req *connect.Request[threedoclusionv1.WaitingRequest]) (*connect.ServerStream[threedoclusionv1.WaitingResponse], error) {
 	log.Println("Request headers: ", req.Header())
 
 	// TO DO: Check if uniqueCode is valid with database
 
 	// TO DO: Use uniqueCode to get clientID from database
 	// Also need to make it single use, so maybe send back clientID after first call so can be used in the future without entering code
-	// For now just use uniqueCode = clientID
+	// For now just use unique_code = client_id
 	redirectVRChannel := redirectVRChannels.GetChannel(req.Msg.UniqueCode) // Use clientId to get channel
 
 	select { // Non blocking receive
 	case response := <-redirectVRChannel:
-		res := connect.NewResponse(&threedoclusionv1.SendToVRResponse{
+		res := connect.NewResponse(&threedoclusionv1.SendVRResponse{
 			Redirect: response.Redirect,
 			Url:      fmt.Sprintf("/VR/%d", response.ScanId),
 		})
