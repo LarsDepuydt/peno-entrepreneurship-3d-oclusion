@@ -62,8 +62,8 @@ func (s *ServerStruct) Tag(
 
 func (s *ServerStruct) SendVR(
 	ctx context.Context,
-	req *connect.Request[threedoclusionv1.SendToVRRequest],
-) (*connect.Response[threedoclusionv1.SendToVRResponse], error) {
+	req *connect.Request[threedoclusionv1.SendVRRequest],
+) (*connect.Response[threedoclusionv1.SendVRResponse], error) {
 	return push.SendToVR(req)
 }
 
