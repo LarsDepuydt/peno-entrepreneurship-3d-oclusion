@@ -5,8 +5,7 @@ import { XRControllerModelFactory } from 'three/addons/webxr/XRControllerModelFa
 import { OBJLoader } from 'three/addons/loaders/OBJLoader.js';
 import * as CANNON from 'cannon-es';
 import { MeshBVH, acceleratedRaycast } from 'three-mesh-bvh';
-import * as CannonUtils from 'cannon-utils';
-
+import { default as CannonUtils } from 'cannon-utils';
 
 let container;
 let camera, scene, renderer;
@@ -20,15 +19,32 @@ let controls, group;
 
 let raycaster;
 
-let world, mass, body, shape;
+let world, timeStep=1/60;
 
-let lowerjaw, lowerjaw_bvh, lowerjaw_shape;
-let upperjaw, upperjaw_bvh, upperjaw_shape;
+// lj_shape is een CANNON.Trimesh
+let lj_group, lj_mesh, lj_shape, lj_body;
+let uj_group, uj_mesh, uj_shape, uj_body;
+
+let lj_loaded = false, uj_loaded = false;
 
 
-initThree();
 initCannon();
-animate();
+initThree();
+
+
+function initCannon() {
+    world = new CANNON.World();
+    world.gravity.set(0,0,0);
+    world.broadphase = new CANNON.NaiveBroadphase();
+    world.solver.iterations = 10;
+
+    lj_body = new CANNON.Body({mass: 1});
+    uj_body = new CANNON.Body({mass: 1});
+    lj_body.position.set(0,2,0.12);
+    uj_body.position.set(0,2,0.12);
+    world.addBody(lj_body);
+    world.addBody(uj_body);
+}
 
 
 function initThree() {
@@ -89,33 +105,32 @@ function initThree() {
     loader.load(
         '../../assets/lowerjaw_holger.obj',
         // called when resource is loaded y=green, x=red, z=blue
-        function (object) {
-            lowerjaw = object;
-            lowerjaw.position.x = 0
-            lowerjaw.position.y = 2
-            lowerjaw.position.z = 0.12
-            lowerjaw.rotation.x = 1.5 * Math.PI
-            //lowerjaw.rotation.y = Math.PI
-            lowerjaw.scale.setScalar(0.01);
-            group.add(lowerjaw);
-            //lowerjaw_bvh = new MeshBVH(object);
-
-            console.log("Object3D? " + lowerjaw.isObject3D);
-            console.log("Group? " + lowerjaw.isGroup);
-            console.log("Mesh? " + lowerjaw.isMesh)
-            lowerjaw.traverse(function(o) {if (o.isMesh) console.log(o.geometry);})
-            printTree(lowerjaw);
-
-            lowerjaw_shape = CannonUtils.CreateTriMesh(lowerjaw.children[0].geometry);
+        function (object) {         // lj_group is a 'Group', which is a subclass of 'Object3D'
+            lj_group = object;
+            lj_group.position.x = 0
+            lj_group.position.y = 2
+            lj_group.position.z = 0.12
+            lj_group.rotation.x = 1.5 * Math.PI
+            //lj_group.rotation.y = Math.PI
+            lj_group.scale.setScalar(0.01);
+            group.add(lj_group);
+            
+            lj_mesh = getFirstMesh(lj_group);
+            //console.log(lj_mesh);
+            lj_shape = threeMeshToCannonMesh(lj_mesh);
+            console.log("loading lj_group succeeded");
+            lj_body.addShape(lj_shape);
+            lj_loaded = true;
+            startAnimation();
         },
         
         // called when loading in progress
         function (xhr) {
-            console.log( (xhr.loaded / xhr.total * 100 ) + '% loaded');
+            //console.log( "lj_group " + (xhr.loaded / xhr.total * 100 ) + '% loaded');
         },
         // called when loading has errors
         function (error) {
-            console.log('An error happened while loading: ' + error);
+            console.log('An error happened while loading lj_group: ' + error);
         }
     );
  
@@ -124,29 +139,31 @@ function initThree() {
         '../../assets/upperjaw_holger.obj',
         // called when resource is loaded y=green, x=red, z=blue
         function (object) {
-            upperjaw = object;
-            upperjaw.position.x = 0
-            upperjaw.position.y = 2
-            upperjaw.position.z = 0.12
-            upperjaw.rotation.x = 1.5 * Math.PI
-            //upperjaw.rotation.y = Math.PI
-            upperjaw.scale.setScalar(0.01);
-            group.add(upperjaw);
-            //upperjaw_bvh = new MeshBVH(object);
-
-            console.log("Object3D? " + upperjaw.isObject3D);
-            console.log("Mesh?");
-
-            upperjaw_shape = CannonUtils.CreateTriMesh(upperjaw.children[0].geometry);
+            uj_group = object;
+            uj_group.position.x = 0
+            uj_group.position.y = 2
+            uj_group.position.z = 0.12
+            uj_group.rotation.x = 1.5 * Math.PI
+            //uj_group.rotation.y = Math.PI
+            uj_group.scale.setScalar(0.01);
+            group.add(uj_group);
+            
+            uj_mesh = getFirstMesh(uj_group);
+            //console.log(uj_mesh);
+            uj_shape = threeMeshToCannonMesh(uj_mesh);
+            console.log("loading uj_group succeeded")
+            uj_body.addShape(uj_shape);
+            uj_loaded = true;
+            startAnimation();
         },
         
         // called when loading in progress
         function (xhr) {
-            console.log( (xhr.loaded / xhr.total * 100 ) + '% loaded');
+            //console.log( "uj_group " + (xhr.loaded / xhr.total * 100 ) + '% loaded');
         },
         // called when loading has errors
         function (error) {
-            console.log('An error happened while loading: ' + error);
+            console.log('An error happened while loading uj_group: ' + error);
         }
     );
  
@@ -205,23 +222,14 @@ function initThree() {
 
     // BVH stuff
 
-    raycaster.firstHitOnly = true;
-    THREE.Mesh.prototype.raycast = acceleratedRaycast;
+    // raycaster.firstHitOnly = true;
+    // THREE.Mesh.prototype.raycast = acceleratedRaycast;
 
 
     // resize
 
     window.addEventListener( 'resize', onWindowResize );
 
-}
-
-
-function initCannon() {
-    body = new CANNON.Body({mass: 1});
-    world = new CANNON.World();
-    world.gravity.set(0,0,0);
-    world.broadphase = new CANNON.NaiveBroadphase();
-    world.solver.iterations = 10;
 }
 
 
@@ -342,12 +350,57 @@ function printTree(object, depth=0) {
 }
 
 
+function getFirstMesh(object) {
+    if (object.isMesh) {
+        return object;
+    } else {
+        let mesh;
+        for (const o of object.children) {
+            mesh = getFirstMesh(o);
+            if (mesh !== null) {
+                return mesh;
+            }
+        }
+        return null;
+    }
+}
+
+
+function threeMeshToCannonMesh(mesh) {
+    let vertices = mesh.geometry.attributes.position.array;
+
+    const indices = [];     // TODO: check if this is correct
+    for (let i = 0; i < vertices.length / 3; i += 3) {
+        indices.push([i, i + 1, i + 2]);
+    }
+    return new CANNON.Trimesh(vertices, indices);
+}
+
+
 
 // main loops
 
+function updatePhysics() {
+
+    // Step the physics world
+    world.step(timeStep);
+
+    // console.log("Cannon: ", lj_body.position);
+    // console.log("Three: ", lj_mesh.position);
+
+    // Copy coordinates from Cannon.js to Three.js
+    lj_mesh.position.copy(lj_body.position);
+    lj_mesh.quaternion.copy(lj_body.quaternion);
+    uj_mesh.position.copy(uj_body.position);
+    uj_mesh.quaternion.copy(uj_body.quaternion);
+}
+
+
 function animate() {
 
-    renderer.setAnimationLoop( render );
+    updatePhysics();
+    render();
+
 }
 
 function render() {
@@ -358,4 +411,12 @@ function render() {
     intersectObjects( controller2 );
 
     renderer.render( scene, camera );
+}
+
+
+function startAnimation() {
+    if (lj_loaded && uj_loaded) {
+        console.log("starting animation");
+        renderer.setAnimationLoop( animate );
+    }
 }
