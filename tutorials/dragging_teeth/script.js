@@ -3,6 +3,9 @@ import { OrbitControls } from 'three/addons/controls/OrbitControls.js';
 import { VRButton } from 'three/addons/webxr/VRButton.js';
 import { XRControllerModelFactory } from 'three/addons/webxr/XRControllerModelFactory.js';
 import { OBJLoader } from 'three/addons/loaders/OBJLoader.js';
+import * as dat from 'dat';
+//import * as fs from '../../node_modules/fs';
+import { OBJExporter } from 'three/addons/exporters/OBJExporter.js';
 
 let container;
 let camera, scene, renderer;
@@ -77,7 +80,7 @@ function init() {
     const loader = new OBJLoader();
     var lowerjaw;
     loader.load(
-        '../../assets/lowerjaw_holger.obj',
+        '../../assets/lower_ios_6.obj',
         // called when resource is loaded y=green, x=red, z=blue
         function (object) {
             lowerjaw = object;
@@ -107,7 +110,7 @@ function init() {
     //const loader2 = new OBJLoader();
     var upperjaw;
     loader.load(
-        '../../assets/upperjaw_holger.obj',
+        '../../assets/upper_ios_6.obj',
         // called when resource is loaded y=green, x=red, z=blue
         function (object) {
             upperjaw = object;
@@ -145,6 +148,56 @@ function init() {
     container.appendChild( renderer.domElement );
 
     document.body.appendChild( VRButton.createButton( renderer ) );
+
+    // save scene
+
+    var step = 0;
+
+        var controls = new function () {
+            this.saveScene = function () {
+                const exporter = new OBJExporter();
+                // Parse the input and generate the OBJ output
+                const data = exporter.parse( scene );
+                downloadFile( data );
+                // upperjaw.position.x =  upperX
+                // upperjaw.position.y = new upperY
+                // upperjaw.position.z = new upperZ
+
+                // lowerjaw.position.x = new lowerX
+                // lowerjaw.position.y = new lowerY
+                // lowerjaw.position.Z = new lowerZ
+                //const fs = require("fs");
+                //var fs = require("fs");
+                // const stringToWrite = "HELLO I AM WRITTEN TO THE FILE";
+
+                // fs.writeFile("./scan_meta.txt", stringToWrite, (err) => {if (err) {console.error(err);return;
+                // }
+                //     });
+                // console.log("Data has been Written");
+            };
+
+            this.importScene = function () {
+                // var json = (localStorage.getItem('scene'));
+                // var sceneLoader = new THREE.SceneLoader();
+
+                // sceneLoader.parse(JSON.parse(json), function (e) {
+                //     scene = e.scene;
+                // }, '.');
+                upperjaw.position.x = upperX
+                upperjaw.position.y = upperY
+                upperjaw.position.Z = upperZ
+
+                lowerjaw.position.x = lowerX
+                lowerjaw.position.y = lowerY
+                lowerjaw.position.z = lowerZ
+                
+            }
+        };
+
+        var gui = new dat.GUI();
+        gui.add(controls, "saveScene");
+        gui.add(controls, "importScene");
+
 
 
     // controllers
@@ -317,3 +370,59 @@ function render() {
 
     renderer.render( scene, camera );
 }
+// create zoom buttons
+
+// import "./styles.css";
+
+// export const ZoomBar = () => {
+//   return (
+//     <div className="zoom-wrapper">
+//       <div className="zoom-bar">
+//         <div className="button" id="zoom-out">
+//           -
+//         </div>
+//         <div className="button" id="zoom-in">
+//           +
+//         </div>
+//       </div>
+//     </div>
+//   );
+// };
+
+const zoomInButton = document.getElementById("zoom-in");
+const zoomOutButton = document.getElementById("zoom-out");
+
+const zoomInFunction = (e) => {
+  const fov = getFov();
+  camera.fov = clickZoom(fov, "zoomIn");
+  camera.updateProjectionMatrix();
+};
+
+zoomInButton.addEventListener("click", zoomInFunction);
+
+const zoomOutFunction = (e) => {
+  const fov = getFov();
+  camera.fov = clickZoom(fov, "zoomOut");
+  camera.updateProjectionMatrix();
+};
+
+zoomOutButton.addEventListener("click", zoomOutFunction);
+
+const clickZoom = (value, zoomType) => {
+  if (value >= 20 && zoomType === "zoomIn") {
+    return value - 5;
+  } else if (value <= 75 && zoomType === "zoomOut") {
+    return value + 5;
+  } else {
+    return value;
+  }
+};
+
+const getFov = () => {
+  return Math.floor(
+    (2 *
+      Math.atan(camera.getFilmHeight() / 2 / camera.getFocalLength()) *
+      180) /
+      Math.PI
+  );
+};
