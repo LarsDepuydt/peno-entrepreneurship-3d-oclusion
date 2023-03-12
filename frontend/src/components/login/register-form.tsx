@@ -67,8 +67,8 @@ export default function LoginForm() {
             </div>
 
             <div className ={styles.spacingbtn}>
-            <button type="submit" className= "btn btn-primary btn-large" >Register</button>
-            <button type="button" className= "btn btn-primary btn-large" onClick={toLogin} >Login instead</button>
+            <button type="submit" className= "btn btn-outline-secondary btn-large" >Register</button>
+            <button type="button" className= "btn btn-outline-secondary btn-large" onClick={toLogin} >Login instead</button>
             </div>
           </Form>
         )}

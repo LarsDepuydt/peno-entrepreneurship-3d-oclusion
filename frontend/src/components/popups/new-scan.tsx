@@ -1,5 +1,5 @@
 import React, { useState } from "react"
-import { Formik, Field, Form} from 'formik';
+import { Formik, Field, Form, ErrorMessage} from 'formik';
 
 import styles from '@/styles/Modal.module.css'
 
@@ -8,6 +8,13 @@ import styles from '@/styles/Modal.module.css'
 
 interface scanValues {
   scanID: string;
+
+  type_overbite: boolean;
+  type_underbite: boolean;
+  type_crossbite: boolean;
+
+  type_reconstructive: boolean;
+  type_jawsurgery: boolean;
 }
 
 
@@ -28,7 +35,7 @@ export default function ModalForm() {
         <>
 
   <div className={styles.btn_modal}>
-    <button onClick={toggleModal}  className="btn btn-primary btn-large btn-secondary">Add Scans</button>
+    <button onClick={toggleModal}  className="btn btn-large btn-outline-secondary">Add Scans</button>
     {/* translation files bekijken */}
     </div>
 
@@ -43,7 +50,12 @@ export default function ModalForm() {
                 initialValues={{
                   scanID: '',
 
+                  type_overbite: false,
+                  type_underbite: false,
+                  type_crossbite: false,
 
+                  type_reconstructive: false,
+                  type_jawsurgery: false,
                 }}
                 
 
@@ -57,16 +69,62 @@ export default function ModalForm() {
                     
                 }}
               >
+
+                {({ errors, status, touched }) => ( 
                 <Form>
                   <div className="mb-3">
                     <Field className="form-control" id="scanID" name="scanID" placeholder="Scan ID" />
                   </div>
 
+                  <div className={styles.type_bite}>
+
+                    <div className="form-group form-check">
+                      <Field type="checkbox" name="type_overbite" className={'form-check-input ' + (errors.type_overbite && touched.type_overbite ? ' is-invalid' : '')} />
+                      <label htmlFor="type_overbite" className="form-check-label">overbite</label>
+                      <ErrorMessage name="type_overbite" component="div" className="invalid-feedback" />
+                    </div>
+
+                    <div className="form-group form-check">
+                      <Field type="checkbox" name="type_underbite" className={'form-check-input ' + (errors.type_underbite && touched.type_underbite ? ' is-invalid' : '')} />
+                      <label htmlFor="type_underbite" className="form-check-label">underbite</label>
+                      <ErrorMessage name="type_underbite" component="div" className="invalid-feedback" />
+                    </div>
+
+                    <div className="form-group form-check">
+                      <Field type="checkbox" name="type_crossbite" className={'form-check-input ' + (errors.type_crossbite && touched.type_crossbite ? ' is-invalid' : '')} />
+                      <label htmlFor="type_crossbite" className="form-check-label">crossbite</label>
+                      <ErrorMessage name="type_crossbite" component="div" className="invalid-feedback" />
+                    </div>
+                    
+                  </div>
+
+                  <div className={styles.type_surgery}>
+
+                    <div className="form-group form-check">
+                      <Field type="checkbox" name="type_reconstructive" className={'form-check-input ' + (errors.type_reconstructive && touched.type_reconstructive ? ' is-invalid' : '')} />
+                      <label htmlFor="type_reconstructive" className="form-check-label">reconstructive surgery</label>
+                      <ErrorMessage name="type_reconstructive" component="div" className="invalid-feedback" />
+                    </div>
+
+                    <div className="form-group form-check">
+                      <Field type="checkbox" name="type_jawsurgery" className={'form-check-input ' + (errors.type_jawsurgery && touched.type_jawsurgery ? ' is-invalid' : '')} />
+                      <label htmlFor="type_jawsurgery" className="form-check-label">jaw surgery</label>
+                      <ErrorMessage name="type_jawsurgery" component="div" className="invalid-feedback" />
+                    </div>
+                      
+
+                    
+                  </div>
+
                   <h3>scans to be added here </h3>
 
-                  <button type="submit" className= "btn btn-primary btn-large" >Save scans</button>
+                  <div className ={styles.spacingbtn}>
+                    <button type="submit" className= "btn btn-outline-secondary btn-large" >Save scans</button>
+                    <button type="button" className= "btn btn-outline-secondary btn-large" onClick={toggleModal} >Exit</button>
+                  </div>
 
                 </Form>
+              )}
               </Formik>
 
             </div>

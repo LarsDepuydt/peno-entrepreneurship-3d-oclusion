@@ -31,7 +31,7 @@ export default function ModalForm() {
         <>
 
     <div className={styles.btn_modal}>
-    <button onClick={toggleModal}  className="btn btn-primary btn-large btn-secondary">Add Patient</button>
+    <button onClick={toggleModal}  className="btn btn-large btn-outline-secondary">Add Patient</button>
     {/* translation files bekijken */}
     </div>
   
@@ -89,8 +89,8 @@ export default function ModalForm() {
                   </div>
       
                   <div className ={styles.spacingbtn}>
-                  <button type="submit" className= "btn btn-primary btn-large" >Save patient</button>
-                  <button type="button" className= "btn btn-primary btn-large" onClick={toggleModal} >Exit</button>
+                  <button type="submit" className= "btn btn-outline-secondary btn-large" >Save patient</button>
+                  <button type="button" className= "btn btn-outline-secondary btn-large" onClick={toggleModal} >Exit</button>
                   </div>
 
                 </Form>
