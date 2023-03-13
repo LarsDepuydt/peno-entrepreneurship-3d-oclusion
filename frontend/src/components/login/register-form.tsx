@@ -6,7 +6,7 @@ import { useRouter } from 'next/router';
 import Image from 'next/image'
 import styles from '@/styles/LoginForm.module.css'
 import reluLogo from "../../../public/relu-logo-small.png";
-import bcrypt from "bcryptjs";
+import bcrypt from 'bcryptjs';
 
 
 
@@ -43,7 +43,16 @@ export default function LoginForm() {
 
           validationSchema={FormSchema}
 
-          onSubmit={() => {router.push('/patient')}}
+          onSubmit={(values) => {
+            // Hash the password
+            const hashedPassword = bcrypt.hashSync(values.password, 10);
+          
+            // Replace the password with the new password
+            values.password = hashedPassword;
+          
+            router.push('/patient');
+          }}
+          
 
       
         >
