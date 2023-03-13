@@ -18,6 +18,7 @@ func AddTag(req *connect.Request[threedoclusionv1.AddTagRequest]) (*connect.Resp
 	}
 
 	defer database.Close()
+
 	// Prepare a statement with placeholders for the values
 	statement, error := database.Prepare("INSERT INTO tag (bite) VALUES ($1)")
 
@@ -25,22 +26,19 @@ func AddTag(req *connect.Request[threedoclusionv1.AddTagRequest]) (*connect.Resp
 		return nil, error
 	}
 
-	defer statement.Close()
-
 	// Perform database modifications, adding a tag
 	_, error = statement.Exec(req.Msg.Bite)
 	if error != nil {
 		return nil, error
 	}
 
-	responseMessage := fmt.Sprintf("tag with id: %s added with succes;", req.Msg.Bite)
+	responseMessage := fmt.Sprintf("tag with bite: %s added with succes", req.Msg.Bite)
 	fmt.Println(responseMessage)
 
 	res := connect.NewResponse(&threedoclusionv1.AddTagResponse{
 		Message: responseMessage,
 	})
 
-	fmt.Println(responseMessage)
 	return res, nil
 }
 
@@ -61,7 +59,7 @@ func DeleteTag(req *connect.Request[threedoclusionv1.DeleteTagRequest]) (*connec
 		return nil, error
 	}
 
-	responseMessage := fmt.Sprintf("tag with id: %d deleted with succes;", req.Msg.Id)
+	responseMessage := fmt.Sprintf("tag with id: %d deleted with succes", req.Msg.Id)
 	fmt.Println(responseMessage)
 
 	res := connect.NewResponse(&threedoclusionv1.DeleteTagResponse{
@@ -106,14 +104,14 @@ func GetTagByID(req *connect.Request[threedoclusionv1.GetTagByIDRequest]) (*conn
 	}
 	defer database.Close()
 	// Prepare a statement with placeholders for the condition
-	statement := "SELECT bite FROM tag WHERE id = $1;"
+	statement := "SELECT * FROM tag WHERE id = $1;"
 
 	idArray, biteArray, error := help_functions.GetResponseMakerTag(database, statement)
 	if error != nil {
 		panic(error)
 	}
 
-	responseMessage := fmt.Sprintf("tag with id: %d returned with succes;", req.Msg.Id)
+	responseMessage := fmt.Sprintf("tag with id: %d returned with succes", req.Msg.Id)
 	fmt.Println(responseMessage)
 
 	res := connect.NewResponse(&threedoclusionv1.GetTagByIDResponse{
