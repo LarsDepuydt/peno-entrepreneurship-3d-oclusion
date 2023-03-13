@@ -136,3 +136,39 @@ func (s *ServerStruct) GetAllTagsByType(
 ) (*connect.Response[threedoclusionv1.GetAllTagsByTypeResponse], error) {
 	return tags.GetAllTagsByType(req)
 }
+
+// PATIENTS
+func (s *ServerStruct) AddPatient(
+	ctx context.Context,
+	req *connect.Request[threedoclusionv1.AddPatientRequest],
+) (*connect.Response[threedoclusionv1.AddPatientResponse], error) {
+	return patients.AddPatient(req)
+}
+
+func (s *ServerStruct) DeletePatient(
+	ctx context.Context,
+	req *connect.Request[threedoclusionv1.DeletePatientRequest],
+) (*connect.Response[threedoclusionv1.DeletePatientResponse], error) {
+	return patients.DeletePatient(req)
+}
+
+func (s *ServerStruct) GetAllPatients(
+	ctx context.Context,
+	req *connect.Request[threedoclusionv1.GetAllPatientsRequest],
+) (*connect.Response[threedoclusionv1.GetAllPatientsResponse], error) {
+	return patients.GetAllPatients(req)
+}
+
+func (s *ServerStruct) GetPatientByID(
+	ctx context.Context,
+	req *connect.Request[threedoclusionv1.GetPatientByIDRequest],
+) (*connect.Response[threedoclusionv1.GetPatientByIDResponse], error) {
+	return patients.GetPatientByID(req)
+}
+
+func (s *ServerStruct) GetPatientByName(
+	ctx context.Context,
+	req *connect.Request[threedoclusionv1.GetPatientByNameRequest],
+) (*connect.Response[threedoclusionv1.GetPatientByNameResponse], error) {
+	return patients.GetPatientByName(req)
+}

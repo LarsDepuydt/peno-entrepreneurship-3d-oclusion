@@ -134,6 +134,7 @@ message GetScanByDateResponse {
   repeated Scan scans = 1;
 }
 
+<<<<<<< HEAD
 message TagResponse {
   string id = 1;
   string color = 2;
@@ -157,4 +158,53 @@ message WaitingRequest {
 message WaitingResponse {
   bool redirect = 1;
   string url = 2;
+=======
+//PATIENT
+
+message AddPatientRequest{
+  string first_name = 1;
+  string last_name = 2;
+  int64 pinned = 3;
+  string notes = 4;
+}
+
+message AddPatientResponse{
+  string message = 1;
+}
+
+message DeletePatientRequest{
+  int64 id = 1;
+}
+
+message DeletePatientResponse{
+  string message = 1;
+}
+
+message GetAllPatientsRequest{}
+
+message GetAllPatientsResponse{
+  repeated Patient patients = 1;
+}
+
+message GetPatientByIDRequest{
+  int64 id = 1;
+}
+
+message GetPatientByIDResponse{
+  int64 id = 1;
+  string first_name = 2;
+  string last_name = 3;
+  int64 pinned = 4;
+  string notes = 5;
+}
+
+message GetPatientByNameRequest{
+  optional string first_name = 1;
+  optional string last_name = 2;
+
+}
+
+message GetPatientByNameResponse{
+  repeated Patient patients = 1;
+>>>>>>> PasswordHashing
 }

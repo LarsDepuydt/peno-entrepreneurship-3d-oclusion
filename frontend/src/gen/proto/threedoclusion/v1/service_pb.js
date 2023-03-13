@@ -349,6 +349,7 @@ export const GetPatientByNameResponse = proto3.makeMessageType(
   "threedoclusion.v1.GetPatientByNameResponse",
   () => [
     { no: 1, name: "patients", kind: "message", T: Patient, repeated: true },
+<<<<<<< HEAD
   ],
 );
 
@@ -403,6 +404,8 @@ export const WaitingResponse = proto3.makeMessageType(
   () => [
     { no: 1, name: "redirect", kind: "scalar", T: 8 /* ScalarType.BOOL */ },
     { no: 2, name: "url", kind: "scalar", T: 9 /* ScalarType.STRING */ },
+=======
+>>>>>>> PasswordHashing
   ],
 );
 
