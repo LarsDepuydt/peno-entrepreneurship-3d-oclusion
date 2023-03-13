@@ -6,22 +6,6 @@ import (
 	"github.com/bufbuild/connect-go"
 	_ "github.com/lib/pq"
 
-<<<<<<< HEAD
-	threedoclusionv1 "github.com/LarsDepuydt/peno-entrepreneurship-3d-oclusion/gen/proto/threedoclusion/v1"
-)
-
-func GetTagById(req *connect.Request[threedoclusionv1.TagRequest]) (*connect.Response[threedoclusionv1.TagResponse], error) {
-	log.Println("Request headers: ", req.Header())
-	res := connect.NewResponse(&threedoclusionv1.TagResponse{
-		Id:    req.Msg.Id,
-		Color: "black",
-		Text:  "test",
-	})
-
-	res.Header().Set("Scan-Version", "v1")
-	return res, nil
-}
-=======
 	"github.com/LarsDepuydt/peno-entrepreneurship-3d-oclusion/cmd/help_functions"
 	threedoclusionv1 "github.com/LarsDepuydt/peno-entrepreneurship-3d-oclusion/gen/proto/threedoclusion/v1"
 )
@@ -167,4 +151,3 @@ func GetAllTagsByType(req *connect.Request[threedoclusionv1.GetAllTagsByTypeRequ
 	return res, nil
 
 }
->>>>>>> origin/main

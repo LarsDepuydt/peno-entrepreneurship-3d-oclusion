@@ -4,6 +4,7 @@ import (
 	"context"
 	"net/http"
 
+	"github.com/LarsDepuydt/peno-entrepreneurship-3d-oclusion/cmd/help_datastructures"
 	"github.com/LarsDepuydt/peno-entrepreneurship-3d-oclusion/cmd/push"
 	"github.com/LarsDepuydt/peno-entrepreneurship-3d-oclusion/cmd/scans"
 	"github.com/LarsDepuydt/peno-entrepreneurship-3d-oclusion/cmd/tags"
@@ -15,7 +16,9 @@ import (
 	"golang.org/x/net/http2/h2c"
 )
 
-type ServerStruct struct{}
+type ServerStruct struct {
+	redirectVRChannels *help_datastructures.MapChannels
+}
 
 func setCors(mux http.Handler) http.Handler {
 	muxHandler := cors.Default().Handler(mux)
@@ -31,7 +34,8 @@ func setCors(mux http.Handler) http.Handler {
 }
 
 func Server() {
-	server := &ServerStruct{}
+	redirectVRChannels := help_datastructures.NewMap()
+	server := &ServerStruct{redirectVRChannels}
 
 	mux := http.NewServeMux()
 	path, handler := threedoclusionv1connect.NewScanServiceHandler(server)
@@ -44,6 +48,21 @@ func Server() {
 		// Use h2c so we can serve HTTP/2 without TLS.
 		h2c.NewHandler(muxHandler, &http2.Server{}),
 	)
+}
+
+// PUSH
+func (s *ServerStruct) SendVR(
+	ctx context.Context,
+	req *connect.Request[threedoclusionv1.SendVRRequest],
+) (*connect.Response[threedoclusionv1.SendVRResponse], error) {
+	return push.SendToVR(req, s.redirectVRChannels)
+}
+
+func (s *ServerStruct) Waiting(
+	ctx context.Context,
+	req *connect.Request[threedoclusionv1.WaitingRequest], stream *connect.ServerStream[threedoclusionv1.WaitingResponse],
+) error {
+	return push.GetWaitingResponse(req, stream, s.redirectVRChannels)
 }
 
 // SCANS
@@ -61,19 +80,6 @@ func (s *ServerStruct) DeleteScan(
 	return scans.DeleteScan(req)
 }
 
-func (s *ServerStruct) SendVR(
-	ctx context.Context,
-	req *connect.Request[threedoclusionv1.SendVRRequest],
-) (*connect.Response[threedoclusionv1.SendVRResponse], error) {
-	return push.SendToVR(req)
-}
-
-func (s *ServerStruct) Waiting(
-	ctx context.Context,
-	req *connect.Request[threedoclusionv1.waitingRequest],
-) (*connect.ServerStream[threedoclusionv1.waitingResponse], error) {
-	return push.GetWaitingResponse(req)
-} // Server stream setup??
 func (s *ServerStruct) GetAllScans(
 	ctx context.Context,
 	req *connect.Request[threedoclusionv1.GetAllScansRequest],
