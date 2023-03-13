@@ -1,0 +1,56 @@
+version: "3.8"
+
+services:
+  db: 
+    image: postgres:15.2
+    ports:
+      - "5430:5432"
+    environment:
+      POSTGRES_PASSWORD: &postgres_password "docker1"
+      POSTGRES_USER: &postgres_user "docker"
+      POSTGRES_DB: &db_name "patient_server"
+    volumes:
+      - ./database:/usr/src/app/database
+      - "dbdata:/var/lib/postgresql/data"
+      # only for local development, TODO: find a fix for prod
+      - ./database/migrations/database.up.sql:/docker-entrypoint-initdb.d/create_tables.sql
+  app:
+    &app
+    build:
+      context: .
+      dockerfile: Dockerfile
+      target: dev
+    working_dir: /usr/src/app/
+    volumes:
+      - .:/usr/src/app
+      - gomod-cache:/go/pkg/mod
+      - gobuild-cache:/.cache/go-build
+    entrypoint: "bash -c"
+  backend:
+    <<: *app
+    image: 'patient_server'
+    environment:
+      DB_PASSWORD: &postgres_password
+      DB_USER: &postgres_user
+      DB_NAME: &db_name
+    links:
+      - db
+    restart: always
+    working_dir: /usr/src/app/backend
+    ports:
+      - "8080:8080"
+    entrypoint: "nodemon --ext go,yaml --signal SIGTERM --exec go run cmd/main.go"
+  frontend:
+    <<: *app
+    links:
+      - backend
+    restart: always
+    working_dir: /usr/src/app/frontend
+    ports: 
+      - "3000:3000"
+    entrypoint: "yarn dev"
+volumes:
+  dbdata: {}
+  gomod-cache: {}
+  gobuild-cache: {}
+ 

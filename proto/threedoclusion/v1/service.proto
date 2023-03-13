@@ -1,0 +1,121 @@
+syntax = "proto3";
+
+package threedoclusion.v1;
+
+option go_package = "github.com/LarsDepuydt/peno-entrepreneurship-3d-oclusie";
+
+
+service ScanService {
+  rpc AddScan(AddScanRequest) returns (AddScanResponse) {}
+  rpc DeleteScan(DeleteScanRequest) returns (DeleteScanResponse) {}
+  rpc GetAllScans(GetAllScansRequest) returns (GetAllScansResponse) {}
+  rpc GetScanByID(GetScanByIDRequest) returns (GetScanByIDResponse) {}
+  rpc GetScanByDate(GetScanByDateRequest) returns (GetScanByDateResponse) {}
+
+
+  rpc AddTag(AddTagRequest) returns (AddTagResponse) {}
+  rpc DeleteTag(DeleteTagRequest) returns (DeleteTagResponse) {}
+  rpc GetAllTags(GetAllTagsRequest) returns (GetAllTagsResponse) {}
+  rpc GetTagByID(GetTagByIDRequest) returns (GetTagByIDResponse) {}
+  rpc GetAllTagsByType(GetAllTagsByTypeRequest) returns (GetAllTagsByTypeResponse) {}
+
+
+}
+
+
+
+// TAGS
+message AddTagRequest {
+  string bite = 1;
+}
+
+message AddTagResponse {
+  string message = 1;
+}
+
+message DeleteTagRequest {
+  int64 id = 1;
+}
+
+message DeleteTagResponse {
+  string message = 1;
+}
+
+message GetAllTagsRequest {
+  string table_name = 1;
+}
+
+message GetAllTagsResponse {
+  repeated int64 id_data = 1;
+  repeated string bite_data = 2;
+}
+
+message GetTagByIDRequest {
+  int64 id = 1;
+}
+
+message GetTagByIDResponse {
+  int64 id = 1;
+  string bite = 2;
+}
+
+message GetAllTagsByTypeRequest {
+  string type = 1;
+}
+
+message GetAllTagsByTypeResponse {
+  string bite = 1;
+  repeated int64 id_data = 2;
+}
+
+
+// SCANS
+message AddScanRequest {
+  string scan_file = 1;
+  string scan_date = 2;
+
+}
+
+message AddScanResponse {
+  string message = 1;
+}
+
+message DeleteScanRequest{
+  int64 id = 1;
+}
+
+message DeleteScanResponse {
+  string message = 1;
+}
+
+message GetAllScansRequest {
+  string table_name = 1;
+
+}
+
+message GetAllScansResponse {
+  repeated int64 id_data =  1;
+  repeated string scan_data = 2;
+  repeated string scan_dates = 3;
+}
+
+message GetScanByIDRequest {
+  int64 id = 1;
+}
+
+message GetScanByIDResponse {
+  int64 id =  1;
+  string scan_data = 2;
+  string scan_date = 3;
+}
+
+message GetScanByDateRequest {
+  string date = 1 ;
+}
+
+message GetScanByDateResponse {
+  repeated int64 id_data =  1;
+  repeated string scan_data = 2;
+  repeated string scan_dates = 3;
+}
+
