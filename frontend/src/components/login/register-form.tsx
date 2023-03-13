@@ -5,9 +5,9 @@ import * as yup from 'yup';
 import { useRouter } from 'next/router';
 import Image from 'next/image'
 import styles from '@/styles/LoginForm.module.css'
-
-
 import reluLogo from "../../../public/relu-logo-small.png";
+import bcrypt from "bcryptjs";
+
 
 
 const FormSchema = yup.object().shape({
@@ -24,11 +24,7 @@ interface Values {
 }
 
 export default function LoginForm() {   
-
-  
-
     const router = useRouter();
-
     const toLogin = () => router.push('/login-page')    
 
     return (

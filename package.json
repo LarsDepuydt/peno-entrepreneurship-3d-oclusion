@@ -3,5 +3,8 @@
     "@bufbuild/buf": "^1.15.0",
     "@bufbuild/protoc-gen-connect-es": "^0.8.3",
     "@bufbuild/protoc-gen-es": "^1.1.0"
+  },
+  "dependencies": {
+    "bcryptjs": "^2.4.3"
   }
 }
