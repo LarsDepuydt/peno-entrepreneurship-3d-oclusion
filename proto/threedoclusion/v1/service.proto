@@ -12,14 +12,17 @@ service ScanService {
   rpc GetScanByID(GetScanByIDRequest) returns (GetScanByIDResponse) {}
   rpc GetScanByDate(GetScanByDateRequest) returns (GetScanByDateResponse) {}
 
-
   rpc AddTag(AddTagRequest) returns (AddTagResponse) {}
   rpc DeleteTag(DeleteTagRequest) returns (DeleteTagResponse) {}
   rpc GetAllTags(GetAllTagsRequest) returns (GetAllTagsResponse) {}
   rpc GetTagByID(GetTagByIDRequest) returns (GetTagByIDResponse) {}
   rpc GetAllTagsByType(GetAllTagsByTypeRequest) returns (GetAllTagsByTypeResponse) {}
 
-
+  rpc AddDentist(AddDentistRequest) returns (AddDentistResponse) {}
+  rpc DeleteDentistById(DeleteDentistByIdRequest) returns (DeleteDentistByIdResponse) {}
+  rpc GetAllDentists(GetAllDentistsRequest) returns (GetAllDentistsResponse) {}
+  rpc GetDentistById(GetDentistByIdRequest) returns (GetDentistByIdResponse) {}
+  rpc UpdateDentistById(UpdateDentistByIdRequest) returns (UpdateDentistByIdResponse) {}
 }
 
 
@@ -119,3 +122,58 @@ message GetScanByDateResponse {
   repeated string scan_dates = 3;
 }
 
+// DENTIST
+message Dentist {
+  int64 id = 1;
+  string email = 2;
+  string first_name = 3;
+  string last_name = 4;
+}
+
+message AddDentistRequest {
+  string email = 1;
+  string password = 2;
+  string first_name = 3;
+  string last_name = 4;
+}
+
+message AddDentistResponse {
+  string message = 1;
+}
+
+message GetDentistByIdRequest {
+  string id = 1;
+}
+
+message GetDentistByIdResponse {
+  int64 id = 1;
+  string email = 2;
+  string first_name = 3;
+  string last_name = 4;
+}
+
+message GetAllDentistsRequest {}
+
+message GetAllDentistsResponse {
+  repeated Dentist dentists = 1;
+}
+
+message UpdateDentistByIdRequest {
+  int64 id = 1;
+  optional string email = 2;
+  optional string first_name = 3;
+  optional string last_name = 4;
+  optional string password = 5;
+}
+
+message UpdateDentistByIdResponse {
+  string message = 1;
+}
+
+message DeleteDentistByIdRequest {
+  string id = 1;
+}
+
+message DeleteDentistByIdResponse {
+  string message = 1;
+}

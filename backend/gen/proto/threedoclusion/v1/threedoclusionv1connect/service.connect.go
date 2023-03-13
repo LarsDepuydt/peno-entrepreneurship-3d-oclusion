@@ -37,6 +37,11 @@ type ScanServiceClient interface {
 	GetAllTags(context.Context, *connect_go.Request[v1.GetAllTagsRequest]) (*connect_go.Response[v1.GetAllTagsResponse], error)
 	GetTagByID(context.Context, *connect_go.Request[v1.GetTagByIDRequest]) (*connect_go.Response[v1.GetTagByIDResponse], error)
 	GetAllTagsByType(context.Context, *connect_go.Request[v1.GetAllTagsByTypeRequest]) (*connect_go.Response[v1.GetAllTagsByTypeResponse], error)
+	AddDentist(context.Context, *connect_go.Request[v1.AddDentistRequest]) (*connect_go.Response[v1.AddDentistResponse], error)
+	DeleteDentistById(context.Context, *connect_go.Request[v1.DeleteDentistByIdRequest]) (*connect_go.Response[v1.DeleteDentistByIdResponse], error)
+	GetAllDentists(context.Context, *connect_go.Request[v1.GetAllDentistsRequest]) (*connect_go.Response[v1.GetAllDentistsResponse], error)
+	GetDentistById(context.Context, *connect_go.Request[v1.GetDentistByIdRequest]) (*connect_go.Response[v1.GetDentistByIdResponse], error)
+	UpdateDentistById(context.Context, *connect_go.Request[v1.UpdateDentistByIdRequest]) (*connect_go.Response[v1.UpdateDentistByIdResponse], error)
 }
 
 // NewScanServiceClient constructs a client for the threedoclusion.v1.ScanService service. By
@@ -99,21 +104,51 @@ func NewScanServiceClient(httpClient connect_go.HTTPClient, baseURL string, opts
 			baseURL+"/threedoclusion.v1.ScanService/GetAllTagsByType",
 			opts...,
 		),
+		addDentist: connect_go.NewClient[v1.AddDentistRequest, v1.AddDentistResponse](
+			httpClient,
+			baseURL+"/threedoclusion.v1.ScanService/AddDentist",
+			opts...,
+		),
+		deleteDentistById: connect_go.NewClient[v1.DeleteDentistByIdRequest, v1.DeleteDentistByIdResponse](
+			httpClient,
+			baseURL+"/threedoclusion.v1.ScanService/DeleteDentistById",
+			opts...,
+		),
+		getAllDentists: connect_go.NewClient[v1.GetAllDentistsRequest, v1.GetAllDentistsResponse](
+			httpClient,
+			baseURL+"/threedoclusion.v1.ScanService/GetAllDentists",
+			opts...,
+		),
+		getDentistById: connect_go.NewClient[v1.GetDentistByIdRequest, v1.GetDentistByIdResponse](
+			httpClient,
+			baseURL+"/threedoclusion.v1.ScanService/GetDentistById",
+			opts...,
+		),
+		updateDentistById: connect_go.NewClient[v1.UpdateDentistByIdRequest, v1.UpdateDentistByIdResponse](
+			httpClient,
+			baseURL+"/threedoclusion.v1.ScanService/UpdateDentistById",
+			opts...,
+		),
 	}
 }
 
 // scanServiceClient implements ScanServiceClient.
 type scanServiceClient struct {
-	addScan          *connect_go.Client[v1.AddScanRequest, v1.AddScanResponse]
-	deleteScan       *connect_go.Client[v1.DeleteScanRequest, v1.DeleteScanResponse]
-	getAllScans      *connect_go.Client[v1.GetAllScansRequest, v1.GetAllScansResponse]
-	getScanByID      *connect_go.Client[v1.GetScanByIDRequest, v1.GetScanByIDResponse]
-	getScanByDate    *connect_go.Client[v1.GetScanByDateRequest, v1.GetScanByDateResponse]
-	addTag           *connect_go.Client[v1.AddTagRequest, v1.AddTagResponse]
-	deleteTag        *connect_go.Client[v1.DeleteTagRequest, v1.DeleteTagResponse]
-	getAllTags       *connect_go.Client[v1.GetAllTagsRequest, v1.GetAllTagsResponse]
-	getTagByID       *connect_go.Client[v1.GetTagByIDRequest, v1.GetTagByIDResponse]
-	getAllTagsByType *connect_go.Client[v1.GetAllTagsByTypeRequest, v1.GetAllTagsByTypeResponse]
+	addScan           *connect_go.Client[v1.AddScanRequest, v1.AddScanResponse]
+	deleteScan        *connect_go.Client[v1.DeleteScanRequest, v1.DeleteScanResponse]
+	getAllScans       *connect_go.Client[v1.GetAllScansRequest, v1.GetAllScansResponse]
+	getScanByID       *connect_go.Client[v1.GetScanByIDRequest, v1.GetScanByIDResponse]
+	getScanByDate     *connect_go.Client[v1.GetScanByDateRequest, v1.GetScanByDateResponse]
+	addTag            *connect_go.Client[v1.AddTagRequest, v1.AddTagResponse]
+	deleteTag         *connect_go.Client[v1.DeleteTagRequest, v1.DeleteTagResponse]
+	getAllTags        *connect_go.Client[v1.GetAllTagsRequest, v1.GetAllTagsResponse]
+	getTagByID        *connect_go.Client[v1.GetTagByIDRequest, v1.GetTagByIDResponse]
+	getAllTagsByType  *connect_go.Client[v1.GetAllTagsByTypeRequest, v1.GetAllTagsByTypeResponse]
+	addDentist        *connect_go.Client[v1.AddDentistRequest, v1.AddDentistResponse]
+	deleteDentistById *connect_go.Client[v1.DeleteDentistByIdRequest, v1.DeleteDentistByIdResponse]
+	getAllDentists    *connect_go.Client[v1.GetAllDentistsRequest, v1.GetAllDentistsResponse]
+	getDentistById    *connect_go.Client[v1.GetDentistByIdRequest, v1.GetDentistByIdResponse]
+	updateDentistById *connect_go.Client[v1.UpdateDentistByIdRequest, v1.UpdateDentistByIdResponse]
 }
 
 // AddScan calls threedoclusion.v1.ScanService.AddScan.
@@ -166,6 +201,31 @@ func (c *scanServiceClient) GetAllTagsByType(ctx context.Context, req *connect_g
 	return c.getAllTagsByType.CallUnary(ctx, req)
 }
 
+// AddDentist calls threedoclusion.v1.ScanService.AddDentist.
+func (c *scanServiceClient) AddDentist(ctx context.Context, req *connect_go.Request[v1.AddDentistRequest]) (*connect_go.Response[v1.AddDentistResponse], error) {
+	return c.addDentist.CallUnary(ctx, req)
+}
+
+// DeleteDentistById calls threedoclusion.v1.ScanService.DeleteDentistById.
+func (c *scanServiceClient) DeleteDentistById(ctx context.Context, req *connect_go.Request[v1.DeleteDentistByIdRequest]) (*connect_go.Response[v1.DeleteDentistByIdResponse], error) {
+	return c.deleteDentistById.CallUnary(ctx, req)
+}
+
+// GetAllDentists calls threedoclusion.v1.ScanService.GetAllDentists.
+func (c *scanServiceClient) GetAllDentists(ctx context.Context, req *connect_go.Request[v1.GetAllDentistsRequest]) (*connect_go.Response[v1.GetAllDentistsResponse], error) {
+	return c.getAllDentists.CallUnary(ctx, req)
+}
+
+// GetDentistById calls threedoclusion.v1.ScanService.GetDentistById.
+func (c *scanServiceClient) GetDentistById(ctx context.Context, req *connect_go.Request[v1.GetDentistByIdRequest]) (*connect_go.Response[v1.GetDentistByIdResponse], error) {
+	return c.getDentistById.CallUnary(ctx, req)
+}
+
+// UpdateDentistById calls threedoclusion.v1.ScanService.UpdateDentistById.
+func (c *scanServiceClient) UpdateDentistById(ctx context.Context, req *connect_go.Request[v1.UpdateDentistByIdRequest]) (*connect_go.Response[v1.UpdateDentistByIdResponse], error) {
+	return c.updateDentistById.CallUnary(ctx, req)
+}
+
 // ScanServiceHandler is an implementation of the threedoclusion.v1.ScanService service.
 type ScanServiceHandler interface {
 	AddScan(context.Context, *connect_go.Request[v1.AddScanRequest]) (*connect_go.Response[v1.AddScanResponse], error)
@@ -178,6 +238,11 @@ type ScanServiceHandler interface {
 	GetAllTags(context.Context, *connect_go.Request[v1.GetAllTagsRequest]) (*connect_go.Response[v1.GetAllTagsResponse], error)
 	GetTagByID(context.Context, *connect_go.Request[v1.GetTagByIDRequest]) (*connect_go.Response[v1.GetTagByIDResponse], error)
 	GetAllTagsByType(context.Context, *connect_go.Request[v1.GetAllTagsByTypeRequest]) (*connect_go.Response[v1.GetAllTagsByTypeResponse], error)
+	AddDentist(context.Context, *connect_go.Request[v1.AddDentistRequest]) (*connect_go.Response[v1.AddDentistResponse], error)
+	DeleteDentistById(context.Context, *connect_go.Request[v1.DeleteDentistByIdRequest]) (*connect_go.Response[v1.DeleteDentistByIdResponse], error)
+	GetAllDentists(context.Context, *connect_go.Request[v1.GetAllDentistsRequest]) (*connect_go.Response[v1.GetAllDentistsResponse], error)
+	GetDentistById(context.Context, *connect_go.Request[v1.GetDentistByIdRequest]) (*connect_go.Response[v1.GetDentistByIdResponse], error)
+	UpdateDentistById(context.Context, *connect_go.Request[v1.UpdateDentistByIdRequest]) (*connect_go.Response[v1.UpdateDentistByIdResponse], error)
 }
 
 // NewScanServiceHandler builds an HTTP handler from the service implementation. It returns the path
@@ -237,6 +302,31 @@ func NewScanServiceHandler(svc ScanServiceHandler, opts ...connect_go.HandlerOpt
 		svc.GetAllTagsByType,
 		opts...,
 	))
+	mux.Handle("/threedoclusion.v1.ScanService/AddDentist", connect_go.NewUnaryHandler(
+		"/threedoclusion.v1.ScanService/AddDentist",
+		svc.AddDentist,
+		opts...,
+	))
+	mux.Handle("/threedoclusion.v1.ScanService/DeleteDentistById", connect_go.NewUnaryHandler(
+		"/threedoclusion.v1.ScanService/DeleteDentistById",
+		svc.DeleteDentistById,
+		opts...,
+	))
+	mux.Handle("/threedoclusion.v1.ScanService/GetAllDentists", connect_go.NewUnaryHandler(
+		"/threedoclusion.v1.ScanService/GetAllDentists",
+		svc.GetAllDentists,
+		opts...,
+	))
+	mux.Handle("/threedoclusion.v1.ScanService/GetDentistById", connect_go.NewUnaryHandler(
+		"/threedoclusion.v1.ScanService/GetDentistById",
+		svc.GetDentistById,
+		opts...,
+	))
+	mux.Handle("/threedoclusion.v1.ScanService/UpdateDentistById", connect_go.NewUnaryHandler(
+		"/threedoclusion.v1.ScanService/UpdateDentistById",
+		svc.UpdateDentistById,
+		opts...,
+	))
 	return "/threedoclusion.v1.ScanService/", mux
 }
 
@@ -281,4 +371,24 @@ func (UnimplementedScanServiceHandler) GetTagByID(context.Context, *connect_go.R
 
 func (UnimplementedScanServiceHandler) GetAllTagsByType(context.Context, *connect_go.Request[v1.GetAllTagsByTypeRequest]) (*connect_go.Response[v1.GetAllTagsByTypeResponse], error) {
 	return nil, connect_go.NewError(connect_go.CodeUnimplemented, errors.New("threedoclusion.v1.ScanService.GetAllTagsByType is not implemented"))
+}
+
+func (UnimplementedScanServiceHandler) AddDentist(context.Context, *connect_go.Request[v1.AddDentistRequest]) (*connect_go.Response[v1.AddDentistResponse], error) {
+	return nil, connect_go.NewError(connect_go.CodeUnimplemented, errors.New("threedoclusion.v1.ScanService.AddDentist is not implemented"))
+}
+
+func (UnimplementedScanServiceHandler) DeleteDentistById(context.Context, *connect_go.Request[v1.DeleteDentistByIdRequest]) (*connect_go.Response[v1.DeleteDentistByIdResponse], error) {
+	return nil, connect_go.NewError(connect_go.CodeUnimplemented, errors.New("threedoclusion.v1.ScanService.DeleteDentistById is not implemented"))
+}
+
+func (UnimplementedScanServiceHandler) GetAllDentists(context.Context, *connect_go.Request[v1.GetAllDentistsRequest]) (*connect_go.Response[v1.GetAllDentistsResponse], error) {
+	return nil, connect_go.NewError(connect_go.CodeUnimplemented, errors.New("threedoclusion.v1.ScanService.GetAllDentists is not implemented"))
+}
+
+func (UnimplementedScanServiceHandler) GetDentistById(context.Context, *connect_go.Request[v1.GetDentistByIdRequest]) (*connect_go.Response[v1.GetDentistByIdResponse], error) {
+	return nil, connect_go.NewError(connect_go.CodeUnimplemented, errors.New("threedoclusion.v1.ScanService.GetDentistById is not implemented"))
+}
+
+func (UnimplementedScanServiceHandler) UpdateDentistById(context.Context, *connect_go.Request[v1.UpdateDentistByIdRequest]) (*connect_go.Response[v1.UpdateDentistByIdResponse], error) {
+	return nil, connect_go.NewError(connect_go.CodeUnimplemented, errors.New("threedoclusion.v1.ScanService.UpdateDentistById is not implemented"))
 }
