@@ -48,9 +48,9 @@ export default function LoginForm() {
               <Field className="form-control" id="password" name="password" placeholder="Password" type="password" />
             </div>
             
-            <div className ={styles.loginbtn}>
-            <button type="submit" className="btn btn-primary btn-large" >Login</button>
-            <button type="button" className= "btn btn-primary btn-large" onClick={toRegister} >Register instead</button>
+            <div className ={styles.spacingbtn}>
+            <button type="submit" className="btn btn-outline-secondary btn-large" >Login</button>
+            <button type="button" className= "btn btn-outline-secondary btn-large" onClick={toRegister} >Register instead</button>
             </div>
           </Form>
         </Formik>

@@ -52,7 +52,7 @@ export default function LoginForm() {
       
         >
           {({ errors }) => (
-          <Form>
+          <Form className={styles.center}>
             <div className="mb-3">
               <Field className="form-control" id="username" name="username" placeholder="Username" aria-describedby="usernameHelp" />
             </div>
@@ -63,12 +63,12 @@ export default function LoginForm() {
 
             <div className="mb-3">
               <Field className="form-control" validation id="reppassword" name="reppassword" placeholder="Repeat Password" type="password" />
-              {errors.reppassword && <p>{errors.reppassword}</p>}
+              {errors.reppassword && <b className={styles.error}>{errors.reppassword}</b>}
             </div>
 
-            <div className ={styles.loginbtn}>
-            <button type="submit" className= "btn btn-primary btn-large" >Register</button>
-            <button type="button" className= "btn btn-primary btn-large" onClick={toLogin} >Login instead</button>
+            <div className ={styles.spacingbtn}>
+            <button type="submit" className= "btn btn-outline-secondary btn-large" >Register</button>
+            <button type="button" className= "btn btn-outline-secondary btn-large" onClick={toLogin} >Login instead</button>
             </div>
           </Form>
         )}
