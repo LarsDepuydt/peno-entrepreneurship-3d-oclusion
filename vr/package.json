@@ -1,0 +1,9 @@
+{
+  "dependencies": {
+    "@types/dat.gui": "^0.7.7",
+    "cannon": "^0.6.2",
+    "cannon-utils": "^0.1.4",
+    "dat.gui": "^0.7.9",
+    "fs": "^0.0.1-security"
+  }
+}
