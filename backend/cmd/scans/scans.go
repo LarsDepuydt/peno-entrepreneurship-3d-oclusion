@@ -10,6 +10,12 @@ import (
 	threedoclusionv1 "github.com/LarsDepuydt/peno-entrepreneurship-3d-oclusion/gen/proto/threedoclusion/v1"
 )
 
+type RowDataScan struct {
+	id   int64
+	scan string
+	date string
+}
+
 func AddScan(req *connect.Request[threedoclusionv1.AddScanRequest]) (*connect.Response[threedoclusionv1.AddScanResponse], error) {
 	// Connect to the database
 	database, error := help_functions.ConnectToDataBase()
@@ -83,7 +89,7 @@ func GetAllScans(req *connect.Request[threedoclusionv1.GetAllScansRequest]) (*co
 	// Prepare a statement with placeholders for the condition
 	statement := "SELECT * FROM scan;"
 
-	idArray, scanArray, dateArray, error := help_functions.GetResponseMakerScan(database, statement)
+	result, error := help_functions.GetResponseMakerScan(database, statement)
 	if error != nil {
 		panic(error)
 	}
@@ -91,9 +97,7 @@ func GetAllScans(req *connect.Request[threedoclusionv1.GetAllScansRequest]) (*co
 	fmt.Println("Got all scans succesfully")
 
 	res := connect.NewResponse(&threedoclusionv1.GetAllScansResponse{
-		IdData:    idArray,
-		ScanData:  scanArray,
-		ScanDates: dateArray,
+		Scans: result,
 	})
 
 	return res, nil
@@ -111,7 +115,7 @@ func GetScanByID(req *connect.Request[threedoclusionv1.GetScanByIDRequest]) (*co
 	// Prepare a statement with placeholders for the condition
 	statement := "SELECT * FROM scan WHERE id = $1;"
 
-	idArray, scanArray, dateArray, error := help_functions.GetResponseMakerScan(database, statement)
+	result, error := help_functions.GetResponseMakerScan(database, statement)
 	if error != nil {
 		panic(error)
 	}
@@ -120,9 +124,9 @@ func GetScanByID(req *connect.Request[threedoclusionv1.GetScanByIDRequest]) (*co
 	fmt.Println(responseMessage)
 
 	res := connect.NewResponse(&threedoclusionv1.GetScanByIDResponse{
-		Id:       idArray[0],
-		ScanData: scanArray[0],
-		ScanDate: dateArray[0],
+		Id:       result[0].Id,
+		ScanData: result[0].Scan,
+		ScanDate: result[0].Date,
 	})
 
 	return res, nil
@@ -139,7 +143,7 @@ func GetScanByDate(req *connect.Request[threedoclusionv1.GetScanByDateRequest]) 
 	// Prepare a statement with placeholders for the condition
 	statement := "SELECT * FROM scan WHERE scan_date = $1;"
 
-	idArray, scanArray, dateArray, error := help_functions.GetResponseMakerScan(database, statement)
+	result, error := help_functions.GetResponseMakerScan(database, statement)
 	if error != nil {
 		panic(error)
 	}
@@ -148,9 +152,7 @@ func GetScanByDate(req *connect.Request[threedoclusionv1.GetScanByDateRequest]) 
 	fmt.Println(responseMessage)
 
 	res := connect.NewResponse(&threedoclusionv1.GetScanByDateResponse{
-		IdData:    idArray,
-		ScanData:  scanArray,
-		ScanDates: dateArray,
+		Scans: result,
 	})
 
 	return res, nil

@@ -20,6 +20,203 @@ const (
 	_ = protoimpl.EnforceVersion(protoimpl.MaxVersion - 20)
 )
 
+type RowDataTag struct {
+	state         protoimpl.MessageState
+	sizeCache     protoimpl.SizeCache
+	unknownFields protoimpl.UnknownFields
+
+	Id   int64  `protobuf:"varint,1,opt,name=id,proto3" json:"id,omitempty"`
+	Bite string `protobuf:"bytes,2,opt,name=bite,proto3" json:"bite,omitempty"`
+}
+
+func (x *RowDataTag) Reset() {
+	*x = RowDataTag{}
+	if protoimpl.UnsafeEnabled {
+		mi := &file_threedoclusion_v1_service_proto_msgTypes[0]
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		ms.StoreMessageInfo(mi)
+	}
+}
+
+func (x *RowDataTag) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*RowDataTag) ProtoMessage() {}
+
+func (x *RowDataTag) ProtoReflect() protoreflect.Message {
+	mi := &file_threedoclusion_v1_service_proto_msgTypes[0]
+	if protoimpl.UnsafeEnabled && x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use RowDataTag.ProtoReflect.Descriptor instead.
+func (*RowDataTag) Descriptor() ([]byte, []int) {
+	return file_threedoclusion_v1_service_proto_rawDescGZIP(), []int{0}
+}
+
+func (x *RowDataTag) GetId() int64 {
+	if x != nil {
+		return x.Id
+	}
+	return 0
+}
+
+func (x *RowDataTag) GetBite() string {
+	if x != nil {
+		return x.Bite
+	}
+	return ""
+}
+
+type Scan struct {
+	state         protoimpl.MessageState
+	sizeCache     protoimpl.SizeCache
+	unknownFields protoimpl.UnknownFields
+
+	Id   int64  `protobuf:"varint,1,opt,name=id,proto3" json:"id,omitempty"`
+	Scan string `protobuf:"bytes,2,opt,name=scan,proto3" json:"scan,omitempty"`
+	Date string `protobuf:"bytes,3,opt,name=date,proto3" json:"date,omitempty"`
+}
+
+func (x *Scan) Reset() {
+	*x = Scan{}
+	if protoimpl.UnsafeEnabled {
+		mi := &file_threedoclusion_v1_service_proto_msgTypes[1]
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		ms.StoreMessageInfo(mi)
+	}
+}
+
+func (x *Scan) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*Scan) ProtoMessage() {}
+
+func (x *Scan) ProtoReflect() protoreflect.Message {
+	mi := &file_threedoclusion_v1_service_proto_msgTypes[1]
+	if protoimpl.UnsafeEnabled && x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use Scan.ProtoReflect.Descriptor instead.
+func (*Scan) Descriptor() ([]byte, []int) {
+	return file_threedoclusion_v1_service_proto_rawDescGZIP(), []int{1}
+}
+
+func (x *Scan) GetId() int64 {
+	if x != nil {
+		return x.Id
+	}
+	return 0
+}
+
+func (x *Scan) GetScan() string {
+	if x != nil {
+		return x.Scan
+	}
+	return ""
+}
+
+func (x *Scan) GetDate() string {
+	if x != nil {
+		return x.Date
+	}
+	return ""
+}
+
+type Patient struct {
+	state         protoimpl.MessageState
+	sizeCache     protoimpl.SizeCache
+	unknownFields protoimpl.UnknownFields
+
+	Id        int64  `protobuf:"varint,1,opt,name=id,proto3" json:"id,omitempty"`
+	FirstName string `protobuf:"bytes,2,opt,name=first_name,json=firstName,proto3" json:"first_name,omitempty"`
+	LastName  string `protobuf:"bytes,3,opt,name=last_name,json=lastName,proto3" json:"last_name,omitempty"`
+	Pinned    int64  `protobuf:"varint,4,opt,name=pinned,proto3" json:"pinned,omitempty"`
+	Notes     string `protobuf:"bytes,5,opt,name=notes,proto3" json:"notes,omitempty"`
+}
+
+func (x *Patient) Reset() {
+	*x = Patient{}
+	if protoimpl.UnsafeEnabled {
+		mi := &file_threedoclusion_v1_service_proto_msgTypes[2]
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		ms.StoreMessageInfo(mi)
+	}
+}
+
+func (x *Patient) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*Patient) ProtoMessage() {}
+
+func (x *Patient) ProtoReflect() protoreflect.Message {
+	mi := &file_threedoclusion_v1_service_proto_msgTypes[2]
+	if protoimpl.UnsafeEnabled && x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use Patient.ProtoReflect.Descriptor instead.
+func (*Patient) Descriptor() ([]byte, []int) {
+	return file_threedoclusion_v1_service_proto_rawDescGZIP(), []int{2}
+}
+
+func (x *Patient) GetId() int64 {
+	if x != nil {
+		return x.Id
+	}
+	return 0
+}
+
+func (x *Patient) GetFirstName() string {
+	if x != nil {
+		return x.FirstName
+	}
+	return ""
+}
+
+func (x *Patient) GetLastName() string {
+	if x != nil {
+		return x.LastName
+	}
+	return ""
+}
+
+func (x *Patient) GetPinned() int64 {
+	if x != nil {
+		return x.Pinned
+	}
+	return 0
+}
+
+func (x *Patient) GetNotes() string {
+	if x != nil {
+		return x.Notes
+	}
+	return ""
+}
+
 // TAGS
 type AddTagRequest struct {
 	state         protoimpl.MessageState
@@ -32,7 +229,7 @@ type AddTagRequest struct {
 func (x *AddTagRequest) Reset() {
 	*x = AddTagRequest{}
 	if protoimpl.UnsafeEnabled {
-		mi := &file_threedoclusion_v1_service_proto_msgTypes[0]
+		mi := &file_threedoclusion_v1_service_proto_msgTypes[3]
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		ms.StoreMessageInfo(mi)
 	}
@@ -45,7 +242,7 @@ func (x *AddTagRequest) String() string {
 func (*AddTagRequest) ProtoMessage() {}
 
 func (x *AddTagRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_threedoclusion_v1_service_proto_msgTypes[0]
+	mi := &file_threedoclusion_v1_service_proto_msgTypes[3]
 	if protoimpl.UnsafeEnabled && x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -58,7 +255,7 @@ func (x *AddTagRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use AddTagRequest.ProtoReflect.Descriptor instead.
 func (*AddTagRequest) Descriptor() ([]byte, []int) {
-	return file_threedoclusion_v1_service_proto_rawDescGZIP(), []int{0}
+	return file_threedoclusion_v1_service_proto_rawDescGZIP(), []int{3}
 }
 
 func (x *AddTagRequest) GetBite() string {
@@ -79,7 +276,7 @@ type AddTagResponse struct {
 func (x *AddTagResponse) Reset() {
 	*x = AddTagResponse{}
 	if protoimpl.UnsafeEnabled {
-		mi := &file_threedoclusion_v1_service_proto_msgTypes[1]
+		mi := &file_threedoclusion_v1_service_proto_msgTypes[4]
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		ms.StoreMessageInfo(mi)
 	}
@@ -92,7 +289,7 @@ func (x *AddTagResponse) String() string {
 func (*AddTagResponse) ProtoMessage() {}
 
 func (x *AddTagResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_threedoclusion_v1_service_proto_msgTypes[1]
+	mi := &file_threedoclusion_v1_service_proto_msgTypes[4]
 	if protoimpl.UnsafeEnabled && x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -105,7 +302,7 @@ func (x *AddTagResponse) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use AddTagResponse.ProtoReflect.Descriptor instead.
 func (*AddTagResponse) Descriptor() ([]byte, []int) {
-	return file_threedoclusion_v1_service_proto_rawDescGZIP(), []int{1}
+	return file_threedoclusion_v1_service_proto_rawDescGZIP(), []int{4}
 }
 
 func (x *AddTagResponse) GetMessage() string {
@@ -126,7 +323,7 @@ type DeleteTagRequest struct {
 func (x *DeleteTagRequest) Reset() {
 	*x = DeleteTagRequest{}
 	if protoimpl.UnsafeEnabled {
-		mi := &file_threedoclusion_v1_service_proto_msgTypes[2]
+		mi := &file_threedoclusion_v1_service_proto_msgTypes[5]
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		ms.StoreMessageInfo(mi)
 	}
@@ -139,7 +336,7 @@ func (x *DeleteTagRequest) String() string {
 func (*DeleteTagRequest) ProtoMessage() {}
 
 func (x *DeleteTagRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_threedoclusion_v1_service_proto_msgTypes[2]
+	mi := &file_threedoclusion_v1_service_proto_msgTypes[5]
 	if protoimpl.UnsafeEnabled && x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -152,7 +349,7 @@ func (x *DeleteTagRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use DeleteTagRequest.ProtoReflect.Descriptor instead.
 func (*DeleteTagRequest) Descriptor() ([]byte, []int) {
-	return file_threedoclusion_v1_service_proto_rawDescGZIP(), []int{2}
+	return file_threedoclusion_v1_service_proto_rawDescGZIP(), []int{5}
 }
 
 func (x *DeleteTagRequest) GetId() int64 {
@@ -173,7 +370,7 @@ type DeleteTagResponse struct {
 func (x *DeleteTagResponse) Reset() {
 	*x = DeleteTagResponse{}
 	if protoimpl.UnsafeEnabled {
-		mi := &file_threedoclusion_v1_service_proto_msgTypes[3]
+		mi := &file_threedoclusion_v1_service_proto_msgTypes[6]
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		ms.StoreMessageInfo(mi)
 	}
@@ -186,7 +383,7 @@ func (x *DeleteTagResponse) String() string {
 func (*DeleteTagResponse) ProtoMessage() {}
 
 func (x *DeleteTagResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_threedoclusion_v1_service_proto_msgTypes[3]
+	mi := &file_threedoclusion_v1_service_proto_msgTypes[6]
 	if protoimpl.UnsafeEnabled && x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -199,7 +396,7 @@ func (x *DeleteTagResponse) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use DeleteTagResponse.ProtoReflect.Descriptor instead.
 func (*DeleteTagResponse) Descriptor() ([]byte, []int) {
-	return file_threedoclusion_v1_service_proto_rawDescGZIP(), []int{3}
+	return file_threedoclusion_v1_service_proto_rawDescGZIP(), []int{6}
 }
 
 func (x *DeleteTagResponse) GetMessage() string {
@@ -213,14 +410,12 @@ type GetAllTagsRequest struct {
 	state         protoimpl.MessageState
 	sizeCache     protoimpl.SizeCache
 	unknownFields protoimpl.UnknownFields
-
-	TableName string `protobuf:"bytes,1,opt,name=table_name,json=tableName,proto3" json:"table_name,omitempty"`
 }
 
 func (x *GetAllTagsRequest) Reset() {
 	*x = GetAllTagsRequest{}
 	if protoimpl.UnsafeEnabled {
-		mi := &file_threedoclusion_v1_service_proto_msgTypes[4]
+		mi := &file_threedoclusion_v1_service_proto_msgTypes[7]
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		ms.StoreMessageInfo(mi)
 	}
@@ -233,7 +428,7 @@ func (x *GetAllTagsRequest) String() string {
 func (*GetAllTagsRequest) ProtoMessage() {}
 
 func (x *GetAllTagsRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_threedoclusion_v1_service_proto_msgTypes[4]
+	mi := &file_threedoclusion_v1_service_proto_msgTypes[7]
 	if protoimpl.UnsafeEnabled && x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -246,14 +441,7 @@ func (x *GetAllTagsRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use GetAllTagsRequest.ProtoReflect.Descriptor instead.
 func (*GetAllTagsRequest) Descriptor() ([]byte, []int) {
-	return file_threedoclusion_v1_service_proto_rawDescGZIP(), []int{4}
-}
-
-func (x *GetAllTagsRequest) GetTableName() string {
-	if x != nil {
-		return x.TableName
-	}
-	return ""
+	return file_threedoclusion_v1_service_proto_rawDescGZIP(), []int{7}
 }
 
 type GetAllTagsResponse struct {
@@ -261,14 +449,13 @@ type GetAllTagsResponse struct {
 	sizeCache     protoimpl.SizeCache
 	unknownFields protoimpl.UnknownFields
 
-	IdData   []int64  `protobuf:"varint,1,rep,packed,name=id_data,json=idData,proto3" json:"id_data,omitempty"`
-	BiteData []string `protobuf:"bytes,2,rep,name=bite_data,json=biteData,proto3" json:"bite_data,omitempty"`
+	Tags []*RowDataTag `protobuf:"bytes,1,rep,name=tags,proto3" json:"tags,omitempty"`
 }
 
 func (x *GetAllTagsResponse) Reset() {
 	*x = GetAllTagsResponse{}
 	if protoimpl.UnsafeEnabled {
-		mi := &file_threedoclusion_v1_service_proto_msgTypes[5]
+		mi := &file_threedoclusion_v1_service_proto_msgTypes[8]
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		ms.StoreMessageInfo(mi)
 	}
@@ -281,7 +468,7 @@ func (x *GetAllTagsResponse) String() string {
 func (*GetAllTagsResponse) ProtoMessage() {}
 
 func (x *GetAllTagsResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_threedoclusion_v1_service_proto_msgTypes[5]
+	mi := &file_threedoclusion_v1_service_proto_msgTypes[8]
 	if protoimpl.UnsafeEnabled && x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -294,19 +481,12 @@ func (x *GetAllTagsResponse) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use GetAllTagsResponse.ProtoReflect.Descriptor instead.
 func (*GetAllTagsResponse) Descriptor() ([]byte, []int) {
-	return file_threedoclusion_v1_service_proto_rawDescGZIP(), []int{5}
+	return file_threedoclusion_v1_service_proto_rawDescGZIP(), []int{8}
 }
 
-func (x *GetAllTagsResponse) GetIdData() []int64 {
+func (x *GetAllTagsResponse) GetTags() []*RowDataTag {
 	if x != nil {
-		return x.IdData
-	}
-	return nil
-}
-
-func (x *GetAllTagsResponse) GetBiteData() []string {
-	if x != nil {
-		return x.BiteData
+		return x.Tags
 	}
 	return nil
 }
@@ -322,7 +502,7 @@ type GetTagByIDRequest struct {
 func (x *GetTagByIDRequest) Reset() {
 	*x = GetTagByIDRequest{}
 	if protoimpl.UnsafeEnabled {
-		mi := &file_threedoclusion_v1_service_proto_msgTypes[6]
+		mi := &file_threedoclusion_v1_service_proto_msgTypes[9]
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		ms.StoreMessageInfo(mi)
 	}
@@ -335,7 +515,7 @@ func (x *GetTagByIDRequest) String() string {
 func (*GetTagByIDRequest) ProtoMessage() {}
 
 func (x *GetTagByIDRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_threedoclusion_v1_service_proto_msgTypes[6]
+	mi := &file_threedoclusion_v1_service_proto_msgTypes[9]
 	if protoimpl.UnsafeEnabled && x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -348,7 +528,7 @@ func (x *GetTagByIDRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use GetTagByIDRequest.ProtoReflect.Descriptor instead.
 func (*GetTagByIDRequest) Descriptor() ([]byte, []int) {
-	return file_threedoclusion_v1_service_proto_rawDescGZIP(), []int{6}
+	return file_threedoclusion_v1_service_proto_rawDescGZIP(), []int{9}
 }
 
 func (x *GetTagByIDRequest) GetId() int64 {
@@ -370,7 +550,7 @@ type GetTagByIDResponse struct {
 func (x *GetTagByIDResponse) Reset() {
 	*x = GetTagByIDResponse{}
 	if protoimpl.UnsafeEnabled {
-		mi := &file_threedoclusion_v1_service_proto_msgTypes[7]
+		mi := &file_threedoclusion_v1_service_proto_msgTypes[10]
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		ms.StoreMessageInfo(mi)
 	}
@@ -383,7 +563,7 @@ func (x *GetTagByIDResponse) String() string {
 func (*GetTagByIDResponse) ProtoMessage() {}
 
 func (x *GetTagByIDResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_threedoclusion_v1_service_proto_msgTypes[7]
+	mi := &file_threedoclusion_v1_service_proto_msgTypes[10]
 	if protoimpl.UnsafeEnabled && x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -396,7 +576,7 @@ func (x *GetTagByIDResponse) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use GetTagByIDResponse.ProtoReflect.Descriptor instead.
 func (*GetTagByIDResponse) Descriptor() ([]byte, []int) {
-	return file_threedoclusion_v1_service_proto_rawDescGZIP(), []int{7}
+	return file_threedoclusion_v1_service_proto_rawDescGZIP(), []int{10}
 }
 
 func (x *GetTagByIDResponse) GetId() int64 {
@@ -424,7 +604,7 @@ type GetAllTagsByTypeRequest struct {
 func (x *GetAllTagsByTypeRequest) Reset() {
 	*x = GetAllTagsByTypeRequest{}
 	if protoimpl.UnsafeEnabled {
-		mi := &file_threedoclusion_v1_service_proto_msgTypes[8]
+		mi := &file_threedoclusion_v1_service_proto_msgTypes[11]
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		ms.StoreMessageInfo(mi)
 	}
@@ -437,7 +617,7 @@ func (x *GetAllTagsByTypeRequest) String() string {
 func (*GetAllTagsByTypeRequest) ProtoMessage() {}
 
 func (x *GetAllTagsByTypeRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_threedoclusion_v1_service_proto_msgTypes[8]
+	mi := &file_threedoclusion_v1_service_proto_msgTypes[11]
 	if protoimpl.UnsafeEnabled && x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -450,7 +630,7 @@ func (x *GetAllTagsByTypeRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use GetAllTagsByTypeRequest.ProtoReflect.Descriptor instead.
 func (*GetAllTagsByTypeRequest) Descriptor() ([]byte, []int) {
-	return file_threedoclusion_v1_service_proto_rawDescGZIP(), []int{8}
+	return file_threedoclusion_v1_service_proto_rawDescGZIP(), []int{11}
 }
 
 func (x *GetAllTagsByTypeRequest) GetType() string {
@@ -465,14 +645,13 @@ type GetAllTagsByTypeResponse struct {
 	sizeCache     protoimpl.SizeCache
 	unknownFields protoimpl.UnknownFields
 
-	Bite   string  `protobuf:"bytes,1,opt,name=bite,proto3" json:"bite,omitempty"`
-	IdData []int64 `protobuf:"varint,2,rep,packed,name=id_data,json=idData,proto3" json:"id_data,omitempty"`
+	Tags []*RowDataTag `protobuf:"bytes,1,rep,name=tags,proto3" json:"tags,omitempty"`
 }
 
 func (x *GetAllTagsByTypeResponse) Reset() {
 	*x = GetAllTagsByTypeResponse{}
 	if protoimpl.UnsafeEnabled {
-		mi := &file_threedoclusion_v1_service_proto_msgTypes[9]
+		mi := &file_threedoclusion_v1_service_proto_msgTypes[12]
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		ms.StoreMessageInfo(mi)
 	}
@@ -485,7 +664,7 @@ func (x *GetAllTagsByTypeResponse) String() string {
 func (*GetAllTagsByTypeResponse) ProtoMessage() {}
 
 func (x *GetAllTagsByTypeResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_threedoclusion_v1_service_proto_msgTypes[9]
+	mi := &file_threedoclusion_v1_service_proto_msgTypes[12]
 	if protoimpl.UnsafeEnabled && x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -498,19 +677,12 @@ func (x *GetAllTagsByTypeResponse) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use GetAllTagsByTypeResponse.ProtoReflect.Descriptor instead.
 func (*GetAllTagsByTypeResponse) Descriptor() ([]byte, []int) {
-	return file_threedoclusion_v1_service_proto_rawDescGZIP(), []int{9}
+	return file_threedoclusion_v1_service_proto_rawDescGZIP(), []int{12}
 }
 
-func (x *GetAllTagsByTypeResponse) GetBite() string {
+func (x *GetAllTagsByTypeResponse) GetTags() []*RowDataTag {
 	if x != nil {
-		return x.Bite
-	}
-	return ""
-}
-
-func (x *GetAllTagsByTypeResponse) GetIdData() []int64 {
-	if x != nil {
-		return x.IdData
+		return x.Tags
 	}
 	return nil
 }
@@ -528,7 +700,7 @@ type AddScanRequest struct {
 func (x *AddScanRequest) Reset() {
 	*x = AddScanRequest{}
 	if protoimpl.UnsafeEnabled {
-		mi := &file_threedoclusion_v1_service_proto_msgTypes[10]
+		mi := &file_threedoclusion_v1_service_proto_msgTypes[13]
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		ms.StoreMessageInfo(mi)
 	}
@@ -541,7 +713,7 @@ func (x *AddScanRequest) String() string {
 func (*AddScanRequest) ProtoMessage() {}
 
 func (x *AddScanRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_threedoclusion_v1_service_proto_msgTypes[10]
+	mi := &file_threedoclusion_v1_service_proto_msgTypes[13]
 	if protoimpl.UnsafeEnabled && x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -554,7 +726,7 @@ func (x *AddScanRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use AddScanRequest.ProtoReflect.Descriptor instead.
 func (*AddScanRequest) Descriptor() ([]byte, []int) {
-	return file_threedoclusion_v1_service_proto_rawDescGZIP(), []int{10}
+	return file_threedoclusion_v1_service_proto_rawDescGZIP(), []int{13}
 }
 
 func (x *AddScanRequest) GetScanFile() string {
@@ -582,7 +754,7 @@ type AddScanResponse struct {
 func (x *AddScanResponse) Reset() {
 	*x = AddScanResponse{}
 	if protoimpl.UnsafeEnabled {
-		mi := &file_threedoclusion_v1_service_proto_msgTypes[11]
+		mi := &file_threedoclusion_v1_service_proto_msgTypes[14]
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		ms.StoreMessageInfo(mi)
 	}
@@ -595,7 +767,7 @@ func (x *AddScanResponse) String() string {
 func (*AddScanResponse) ProtoMessage() {}
 
 func (x *AddScanResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_threedoclusion_v1_service_proto_msgTypes[11]
+	mi := &file_threedoclusion_v1_service_proto_msgTypes[14]
 	if protoimpl.UnsafeEnabled && x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -608,7 +780,7 @@ func (x *AddScanResponse) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use AddScanResponse.ProtoReflect.Descriptor instead.
 func (*AddScanResponse) Descriptor() ([]byte, []int) {
-	return file_threedoclusion_v1_service_proto_rawDescGZIP(), []int{11}
+	return file_threedoclusion_v1_service_proto_rawDescGZIP(), []int{14}
 }
 
 func (x *AddScanResponse) GetMessage() string {
@@ -629,7 +801,7 @@ type DeleteScanRequest struct {
 func (x *DeleteScanRequest) Reset() {
 	*x = DeleteScanRequest{}
 	if protoimpl.UnsafeEnabled {
-		mi := &file_threedoclusion_v1_service_proto_msgTypes[12]
+		mi := &file_threedoclusion_v1_service_proto_msgTypes[15]
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		ms.StoreMessageInfo(mi)
 	}
@@ -642,7 +814,7 @@ func (x *DeleteScanRequest) String() string {
 func (*DeleteScanRequest) ProtoMessage() {}
 
 func (x *DeleteScanRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_threedoclusion_v1_service_proto_msgTypes[12]
+	mi := &file_threedoclusion_v1_service_proto_msgTypes[15]
 	if protoimpl.UnsafeEnabled && x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -655,7 +827,7 @@ func (x *DeleteScanRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use DeleteScanRequest.ProtoReflect.Descriptor instead.
 func (*DeleteScanRequest) Descriptor() ([]byte, []int) {
-	return file_threedoclusion_v1_service_proto_rawDescGZIP(), []int{12}
+	return file_threedoclusion_v1_service_proto_rawDescGZIP(), []int{15}
 }
 
 func (x *DeleteScanRequest) GetId() int64 {
@@ -676,7 +848,7 @@ type DeleteScanResponse struct {
 func (x *DeleteScanResponse) Reset() {
 	*x = DeleteScanResponse{}
 	if protoimpl.UnsafeEnabled {
-		mi := &file_threedoclusion_v1_service_proto_msgTypes[13]
+		mi := &file_threedoclusion_v1_service_proto_msgTypes[16]
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		ms.StoreMessageInfo(mi)
 	}
@@ -689,7 +861,7 @@ func (x *DeleteScanResponse) String() string {
 func (*DeleteScanResponse) ProtoMessage() {}
 
 func (x *DeleteScanResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_threedoclusion_v1_service_proto_msgTypes[13]
+	mi := &file_threedoclusion_v1_service_proto_msgTypes[16]
 	if protoimpl.UnsafeEnabled && x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -702,7 +874,7 @@ func (x *DeleteScanResponse) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use DeleteScanResponse.ProtoReflect.Descriptor instead.
 func (*DeleteScanResponse) Descriptor() ([]byte, []int) {
-	return file_threedoclusion_v1_service_proto_rawDescGZIP(), []int{13}
+	return file_threedoclusion_v1_service_proto_rawDescGZIP(), []int{16}
 }
 
 func (x *DeleteScanResponse) GetMessage() string {
@@ -716,14 +888,12 @@ type GetAllScansRequest struct {
 	state         protoimpl.MessageState
 	sizeCache     protoimpl.SizeCache
 	unknownFields protoimpl.UnknownFields
-
-	TableName string `protobuf:"bytes,1,opt,name=table_name,json=tableName,proto3" json:"table_name,omitempty"`
 }
 
 func (x *GetAllScansRequest) Reset() {
 	*x = GetAllScansRequest{}
 	if protoimpl.UnsafeEnabled {
-		mi := &file_threedoclusion_v1_service_proto_msgTypes[14]
+		mi := &file_threedoclusion_v1_service_proto_msgTypes[17]
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		ms.StoreMessageInfo(mi)
 	}
@@ -736,7 +906,7 @@ func (x *GetAllScansRequest) String() string {
 func (*GetAllScansRequest) ProtoMessage() {}
 
 func (x *GetAllScansRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_threedoclusion_v1_service_proto_msgTypes[14]
+	mi := &file_threedoclusion_v1_service_proto_msgTypes[17]
 	if protoimpl.UnsafeEnabled && x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -749,14 +919,7 @@ func (x *GetAllScansRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use GetAllScansRequest.ProtoReflect.Descriptor instead.
 func (*GetAllScansRequest) Descriptor() ([]byte, []int) {
-	return file_threedoclusion_v1_service_proto_rawDescGZIP(), []int{14}
-}
-
-func (x *GetAllScansRequest) GetTableName() string {
-	if x != nil {
-		return x.TableName
-	}
-	return ""
+	return file_threedoclusion_v1_service_proto_rawDescGZIP(), []int{17}
 }
 
 type GetAllScansResponse struct {
@@ -764,15 +927,13 @@ type GetAllScansResponse struct {
 	sizeCache     protoimpl.SizeCache
 	unknownFields protoimpl.UnknownFields
 
-	IdData    []int64  `protobuf:"varint,1,rep,packed,name=id_data,json=idData,proto3" json:"id_data,omitempty"`
-	ScanData  []string `protobuf:"bytes,2,rep,name=scan_data,json=scanData,proto3" json:"scan_data,omitempty"`
-	ScanDates []string `protobuf:"bytes,3,rep,name=scan_dates,json=scanDates,proto3" json:"scan_dates,omitempty"`
+	Scans []*Scan `protobuf:"bytes,1,rep,name=scans,proto3" json:"scans,omitempty"`
 }
 
 func (x *GetAllScansResponse) Reset() {
 	*x = GetAllScansResponse{}
 	if protoimpl.UnsafeEnabled {
-		mi := &file_threedoclusion_v1_service_proto_msgTypes[15]
+		mi := &file_threedoclusion_v1_service_proto_msgTypes[18]
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		ms.StoreMessageInfo(mi)
 	}
@@ -785,7 +946,7 @@ func (x *GetAllScansResponse) String() string {
 func (*GetAllScansResponse) ProtoMessage() {}
 
 func (x *GetAllScansResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_threedoclusion_v1_service_proto_msgTypes[15]
+	mi := &file_threedoclusion_v1_service_proto_msgTypes[18]
 	if protoimpl.UnsafeEnabled && x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -798,26 +959,12 @@ func (x *GetAllScansResponse) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use GetAllScansResponse.ProtoReflect.Descriptor instead.
 func (*GetAllScansResponse) Descriptor() ([]byte, []int) {
-	return file_threedoclusion_v1_service_proto_rawDescGZIP(), []int{15}
+	return file_threedoclusion_v1_service_proto_rawDescGZIP(), []int{18}
 }
 
-func (x *GetAllScansResponse) GetIdData() []int64 {
+func (x *GetAllScansResponse) GetScans() []*Scan {
 	if x != nil {
-		return x.IdData
-	}
-	return nil
-}
-
-func (x *GetAllScansResponse) GetScanData() []string {
-	if x != nil {
-		return x.ScanData
-	}
-	return nil
-}
-
-func (x *GetAllScansResponse) GetScanDates() []string {
-	if x != nil {
-		return x.ScanDates
+		return x.Scans
 	}
 	return nil
 }
@@ -833,7 +980,7 @@ type GetScanByIDRequest struct {
 func (x *GetScanByIDRequest) Reset() {
 	*x = GetScanByIDRequest{}
 	if protoimpl.UnsafeEnabled {
-		mi := &file_threedoclusion_v1_service_proto_msgTypes[16]
+		mi := &file_threedoclusion_v1_service_proto_msgTypes[19]
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		ms.StoreMessageInfo(mi)
 	}
@@ -846,7 +993,7 @@ func (x *GetScanByIDRequest) String() string {
 func (*GetScanByIDRequest) ProtoMessage() {}
 
 func (x *GetScanByIDRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_threedoclusion_v1_service_proto_msgTypes[16]
+	mi := &file_threedoclusion_v1_service_proto_msgTypes[19]
 	if protoimpl.UnsafeEnabled && x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -859,7 +1006,7 @@ func (x *GetScanByIDRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use GetScanByIDRequest.ProtoReflect.Descriptor instead.
 func (*GetScanByIDRequest) Descriptor() ([]byte, []int) {
-	return file_threedoclusion_v1_service_proto_rawDescGZIP(), []int{16}
+	return file_threedoclusion_v1_service_proto_rawDescGZIP(), []int{19}
 }
 
 func (x *GetScanByIDRequest) GetId() int64 {
@@ -882,7 +1029,7 @@ type GetScanByIDResponse struct {
 func (x *GetScanByIDResponse) Reset() {
 	*x = GetScanByIDResponse{}
 	if protoimpl.UnsafeEnabled {
-		mi := &file_threedoclusion_v1_service_proto_msgTypes[17]
+		mi := &file_threedoclusion_v1_service_proto_msgTypes[20]
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		ms.StoreMessageInfo(mi)
 	}
@@ -895,7 +1042,7 @@ func (x *GetScanByIDResponse) String() string {
 func (*GetScanByIDResponse) ProtoMessage() {}
 
 func (x *GetScanByIDResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_threedoclusion_v1_service_proto_msgTypes[17]
+	mi := &file_threedoclusion_v1_service_proto_msgTypes[20]
 	if protoimpl.UnsafeEnabled && x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -908,7 +1055,7 @@ func (x *GetScanByIDResponse) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use GetScanByIDResponse.ProtoReflect.Descriptor instead.
 func (*GetScanByIDResponse) Descriptor() ([]byte, []int) {
-	return file_threedoclusion_v1_service_proto_rawDescGZIP(), []int{17}
+	return file_threedoclusion_v1_service_proto_rawDescGZIP(), []int{20}
 }
 
 func (x *GetScanByIDResponse) GetId() int64 {
@@ -943,7 +1090,7 @@ type GetScanByDateRequest struct {
 func (x *GetScanByDateRequest) Reset() {
 	*x = GetScanByDateRequest{}
 	if protoimpl.UnsafeEnabled {
-		mi := &file_threedoclusion_v1_service_proto_msgTypes[18]
+		mi := &file_threedoclusion_v1_service_proto_msgTypes[21]
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		ms.StoreMessageInfo(mi)
 	}
@@ -956,7 +1103,7 @@ func (x *GetScanByDateRequest) String() string {
 func (*GetScanByDateRequest) ProtoMessage() {}
 
 func (x *GetScanByDateRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_threedoclusion_v1_service_proto_msgTypes[18]
+	mi := &file_threedoclusion_v1_service_proto_msgTypes[21]
 	if protoimpl.UnsafeEnabled && x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -969,7 +1116,7 @@ func (x *GetScanByDateRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use GetScanByDateRequest.ProtoReflect.Descriptor instead.
 func (*GetScanByDateRequest) Descriptor() ([]byte, []int) {
-	return file_threedoclusion_v1_service_proto_rawDescGZIP(), []int{18}
+	return file_threedoclusion_v1_service_proto_rawDescGZIP(), []int{21}
 }
 
 func (x *GetScanByDateRequest) GetDate() string {
@@ -984,15 +1131,13 @@ type GetScanByDateResponse struct {
 	sizeCache     protoimpl.SizeCache
 	unknownFields protoimpl.UnknownFields
 
-	IdData    []int64  `protobuf:"varint,1,rep,packed,name=id_data,json=idData,proto3" json:"id_data,omitempty"`
-	ScanData  []string `protobuf:"bytes,2,rep,name=scan_data,json=scanData,proto3" json:"scan_data,omitempty"`
-	ScanDates []string `protobuf:"bytes,3,rep,name=scan_dates,json=scanDates,proto3" json:"scan_dates,omitempty"`
+	Scans []*Scan `protobuf:"bytes,1,rep,name=scans,proto3" json:"scans,omitempty"`
 }
 
 func (x *GetScanByDateResponse) Reset() {
 	*x = GetScanByDateResponse{}
 	if protoimpl.UnsafeEnabled {
-		mi := &file_threedoclusion_v1_service_proto_msgTypes[19]
+		mi := &file_threedoclusion_v1_service_proto_msgTypes[22]
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		ms.StoreMessageInfo(mi)
 	}
@@ -1005,7 +1150,7 @@ func (x *GetScanByDateResponse) String() string {
 func (*GetScanByDateResponse) ProtoMessage() {}
 
 func (x *GetScanByDateResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_threedoclusion_v1_service_proto_msgTypes[19]
+	mi := &file_threedoclusion_v1_service_proto_msgTypes[22]
 	if protoimpl.UnsafeEnabled && x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -1018,26 +1163,537 @@ func (x *GetScanByDateResponse) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use GetScanByDateResponse.ProtoReflect.Descriptor instead.
 func (*GetScanByDateResponse) Descriptor() ([]byte, []int) {
-	return file_threedoclusion_v1_service_proto_rawDescGZIP(), []int{19}
+	return file_threedoclusion_v1_service_proto_rawDescGZIP(), []int{22}
 }
 
-func (x *GetScanByDateResponse) GetIdData() []int64 {
+func (x *GetScanByDateResponse) GetScans() []*Scan {
 	if x != nil {
-		return x.IdData
+		return x.Scans
 	}
 	return nil
 }
 
-func (x *GetScanByDateResponse) GetScanData() []string {
+type AddPatientRequest struct {
+	state         protoimpl.MessageState
+	sizeCache     protoimpl.SizeCache
+	unknownFields protoimpl.UnknownFields
+
+	FirstName string `protobuf:"bytes,1,opt,name=first_name,json=firstName,proto3" json:"first_name,omitempty"`
+	LastName  string `protobuf:"bytes,2,opt,name=last_name,json=lastName,proto3" json:"last_name,omitempty"`
+	Pinned    int64  `protobuf:"varint,3,opt,name=pinned,proto3" json:"pinned,omitempty"`
+	Notes     string `protobuf:"bytes,4,opt,name=notes,proto3" json:"notes,omitempty"`
+}
+
+func (x *AddPatientRequest) Reset() {
+	*x = AddPatientRequest{}
+	if protoimpl.UnsafeEnabled {
+		mi := &file_threedoclusion_v1_service_proto_msgTypes[23]
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		ms.StoreMessageInfo(mi)
+	}
+}
+
+func (x *AddPatientRequest) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*AddPatientRequest) ProtoMessage() {}
+
+func (x *AddPatientRequest) ProtoReflect() protoreflect.Message {
+	mi := &file_threedoclusion_v1_service_proto_msgTypes[23]
+	if protoimpl.UnsafeEnabled && x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use AddPatientRequest.ProtoReflect.Descriptor instead.
+func (*AddPatientRequest) Descriptor() ([]byte, []int) {
+	return file_threedoclusion_v1_service_proto_rawDescGZIP(), []int{23}
+}
+
+func (x *AddPatientRequest) GetFirstName() string {
 	if x != nil {
-		return x.ScanData
+		return x.FirstName
+	}
+	return ""
+}
+
+func (x *AddPatientRequest) GetLastName() string {
+	if x != nil {
+		return x.LastName
+	}
+	return ""
+}
+
+func (x *AddPatientRequest) GetPinned() int64 {
+	if x != nil {
+		return x.Pinned
+	}
+	return 0
+}
+
+func (x *AddPatientRequest) GetNotes() string {
+	if x != nil {
+		return x.Notes
+	}
+	return ""
+}
+
+type AddPatientResponse struct {
+	state         protoimpl.MessageState
+	sizeCache     protoimpl.SizeCache
+	unknownFields protoimpl.UnknownFields
+
+	Message string `protobuf:"bytes,1,opt,name=message,proto3" json:"message,omitempty"`
+}
+
+func (x *AddPatientResponse) Reset() {
+	*x = AddPatientResponse{}
+	if protoimpl.UnsafeEnabled {
+		mi := &file_threedoclusion_v1_service_proto_msgTypes[24]
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		ms.StoreMessageInfo(mi)
+	}
+}
+
+func (x *AddPatientResponse) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*AddPatientResponse) ProtoMessage() {}
+
+func (x *AddPatientResponse) ProtoReflect() protoreflect.Message {
+	mi := &file_threedoclusion_v1_service_proto_msgTypes[24]
+	if protoimpl.UnsafeEnabled && x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use AddPatientResponse.ProtoReflect.Descriptor instead.
+func (*AddPatientResponse) Descriptor() ([]byte, []int) {
+	return file_threedoclusion_v1_service_proto_rawDescGZIP(), []int{24}
+}
+
+func (x *AddPatientResponse) GetMessage() string {
+	if x != nil {
+		return x.Message
+	}
+	return ""
+}
+
+type DeletePatientRequest struct {
+	state         protoimpl.MessageState
+	sizeCache     protoimpl.SizeCache
+	unknownFields protoimpl.UnknownFields
+
+	Id int64 `protobuf:"varint,1,opt,name=id,proto3" json:"id,omitempty"`
+}
+
+func (x *DeletePatientRequest) Reset() {
+	*x = DeletePatientRequest{}
+	if protoimpl.UnsafeEnabled {
+		mi := &file_threedoclusion_v1_service_proto_msgTypes[25]
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		ms.StoreMessageInfo(mi)
+	}
+}
+
+func (x *DeletePatientRequest) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*DeletePatientRequest) ProtoMessage() {}
+
+func (x *DeletePatientRequest) ProtoReflect() protoreflect.Message {
+	mi := &file_threedoclusion_v1_service_proto_msgTypes[25]
+	if protoimpl.UnsafeEnabled && x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use DeletePatientRequest.ProtoReflect.Descriptor instead.
+func (*DeletePatientRequest) Descriptor() ([]byte, []int) {
+	return file_threedoclusion_v1_service_proto_rawDescGZIP(), []int{25}
+}
+
+func (x *DeletePatientRequest) GetId() int64 {
+	if x != nil {
+		return x.Id
+	}
+	return 0
+}
+
+type DeletePatientResponse struct {
+	state         protoimpl.MessageState
+	sizeCache     protoimpl.SizeCache
+	unknownFields protoimpl.UnknownFields
+
+	Message string `protobuf:"bytes,1,opt,name=message,proto3" json:"message,omitempty"`
+}
+
+func (x *DeletePatientResponse) Reset() {
+	*x = DeletePatientResponse{}
+	if protoimpl.UnsafeEnabled {
+		mi := &file_threedoclusion_v1_service_proto_msgTypes[26]
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		ms.StoreMessageInfo(mi)
+	}
+}
+
+func (x *DeletePatientResponse) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*DeletePatientResponse) ProtoMessage() {}
+
+func (x *DeletePatientResponse) ProtoReflect() protoreflect.Message {
+	mi := &file_threedoclusion_v1_service_proto_msgTypes[26]
+	if protoimpl.UnsafeEnabled && x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use DeletePatientResponse.ProtoReflect.Descriptor instead.
+func (*DeletePatientResponse) Descriptor() ([]byte, []int) {
+	return file_threedoclusion_v1_service_proto_rawDescGZIP(), []int{26}
+}
+
+func (x *DeletePatientResponse) GetMessage() string {
+	if x != nil {
+		return x.Message
+	}
+	return ""
+}
+
+type GetAllPatientsRequest struct {
+	state         protoimpl.MessageState
+	sizeCache     protoimpl.SizeCache
+	unknownFields protoimpl.UnknownFields
+}
+
+func (x *GetAllPatientsRequest) Reset() {
+	*x = GetAllPatientsRequest{}
+	if protoimpl.UnsafeEnabled {
+		mi := &file_threedoclusion_v1_service_proto_msgTypes[27]
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		ms.StoreMessageInfo(mi)
+	}
+}
+
+func (x *GetAllPatientsRequest) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*GetAllPatientsRequest) ProtoMessage() {}
+
+func (x *GetAllPatientsRequest) ProtoReflect() protoreflect.Message {
+	mi := &file_threedoclusion_v1_service_proto_msgTypes[27]
+	if protoimpl.UnsafeEnabled && x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use GetAllPatientsRequest.ProtoReflect.Descriptor instead.
+func (*GetAllPatientsRequest) Descriptor() ([]byte, []int) {
+	return file_threedoclusion_v1_service_proto_rawDescGZIP(), []int{27}
+}
+
+type GetAllPatientsResponse struct {
+	state         protoimpl.MessageState
+	sizeCache     protoimpl.SizeCache
+	unknownFields protoimpl.UnknownFields
+
+	Patients []*Patient `protobuf:"bytes,1,rep,name=patients,proto3" json:"patients,omitempty"`
+}
+
+func (x *GetAllPatientsResponse) Reset() {
+	*x = GetAllPatientsResponse{}
+	if protoimpl.UnsafeEnabled {
+		mi := &file_threedoclusion_v1_service_proto_msgTypes[28]
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		ms.StoreMessageInfo(mi)
+	}
+}
+
+func (x *GetAllPatientsResponse) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*GetAllPatientsResponse) ProtoMessage() {}
+
+func (x *GetAllPatientsResponse) ProtoReflect() protoreflect.Message {
+	mi := &file_threedoclusion_v1_service_proto_msgTypes[28]
+	if protoimpl.UnsafeEnabled && x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use GetAllPatientsResponse.ProtoReflect.Descriptor instead.
+func (*GetAllPatientsResponse) Descriptor() ([]byte, []int) {
+	return file_threedoclusion_v1_service_proto_rawDescGZIP(), []int{28}
+}
+
+func (x *GetAllPatientsResponse) GetPatients() []*Patient {
+	if x != nil {
+		return x.Patients
 	}
 	return nil
 }
 
-func (x *GetScanByDateResponse) GetScanDates() []string {
+type GetPatientByIDRequest struct {
+	state         protoimpl.MessageState
+	sizeCache     protoimpl.SizeCache
+	unknownFields protoimpl.UnknownFields
+
+	Id int64 `protobuf:"varint,1,opt,name=id,proto3" json:"id,omitempty"`
+}
+
+func (x *GetPatientByIDRequest) Reset() {
+	*x = GetPatientByIDRequest{}
+	if protoimpl.UnsafeEnabled {
+		mi := &file_threedoclusion_v1_service_proto_msgTypes[29]
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		ms.StoreMessageInfo(mi)
+	}
+}
+
+func (x *GetPatientByIDRequest) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*GetPatientByIDRequest) ProtoMessage() {}
+
+func (x *GetPatientByIDRequest) ProtoReflect() protoreflect.Message {
+	mi := &file_threedoclusion_v1_service_proto_msgTypes[29]
+	if protoimpl.UnsafeEnabled && x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use GetPatientByIDRequest.ProtoReflect.Descriptor instead.
+func (*GetPatientByIDRequest) Descriptor() ([]byte, []int) {
+	return file_threedoclusion_v1_service_proto_rawDescGZIP(), []int{29}
+}
+
+func (x *GetPatientByIDRequest) GetId() int64 {
 	if x != nil {
-		return x.ScanDates
+		return x.Id
+	}
+	return 0
+}
+
+type GetPatientByIDResponse struct {
+	state         protoimpl.MessageState
+	sizeCache     protoimpl.SizeCache
+	unknownFields protoimpl.UnknownFields
+
+	Id        int64  `protobuf:"varint,1,opt,name=id,proto3" json:"id,omitempty"`
+	FirstName string `protobuf:"bytes,2,opt,name=first_name,json=firstName,proto3" json:"first_name,omitempty"`
+	LastName  string `protobuf:"bytes,3,opt,name=last_name,json=lastName,proto3" json:"last_name,omitempty"`
+	Pinned    int64  `protobuf:"varint,4,opt,name=pinned,proto3" json:"pinned,omitempty"`
+	Notes     string `protobuf:"bytes,5,opt,name=notes,proto3" json:"notes,omitempty"`
+}
+
+func (x *GetPatientByIDResponse) Reset() {
+	*x = GetPatientByIDResponse{}
+	if protoimpl.UnsafeEnabled {
+		mi := &file_threedoclusion_v1_service_proto_msgTypes[30]
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		ms.StoreMessageInfo(mi)
+	}
+}
+
+func (x *GetPatientByIDResponse) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*GetPatientByIDResponse) ProtoMessage() {}
+
+func (x *GetPatientByIDResponse) ProtoReflect() protoreflect.Message {
+	mi := &file_threedoclusion_v1_service_proto_msgTypes[30]
+	if protoimpl.UnsafeEnabled && x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use GetPatientByIDResponse.ProtoReflect.Descriptor instead.
+func (*GetPatientByIDResponse) Descriptor() ([]byte, []int) {
+	return file_threedoclusion_v1_service_proto_rawDescGZIP(), []int{30}
+}
+
+func (x *GetPatientByIDResponse) GetId() int64 {
+	if x != nil {
+		return x.Id
+	}
+	return 0
+}
+
+func (x *GetPatientByIDResponse) GetFirstName() string {
+	if x != nil {
+		return x.FirstName
+	}
+	return ""
+}
+
+func (x *GetPatientByIDResponse) GetLastName() string {
+	if x != nil {
+		return x.LastName
+	}
+	return ""
+}
+
+func (x *GetPatientByIDResponse) GetPinned() int64 {
+	if x != nil {
+		return x.Pinned
+	}
+	return 0
+}
+
+func (x *GetPatientByIDResponse) GetNotes() string {
+	if x != nil {
+		return x.Notes
+	}
+	return ""
+}
+
+type GetPatientByNameRequest struct {
+	state         protoimpl.MessageState
+	sizeCache     protoimpl.SizeCache
+	unknownFields protoimpl.UnknownFields
+
+	FirstName *string `protobuf:"bytes,1,opt,name=first_name,json=firstName,proto3,oneof" json:"first_name,omitempty"`
+	LastName  *string `protobuf:"bytes,2,opt,name=last_name,json=lastName,proto3,oneof" json:"last_name,omitempty"`
+}
+
+func (x *GetPatientByNameRequest) Reset() {
+	*x = GetPatientByNameRequest{}
+	if protoimpl.UnsafeEnabled {
+		mi := &file_threedoclusion_v1_service_proto_msgTypes[31]
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		ms.StoreMessageInfo(mi)
+	}
+}
+
+func (x *GetPatientByNameRequest) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*GetPatientByNameRequest) ProtoMessage() {}
+
+func (x *GetPatientByNameRequest) ProtoReflect() protoreflect.Message {
+	mi := &file_threedoclusion_v1_service_proto_msgTypes[31]
+	if protoimpl.UnsafeEnabled && x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use GetPatientByNameRequest.ProtoReflect.Descriptor instead.
+func (*GetPatientByNameRequest) Descriptor() ([]byte, []int) {
+	return file_threedoclusion_v1_service_proto_rawDescGZIP(), []int{31}
+}
+
+func (x *GetPatientByNameRequest) GetFirstName() string {
+	if x != nil && x.FirstName != nil {
+		return *x.FirstName
+	}
+	return ""
+}
+
+func (x *GetPatientByNameRequest) GetLastName() string {
+	if x != nil && x.LastName != nil {
+		return *x.LastName
+	}
+	return ""
+}
+
+type GetPatientByNameResponse struct {
+	state         protoimpl.MessageState
+	sizeCache     protoimpl.SizeCache
+	unknownFields protoimpl.UnknownFields
+
+	Patients []*Patient `protobuf:"bytes,1,rep,name=patients,proto3" json:"patients,omitempty"`
+}
+
+func (x *GetPatientByNameResponse) Reset() {
+	*x = GetPatientByNameResponse{}
+	if protoimpl.UnsafeEnabled {
+		mi := &file_threedoclusion_v1_service_proto_msgTypes[32]
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		ms.StoreMessageInfo(mi)
+	}
+}
+
+func (x *GetPatientByNameResponse) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*GetPatientByNameResponse) ProtoMessage() {}
+
+func (x *GetPatientByNameResponse) ProtoReflect() protoreflect.Message {
+	mi := &file_threedoclusion_v1_service_proto_msgTypes[32]
+	if protoimpl.UnsafeEnabled && x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use GetPatientByNameResponse.ProtoReflect.Descriptor instead.
+func (*GetPatientByNameResponse) Descriptor() ([]byte, []int) {
+	return file_threedoclusion_v1_service_proto_rawDescGZIP(), []int{32}
+}
+
+func (x *GetPatientByNameResponse) GetPatients() []*Patient {
+	if x != nil {
+		return x.Patients
 	}
 	return nil
 }
@@ -1315,49 +1971,25 @@ var file_threedoclusion_v1_service_proto_rawDesc = []byte{
 	0x0a, 0x1f, 0x74, 0x68, 0x72, 0x65, 0x65, 0x64, 0x6f, 0x63, 0x6c, 0x75, 0x73, 0x69, 0x6f, 0x6e,
 	0x2f, 0x76, 0x31, 0x2f, 0x73, 0x65, 0x72, 0x76, 0x69, 0x63, 0x65, 0x2e, 0x70, 0x72, 0x6f, 0x74,
 	0x6f, 0x12, 0x11, 0x74, 0x68, 0x72, 0x65, 0x65, 0x64, 0x6f, 0x63, 0x6c, 0x75, 0x73, 0x69, 0x6f,
-	0x6e, 0x2e, 0x76, 0x31, 0x22, 0x23, 0x0a, 0x0d, 0x41, 0x64, 0x64, 0x54, 0x61, 0x67, 0x52, 0x65,
-	0x71, 0x75, 0x65, 0x73, 0x74, 0x12, 0x12, 0x0a, 0x04, 0x62, 0x69, 0x74, 0x65, 0x18, 0x01, 0x20,
-	0x01, 0x28, 0x09, 0x52, 0x04, 0x62, 0x69, 0x74, 0x65, 0x22, 0x2a, 0x0a, 0x0e, 0x41, 0x64, 0x64,
-	0x54, 0x61, 0x67, 0x52, 0x65, 0x73, 0x70, 0x6f, 0x6e, 0x73, 0x65, 0x12, 0x18, 0x0a, 0x07, 0x6d,
-	0x65, 0x73, 0x73, 0x61, 0x67, 0x65, 0x18, 0x01, 0x20, 0x01, 0x28, 0x09, 0x52, 0x07, 0x6d, 0x65,
-	0x73, 0x73, 0x61, 0x67, 0x65, 0x22, 0x22, 0x0a, 0x10, 0x44, 0x65, 0x6c, 0x65, 0x74, 0x65, 0x54,
-	0x61, 0x67, 0x52, 0x65, 0x71, 0x75, 0x65, 0x73, 0x74, 0x12, 0x0e, 0x0a, 0x02, 0x69, 0x64, 0x18,
-	0x01, 0x20, 0x01, 0x28, 0x03, 0x52, 0x02, 0x69, 0x64, 0x22, 0x2d, 0x0a, 0x11, 0x44, 0x65, 0x6c,
-	0x65, 0x74, 0x65, 0x54, 0x61, 0x67, 0x52, 0x65, 0x73, 0x70, 0x6f, 0x6e, 0x73, 0x65, 0x12, 0x18,
-	0x0a, 0x07, 0x6d, 0x65, 0x73, 0x73, 0x61, 0x67, 0x65, 0x18, 0x01, 0x20, 0x01, 0x28, 0x09, 0x52,
-	0x07, 0x6d, 0x65, 0x73, 0x73, 0x61, 0x67, 0x65, 0x22, 0x32, 0x0a, 0x11, 0x47, 0x65, 0x74, 0x41,
-	0x6c, 0x6c, 0x54, 0x61, 0x67, 0x73, 0x52, 0x65, 0x71, 0x75, 0x65, 0x73, 0x74, 0x12, 0x1d, 0x0a,
-	0x0a, 0x74, 0x61, 0x62, 0x6c, 0x65, 0x5f, 0x6e, 0x61, 0x6d, 0x65, 0x18, 0x01, 0x20, 0x01, 0x28,
-	0x09, 0x52, 0x09, 0x74, 0x61, 0x62, 0x6c, 0x65, 0x4e, 0x61, 0x6d, 0x65, 0x22, 0x4a, 0x0a, 0x12,
-	0x47, 0x65, 0x74, 0x41, 0x6c, 0x6c, 0x54, 0x61, 0x67, 0x73, 0x52, 0x65, 0x73, 0x70, 0x6f, 0x6e,
-	0x73, 0x65, 0x12, 0x17, 0x0a, 0x07, 0x69, 0x64, 0x5f, 0x64, 0x61, 0x74, 0x61, 0x18, 0x01, 0x20,
-	0x03, 0x28, 0x03, 0x52, 0x06, 0x69, 0x64, 0x44, 0x61, 0x74, 0x61, 0x12, 0x1b, 0x0a, 0x09, 0x62,
-	0x69, 0x74, 0x65, 0x5f, 0x64, 0x61, 0x74, 0x61, 0x18, 0x02, 0x20, 0x03, 0x28, 0x09, 0x52, 0x08,
-	0x62, 0x69, 0x74, 0x65, 0x44, 0x61, 0x74, 0x61, 0x22, 0x23, 0x0a, 0x11, 0x47, 0x65, 0x74, 0x54,
-	0x61, 0x67, 0x42, 0x79, 0x49, 0x44, 0x52, 0x65, 0x71, 0x75, 0x65, 0x73, 0x74, 0x12, 0x0e, 0x0a,
-	0x02, 0x69, 0x64, 0x18, 0x01, 0x20, 0x01, 0x28, 0x03, 0x52, 0x02, 0x69, 0x64, 0x22, 0x38, 0x0a,
-	0x12, 0x47, 0x65, 0x74, 0x54, 0x61, 0x67, 0x42, 0x79, 0x49, 0x44, 0x52, 0x65, 0x73, 0x70, 0x6f,
-	0x6e, 0x73, 0x65, 0x12, 0x0e, 0x0a, 0x02, 0x69, 0x64, 0x18, 0x01, 0x20, 0x01, 0x28, 0x03, 0x52,
-	0x02, 0x69, 0x64, 0x12, 0x12, 0x0a, 0x04, 0x62, 0x69, 0x74, 0x65, 0x18, 0x02, 0x20, 0x01, 0x28,
-	0x09, 0x52, 0x04, 0x62, 0x69, 0x74, 0x65, 0x22, 0x2d, 0x0a, 0x17, 0x47, 0x65, 0x74, 0x41, 0x6c,
-	0x6c, 0x54, 0x61, 0x67, 0x73, 0x42, 0x79, 0x54, 0x79, 0x70, 0x65, 0x52, 0x65, 0x71, 0x75, 0x65,
-	0x73, 0x74, 0x12, 0x12, 0x0a, 0x04, 0x74, 0x79, 0x70, 0x65, 0x18, 0x01, 0x20, 0x01, 0x28, 0x09,
-	0x52, 0x04, 0x74, 0x79, 0x70, 0x65, 0x22, 0x47, 0x0a, 0x18, 0x47, 0x65, 0x74, 0x41, 0x6c, 0x6c,
-	0x54, 0x61, 0x67, 0x73, 0x42, 0x79, 0x54, 0x79, 0x70, 0x65, 0x52, 0x65, 0x73, 0x70, 0x6f, 0x6e,
-	0x73, 0x65, 0x12, 0x12, 0x0a, 0x04, 0x62, 0x69, 0x74, 0x65, 0x18, 0x01, 0x20, 0x01, 0x28, 0x09,
-	0x52, 0x04, 0x62, 0x69, 0x74, 0x65, 0x12, 0x17, 0x0a, 0x07, 0x69, 0x64, 0x5f, 0x64, 0x61, 0x74,
-	0x61, 0x18, 0x02, 0x20, 0x03, 0x28, 0x03, 0x52, 0x06, 0x69, 0x64, 0x44, 0x61, 0x74, 0x61, 0x22,
-	0x4a, 0x0a, 0x0e, 0x41, 0x64, 0x64, 0x53, 0x63, 0x61, 0x6e, 0x52, 0x65, 0x71, 0x75, 0x65, 0x73,
-	0x74, 0x12, 0x1b, 0x0a, 0x09, 0x73, 0x63, 0x61, 0x6e, 0x5f, 0x66, 0x69, 0x6c, 0x65, 0x18, 0x01,
-	0x20, 0x01, 0x28, 0x09, 0x52, 0x08, 0x73, 0x63, 0x61, 0x6e, 0x46, 0x69, 0x6c, 0x65, 0x12, 0x1b,
-	0x0a, 0x09, 0x73, 0x63, 0x61, 0x6e, 0x5f, 0x64, 0x61, 0x74, 0x65, 0x18, 0x02, 0x20, 0x01, 0x28,
-	0x09, 0x52, 0x08, 0x73, 0x63, 0x61, 0x6e, 0x44, 0x61, 0x74, 0x65, 0x22, 0x2b, 0x0a, 0x0f, 0x41,
-	0x64, 0x64, 0x53, 0x63, 0x61, 0x6e, 0x52, 0x65, 0x73, 0x70, 0x6f, 0x6e, 0x73, 0x65, 0x12, 0x18,
-	0x0a, 0x07, 0x6d, 0x65, 0x73, 0x73, 0x61, 0x67, 0x65, 0x18, 0x01, 0x20, 0x01, 0x28, 0x09, 0x52,
-	0x07, 0x6d, 0x65, 0x73, 0x73, 0x61, 0x67, 0x65, 0x22, 0x23, 0x0a, 0x11, 0x44, 0x65, 0x6c, 0x65,
-	0x74, 0x65, 0x53, 0x63, 0x61, 0x6e, 0x52, 0x65, 0x71, 0x75, 0x65, 0x73, 0x74, 0x12, 0x0e, 0x0a,
-	0x02, 0x69, 0x64, 0x18, 0x01, 0x20, 0x01, 0x28, 0x03, 0x52, 0x02, 0x69, 0x64, 0x22, 0x2e, 0x0a,
-	0x12, 0x44, 0x65, 0x6c, 0x65, 0x74, 0x65, 0x53, 0x63, 0x61, 0x6e, 0x52, 0x65, 0x73, 0x70, 0x6f,
+	0x6e, 0x2e, 0x76, 0x31, 0x22, 0x30, 0x0a, 0x0a, 0x52, 0x6f, 0x77, 0x44, 0x61, 0x74, 0x61, 0x54,
+	0x61, 0x67, 0x12, 0x0e, 0x0a, 0x02, 0x69, 0x64, 0x18, 0x01, 0x20, 0x01, 0x28, 0x03, 0x52, 0x02,
+	0x69, 0x64, 0x12, 0x12, 0x0a, 0x04, 0x62, 0x69, 0x74, 0x65, 0x18, 0x02, 0x20, 0x01, 0x28, 0x09,
+	0x52, 0x04, 0x62, 0x69, 0x74, 0x65, 0x22, 0x3e, 0x0a, 0x04, 0x53, 0x63, 0x61, 0x6e, 0x12, 0x0e,
+	0x0a, 0x02, 0x69, 0x64, 0x18, 0x01, 0x20, 0x01, 0x28, 0x03, 0x52, 0x02, 0x69, 0x64, 0x12, 0x12,
+	0x0a, 0x04, 0x73, 0x63, 0x61, 0x6e, 0x18, 0x02, 0x20, 0x01, 0x28, 0x09, 0x52, 0x04, 0x73, 0x63,
+	0x61, 0x6e, 0x12, 0x12, 0x0a, 0x04, 0x64, 0x61, 0x74, 0x65, 0x18, 0x03, 0x20, 0x01, 0x28, 0x09,
+	0x52, 0x04, 0x64, 0x61, 0x74, 0x65, 0x22, 0x83, 0x01, 0x0a, 0x07, 0x50, 0x61, 0x74, 0x69, 0x65,
+	0x6e, 0x74, 0x12, 0x0e, 0x0a, 0x02, 0x69, 0x64, 0x18, 0x01, 0x20, 0x01, 0x28, 0x03, 0x52, 0x02,
+	0x69, 0x64, 0x12, 0x1d, 0x0a, 0x0a, 0x66, 0x69, 0x72, 0x73, 0x74, 0x5f, 0x6e, 0x61, 0x6d, 0x65,
+	0x18, 0x02, 0x20, 0x01, 0x28, 0x09, 0x52, 0x09, 0x66, 0x69, 0x72, 0x73, 0x74, 0x4e, 0x61, 0x6d,
+	0x65, 0x12, 0x1b, 0x0a, 0x09, 0x6c, 0x61, 0x73, 0x74, 0x5f, 0x6e, 0x61, 0x6d, 0x65, 0x18, 0x03,
+	0x20, 0x01, 0x28, 0x09, 0x52, 0x08, 0x6c, 0x61, 0x73, 0x74, 0x4e, 0x61, 0x6d, 0x65, 0x12, 0x16,
+	0x0a, 0x06, 0x70, 0x69, 0x6e, 0x6e, 0x65, 0x64, 0x18, 0x04, 0x20, 0x01, 0x28, 0x03, 0x52, 0x06,
+	0x70, 0x69, 0x6e, 0x6e, 0x65, 0x64, 0x12, 0x14, 0x0a, 0x05, 0x6e, 0x6f, 0x74, 0x65, 0x73, 0x18,
+	0x05, 0x20, 0x01, 0x28, 0x09, 0x52, 0x05, 0x6e, 0x6f, 0x74, 0x65, 0x73, 0x22, 0x23, 0x0a, 0x0d,
+	0x41, 0x64, 0x64, 0x54, 0x61, 0x67, 0x52, 0x65, 0x71, 0x75, 0x65, 0x73, 0x74, 0x12, 0x12, 0x0a,
+	0x04, 0x62, 0x69, 0x74, 0x65, 0x18, 0x01, 0x20, 0x01, 0x28, 0x09, 0x52, 0x04, 0x62, 0x69, 0x74,
+	0x65, 0x22, 0x2a, 0x0a, 0x0e, 0x41, 0x64, 0x64, 0x54, 0x61, 0x67, 0x52, 0x65, 0x73, 0x70, 0x6f,
 	0x6e, 0x73, 0x65, 0x12, 0x18, 0x0a, 0x07, 0x6d, 0x65, 0x73, 0x73, 0x61, 0x67, 0x65, 0x18, 0x01,
 	0x20, 0x01, 0x28, 0x09, 0x52, 0x07, 0x6d, 0x65, 0x73, 0x73, 0x61, 0x67, 0x65, 0x22, 0x33, 0x0a,
 	0x12, 0x47, 0x65, 0x74, 0x41, 0x6c, 0x6c, 0x53, 0x63, 0x61, 0x6e, 0x73, 0x52, 0x65, 0x71, 0x75,
@@ -1574,7 +2206,7 @@ func file_threedoclusion_v1_service_proto_init() {
 	}
 	if !protoimpl.UnsafeEnabled {
 		file_threedoclusion_v1_service_proto_msgTypes[0].Exporter = func(v interface{}, i int) interface{} {
-			switch v := v.(*AddTagRequest); i {
+			switch v := v.(*RowDataTag); i {
 			case 0:
 				return &v.state
 			case 1:
@@ -1586,7 +2218,7 @@ func file_threedoclusion_v1_service_proto_init() {
 			}
 		}
 		file_threedoclusion_v1_service_proto_msgTypes[1].Exporter = func(v interface{}, i int) interface{} {
-			switch v := v.(*AddTagResponse); i {
+			switch v := v.(*Scan); i {
 			case 0:
 				return &v.state
 			case 1:
@@ -1598,7 +2230,7 @@ func file_threedoclusion_v1_service_proto_init() {
 			}
 		}
 		file_threedoclusion_v1_service_proto_msgTypes[2].Exporter = func(v interface{}, i int) interface{} {
-			switch v := v.(*DeleteTagRequest); i {
+			switch v := v.(*Patient); i {
 			case 0:
 				return &v.state
 			case 1:
@@ -1610,7 +2242,7 @@ func file_threedoclusion_v1_service_proto_init() {
 			}
 		}
 		file_threedoclusion_v1_service_proto_msgTypes[3].Exporter = func(v interface{}, i int) interface{} {
-			switch v := v.(*DeleteTagResponse); i {
+			switch v := v.(*AddTagRequest); i {
 			case 0:
 				return &v.state
 			case 1:
@@ -1622,7 +2254,7 @@ func file_threedoclusion_v1_service_proto_init() {
 			}
 		}
 		file_threedoclusion_v1_service_proto_msgTypes[4].Exporter = func(v interface{}, i int) interface{} {
-			switch v := v.(*GetAllTagsRequest); i {
+			switch v := v.(*AddTagResponse); i {
 			case 0:
 				return &v.state
 			case 1:
@@ -1634,7 +2266,7 @@ func file_threedoclusion_v1_service_proto_init() {
 			}
 		}
 		file_threedoclusion_v1_service_proto_msgTypes[5].Exporter = func(v interface{}, i int) interface{} {
-			switch v := v.(*GetAllTagsResponse); i {
+			switch v := v.(*DeleteTagRequest); i {
 			case 0:
 				return &v.state
 			case 1:
@@ -1646,7 +2278,7 @@ func file_threedoclusion_v1_service_proto_init() {
 			}
 		}
 		file_threedoclusion_v1_service_proto_msgTypes[6].Exporter = func(v interface{}, i int) interface{} {
-			switch v := v.(*GetTagByIDRequest); i {
+			switch v := v.(*DeleteTagResponse); i {
 			case 0:
 				return &v.state
 			case 1:
@@ -1658,7 +2290,7 @@ func file_threedoclusion_v1_service_proto_init() {
 			}
 		}
 		file_threedoclusion_v1_service_proto_msgTypes[7].Exporter = func(v interface{}, i int) interface{} {
-			switch v := v.(*GetTagByIDResponse); i {
+			switch v := v.(*GetAllTagsRequest); i {
 			case 0:
 				return &v.state
 			case 1:
@@ -1670,7 +2302,7 @@ func file_threedoclusion_v1_service_proto_init() {
 			}
 		}
 		file_threedoclusion_v1_service_proto_msgTypes[8].Exporter = func(v interface{}, i int) interface{} {
-			switch v := v.(*GetAllTagsByTypeRequest); i {
+			switch v := v.(*GetAllTagsResponse); i {
 			case 0:
 				return &v.state
 			case 1:
@@ -1682,7 +2314,7 @@ func file_threedoclusion_v1_service_proto_init() {
 			}
 		}
 		file_threedoclusion_v1_service_proto_msgTypes[9].Exporter = func(v interface{}, i int) interface{} {
-			switch v := v.(*GetAllTagsByTypeResponse); i {
+			switch v := v.(*GetTagByIDRequest); i {
 			case 0:
 				return &v.state
 			case 1:
@@ -1694,7 +2326,7 @@ func file_threedoclusion_v1_service_proto_init() {
 			}
 		}
 		file_threedoclusion_v1_service_proto_msgTypes[10].Exporter = func(v interface{}, i int) interface{} {
-			switch v := v.(*AddScanRequest); i {
+			switch v := v.(*GetTagByIDResponse); i {
 			case 0:
 				return &v.state
 			case 1:
@@ -1706,7 +2338,7 @@ func file_threedoclusion_v1_service_proto_init() {
 			}
 		}
 		file_threedoclusion_v1_service_proto_msgTypes[11].Exporter = func(v interface{}, i int) interface{} {
-			switch v := v.(*AddScanResponse); i {
+			switch v := v.(*GetAllTagsByTypeRequest); i {
 			case 0:
 				return &v.state
 			case 1:
@@ -1718,7 +2350,7 @@ func file_threedoclusion_v1_service_proto_init() {
 			}
 		}
 		file_threedoclusion_v1_service_proto_msgTypes[12].Exporter = func(v interface{}, i int) interface{} {
-			switch v := v.(*DeleteScanRequest); i {
+			switch v := v.(*GetAllTagsByTypeResponse); i {
 			case 0:
 				return &v.state
 			case 1:
@@ -1730,7 +2362,7 @@ func file_threedoclusion_v1_service_proto_init() {
 			}
 		}
 		file_threedoclusion_v1_service_proto_msgTypes[13].Exporter = func(v interface{}, i int) interface{} {
-			switch v := v.(*DeleteScanResponse); i {
+			switch v := v.(*AddScanRequest); i {
 			case 0:
 				return &v.state
 			case 1:
@@ -1742,7 +2374,7 @@ func file_threedoclusion_v1_service_proto_init() {
 			}
 		}
 		file_threedoclusion_v1_service_proto_msgTypes[14].Exporter = func(v interface{}, i int) interface{} {
-			switch v := v.(*GetAllScansRequest); i {
+			switch v := v.(*AddScanResponse); i {
 			case 0:
 				return &v.state
 			case 1:
@@ -1754,7 +2386,7 @@ func file_threedoclusion_v1_service_proto_init() {
 			}
 		}
 		file_threedoclusion_v1_service_proto_msgTypes[15].Exporter = func(v interface{}, i int) interface{} {
-			switch v := v.(*GetAllScansResponse); i {
+			switch v := v.(*DeleteScanRequest); i {
 			case 0:
 				return &v.state
 			case 1:
@@ -1766,7 +2398,7 @@ func file_threedoclusion_v1_service_proto_init() {
 			}
 		}
 		file_threedoclusion_v1_service_proto_msgTypes[16].Exporter = func(v interface{}, i int) interface{} {
-			switch v := v.(*GetScanByIDRequest); i {
+			switch v := v.(*DeleteScanResponse); i {
 			case 0:
 				return &v.state
 			case 1:
@@ -1778,7 +2410,7 @@ func file_threedoclusion_v1_service_proto_init() {
 			}
 		}
 		file_threedoclusion_v1_service_proto_msgTypes[17].Exporter = func(v interface{}, i int) interface{} {
-			switch v := v.(*GetScanByIDResponse); i {
+			switch v := v.(*GetAllScansRequest); i {
 			case 0:
 				return &v.state
 			case 1:
@@ -1790,7 +2422,7 @@ func file_threedoclusion_v1_service_proto_init() {
 			}
 		}
 		file_threedoclusion_v1_service_proto_msgTypes[18].Exporter = func(v interface{}, i int) interface{} {
-			switch v := v.(*GetScanByDateRequest); i {
+			switch v := v.(*GetAllScansResponse); i {
 			case 0:
 				return &v.state
 			case 1:
@@ -1802,6 +2434,42 @@ func file_threedoclusion_v1_service_proto_init() {
 			}
 		}
 		file_threedoclusion_v1_service_proto_msgTypes[19].Exporter = func(v interface{}, i int) interface{} {
+			switch v := v.(*GetScanByIDRequest); i {
+			case 0:
+				return &v.state
+			case 1:
+				return &v.sizeCache
+			case 2:
+				return &v.unknownFields
+			default:
+				return nil
+			}
+		}
+		file_threedoclusion_v1_service_proto_msgTypes[20].Exporter = func(v interface{}, i int) interface{} {
+			switch v := v.(*GetScanByIDResponse); i {
+			case 0:
+				return &v.state
+			case 1:
+				return &v.sizeCache
+			case 2:
+				return &v.unknownFields
+			default:
+				return nil
+			}
+		}
+		file_threedoclusion_v1_service_proto_msgTypes[21].Exporter = func(v interface{}, i int) interface{} {
+			switch v := v.(*GetScanByDateRequest); i {
+			case 0:
+				return &v.state
+			case 1:
+				return &v.sizeCache
+			case 2:
+				return &v.unknownFields
+			default:
+				return nil
+			}
+		}
+		file_threedoclusion_v1_service_proto_msgTypes[22].Exporter = func(v interface{}, i int) interface{} {
 			switch v := v.(*GetScanByDateResponse); i {
 			case 0:
 				return &v.state
@@ -1874,6 +2542,7 @@ func file_threedoclusion_v1_service_proto_init() {
 			}
 		}
 	}
+	file_threedoclusion_v1_service_proto_msgTypes[31].OneofWrappers = []interface{}{}
 	type x struct{}
 	out := protoimpl.TypeBuilder{
 		File: protoimpl.DescBuilder{

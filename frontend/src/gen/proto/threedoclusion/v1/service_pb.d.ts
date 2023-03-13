@@ -7,6 +7,113 @@ import type { BinaryReadOptions, FieldList, JsonReadOptions, JsonValue, PartialM
 import { Message, proto3 } from "@bufbuild/protobuf";
 
 /**
+ * @generated from message threedoclusion.v1.RowDataTag
+ */
+export declare class RowDataTag extends Message<RowDataTag> {
+  /**
+   * @generated from field: int64 id = 1;
+   */
+  id: bigint;
+
+  /**
+   * @generated from field: string bite = 2;
+   */
+  bite: string;
+
+  constructor(data?: PartialMessage<RowDataTag>);
+
+  static readonly runtime: typeof proto3;
+  static readonly typeName = "threedoclusion.v1.RowDataTag";
+  static readonly fields: FieldList;
+
+  static fromBinary(bytes: Uint8Array, options?: Partial<BinaryReadOptions>): RowDataTag;
+
+  static fromJson(jsonValue: JsonValue, options?: Partial<JsonReadOptions>): RowDataTag;
+
+  static fromJsonString(jsonString: string, options?: Partial<JsonReadOptions>): RowDataTag;
+
+  static equals(a: RowDataTag | PlainMessage<RowDataTag> | undefined, b: RowDataTag | PlainMessage<RowDataTag> | undefined): boolean;
+}
+
+/**
+ * @generated from message threedoclusion.v1.Scan
+ */
+export declare class Scan extends Message<Scan> {
+  /**
+   * @generated from field: int64 id = 1;
+   */
+  id: bigint;
+
+  /**
+   * @generated from field: string scan = 2;
+   */
+  scan: string;
+
+  /**
+   * @generated from field: string date = 3;
+   */
+  date: string;
+
+  constructor(data?: PartialMessage<Scan>);
+
+  static readonly runtime: typeof proto3;
+  static readonly typeName = "threedoclusion.v1.Scan";
+  static readonly fields: FieldList;
+
+  static fromBinary(bytes: Uint8Array, options?: Partial<BinaryReadOptions>): Scan;
+
+  static fromJson(jsonValue: JsonValue, options?: Partial<JsonReadOptions>): Scan;
+
+  static fromJsonString(jsonString: string, options?: Partial<JsonReadOptions>): Scan;
+
+  static equals(a: Scan | PlainMessage<Scan> | undefined, b: Scan | PlainMessage<Scan> | undefined): boolean;
+}
+
+/**
+ * @generated from message threedoclusion.v1.Patient
+ */
+export declare class Patient extends Message<Patient> {
+  /**
+   * @generated from field: int64 id = 1;
+   */
+  id: bigint;
+
+  /**
+   * @generated from field: string first_name = 2;
+   */
+  firstName: string;
+
+  /**
+   * @generated from field: string last_name = 3;
+   */
+  lastName: string;
+
+  /**
+   * @generated from field: int64 pinned = 4;
+   */
+  pinned: bigint;
+
+  /**
+   * @generated from field: string notes = 5;
+   */
+  notes: string;
+
+  constructor(data?: PartialMessage<Patient>);
+
+  static readonly runtime: typeof proto3;
+  static readonly typeName = "threedoclusion.v1.Patient";
+  static readonly fields: FieldList;
+
+  static fromBinary(bytes: Uint8Array, options?: Partial<BinaryReadOptions>): Patient;
+
+  static fromJson(jsonValue: JsonValue, options?: Partial<JsonReadOptions>): Patient;
+
+  static fromJsonString(jsonString: string, options?: Partial<JsonReadOptions>): Patient;
+
+  static equals(a: Patient | PlainMessage<Patient> | undefined, b: Patient | PlainMessage<Patient> | undefined): boolean;
+}
+
+/**
  * TAGS
  *
  * @generated from message threedoclusion.v1.AddTagRequest
@@ -108,11 +215,6 @@ export declare class DeleteTagResponse extends Message<DeleteTagResponse> {
  * @generated from message threedoclusion.v1.GetAllTagsRequest
  */
 export declare class GetAllTagsRequest extends Message<GetAllTagsRequest> {
-  /**
-   * @generated from field: string table_name = 1;
-   */
-  tableName: string;
-
   constructor(data?: PartialMessage<GetAllTagsRequest>);
 
   static readonly runtime: typeof proto3;
@@ -133,14 +235,9 @@ export declare class GetAllTagsRequest extends Message<GetAllTagsRequest> {
  */
 export declare class GetAllTagsResponse extends Message<GetAllTagsResponse> {
   /**
-   * @generated from field: repeated int64 id_data = 1;
+   * @generated from field: repeated threedoclusion.v1.RowDataTag tags = 1;
    */
-  idData: bigint[];
-
-  /**
-   * @generated from field: repeated string bite_data = 2;
-   */
-  biteData: string[];
+  tags: RowDataTag[];
 
   constructor(data?: PartialMessage<GetAllTagsResponse>);
 
@@ -239,14 +336,9 @@ export declare class GetAllTagsByTypeRequest extends Message<GetAllTagsByTypeReq
  */
 export declare class GetAllTagsByTypeResponse extends Message<GetAllTagsByTypeResponse> {
   /**
-   * @generated from field: string bite = 1;
+   * @generated from field: repeated threedoclusion.v1.RowDataTag tags = 1;
    */
-  bite: string;
-
-  /**
-   * @generated from field: repeated int64 id_data = 2;
-   */
-  idData: bigint[];
+  tags: RowDataTag[];
 
   constructor(data?: PartialMessage<GetAllTagsByTypeResponse>);
 
@@ -370,11 +462,6 @@ export declare class DeleteScanResponse extends Message<DeleteScanResponse> {
  * @generated from message threedoclusion.v1.GetAllScansRequest
  */
 export declare class GetAllScansRequest extends Message<GetAllScansRequest> {
-  /**
-   * @generated from field: string table_name = 1;
-   */
-  tableName: string;
-
   constructor(data?: PartialMessage<GetAllScansRequest>);
 
   static readonly runtime: typeof proto3;
@@ -395,19 +482,9 @@ export declare class GetAllScansRequest extends Message<GetAllScansRequest> {
  */
 export declare class GetAllScansResponse extends Message<GetAllScansResponse> {
   /**
-   * @generated from field: repeated int64 id_data = 1;
+   * @generated from field: repeated threedoclusion.v1.Scan scans = 1;
    */
-  idData: bigint[];
-
-  /**
-   * @generated from field: repeated string scan_data = 2;
-   */
-  scanData: string[];
-
-  /**
-   * @generated from field: repeated string scan_dates = 3;
-   */
-  scanDates: string[];
+  scans: Scan[];
 
   constructor(data?: PartialMessage<GetAllScansResponse>);
 
@@ -511,19 +588,9 @@ export declare class GetScanByDateRequest extends Message<GetScanByDateRequest> 
  */
 export declare class GetScanByDateResponse extends Message<GetScanByDateResponse> {
   /**
-   * @generated from field: repeated int64 id_data = 1;
+   * @generated from field: repeated threedoclusion.v1.Scan scans = 1;
    */
-  idData: bigint[];
-
-  /**
-   * @generated from field: repeated string scan_data = 2;
-   */
-  scanData: string[];
-
-  /**
-   * @generated from field: repeated string scan_dates = 3;
-   */
-  scanDates: string[];
+  scans: Scan[];
 
   constructor(data?: PartialMessage<GetScanByDateResponse>);
 

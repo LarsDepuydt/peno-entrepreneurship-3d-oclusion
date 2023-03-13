@@ -120,6 +120,51 @@ export const ScanService = {
       O: GetAllTagsByTypeResponse,
       kind: MethodKind.Unary,
     },
+    /**
+     * @generated from rpc threedoclusion.v1.ScanService.AddPatient
+     */
+    addPatient: {
+      name: "AddPatient",
+      I: AddPatientRequest,
+      O: AddPatientResponse,
+      kind: MethodKind.Unary,
+    },
+    /**
+     * @generated from rpc threedoclusion.v1.ScanService.DeletePatient
+     */
+    deletePatient: {
+      name: "DeletePatient",
+      I: DeletePatientRequest,
+      O: DeletePatientResponse,
+      kind: MethodKind.Unary,
+    },
+    /**
+     * @generated from rpc threedoclusion.v1.ScanService.GetAllPatients
+     */
+    getAllPatients: {
+      name: "GetAllPatients",
+      I: GetAllPatientsRequest,
+      O: GetAllPatientsResponse,
+      kind: MethodKind.Unary,
+    },
+    /**
+     * @generated from rpc threedoclusion.v1.ScanService.GetPatientByID
+     */
+    getPatientByID: {
+      name: "GetPatientByID",
+      I: GetPatientByIDRequest,
+      O: GetPatientByIDResponse,
+      kind: MethodKind.Unary,
+    },
+    /**
+     * @generated from rpc threedoclusion.v1.ScanService.GetPatientByName
+     */
+    getPatientByName: {
+      name: "GetPatientByName",
+      I: GetPatientByNameRequest,
+      O: GetPatientByNameResponse,
+      kind: MethodKind.Unary,
+    },
   }
 } as const;
 

@@ -195,3 +195,88 @@ export const getAllTagsByType = createQueryService({
     typeName: "threedoclusion.v1.ScanService",
   },
 }).getAllTagsByType;
+
+/**
+ * @generated from rpc threedoclusion.v1.ScanService.AddPatient
+ */
+export const addPatient = createQueryService({
+  service: {
+    methods: {
+      addPatient: {
+        name: "AddPatient",
+        kind: MethodKind.Unary,
+        I: AddPatientRequest,
+        O: AddPatientResponse,
+      },
+    },
+    typeName: "threedoclusion.v1.ScanService",
+  },
+}).addPatient;
+
+/**
+ * @generated from rpc threedoclusion.v1.ScanService.DeletePatient
+ */
+export const deletePatient = createQueryService({
+  service: {
+    methods: {
+      deletePatient: {
+        name: "DeletePatient",
+        kind: MethodKind.Unary,
+        I: DeletePatientRequest,
+        O: DeletePatientResponse,
+      },
+    },
+    typeName: "threedoclusion.v1.ScanService",
+  },
+}).deletePatient;
+
+/**
+ * @generated from rpc threedoclusion.v1.ScanService.GetAllPatients
+ */
+export const getAllPatients = createQueryService({
+  service: {
+    methods: {
+      getAllPatients: {
+        name: "GetAllPatients",
+        kind: MethodKind.Unary,
+        I: GetAllPatientsRequest,
+        O: GetAllPatientsResponse,
+      },
+    },
+    typeName: "threedoclusion.v1.ScanService",
+  },
+}).getAllPatients;
+
+/**
+ * @generated from rpc threedoclusion.v1.ScanService.GetPatientByID
+ */
+export const getPatientByID = createQueryService({
+  service: {
+    methods: {
+      getPatientByID: {
+        name: "GetPatientByID",
+        kind: MethodKind.Unary,
+        I: GetPatientByIDRequest,
+        O: GetPatientByIDResponse,
+      },
+    },
+    typeName: "threedoclusion.v1.ScanService",
+  },
+}).getPatientByID;
+
+/**
+ * @generated from rpc threedoclusion.v1.ScanService.GetPatientByName
+ */
+export const getPatientByName = createQueryService({
+  service: {
+    methods: {
+      getPatientByName: {
+        name: "GetPatientByName",
+        kind: MethodKind.Unary,
+        I: GetPatientByNameRequest,
+        O: GetPatientByNameResponse,
+      },
+    },
+    typeName: "threedoclusion.v1.ScanService",
+  },
+}).getPatientByName;

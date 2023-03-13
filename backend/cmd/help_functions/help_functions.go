@@ -20,133 +20,89 @@ func ConnectToDataBase() (*sql.DB, error) {
 	return database, nil
 }
 
-func GetResponseMakerScan(database *sql.DB, statement string) ([]int64, []string, []string, error) {
+type RowDataScan struct {
+	Id   int64
+	Scan string
+	Date string
+}
+
+func GetResponseMakerScan(database *sql.DB, statement string) ([]RowDataScan, error) {
 
 	// Execute the statement with the parameter
 	rows, error := database.Query(statement)
 	if error != nil {
-		return nil, nil, nil, error
+		return nil, error
 	}
 
-	type RowData struct {
-		id   int64
-		scan string
-		date string
-	}
-
-	var (
-		idArray   []int64
-		scanArray []string
-		dateArray []string
-	)
+	var rowArray []RowDataScan
 
 	for rows.Next() {
-		var rowData RowData
-		error = rows.Scan(&rowData.id, &rowData.scan, &rowData.date)
+		var rowData RowDataScan
+		error = rows.Scan(&rowData.Id, &rowData.Scan, &rowData.Date)
 		if error != nil {
 			panic(error)
 		}
-		idArray = append(idArray, rowData.id)
-		scanArray = append(scanArray, rowData.scan)
-		dateArray = append(dateArray, rowData.date)
+		rowArray = append(rowArray, rowData)
 	}
 
-	return idArray, scanArray, dateArray, nil
+	return rowArray, nil
 
 }
 
-func GetResponseMakerTag(database *sql.DB, statement string) ([]int64, []string, error) {
+type RowDataTag struct {
+	Id   int64
+	Bite string
+}
+
+func GetResponseMakerTag(database *sql.DB, statement string) ([]RowDataTag, error) {
 
 	// Execute the statement with the parameter
 	rows, error := database.Query(statement)
 	if error != nil {
-		return nil, nil, error
+		return nil, error
 	}
 
-	type RowData struct {
-		id   int64
-		bite string
-	}
-
-	var (
-		idArray   []int64
-		biteArray []string
-	)
-
+	var rowArray []RowDataTag
 	for rows.Next() {
-		var rowData RowData
-		error = rows.Scan(&rowData.id, &rowData.bite)
+		var rowData RowDataTag
+		error = rows.Scan(&rowData.Id, &rowData.Bite)
 		if error != nil {
 			panic(error)
 		}
-		idArray = append(idArray, rowData.id)
-		biteArray = append(biteArray, rowData.bite)
+		rowArray = append(rowArray, rowData)
 	}
 
-	return idArray, biteArray, nil
+	return rowArray, nil
 
 }
 
-func GetResponseMakerPatient(database *sql.DB, statement string) ([]int64, []string, error) {
-
-	// Execute the statement with the parameter
-	rows, error := database.Query(statement)
-	if error != nil {
-		return nil, nil, error
-	}
-
-	type RowData struct {
-		id   int64
-		bite string
-	}
-
-	var (
-		idArray   []int64
-		biteArray []string
-	)
-
-	for rows.Next() {
-		var rowData RowData
-		error = rows.Scan(&rowData.id, &rowData.bite)
-		if error != nil {
-			panic(error)
-		}
-		idArray = append(idArray, rowData.id)
-		biteArray = append(biteArray, rowData.bite)
-	}
-
-	return idArray, biteArray, nil
-
+type RowDataPatient struct {
+	Id         int64
+	First_name string
+	Last_name  string
+	Pinned     int64
+	Notes      string
 }
 
-func GetResponseMakerDentist(database *sql.DB, statement string) ([]int64, []string, error) {
+func GetResponseMakerPatient(database *sql.DB, statement string) ([]RowDataPatient, error) {
 
 	// Execute the statement with the parameter
 	rows, error := database.Query(statement)
 	if error != nil {
-		return nil, nil, error
+		return nil, error
 	}
 
-	type RowData struct {
-		id   int64
-		bite string
-	}
-
-	var (
-		idArray   []int64
-		biteArray []string
-	)
+	var rowArray []RowDataPatient
 
 	for rows.Next() {
-		var rowData RowData
-		error = rows.Scan(&rowData.id, &rowData.bite)
+		var rowData RowDataPatient
+		error = rows.Scan(&rowData.Id, &rowData.First_name, &rowData.Last_name, &rowData.Pinned, &rowData.Notes)
 		if error != nil {
 			panic(error)
 		}
-		idArray = append(idArray, rowData.id)
-		biteArray = append(biteArray, rowData.bite)
+		rowArray = append(rowArray, rowData)
 	}
 
-	return idArray, biteArray, nil
+	return rowArray, nil
 
 }

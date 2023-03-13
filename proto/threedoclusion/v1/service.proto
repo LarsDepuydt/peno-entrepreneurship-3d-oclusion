@@ -21,10 +21,34 @@ service ScanService {
   rpc GetTagByID(GetTagByIDRequest) returns (GetTagByIDResponse) {}
   rpc GetAllTagsByType(GetAllTagsByTypeRequest) returns (GetAllTagsByTypeResponse) {}
 
+  rpc AddPatient(AddPatientRequest) returns (AddPatientResponse) {}
+  rpc DeletePatient(DeletePatientRequest) returns (DeletePatientResponse) {}
+  rpc GetAllPatients(GetAllPatientsRequest) returns (GetAllPatientsResponse) {}
+  rpc GetPatientByID(GetPatientByIDRequest) returns (GetPatientByIDResponse) {}
+  rpc GetPatientByName(GetPatientByNameRequest) returns (GetPatientByNameResponse) {}
 
 }
 
 
+message RowDataTag {
+  int64 id = 1;
+  string bite = 2;
+}
+
+message Scan {
+  int64 id = 1;
+  string scan = 2;
+  string date = 3;
+}
+
+message Patient{
+  int64 id = 1;
+  string first_name = 2;
+  string last_name = 3;
+  int64 pinned = 4;
+  string notes = 5;
+  
+}
 
 // TAGS
 message AddTagRequest {
@@ -43,13 +67,10 @@ message DeleteTagResponse {
   string message = 1;
 }
 
-message GetAllTagsRequest {
-  string table_name = 1;
-}
+message GetAllTagsRequest {}
 
 message GetAllTagsResponse {
-  repeated int64 id_data = 1;
-  repeated string bite_data = 2;
+  repeated RowDataTag tags = 1;
 }
 
 message GetTagByIDRequest {
@@ -66,8 +87,7 @@ message GetAllTagsByTypeRequest {
 }
 
 message GetAllTagsByTypeResponse {
-  string bite = 1;
-  repeated int64 id_data = 2;
+  repeated RowDataTag tags = 1;
 }
 
 
@@ -90,15 +110,10 @@ message DeleteScanResponse {
   string message = 1;
 }
 
-message GetAllScansRequest {
-  string table_name = 1;
-
-}
+message GetAllScansRequest {}
 
 message GetAllScansResponse {
-  repeated int64 id_data =  1;
-  repeated string scan_data = 2;
-  repeated string scan_dates = 3;
+  repeated Scan scans = 1;
 }
 
 message GetScanByIDRequest {
@@ -116,9 +131,7 @@ message GetScanByDateRequest {
 }
 
 message GetScanByDateResponse {
-  repeated int64 id_data =  1;
-  repeated string scan_data = 2;
-  repeated string scan_dates = 3;
+  repeated Scan scans = 1;
 }
 
 message TagResponse {

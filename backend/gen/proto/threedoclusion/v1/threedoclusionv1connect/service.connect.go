@@ -39,6 +39,11 @@ type ScanServiceClient interface {
 	GetAllTags(context.Context, *connect_go.Request[v1.GetAllTagsRequest]) (*connect_go.Response[v1.GetAllTagsResponse], error)
 	GetTagByID(context.Context, *connect_go.Request[v1.GetTagByIDRequest]) (*connect_go.Response[v1.GetTagByIDResponse], error)
 	GetAllTagsByType(context.Context, *connect_go.Request[v1.GetAllTagsByTypeRequest]) (*connect_go.Response[v1.GetAllTagsByTypeResponse], error)
+	AddPatient(context.Context, *connect_go.Request[v1.AddPatientRequest]) (*connect_go.Response[v1.AddPatientResponse], error)
+	DeletePatient(context.Context, *connect_go.Request[v1.DeletePatientRequest]) (*connect_go.Response[v1.DeletePatientResponse], error)
+	GetAllPatients(context.Context, *connect_go.Request[v1.GetAllPatientsRequest]) (*connect_go.Response[v1.GetAllPatientsResponse], error)
+	GetPatientByID(context.Context, *connect_go.Request[v1.GetPatientByIDRequest]) (*connect_go.Response[v1.GetPatientByIDResponse], error)
+	GetPatientByName(context.Context, *connect_go.Request[v1.GetPatientByNameRequest]) (*connect_go.Response[v1.GetPatientByNameResponse], error)
 }
 
 // NewScanServiceClient constructs a client for the threedoclusion.v1.ScanService service. By
@@ -111,6 +116,31 @@ func NewScanServiceClient(httpClient connect_go.HTTPClient, baseURL string, opts
 			baseURL+"/threedoclusion.v1.ScanService/GetAllTagsByType",
 			opts...,
 		),
+		addPatient: connect_go.NewClient[v1.AddPatientRequest, v1.AddPatientResponse](
+			httpClient,
+			baseURL+"/threedoclusion.v1.ScanService/AddPatient",
+			opts...,
+		),
+		deletePatient: connect_go.NewClient[v1.DeletePatientRequest, v1.DeletePatientResponse](
+			httpClient,
+			baseURL+"/threedoclusion.v1.ScanService/DeletePatient",
+			opts...,
+		),
+		getAllPatients: connect_go.NewClient[v1.GetAllPatientsRequest, v1.GetAllPatientsResponse](
+			httpClient,
+			baseURL+"/threedoclusion.v1.ScanService/GetAllPatients",
+			opts...,
+		),
+		getPatientByID: connect_go.NewClient[v1.GetPatientByIDRequest, v1.GetPatientByIDResponse](
+			httpClient,
+			baseURL+"/threedoclusion.v1.ScanService/GetPatientByID",
+			opts...,
+		),
+		getPatientByName: connect_go.NewClient[v1.GetPatientByNameRequest, v1.GetPatientByNameResponse](
+			httpClient,
+			baseURL+"/threedoclusion.v1.ScanService/GetPatientByName",
+			opts...,
+		),
 	}
 }
 
@@ -128,6 +158,11 @@ type scanServiceClient struct {
 	getAllTags       *connect_go.Client[v1.GetAllTagsRequest, v1.GetAllTagsResponse]
 	getTagByID       *connect_go.Client[v1.GetTagByIDRequest, v1.GetTagByIDResponse]
 	getAllTagsByType *connect_go.Client[v1.GetAllTagsByTypeRequest, v1.GetAllTagsByTypeResponse]
+	addPatient       *connect_go.Client[v1.AddPatientRequest, v1.AddPatientResponse]
+	deletePatient    *connect_go.Client[v1.DeletePatientRequest, v1.DeletePatientResponse]
+	getAllPatients   *connect_go.Client[v1.GetAllPatientsRequest, v1.GetAllPatientsResponse]
+	getPatientByID   *connect_go.Client[v1.GetPatientByIDRequest, v1.GetPatientByIDResponse]
+	getPatientByName *connect_go.Client[v1.GetPatientByNameRequest, v1.GetPatientByNameResponse]
 }
 
 // SendVR calls threedoclusion.v1.ScanService.SendVR.
@@ -190,6 +225,31 @@ func (c *scanServiceClient) GetAllTagsByType(ctx context.Context, req *connect_g
 	return c.getAllTagsByType.CallUnary(ctx, req)
 }
 
+// AddPatient calls threedoclusion.v1.ScanService.AddPatient.
+func (c *scanServiceClient) AddPatient(ctx context.Context, req *connect_go.Request[v1.AddPatientRequest]) (*connect_go.Response[v1.AddPatientResponse], error) {
+	return c.addPatient.CallUnary(ctx, req)
+}
+
+// DeletePatient calls threedoclusion.v1.ScanService.DeletePatient.
+func (c *scanServiceClient) DeletePatient(ctx context.Context, req *connect_go.Request[v1.DeletePatientRequest]) (*connect_go.Response[v1.DeletePatientResponse], error) {
+	return c.deletePatient.CallUnary(ctx, req)
+}
+
+// GetAllPatients calls threedoclusion.v1.ScanService.GetAllPatients.
+func (c *scanServiceClient) GetAllPatients(ctx context.Context, req *connect_go.Request[v1.GetAllPatientsRequest]) (*connect_go.Response[v1.GetAllPatientsResponse], error) {
+	return c.getAllPatients.CallUnary(ctx, req)
+}
+
+// GetPatientByID calls threedoclusion.v1.ScanService.GetPatientByID.
+func (c *scanServiceClient) GetPatientByID(ctx context.Context, req *connect_go.Request[v1.GetPatientByIDRequest]) (*connect_go.Response[v1.GetPatientByIDResponse], error) {
+	return c.getPatientByID.CallUnary(ctx, req)
+}
+
+// GetPatientByName calls threedoclusion.v1.ScanService.GetPatientByName.
+func (c *scanServiceClient) GetPatientByName(ctx context.Context, req *connect_go.Request[v1.GetPatientByNameRequest]) (*connect_go.Response[v1.GetPatientByNameResponse], error) {
+	return c.getPatientByName.CallUnary(ctx, req)
+}
+
 // ScanServiceHandler is an implementation of the threedoclusion.v1.ScanService service.
 type ScanServiceHandler interface {
 	SendVR(context.Context, *connect_go.Request[v1.SendVRRequest]) (*connect_go.Response[v1.SendVRResponse], error)
@@ -204,6 +264,11 @@ type ScanServiceHandler interface {
 	GetAllTags(context.Context, *connect_go.Request[v1.GetAllTagsRequest]) (*connect_go.Response[v1.GetAllTagsResponse], error)
 	GetTagByID(context.Context, *connect_go.Request[v1.GetTagByIDRequest]) (*connect_go.Response[v1.GetTagByIDResponse], error)
 	GetAllTagsByType(context.Context, *connect_go.Request[v1.GetAllTagsByTypeRequest]) (*connect_go.Response[v1.GetAllTagsByTypeResponse], error)
+	AddPatient(context.Context, *connect_go.Request[v1.AddPatientRequest]) (*connect_go.Response[v1.AddPatientResponse], error)
+	DeletePatient(context.Context, *connect_go.Request[v1.DeletePatientRequest]) (*connect_go.Response[v1.DeletePatientResponse], error)
+	GetAllPatients(context.Context, *connect_go.Request[v1.GetAllPatientsRequest]) (*connect_go.Response[v1.GetAllPatientsResponse], error)
+	GetPatientByID(context.Context, *connect_go.Request[v1.GetPatientByIDRequest]) (*connect_go.Response[v1.GetPatientByIDResponse], error)
+	GetPatientByName(context.Context, *connect_go.Request[v1.GetPatientByNameRequest]) (*connect_go.Response[v1.GetPatientByNameResponse], error)
 }
 
 // NewScanServiceHandler builds an HTTP handler from the service implementation. It returns the path
@@ -273,6 +338,31 @@ func NewScanServiceHandler(svc ScanServiceHandler, opts ...connect_go.HandlerOpt
 		svc.GetAllTagsByType,
 		opts...,
 	))
+	mux.Handle("/threedoclusion.v1.ScanService/AddPatient", connect_go.NewUnaryHandler(
+		"/threedoclusion.v1.ScanService/AddPatient",
+		svc.AddPatient,
+		opts...,
+	))
+	mux.Handle("/threedoclusion.v1.ScanService/DeletePatient", connect_go.NewUnaryHandler(
+		"/threedoclusion.v1.ScanService/DeletePatient",
+		svc.DeletePatient,
+		opts...,
+	))
+	mux.Handle("/threedoclusion.v1.ScanService/GetAllPatients", connect_go.NewUnaryHandler(
+		"/threedoclusion.v1.ScanService/GetAllPatients",
+		svc.GetAllPatients,
+		opts...,
+	))
+	mux.Handle("/threedoclusion.v1.ScanService/GetPatientByID", connect_go.NewUnaryHandler(
+		"/threedoclusion.v1.ScanService/GetPatientByID",
+		svc.GetPatientByID,
+		opts...,
+	))
+	mux.Handle("/threedoclusion.v1.ScanService/GetPatientByName", connect_go.NewUnaryHandler(
+		"/threedoclusion.v1.ScanService/GetPatientByName",
+		svc.GetPatientByName,
+		opts...,
+	))
 	return "/threedoclusion.v1.ScanService/", mux
 }
 
@@ -325,4 +415,24 @@ func (UnimplementedScanServiceHandler) GetTagByID(context.Context, *connect_go.R
 
 func (UnimplementedScanServiceHandler) GetAllTagsByType(context.Context, *connect_go.Request[v1.GetAllTagsByTypeRequest]) (*connect_go.Response[v1.GetAllTagsByTypeResponse], error) {
 	return nil, connect_go.NewError(connect_go.CodeUnimplemented, errors.New("threedoclusion.v1.ScanService.GetAllTagsByType is not implemented"))
+}
+
+func (UnimplementedScanServiceHandler) AddPatient(context.Context, *connect_go.Request[v1.AddPatientRequest]) (*connect_go.Response[v1.AddPatientResponse], error) {
+	return nil, connect_go.NewError(connect_go.CodeUnimplemented, errors.New("threedoclusion.v1.ScanService.AddPatient is not implemented"))
+}
+
+func (UnimplementedScanServiceHandler) DeletePatient(context.Context, *connect_go.Request[v1.DeletePatientRequest]) (*connect_go.Response[v1.DeletePatientResponse], error) {
+	return nil, connect_go.NewError(connect_go.CodeUnimplemented, errors.New("threedoclusion.v1.ScanService.DeletePatient is not implemented"))
+}
+
+func (UnimplementedScanServiceHandler) GetAllPatients(context.Context, *connect_go.Request[v1.GetAllPatientsRequest]) (*connect_go.Response[v1.GetAllPatientsResponse], error) {
+	return nil, connect_go.NewError(connect_go.CodeUnimplemented, errors.New("threedoclusion.v1.ScanService.GetAllPatients is not implemented"))
+}
+
+func (UnimplementedScanServiceHandler) GetPatientByID(context.Context, *connect_go.Request[v1.GetPatientByIDRequest]) (*connect_go.Response[v1.GetPatientByIDResponse], error) {
+	return nil, connect_go.NewError(connect_go.CodeUnimplemented, errors.New("threedoclusion.v1.ScanService.GetPatientByID is not implemented"))
+}
+
+func (UnimplementedScanServiceHandler) GetPatientByName(context.Context, *connect_go.Request[v1.GetPatientByNameRequest]) (*connect_go.Response[v1.GetPatientByNameResponse], error) {
+	return nil, connect_go.NewError(connect_go.CodeUnimplemented, errors.New("threedoclusion.v1.ScanService.GetPatientByName is not implemented"))
 }
