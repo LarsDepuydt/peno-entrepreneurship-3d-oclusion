@@ -45,6 +45,8 @@ export default function LoginForm() {
 
           onSubmit={(values) => {
             // Hash the password
+            // Synchronously hashed
+            // blocks the thread
             const hashedPassword = bcrypt.hashSync(values.password, 10);
           
             // Replace the password with the new password
