@@ -1,0 +1,54 @@
+{
+  "name": "cannon-utils",
+  "version": "0.1.4",
+  "description": "Provides utils for cannon-es",
+  "keywords": [
+    "cannon",
+    "three"
+  ],
+  "author": "Tanishq Singh <tanishqsingh640@gmail.com>",
+  "license": "MIT",
+  "main": "./dist/cannon-utils.cjs.js",
+  "module": "./dist/cannon-utils.js",
+  "types": "./dist/cannon-utils.d.ts",
+  "sideEffects": false,
+  "scripts": {
+    "prebuild": "rimraf dist",
+    "build": "npm run typegen && rollup -c",
+    "prepare": "npm run build",
+    "typecheck": "tsc --noEmit --emitDeclarationOnly false --strict",
+    "typegen": "tsc --outFile dist/cannon-utils.d.ts"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/tanishq-singh-2301/cannon-utils.git"
+  },
+  "bugs": {
+    "url": "https://github.com/tanishq-singh-2301/cannon-utils/issues"
+  },
+  "homepage": "https://github.com/tanishq-singh-2301/cannon-utils#readme",
+  "peerDependencies": {
+    "cannon-es": "0.x.x",
+    "three": "0.x.x",
+    "typescript": ">=3.8"
+  },
+  "peerDependenciesMeta": {
+    "typescript": {
+      "optional": true
+    }
+  },
+  "devDependencies": {
+    "@babel/core": "^7.16.0",
+    "@babel/preset-env": "^7.16.0",
+    "@babel/preset-typescript": "^7.16.0",
+    "@rollup/plugin-babel": "^5.3.0",
+    "@rollup/plugin-node-resolve": "^13.0.6",
+    "cannon-es": "^0.16.0",
+    "prettier": "^2.4.1",
+    "pretty-quick": "^3.1.1",
+    "rimraf": "^3.0.2",
+    "rollup": "^2.59.0",
+    "three": "^0.125.2",
+    "typescript": "^4.4.4"
+  }
+}
