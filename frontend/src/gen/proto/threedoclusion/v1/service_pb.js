@@ -342,3 +342,49 @@ export const DeleteDentistByIdResponse = proto3.makeMessageType(
   ],
 );
 
+/**
+ * @generated from message threedoclusion.v1.LoginRequest
+ */
+export const LoginRequest = proto3.makeMessageType(
+  "threedoclusion.v1.LoginRequest",
+  () => [
+    { no: 1, name: "email", kind: "scalar", T: 9 /* ScalarType.STRING */ },
+    { no: 2, name: "password", kind: "scalar", T: 9 /* ScalarType.STRING */ },
+  ],
+);
+
+/**
+ * @generated from message threedoclusion.v1.LoginResponse
+ */
+export const LoginResponse = proto3.makeMessageType(
+  "threedoclusion.v1.LoginResponse",
+  () => [
+    { no: 1, name: "message", kind: "scalar", T: 9 /* ScalarType.STRING */ },
+    { no: 2, name: "token", kind: "scalar", T: 9 /* ScalarType.STRING */ },
+  ],
+);
+
+/**
+ * @generated from message threedoclusion.v1.RegisterRequest
+ */
+export const RegisterRequest = proto3.makeMessageType(
+  "threedoclusion.v1.RegisterRequest",
+  () => [
+    { no: 1, name: "email", kind: "scalar", T: 9 /* ScalarType.STRING */ },
+    { no: 2, name: "password", kind: "scalar", T: 9 /* ScalarType.STRING */ },
+    { no: 3, name: "first_name", kind: "scalar", T: 9 /* ScalarType.STRING */ },
+    { no: 4, name: "last_name", kind: "scalar", T: 9 /* ScalarType.STRING */ },
+  ],
+);
+
+/**
+ * @generated from message threedoclusion.v1.RegisterResponse
+ */
+export const RegisterResponse = proto3.makeMessageType(
+  "threedoclusion.v1.RegisterResponse",
+  () => [
+    { no: 1, name: "message", kind: "scalar", T: 9 /* ScalarType.STRING */ },
+    { no: 2, name: "token", kind: "scalar", T: 9 /* ScalarType.STRING */ },
+  ],
+);
+

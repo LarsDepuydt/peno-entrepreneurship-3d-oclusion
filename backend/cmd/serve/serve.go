@@ -4,6 +4,7 @@ import (
 	"context"
 	"net/http"
 
+	"github.com/LarsDepuydt/peno-entrepreneurship-3d-oclusion/cmd/dentists"
 	"github.com/LarsDepuydt/peno-entrepreneurship-3d-oclusion/cmd/scans"
 	"github.com/LarsDepuydt/peno-entrepreneurship-3d-oclusion/cmd/tags"
 	threedoclusionv1 "github.com/LarsDepuydt/peno-entrepreneurship-3d-oclusion/gen/proto/threedoclusion/v1"
@@ -115,4 +116,54 @@ func (s *ServerStruct) GetAllTagsByType(
 	req *connect.Request[threedoclusionv1.GetAllTagsByTypeRequest],
 ) (*connect.Response[threedoclusionv1.GetAllTagsByTypeResponse], error) {
 	return tags.GetAllTagsByType(req)
+}
+
+// DENTISTS
+func (s *ServerStruct) AddDentist(
+	ctx context.Context,
+	req *connect.Request[threedoclusionv1.AddDentistRequest],
+) (*connect.Response[threedoclusionv1.AddDentistResponse], error) {
+	return dentists.AddDentist(req)
+}
+
+func (s *ServerStruct) DeleteDentistById(
+	ctx context.Context,
+	req *connect.Request[threedoclusionv1.DeleteDentistByIdRequest],
+) (*connect.Response[threedoclusionv1.DeleteDentistByIdResponse], error) {
+	return dentists.DeleteDentistById(req)
+}
+
+func (s *ServerStruct) GetAllDentists(
+	ctx context.Context,
+	req *connect.Request[threedoclusionv1.GetAllDentistsRequest],
+) (*connect.Response[threedoclusionv1.GetAllDentistsResponse], error) {
+	return dentists.GetAllDentists(req)
+}
+
+func (s *ServerStruct) GetDentistById(
+	ctx context.Context,
+	req *connect.Request[threedoclusionv1.GetDentistByIdRequest],
+) (*connect.Response[threedoclusionv1.GetDentistByIdResponse], error) {
+	return dentists.GetDentistById(req)
+}
+
+func (s *ServerStruct) Login(
+	ctx context.Context,
+	req *connect.Request[threedoclusionv1.LoginRequest],
+) (*connect.Response[threedoclusionv1.LoginResponse], error) {
+	return dentists.Login(req)
+}
+
+func (s *ServerStruct) Register(
+	ctx context.Context,
+	req *connect.Request[threedoclusionv1.RegisterRequest],
+) (*connect.Response[threedoclusionv1.RegisterResponse], error) {
+	return dentists.Register(req)
+}
+
+func (s *ServerStruct) UpdateDentistById(
+	ctx context.Context,
+	req *connect.Request[threedoclusionv1.UpdateDentistByIdRequest],
+) (*connect.Response[threedoclusionv1.UpdateDentistByIdResponse], error) {
+	return dentists.UpdateDentistById(req)
 }

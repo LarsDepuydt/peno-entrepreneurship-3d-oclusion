@@ -42,6 +42,8 @@ type ScanServiceClient interface {
 	GetAllDentists(context.Context, *connect_go.Request[v1.GetAllDentistsRequest]) (*connect_go.Response[v1.GetAllDentistsResponse], error)
 	GetDentistById(context.Context, *connect_go.Request[v1.GetDentistByIdRequest]) (*connect_go.Response[v1.GetDentistByIdResponse], error)
 	UpdateDentistById(context.Context, *connect_go.Request[v1.UpdateDentistByIdRequest]) (*connect_go.Response[v1.UpdateDentistByIdResponse], error)
+	Login(context.Context, *connect_go.Request[v1.LoginRequest]) (*connect_go.Response[v1.LoginResponse], error)
+	Register(context.Context, *connect_go.Request[v1.RegisterRequest]) (*connect_go.Response[v1.RegisterResponse], error)
 }
 
 // NewScanServiceClient constructs a client for the threedoclusion.v1.ScanService service. By
@@ -129,6 +131,16 @@ func NewScanServiceClient(httpClient connect_go.HTTPClient, baseURL string, opts
 			baseURL+"/threedoclusion.v1.ScanService/UpdateDentistById",
 			opts...,
 		),
+		login: connect_go.NewClient[v1.LoginRequest, v1.LoginResponse](
+			httpClient,
+			baseURL+"/threedoclusion.v1.ScanService/Login",
+			opts...,
+		),
+		register: connect_go.NewClient[v1.RegisterRequest, v1.RegisterResponse](
+			httpClient,
+			baseURL+"/threedoclusion.v1.ScanService/Register",
+			opts...,
+		),
 	}
 }
 
@@ -149,6 +161,8 @@ type scanServiceClient struct {
 	getAllDentists    *connect_go.Client[v1.GetAllDentistsRequest, v1.GetAllDentistsResponse]
 	getDentistById    *connect_go.Client[v1.GetDentistByIdRequest, v1.GetDentistByIdResponse]
 	updateDentistById *connect_go.Client[v1.UpdateDentistByIdRequest, v1.UpdateDentistByIdResponse]
+	login             *connect_go.Client[v1.LoginRequest, v1.LoginResponse]
+	register          *connect_go.Client[v1.RegisterRequest, v1.RegisterResponse]
 }
 
 // AddScan calls threedoclusion.v1.ScanService.AddScan.
@@ -226,6 +240,16 @@ func (c *scanServiceClient) UpdateDentistById(ctx context.Context, req *connect_
 	return c.updateDentistById.CallUnary(ctx, req)
 }
 
+// Login calls threedoclusion.v1.ScanService.Login.
+func (c *scanServiceClient) Login(ctx context.Context, req *connect_go.Request[v1.LoginRequest]) (*connect_go.Response[v1.LoginResponse], error) {
+	return c.login.CallUnary(ctx, req)
+}
+
+// Register calls threedoclusion.v1.ScanService.Register.
+func (c *scanServiceClient) Register(ctx context.Context, req *connect_go.Request[v1.RegisterRequest]) (*connect_go.Response[v1.RegisterResponse], error) {
+	return c.register.CallUnary(ctx, req)
+}
+
 // ScanServiceHandler is an implementation of the threedoclusion.v1.ScanService service.
 type ScanServiceHandler interface {
 	AddScan(context.Context, *connect_go.Request[v1.AddScanRequest]) (*connect_go.Response[v1.AddScanResponse], error)
@@ -243,6 +267,8 @@ type ScanServiceHandler interface {
 	GetAllDentists(context.Context, *connect_go.Request[v1.GetAllDentistsRequest]) (*connect_go.Response[v1.GetAllDentistsResponse], error)
 	GetDentistById(context.Context, *connect_go.Request[v1.GetDentistByIdRequest]) (*connect_go.Response[v1.GetDentistByIdResponse], error)
 	UpdateDentistById(context.Context, *connect_go.Request[v1.UpdateDentistByIdRequest]) (*connect_go.Response[v1.UpdateDentistByIdResponse], error)
+	Login(context.Context, *connect_go.Request[v1.LoginRequest]) (*connect_go.Response[v1.LoginResponse], error)
+	Register(context.Context, *connect_go.Request[v1.RegisterRequest]) (*connect_go.Response[v1.RegisterResponse], error)
 }
 
 // NewScanServiceHandler builds an HTTP handler from the service implementation. It returns the path
@@ -327,6 +353,16 @@ func NewScanServiceHandler(svc ScanServiceHandler, opts ...connect_go.HandlerOpt
 		svc.UpdateDentistById,
 		opts...,
 	))
+	mux.Handle("/threedoclusion.v1.ScanService/Login", connect_go.NewUnaryHandler(
+		"/threedoclusion.v1.ScanService/Login",
+		svc.Login,
+		opts...,
+	))
+	mux.Handle("/threedoclusion.v1.ScanService/Register", connect_go.NewUnaryHandler(
+		"/threedoclusion.v1.ScanService/Register",
+		svc.Register,
+		opts...,
+	))
 	return "/threedoclusion.v1.ScanService/", mux
 }
 
@@ -391,4 +427,12 @@ func (UnimplementedScanServiceHandler) GetDentistById(context.Context, *connect_
 
 func (UnimplementedScanServiceHandler) UpdateDentistById(context.Context, *connect_go.Request[v1.UpdateDentistByIdRequest]) (*connect_go.Response[v1.UpdateDentistByIdResponse], error) {
 	return nil, connect_go.NewError(connect_go.CodeUnimplemented, errors.New("threedoclusion.v1.ScanService.UpdateDentistById is not implemented"))
+}
+
+func (UnimplementedScanServiceHandler) Login(context.Context, *connect_go.Request[v1.LoginRequest]) (*connect_go.Response[v1.LoginResponse], error) {
+	return nil, connect_go.NewError(connect_go.CodeUnimplemented, errors.New("threedoclusion.v1.ScanService.Login is not implemented"))
+}
+
+func (UnimplementedScanServiceHandler) Register(context.Context, *connect_go.Request[v1.RegisterRequest]) (*connect_go.Response[v1.RegisterResponse], error) {
+	return nil, connect_go.NewError(connect_go.CodeUnimplemented, errors.New("threedoclusion.v1.ScanService.Register is not implemented"))
 }

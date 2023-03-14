@@ -5,7 +5,7 @@
 
 import { createQueryService } from "@bufbuild/connect-query";
 import { MethodKind } from "@bufbuild/protobuf";
-import { AddDentistRequest, AddDentistResponse, AddScanRequest, AddScanResponse, AddTagRequest, AddTagResponse, DeleteDentistByIdRequest, DeleteDentistByIdResponse, DeleteScanRequest, DeleteScanResponse, DeleteTagRequest, DeleteTagResponse, GetAllDentistsRequest, GetAllDentistsResponse, GetAllScansRequest, GetAllScansResponse, GetAllTagsByTypeRequest, GetAllTagsByTypeResponse, GetAllTagsRequest, GetAllTagsResponse, GetDentistByIdRequest, GetDentistByIdResponse, GetScanByDateRequest, GetScanByDateResponse, GetScanByIDRequest, GetScanByIDResponse, GetTagByIDRequest, GetTagByIDResponse, UpdateDentistByIdRequest, UpdateDentistByIdResponse } from "./service_pb.js";
+import { AddDentistRequest, AddDentistResponse, AddScanRequest, AddScanResponse, AddTagRequest, AddTagResponse, DeleteDentistByIdRequest, DeleteDentistByIdResponse, DeleteScanRequest, DeleteScanResponse, DeleteTagRequest, DeleteTagResponse, GetAllDentistsRequest, GetAllDentistsResponse, GetAllScansRequest, GetAllScansResponse, GetAllTagsByTypeRequest, GetAllTagsByTypeResponse, GetAllTagsRequest, GetAllTagsResponse, GetDentistByIdRequest, GetDentistByIdResponse, GetScanByDateRequest, GetScanByDateResponse, GetScanByIDRequest, GetScanByIDResponse, GetTagByIDRequest, GetTagByIDResponse, LoginRequest, LoginResponse, RegisterRequest, RegisterResponse, UpdateDentistByIdRequest, UpdateDentistByIdResponse } from "./service_pb.js";
 
 export const typeName = "threedoclusion.v1.ScanService";
 
@@ -263,3 +263,37 @@ export const updateDentistById = createQueryService({
     typeName: "threedoclusion.v1.ScanService",
   },
 }).updateDentistById;
+
+/**
+ * @generated from rpc threedoclusion.v1.ScanService.Login
+ */
+export const login = createQueryService({
+  service: {
+    methods: {
+      login: {
+        name: "Login",
+        kind: MethodKind.Unary,
+        I: LoginRequest,
+        O: LoginResponse,
+      },
+    },
+    typeName: "threedoclusion.v1.ScanService",
+  },
+}).login;
+
+/**
+ * @generated from rpc threedoclusion.v1.ScanService.Register
+ */
+export const register = createQueryService({
+  service: {
+    methods: {
+      register: {
+        name: "Register",
+        kind: MethodKind.Unary,
+        I: RegisterRequest,
+        O: RegisterResponse,
+      },
+    },
+    typeName: "threedoclusion.v1.ScanService",
+  },
+}).register;

@@ -23,6 +23,8 @@ service ScanService {
   rpc GetAllDentists(GetAllDentistsRequest) returns (GetAllDentistsResponse) {}
   rpc GetDentistById(GetDentistByIdRequest) returns (GetDentistByIdResponse) {}
   rpc UpdateDentistById(UpdateDentistByIdRequest) returns (UpdateDentistByIdResponse) {}
+  rpc Login(LoginRequest) returns (LoginResponse) {}
+  rpc Register(RegisterRequest) returns (RegisterResponse) {}
 }
 
 
@@ -176,4 +178,26 @@ message DeleteDentistByIdRequest {
 
 message DeleteDentistByIdResponse {
   string message = 1;
+}
+
+message LoginRequest {
+  string email = 1;
+  string password = 2;
+}
+
+message LoginResponse {
+  string message = 1;
+  string token = 2;
+}
+
+message RegisterRequest {
+  string email = 1;
+  string password = 2;
+  string first_name = 3;
+  string last_name = 4;
+}
+
+message RegisterResponse {
+  string message = 1;
+  string token = 2;
 }

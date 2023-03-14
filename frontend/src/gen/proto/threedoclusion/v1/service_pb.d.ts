@@ -866,3 +866,129 @@ export declare class DeleteDentistByIdResponse extends Message<DeleteDentistById
   static equals(a: DeleteDentistByIdResponse | PlainMessage<DeleteDentistByIdResponse> | undefined, b: DeleteDentistByIdResponse | PlainMessage<DeleteDentistByIdResponse> | undefined): boolean;
 }
 
+/**
+ * @generated from message threedoclusion.v1.LoginRequest
+ */
+export declare class LoginRequest extends Message<LoginRequest> {
+  /**
+   * @generated from field: string email = 1;
+   */
+  email: string;
+
+  /**
+   * @generated from field: string password = 2;
+   */
+  password: string;
+
+  constructor(data?: PartialMessage<LoginRequest>);
+
+  static readonly runtime: typeof proto3;
+  static readonly typeName = "threedoclusion.v1.LoginRequest";
+  static readonly fields: FieldList;
+
+  static fromBinary(bytes: Uint8Array, options?: Partial<BinaryReadOptions>): LoginRequest;
+
+  static fromJson(jsonValue: JsonValue, options?: Partial<JsonReadOptions>): LoginRequest;
+
+  static fromJsonString(jsonString: string, options?: Partial<JsonReadOptions>): LoginRequest;
+
+  static equals(a: LoginRequest | PlainMessage<LoginRequest> | undefined, b: LoginRequest | PlainMessage<LoginRequest> | undefined): boolean;
+}
+
+/**
+ * @generated from message threedoclusion.v1.LoginResponse
+ */
+export declare class LoginResponse extends Message<LoginResponse> {
+  /**
+   * @generated from field: string message = 1;
+   */
+  message: string;
+
+  /**
+   * @generated from field: string token = 2;
+   */
+  token: string;
+
+  constructor(data?: PartialMessage<LoginResponse>);
+
+  static readonly runtime: typeof proto3;
+  static readonly typeName = "threedoclusion.v1.LoginResponse";
+  static readonly fields: FieldList;
+
+  static fromBinary(bytes: Uint8Array, options?: Partial<BinaryReadOptions>): LoginResponse;
+
+  static fromJson(jsonValue: JsonValue, options?: Partial<JsonReadOptions>): LoginResponse;
+
+  static fromJsonString(jsonString: string, options?: Partial<JsonReadOptions>): LoginResponse;
+
+  static equals(a: LoginResponse | PlainMessage<LoginResponse> | undefined, b: LoginResponse | PlainMessage<LoginResponse> | undefined): boolean;
+}
+
+/**
+ * @generated from message threedoclusion.v1.RegisterRequest
+ */
+export declare class RegisterRequest extends Message<RegisterRequest> {
+  /**
+   * @generated from field: string email = 1;
+   */
+  email: string;
+
+  /**
+   * @generated from field: string password = 2;
+   */
+  password: string;
+
+  /**
+   * @generated from field: string first_name = 3;
+   */
+  firstName: string;
+
+  /**
+   * @generated from field: string last_name = 4;
+   */
+  lastName: string;
+
+  constructor(data?: PartialMessage<RegisterRequest>);
+
+  static readonly runtime: typeof proto3;
+  static readonly typeName = "threedoclusion.v1.RegisterRequest";
+  static readonly fields: FieldList;
+
+  static fromBinary(bytes: Uint8Array, options?: Partial<BinaryReadOptions>): RegisterRequest;
+
+  static fromJson(jsonValue: JsonValue, options?: Partial<JsonReadOptions>): RegisterRequest;
+
+  static fromJsonString(jsonString: string, options?: Partial<JsonReadOptions>): RegisterRequest;
+
+  static equals(a: RegisterRequest | PlainMessage<RegisterRequest> | undefined, b: RegisterRequest | PlainMessage<RegisterRequest> | undefined): boolean;
+}
+
+/**
+ * @generated from message threedoclusion.v1.RegisterResponse
+ */
+export declare class RegisterResponse extends Message<RegisterResponse> {
+  /**
+   * @generated from field: string message = 1;
+   */
+  message: string;
+
+  /**
+   * @generated from field: string token = 2;
+   */
+  token: string;
+
+  constructor(data?: PartialMessage<RegisterResponse>);
+
+  static readonly runtime: typeof proto3;
+  static readonly typeName = "threedoclusion.v1.RegisterResponse";
+  static readonly fields: FieldList;
+
+  static fromBinary(bytes: Uint8Array, options?: Partial<BinaryReadOptions>): RegisterResponse;
+
+  static fromJson(jsonValue: JsonValue, options?: Partial<JsonReadOptions>): RegisterResponse;
+
+  static fromJsonString(jsonString: string, options?: Partial<JsonReadOptions>): RegisterResponse;
+
+  static equals(a: RegisterResponse | PlainMessage<RegisterResponse> | undefined, b: RegisterResponse | PlainMessage<RegisterResponse> | undefined): boolean;
+}
+
