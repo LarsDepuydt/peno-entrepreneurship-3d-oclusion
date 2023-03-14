@@ -15,7 +15,7 @@ import (
 	"golang.org/x/net/http2/h2c"
 )
 
-type ServerStruct struct{}
+type ServerStruct struct {}
 
 func setCors(mux http.Handler) http.Handler {
 	muxHandler := cors.Default().Handler(mux)

@@ -2,7 +2,7 @@ syntax = "proto3";
 
 package threedoclusion.v1;
 
-option go_package = "github.com/LarsDepuydt/peno-entrepreneurship-3d-oclusie";
+option go_package = "github.com/LarsDepuydt/peno-entrepreneurship-3d-oclusion";
 
 
 service ScanService {
@@ -93,7 +93,6 @@ message GetAllTagsByTypeResponse {
 message AddScanRequest {
   string scan_file = 1;
   string scan_date = 2;
-
 }
 
 message AddScanResponse {

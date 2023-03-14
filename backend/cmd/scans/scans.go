@@ -44,7 +44,7 @@ func AddScan(req *connect.Request[threedoclusionv1.AddScanRequest]) (*connect.Re
 	fmt.Println(responseMessage)
 
 	res := connect.NewResponse(&threedoclusionv1.AddScanResponse{
-		Message: "responseMessage",
+		Message: responseMessage,
 	})
 
 	fmt.Println(responseMessage)
