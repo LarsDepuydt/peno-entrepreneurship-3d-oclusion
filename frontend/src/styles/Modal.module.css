@@ -5,10 +5,19 @@ body.active_modal {
 }
  
 .btn_modal {
-    padding: 10px 20px;
+    margin: 100px auto 20px;
     display: block;
-    margin: 100px auto 0;
-    font-size: 18px;
+    /*float: right;*/
+    padding: 10px 20px;
+    font-size: 25px;
+    width: 20dvw;
+    height: 25dvh;
+    text-align: center;
+    background-color: #E6E6E6;
+    border-radius: 40px;
+    border-style: dashed;
+    border-color: #859C9E;
+    border-width: 3px;
 }
 
 .modal, .overlay {

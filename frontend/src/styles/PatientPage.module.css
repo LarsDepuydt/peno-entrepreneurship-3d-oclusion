@@ -1,14 +1,29 @@
 .patient_picture {
-    height: 200;
+    width: 18dvw;
+    height: auto;
+    max-width: 30dvh;
     text-align: center;
-    margin-bottom: 5px;
-    
+    margin: 10px 10px 10px 10px;
+    border-radius: 20px;
 }
 
 .patient_button {
-    width: 50dvh;
+    width: 20dvw;
+    height: 25dvh;
     text-align: center;
-    margin-top: 50px;
-    
+    margin: 40px 50px 40px 50px;
+    background-color: #E6E6E6;
+    border-radius: 40px;
+    border-style: solid;
+    border-color: #859C9E;
+    border-width: 3px;
+    float: left;
+}
+
+.left_side {
+    float: left;
+    width: 20dvw;
+    height: 100dvh;
+    background-color: #E6E6E6;
 }
 
