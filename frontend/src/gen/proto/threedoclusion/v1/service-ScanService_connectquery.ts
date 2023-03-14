@@ -10,23 +10,6 @@ import { AddPatientRequest, AddPatientResponse, AddScanRequest, AddScanResponse,
 export const typeName = "threedoclusion.v1.ScanService";
 
 /**
- * @generated from rpc threedoclusion.v1.ScanService.SendVR
- */
-export const sendVR = createQueryService({
-  service: {
-    methods: {
-      sendVR: {
-        name: "SendVR",
-        kind: MethodKind.Unary,
-        I: SendVRRequest,
-        O: SendVRResponse,
-      },
-    },
-    typeName: "threedoclusion.v1.ScanService",
-  },
-}).sendVR;
-
-/**
  * @generated from rpc threedoclusion.v1.ScanService.AddScan
  */
 export const addScan = createQueryService({

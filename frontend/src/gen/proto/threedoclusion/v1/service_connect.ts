@@ -13,24 +13,6 @@ export const ScanService = {
   typeName: "threedoclusion.v1.ScanService",
   methods: {
     /**
-     * @generated from rpc threedoclusion.v1.ScanService.SendVR
-     */
-    sendVR: {
-      name: "SendVR",
-      I: SendVRRequest,
-      O: SendVRResponse,
-      kind: MethodKind.Unary,
-    },
-    /**
-     * @generated from rpc threedoclusion.v1.ScanService.Waiting
-     */
-    waiting: {
-      name: "Waiting",
-      I: WaitingRequest,
-      O: WaitingResponse,
-      kind: MethodKind.ServerStreaming,
-    },
-    /**
      * @generated from rpc threedoclusion.v1.ScanService.AddScan
      */
     addScan: {
