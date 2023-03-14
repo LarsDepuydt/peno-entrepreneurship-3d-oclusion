@@ -3,3 +3,8 @@ node_modules
 yarn.lock
 .next
 .vscode
+
+backend
+vr
+proto
+database
