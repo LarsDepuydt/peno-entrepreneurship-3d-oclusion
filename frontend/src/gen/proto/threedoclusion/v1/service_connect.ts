@@ -3,35 +3,14 @@
 /* eslint-disable */
 // @ts-nocheck
 
-import {
-  AddScanRequest,
-  AddScanResponse,
-  AddTagRequest,
-  AddTagResponse,
-  DeleteScanRequest,
-  DeleteScanResponse,
-  DeleteTagRequest,
-  DeleteTagResponse,
-  GetAllScansRequest,
-  GetAllScansResponse,
-  GetAllTagsByTypeRequest,
-  GetAllTagsByTypeResponse,
-  GetAllTagsRequest,
-  GetAllTagsResponse,
-  GetScanByDateRequest,
-  GetScanByDateResponse,
-  GetScanByIDRequest,
-  GetScanByIDResponse,
-  GetTagByIDRequest,
-  GetTagByIDResponse,
-} from './service_pb.js';
-import { MethodKind } from '@bufbuild/protobuf';
+import { AddPatientRequest, AddPatientResponse, AddScanRequest, AddScanResponse, AddTagRequest, AddTagResponse, DeletePatientRequest, DeletePatientResponse, DeleteScanRequest, DeleteScanResponse, DeleteTagRequest, DeleteTagResponse, GetAllPatientsRequest, GetAllPatientsResponse, GetAllScansRequest, GetAllScansResponse, GetAllTagsByTypeRequest, GetAllTagsByTypeResponse, GetAllTagsRequest, GetAllTagsResponse, GetPatientByIDRequest, GetPatientByIDResponse, GetPatientByNameRequest, GetPatientByNameResponse, GetScanByDateRequest, GetScanByDateResponse, GetScanByIDRequest, GetScanByIDResponse, GetTagByIDRequest, GetTagByIDResponse, SendVRRequest, SendVRResponse, WaitingRequest, WaitingResponse } from "./service_pb.js";
+import { MethodKind } from "@bufbuild/protobuf";
 
 /**
  * @generated from service threedoclusion.v1.ScanService
  */
 export const ScanService = {
-  typeName: 'threedoclusion.v1.ScanService',
+  typeName: "threedoclusion.v1.ScanService",
   methods: {
     /**
      * @generated from rpc threedoclusion.v1.ScanService.SendVR
@@ -55,7 +34,7 @@ export const ScanService = {
      * @generated from rpc threedoclusion.v1.ScanService.AddScan
      */
     addScan: {
-      name: 'AddScan',
+      name: "AddScan",
       I: AddScanRequest,
       O: AddScanResponse,
       kind: MethodKind.Unary,
@@ -64,7 +43,7 @@ export const ScanService = {
      * @generated from rpc threedoclusion.v1.ScanService.DeleteScan
      */
     deleteScan: {
-      name: 'DeleteScan',
+      name: "DeleteScan",
       I: DeleteScanRequest,
       O: DeleteScanResponse,
       kind: MethodKind.Unary,
@@ -73,7 +52,7 @@ export const ScanService = {
      * @generated from rpc threedoclusion.v1.ScanService.GetAllScans
      */
     getAllScans: {
-      name: 'GetAllScans',
+      name: "GetAllScans",
       I: GetAllScansRequest,
       O: GetAllScansResponse,
       kind: MethodKind.Unary,
@@ -82,7 +61,7 @@ export const ScanService = {
      * @generated from rpc threedoclusion.v1.ScanService.GetScanByID
      */
     getScanByID: {
-      name: 'GetScanByID',
+      name: "GetScanByID",
       I: GetScanByIDRequest,
       O: GetScanByIDResponse,
       kind: MethodKind.Unary,
@@ -91,7 +70,7 @@ export const ScanService = {
      * @generated from rpc threedoclusion.v1.ScanService.GetScanByDate
      */
     getScanByDate: {
-      name: 'GetScanByDate',
+      name: "GetScanByDate",
       I: GetScanByDateRequest,
       O: GetScanByDateResponse,
       kind: MethodKind.Unary,
@@ -100,7 +79,7 @@ export const ScanService = {
      * @generated from rpc threedoclusion.v1.ScanService.AddTag
      */
     addTag: {
-      name: 'AddTag',
+      name: "AddTag",
       I: AddTagRequest,
       O: AddTagResponse,
       kind: MethodKind.Unary,
@@ -109,7 +88,7 @@ export const ScanService = {
      * @generated from rpc threedoclusion.v1.ScanService.DeleteTag
      */
     deleteTag: {
-      name: 'DeleteTag',
+      name: "DeleteTag",
       I: DeleteTagRequest,
       O: DeleteTagResponse,
       kind: MethodKind.Unary,
@@ -118,7 +97,7 @@ export const ScanService = {
      * @generated from rpc threedoclusion.v1.ScanService.GetAllTags
      */
     getAllTags: {
-      name: 'GetAllTags',
+      name: "GetAllTags",
       I: GetAllTagsRequest,
       O: GetAllTagsResponse,
       kind: MethodKind.Unary,
@@ -127,7 +106,7 @@ export const ScanService = {
      * @generated from rpc threedoclusion.v1.ScanService.GetTagByID
      */
     getTagByID: {
-      name: 'GetTagByID',
+      name: "GetTagByID",
       I: GetTagByIDRequest,
       O: GetTagByIDResponse,
       kind: MethodKind.Unary,
@@ -136,12 +115,11 @@ export const ScanService = {
      * @generated from rpc threedoclusion.v1.ScanService.GetAllTagsByType
      */
     getAllTagsByType: {
-      name: 'GetAllTagsByType',
+      name: "GetAllTagsByType",
       I: GetAllTagsByTypeRequest,
       O: GetAllTagsByTypeResponse,
       kind: MethodKind.Unary,
     },
-  },
     /**
      * @generated from rpc threedoclusion.v1.ScanService.AddPatient
      */
@@ -189,3 +167,4 @@ export const ScanService = {
     },
   }
 } as const;
+

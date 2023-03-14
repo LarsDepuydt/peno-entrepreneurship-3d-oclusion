@@ -134,31 +134,6 @@ message GetScanByDateResponse {
   repeated Scan scans = 1;
 }
 
-<<<<<<< HEAD
-message TagResponse {
-  string id = 1;
-  string color = 2;
-  string text = 3;
-}
-
-
-message SendVRRequest {
-  int32 client_id = 1;
-  int32 scan_id = 2;
-}
-
-message SendVRResponse {
-  string feedback = 1;
-}
-
-message WaitingRequest {
-  int32 unique_code = 1;
-}
-
-message WaitingResponse {
-  bool redirect = 1;
-  string url = 2;
-=======
 //PATIENT
 
 message AddPatientRequest{
@@ -201,10 +176,29 @@ message GetPatientByIDResponse{
 message GetPatientByNameRequest{
   optional string first_name = 1;
   optional string last_name = 2;
-
+  
 }
 
 message GetPatientByNameResponse{
   repeated Patient patients = 1;
->>>>>>> PasswordHashing
+}
+
+// VR
+
+message SendVRRequest {
+  int32 client_id = 1;
+  int32 scan_id = 2;
+}
+
+message SendVRResponse {
+  string feedback = 1;
+}
+
+message WaitingRequest {
+  int32 unique_code = 1;
+}
+
+message WaitingResponse {
+  bool redirect = 1;
+  string url = 2;
 }
