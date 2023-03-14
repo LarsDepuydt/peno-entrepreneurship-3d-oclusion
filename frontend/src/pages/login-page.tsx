@@ -5,6 +5,7 @@ import styles from '@/styles/Home.module.css'
 
 import LoginForm from '../components/login/login-form'
 
+import TestButton from '../components/patient/export_scan'
 
 const inter = Inter({ subsets: ['latin'] })
 
@@ -13,8 +14,9 @@ export default function Login() {
     <>
       <main className="vh-100 d-flex justify-content-center align-items-center">
         <LoginForm />
-        
+        <TestButton />
       </main>
+      
     </>
   )
 }
