@@ -5,7 +5,15 @@
 }
 
 .patient_button {
-  width: 50dvh;
-  text-align: center;
-  margin-top: 50px;
+    width: 50dvh;
+    text-align: center;
+    margin-top: 50px;
+}
+
+.projects {
+    
+    display: flex;
+    column-gap: 20px;
+    justify-content: space-between;
+
 }

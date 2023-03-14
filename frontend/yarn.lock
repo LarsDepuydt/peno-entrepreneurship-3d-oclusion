@@ -1484,6 +1484,18 @@ __metadata:
   languageName: node
   linkType: hard
 
+"formik-file-and-image-input@npm:^0.0.6":
+  version: 0.0.6
+  resolution: "formik-file-and-image-input@npm:0.0.6"
+  dependencies:
+    react-dom: ^17.0.2
+  peerDependencies:
+    formik: ^2.2.6
+    react: ^17.0.2
+  checksum: d064f443d7c24ee0e2ed33bb89433742fb0c84807828b58e9f5bb6beb8a6cc2dd0b9b7eeda6d8cffc5d8592cf4916ea2c4cd34737ddb75d192be3d8cb1c9390f
+  languageName: node
+  linkType: hard
+
 "formik@npm:^2.2.9":
   version: 2.2.9
   resolution: "formik@npm:2.2.9"
@@ -2555,6 +2567,19 @@ __metadata:
   languageName: node
   linkType: hard
 
+"react-dom@npm:^17.0.2":
+  version: 17.0.2
+  resolution: "react-dom@npm:17.0.2"
+  dependencies:
+    loose-envify: ^1.1.0
+    object-assign: ^4.1.1
+    scheduler: ^0.20.2
+  peerDependencies:
+    react: 17.0.2
+  checksum: 1c1eaa3bca7c7228d24b70932e3d7c99e70d1d04e13bb0843bbf321582bc25d7961d6b8a6978a58a598af2af496d1cedcfb1bf65f6b0960a0a8161cb8dab743c
+  languageName: node
+  linkType: hard
+
 "react-fast-compare@npm:^2.0.1":
   version: 2.0.4
   resolution: "react-fast-compare@npm:2.0.4"
@@ -2697,6 +2722,16 @@ __metadata:
     get-intrinsic: ^1.1.3
     is-regex: ^1.1.4
   checksum: bc566d8beb8b43c01b94e67de3f070fd2781685e835959bbbaaec91cc53381145ca91f69bd837ce6ec244817afa0a5e974fc4e40a2957f0aca68ac3add1ddd34
+  languageName: node
+  linkType: hard
+
+"scheduler@npm:^0.20.2":
+  version: 0.20.2
+  resolution: "scheduler@npm:0.20.2"
+  dependencies:
+    loose-envify: ^1.1.0
+    object-assign: ^4.1.1
+  checksum: c4b35cf967c8f0d3e65753252d0f260271f81a81e427241295c5a7b783abf4ea9e905f22f815ab66676f5313be0a25f47be582254db8f9241b259213e999b8fc
   languageName: node
   linkType: hard
 
@@ -2946,6 +2981,7 @@ __metadata:
     eslint-config-next: 13.1.6
     file-saver: ~2.0.5
     formik: ^2.2.9
+    formik-file-and-image-input: ^0.0.6
     next: 13.1.6
     prettier: ^2.8.4
     react: 18.2.0
