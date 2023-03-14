@@ -1,25 +1,33 @@
 import { Formik, Field, Form} from 'formik';
-import {saveAs} from 'file-saver'
+import download from 'downloadjs';
 import { useRouter } from 'next/router';
 import Image from 'next/image'
 import styles from '@/styles/LoginForm.module.css'
 import 'bootstrap/dist/css/bootstrap.css'
 
-/**https://www.youtube.com/watch?v=CJvHc49kY2E */
+function handleDownloadClick() {
+    const fileUrl = '/lowerjaw_holger.obj';
+    download(fileUrl, 'lowerjaw_holger.obj');
+  }
+  
+  function App() {
+    return (
+      <div>
+        <button onClick={handleDownloadClick}>Download Large File</button>
+      </div>
+    );
+  }
 
 export default function LoginForm() {   
 
 
     const router = useRouter();
 
-    const exportScan = () => {
-        saveAs("/relu-logo-small.png", 'relu-logo-small.png');
-    }
 
     return (
         <>
 
-        <button type="button" className="btn btn-primary btn-large" onClick={exportScan} >download</button>
+        <button type="button" className="btn btn-primary btn-large" onClick={handleDownloadClick} >download</button>
         </>
 
     );
