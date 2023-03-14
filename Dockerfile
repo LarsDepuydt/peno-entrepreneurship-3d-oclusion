@@ -9,7 +9,7 @@ RUN npm install -g corepack nodemon && \
 ARG GO_VERSION=1.20
 RUN curl -sSL "https://golang.org/dl/go${GO_VERSION}.linux-amd64.tar.gz" -o "go${GO_VERSION}.tar.gz" && \
     tar -C "/usr/local/" -xf "go${GO_VERSION}.tar.gz" && \
-    mkdir -m 777 /go 
+    mkdir -m 777 /go
 ENV GOPATH="/go"
 ENV PATH="/usr/local/go/bin:${GOPATH}/bin:${PATH}"
 
