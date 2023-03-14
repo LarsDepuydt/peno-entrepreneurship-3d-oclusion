@@ -3,11 +3,32 @@
 /* eslint-disable */
 // @ts-nocheck
 
-import { createQueryService } from "@bufbuild/connect-query";
-import { MethodKind } from "@bufbuild/protobuf";
-import { AddScanRequest, AddScanResponse, AddTagRequest, AddTagResponse, DeleteScanRequest, DeleteScanResponse, DeleteTagRequest, DeleteTagResponse, GetAllScansRequest, GetAllScansResponse, GetAllTagsByTypeRequest, GetAllTagsByTypeResponse, GetAllTagsRequest, GetAllTagsResponse, GetScanByDateRequest, GetScanByDateResponse, GetScanByIDRequest, GetScanByIDResponse, GetTagByIDRequest, GetTagByIDResponse, SendVRRequest, SendVRResponse } from "./service_pb.js";
+import { createQueryService } from '@bufbuild/connect-query';
+import { MethodKind } from '@bufbuild/protobuf';
+import {
+  AddScanRequest,
+  AddScanResponse,
+  AddTagRequest,
+  AddTagResponse,
+  DeleteScanRequest,
+  DeleteScanResponse,
+  DeleteTagRequest,
+  DeleteTagResponse,
+  GetAllScansRequest,
+  GetAllScansResponse,
+  GetAllTagsByTypeRequest,
+  GetAllTagsByTypeResponse,
+  GetAllTagsRequest,
+  GetAllTagsResponse,
+  GetScanByDateRequest,
+  GetScanByDateResponse,
+  GetScanByIDRequest,
+  GetScanByIDResponse,
+  GetTagByIDRequest,
+  GetTagByIDResponse,
+} from './service_pb.js';
 
-export const typeName = "threedoclusion.v1.ScanService";
+export const typeName = 'threedoclusion.v1.ScanService';
 
 /**
  * @generated from rpc threedoclusion.v1.ScanService.SendVR
@@ -33,13 +54,13 @@ export const addScan = createQueryService({
   service: {
     methods: {
       addScan: {
-        name: "AddScan",
+        name: 'AddScan',
         kind: MethodKind.Unary,
         I: AddScanRequest,
         O: AddScanResponse,
       },
     },
-    typeName: "threedoclusion.v1.ScanService",
+    typeName: 'threedoclusion.v1.ScanService',
   },
 }).addScan;
 
@@ -50,13 +71,13 @@ export const deleteScan = createQueryService({
   service: {
     methods: {
       deleteScan: {
-        name: "DeleteScan",
+        name: 'DeleteScan',
         kind: MethodKind.Unary,
         I: DeleteScanRequest,
         O: DeleteScanResponse,
       },
     },
-    typeName: "threedoclusion.v1.ScanService",
+    typeName: 'threedoclusion.v1.ScanService',
   },
 }).deleteScan;
 
@@ -67,13 +88,13 @@ export const getAllScans = createQueryService({
   service: {
     methods: {
       getAllScans: {
-        name: "GetAllScans",
+        name: 'GetAllScans',
         kind: MethodKind.Unary,
         I: GetAllScansRequest,
         O: GetAllScansResponse,
       },
     },
-    typeName: "threedoclusion.v1.ScanService",
+    typeName: 'threedoclusion.v1.ScanService',
   },
 }).getAllScans;
 
@@ -84,13 +105,13 @@ export const getScanByID = createQueryService({
   service: {
     methods: {
       getScanByID: {
-        name: "GetScanByID",
+        name: 'GetScanByID',
         kind: MethodKind.Unary,
         I: GetScanByIDRequest,
         O: GetScanByIDResponse,
       },
     },
-    typeName: "threedoclusion.v1.ScanService",
+    typeName: 'threedoclusion.v1.ScanService',
   },
 }).getScanByID;
 
@@ -101,13 +122,13 @@ export const getScanByDate = createQueryService({
   service: {
     methods: {
       getScanByDate: {
-        name: "GetScanByDate",
+        name: 'GetScanByDate',
         kind: MethodKind.Unary,
         I: GetScanByDateRequest,
         O: GetScanByDateResponse,
       },
     },
-    typeName: "threedoclusion.v1.ScanService",
+    typeName: 'threedoclusion.v1.ScanService',
   },
 }).getScanByDate;
 
@@ -118,13 +139,13 @@ export const addTag = createQueryService({
   service: {
     methods: {
       addTag: {
-        name: "AddTag",
+        name: 'AddTag',
         kind: MethodKind.Unary,
         I: AddTagRequest,
         O: AddTagResponse,
       },
     },
-    typeName: "threedoclusion.v1.ScanService",
+    typeName: 'threedoclusion.v1.ScanService',
   },
 }).addTag;
 
@@ -135,13 +156,13 @@ export const deleteTag = createQueryService({
   service: {
     methods: {
       deleteTag: {
-        name: "DeleteTag",
+        name: 'DeleteTag',
         kind: MethodKind.Unary,
         I: DeleteTagRequest,
         O: DeleteTagResponse,
       },
     },
-    typeName: "threedoclusion.v1.ScanService",
+    typeName: 'threedoclusion.v1.ScanService',
   },
 }).deleteTag;
 
@@ -152,13 +173,13 @@ export const getAllTags = createQueryService({
   service: {
     methods: {
       getAllTags: {
-        name: "GetAllTags",
+        name: 'GetAllTags',
         kind: MethodKind.Unary,
         I: GetAllTagsRequest,
         O: GetAllTagsResponse,
       },
     },
-    typeName: "threedoclusion.v1.ScanService",
+    typeName: 'threedoclusion.v1.ScanService',
   },
 }).getAllTags;
 
@@ -169,13 +190,13 @@ export const getTagByID = createQueryService({
   service: {
     methods: {
       getTagByID: {
-        name: "GetTagByID",
+        name: 'GetTagByID',
         kind: MethodKind.Unary,
         I: GetTagByIDRequest,
         O: GetTagByIDResponse,
       },
     },
-    typeName: "threedoclusion.v1.ScanService",
+    typeName: 'threedoclusion.v1.ScanService',
   },
 }).getTagByID;
 
@@ -186,13 +207,13 @@ export const getAllTagsByType = createQueryService({
   service: {
     methods: {
       getAllTagsByType: {
-        name: "GetAllTagsByType",
+        name: 'GetAllTagsByType',
         kind: MethodKind.Unary,
         I: GetAllTagsByTypeRequest,
         O: GetAllTagsByTypeResponse,
       },
     },
-    typeName: "threedoclusion.v1.ScanService",
+    typeName: 'threedoclusion.v1.ScanService',
   },
 }).getAllTagsByType;
 
