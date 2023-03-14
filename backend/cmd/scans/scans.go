@@ -83,7 +83,7 @@ func GetAllScans(req *connect.Request[threedoclusionv1.GetAllScansRequest]) (*co
 	// Prepare a statement with placeholders for the condition
 	statement := "SELECT * FROM scan;"
 
-	idArray, scanArray, dateArray, error := help_functions.GetResponseMakerScan(database, statement)
+	idArray, _, _, _, _, _, _, dateArray, error := help_functions.GetResponseMakerScan(database, statement)
 	if error != nil {
 		panic(error)
 	}
@@ -92,7 +92,6 @@ func GetAllScans(req *connect.Request[threedoclusionv1.GetAllScansRequest]) (*co
 
 	res := connect.NewResponse(&threedoclusionv1.GetAllScansResponse{
 		IdData:    idArray,
-		ScanData:  scanArray,
 		ScanDates: dateArray,
 	})
 
@@ -111,17 +110,13 @@ func GetScanByID(req *connect.Request[threedoclusionv1.GetScanByIDRequest]) (*co
 	// Prepare a statement with placeholders for the condition
 	statement := "SELECT * FROM scan WHERE id = $1;"
 
-	idArray, scanArray, dateArray, error := help_functions.GetResponseMakerScan(database, statement)
+	idArray, _, _, _, _, _, _, dateArray, error := help_functions.GetResponseMakerScan(database, statement)
 	if error != nil {
 		panic(error)
 	}
 
-	responseMessage := fmt.Sprintf("scan with id: %d returned with succes;", req.Msg.Id)
-	fmt.Println(responseMessage)
-
 	res := connect.NewResponse(&threedoclusionv1.GetScanByIDResponse{
 		Id:       idArray[0],
-		ScanData: scanArray[0],
 		ScanDate: dateArray[0],
 	})
 
@@ -139,7 +134,7 @@ func GetScanByDate(req *connect.Request[threedoclusionv1.GetScanByDateRequest]) 
 	// Prepare a statement with placeholders for the condition
 	statement := "SELECT * FROM scan WHERE scan_date = $1;"
 
-	idArray, scanArray, dateArray, error := help_functions.GetResponseMakerScan(database, statement)
+	idArray, _, _, _, _, _, _, dateArray, error := help_functions.GetResponseMakerScan(database, statement)
 	if error != nil {
 		panic(error)
 	}
@@ -149,7 +144,6 @@ func GetScanByDate(req *connect.Request[threedoclusionv1.GetScanByDateRequest]) 
 
 	res := connect.NewResponse(&threedoclusionv1.GetScanByDateResponse{
 		IdData:    idArray,
-		ScanData:  scanArray,
 		ScanDates: dateArray,
 	})
 
