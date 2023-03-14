@@ -1,15 +1,17 @@
 import React, { useState } from "react"
-import { Formik, Field, Form, ErrorMessage} from 'formik';
+import { Formik, Field, Form, ErrorMessage, useFormik} from 'formik';
 
 import styles from '@/styles/Modal.module.css'
 import styleB from '@/styles/Buttons.module.css'
 
 
 
+
+
 // TODO add files + tags
 
 interface scanValues {
-  scanID: string;
+  scanName: string;
 
   type_overbite: boolean;
   type_underbite: boolean;
@@ -17,6 +19,8 @@ interface scanValues {
 
   type_reconstructive: boolean;
   type_jawsurgery: boolean;
+
+  file: string;
 }
 
 
@@ -29,9 +33,10 @@ export default function ModalForm() {
       let day = date.getDate();
       let month = date.getMonth() + 1;
       let year = date.getFullYear();
-    let currentDate = `${month}-${day}-${year}`;
+    let currentDate = `${day}-${month}-${year}`;
 
     const toggleModal = () => setModal(!modal)    // change state f -> t and t -> f
+
 
     return (
         <>
@@ -50,7 +55,7 @@ export default function ModalForm() {
               
               <Formik
                 initialValues={{
-                  scanID: '',
+                  scanName: '',
 
                   type_overbite: false,
                   type_underbite: false,
@@ -58,6 +63,8 @@ export default function ModalForm() {
 
                   type_reconstructive: false,
                   type_jawsurgery: false,
+
+                  file: '',
                 }}
                 
 
@@ -65,7 +72,7 @@ export default function ModalForm() {
                 // on Submit we console the values + close the popup tab
                 // implicit date = currentDate
                 onSubmit={(values) => {
-                    console.log(values)
+                    console.log(values, currentDate)
                     console.log(currentDate)
                     setModal(!modal)
                     
@@ -75,7 +82,7 @@ export default function ModalForm() {
                 {({ errors, status, touched }) => ( 
                 <Form>
                   <div className="mb-3">
-                    <Field className="form-control" id="scanID" name="scanID" placeholder="Scan ID" />
+                    <Field className="form-control" id="scanName" name="scanName" placeholder="Scan Name" />
                   </div>
 
                   <div className={styles.type_bite}>
@@ -118,8 +125,8 @@ export default function ModalForm() {
                     
                   </div>
 
-                  <h3>scans to be added here </h3>
-
+                  {/* <input id="file" name="file" type="file" onChange={(event) => {if (!event.target.files) return; else (setFieldValue("file", event.currentTarget.files[0]);) }} /> */}
+                  
                   <div className ={styles.spacingbtn}>
                     <button type="submit" className={styleB.relu_btn} >Save scans</button>
                     <button type="button" className={styleB.relu_btn} onClick={toggleModal} >Exit</button>
