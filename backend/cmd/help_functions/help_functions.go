@@ -4,6 +4,7 @@ import (
 	"database/sql"
 	"fmt"
 
+	threedoclusionv1 "github.com/LarsDepuydt/peno-entrepreneurship-3d-oclusion/gen/proto/threedoclusion/v1"
 	_ "github.com/lib/pq"
 )
 
@@ -20,13 +21,8 @@ func ConnectToDataBase() (*sql.DB, error) {
 	return database, nil
 }
 
-type RowDataScan struct {
-	Id   int64
-	Scan string
-	Date string
-}
 
-func GetResponseMakerScan(database *sql.DB, statement string) ([]RowDataScan, error) {
+func GetResponseMakerScan(database *sql.DB, statement string) ([]*threedoclusionv1.Scan, error) {
 
 	// Execute the statement with the parameter
 	rows, error := database.Query(statement)
@@ -34,27 +30,23 @@ func GetResponseMakerScan(database *sql.DB, statement string) ([]RowDataScan, er
 		return nil, error
 	}
 
-	var rowArray []RowDataScan
+	var rowArray []*threedoclusionv1.Scan
 
 	for rows.Next() {
-		var rowData RowDataScan
+		var rowData *threedoclusionv1.Scan
 		error = rows.Scan(&rowData.Id, &rowData.Scan, &rowData.Date)
 		if error != nil {
 			panic(error)
 		}
-		rowArray = append(rowArray, rowData)
+		rowArray = append(rowArray,  &threedoclusionv1.Scan{Id: rowData.Id, Scan: rowData.Scan, Date: rowData.Date})
 	}
 
 	return rowArray, nil
 
 }
 
-type RowDataTag struct {
-	Id   int64
-	Bite string
-}
 
-func GetResponseMakerTag(database *sql.DB, statement string) ([]RowDataTag, error) {
+func GetResponseMakerTag(database *sql.DB, statement string) ([]*threedoclusionv1.RowDataTag, error) {
 
 	// Execute the statement with the parameter
 	rows, error := database.Query(statement)
@@ -62,29 +54,21 @@ func GetResponseMakerTag(database *sql.DB, statement string) ([]RowDataTag, erro
 		return nil, error
 	}
 
-	var rowArray []RowDataTag
+	var rowArray []*threedoclusionv1.RowDataTag
 	for rows.Next() {
-		var rowData RowDataTag
+		var rowData *threedoclusionv1.RowDataTag
 		error = rows.Scan(&rowData.Id, &rowData.Bite)
 		if error != nil {
 			panic(error)
 		}
-		rowArray = append(rowArray, rowData)
+		rowArray = append(rowArray, &threedoclusionv1.RowDataTag{Id: rowData.Id, Bite: rowData.Bite})
 	}
 
 	return rowArray, nil
-
 }
 
-type RowDataPatient struct {
-	Id         int64
-	First_name string
-	Last_name  string
-	Pinned     int64
-	Notes      string
-}
 
-func GetResponseMakerPatient(database *sql.DB, statement string) ([]RowDataPatient, error) {
+func GetResponseMakerPatient(database *sql.DB, statement string) ([]*threedoclusionv1.Patient, error) {
 
 	// Execute the statement with the parameter
 	rows, error := database.Query(statement)
@@ -92,15 +76,15 @@ func GetResponseMakerPatient(database *sql.DB, statement string) ([]RowDataPatie
 		return nil, error
 	}
 
-	var rowArray []RowDataPatient
+	var rowArray []*threedoclusionv1.Patient
 
 	for rows.Next() {
-		var rowData RowDataPatient
-		error = rows.Scan(&rowData.Id, &rowData.First_name, &rowData.Last_name, &rowData.Pinned, &rowData.Notes)
+		var rowData *threedoclusionv1.Patient
+		error = rows.Scan(&rowData.Id, &rowData.FirstName, &rowData.LastName, &rowData.Pinned, &rowData.Notes)
 		if error != nil {
 			panic(error)
 		}
-		rowArray = append(rowArray, rowData)
+		rowArray = append(rowArray, &threedoclusionv1.Patient{Id: rowData.Id, FirstName: rowData.FirstName, LastName: rowData.LastName, Pinned: rowData.Pinned, Notes: rowData.Notes})
 	}
 
 	return rowArray, nil
