@@ -27,6 +27,8 @@ const (
 
 // ScanServiceClient is a client for the threedoclusion.v1.ScanService service.
 type ScanServiceClient interface {
+	SendVR(context.Context, *connect_go.Request[v1.SendVRRequest]) (*connect_go.Response[v1.SendVRResponse], error)
+	Waiting(context.Context, *connect_go.Request[v1.WaitingRequest]) (*connect_go.ServerStreamForClient[v1.WaitingResponse], error)
 	AddScan(context.Context, *connect_go.Request[v1.AddScanRequest]) (*connect_go.Response[v1.AddScanResponse], error)
 	DeleteScan(context.Context, *connect_go.Request[v1.DeleteScanRequest]) (*connect_go.Response[v1.DeleteScanResponse], error)
 	GetAllScans(context.Context, *connect_go.Request[v1.GetAllScansRequest]) (*connect_go.Response[v1.GetAllScansResponse], error)
@@ -49,6 +51,16 @@ type ScanServiceClient interface {
 func NewScanServiceClient(httpClient connect_go.HTTPClient, baseURL string, opts ...connect_go.ClientOption) ScanServiceClient {
 	baseURL = strings.TrimRight(baseURL, "/")
 	return &scanServiceClient{
+		sendVR: connect_go.NewClient[v1.SendVRRequest, v1.SendVRResponse](
+			httpClient,
+			baseURL+"/threedoclusion.v1.ScanService/SendVR",
+			opts...,
+		),
+		waiting: connect_go.NewClient[v1.WaitingRequest, v1.WaitingResponse](
+			httpClient,
+			baseURL+"/threedoclusion.v1.ScanService/Waiting",
+			opts...,
+		),
 		addScan: connect_go.NewClient[v1.AddScanRequest, v1.AddScanResponse](
 			httpClient,
 			baseURL+"/threedoclusion.v1.ScanService/AddScan",
@@ -104,6 +116,8 @@ func NewScanServiceClient(httpClient connect_go.HTTPClient, baseURL string, opts
 
 // scanServiceClient implements ScanServiceClient.
 type scanServiceClient struct {
+	sendVR           *connect_go.Client[v1.SendVRRequest, v1.SendVRResponse]
+	waiting          *connect_go.Client[v1.WaitingRequest, v1.WaitingResponse]
 	addScan          *connect_go.Client[v1.AddScanRequest, v1.AddScanResponse]
 	deleteScan       *connect_go.Client[v1.DeleteScanRequest, v1.DeleteScanResponse]
 	getAllScans      *connect_go.Client[v1.GetAllScansRequest, v1.GetAllScansResponse]
@@ -114,6 +128,16 @@ type scanServiceClient struct {
 	getAllTags       *connect_go.Client[v1.GetAllTagsRequest, v1.GetAllTagsResponse]
 	getTagByID       *connect_go.Client[v1.GetTagByIDRequest, v1.GetTagByIDResponse]
 	getAllTagsByType *connect_go.Client[v1.GetAllTagsByTypeRequest, v1.GetAllTagsByTypeResponse]
+}
+
+// SendVR calls threedoclusion.v1.ScanService.SendVR.
+func (c *scanServiceClient) SendVR(ctx context.Context, req *connect_go.Request[v1.SendVRRequest]) (*connect_go.Response[v1.SendVRResponse], error) {
+	return c.sendVR.CallUnary(ctx, req)
+}
+
+// Waiting calls threedoclusion.v1.ScanService.Waiting.
+func (c *scanServiceClient) Waiting(ctx context.Context, req *connect_go.Request[v1.WaitingRequest]) (*connect_go.ServerStreamForClient[v1.WaitingResponse], error) {
+	return c.waiting.CallServerStream(ctx, req)
 }
 
 // AddScan calls threedoclusion.v1.ScanService.AddScan.
@@ -168,6 +192,8 @@ func (c *scanServiceClient) GetAllTagsByType(ctx context.Context, req *connect_g
 
 // ScanServiceHandler is an implementation of the threedoclusion.v1.ScanService service.
 type ScanServiceHandler interface {
+	SendVR(context.Context, *connect_go.Request[v1.SendVRRequest]) (*connect_go.Response[v1.SendVRResponse], error)
+	Waiting(context.Context, *connect_go.Request[v1.WaitingRequest], *connect_go.ServerStream[v1.WaitingResponse]) error
 	AddScan(context.Context, *connect_go.Request[v1.AddScanRequest]) (*connect_go.Response[v1.AddScanResponse], error)
 	DeleteScan(context.Context, *connect_go.Request[v1.DeleteScanRequest]) (*connect_go.Response[v1.DeleteScanResponse], error)
 	GetAllScans(context.Context, *connect_go.Request[v1.GetAllScansRequest]) (*connect_go.Response[v1.GetAllScansResponse], error)
@@ -187,6 +213,16 @@ type ScanServiceHandler interface {
 // and JSON codecs. They also support gzip compression.
 func NewScanServiceHandler(svc ScanServiceHandler, opts ...connect_go.HandlerOption) (string, http.Handler) {
 	mux := http.NewServeMux()
+	mux.Handle("/threedoclusion.v1.ScanService/SendVR", connect_go.NewUnaryHandler(
+		"/threedoclusion.v1.ScanService/SendVR",
+		svc.SendVR,
+		opts...,
+	))
+	mux.Handle("/threedoclusion.v1.ScanService/Waiting", connect_go.NewServerStreamHandler(
+		"/threedoclusion.v1.ScanService/Waiting",
+		svc.Waiting,
+		opts...,
+	))
 	mux.Handle("/threedoclusion.v1.ScanService/AddScan", connect_go.NewUnaryHandler(
 		"/threedoclusion.v1.ScanService/AddScan",
 		svc.AddScan,
@@ -242,6 +278,14 @@ func NewScanServiceHandler(svc ScanServiceHandler, opts ...connect_go.HandlerOpt
 
 // UnimplementedScanServiceHandler returns CodeUnimplemented from all methods.
 type UnimplementedScanServiceHandler struct{}
+
+func (UnimplementedScanServiceHandler) SendVR(context.Context, *connect_go.Request[v1.SendVRRequest]) (*connect_go.Response[v1.SendVRResponse], error) {
+	return nil, connect_go.NewError(connect_go.CodeUnimplemented, errors.New("threedoclusion.v1.ScanService.SendVR is not implemented"))
+}
+
+func (UnimplementedScanServiceHandler) Waiting(context.Context, *connect_go.Request[v1.WaitingRequest], *connect_go.ServerStream[v1.WaitingResponse]) error {
+	return connect_go.NewError(connect_go.CodeUnimplemented, errors.New("threedoclusion.v1.ScanService.Waiting is not implemented"))
+}
 
 func (UnimplementedScanServiceHandler) AddScan(context.Context, *connect_go.Request[v1.AddScanRequest]) (*connect_go.Response[v1.AddScanResponse], error) {
 	return nil, connect_go.NewError(connect_go.CodeUnimplemented, errors.New("threedoclusion.v1.ScanService.AddScan is not implemented"))
