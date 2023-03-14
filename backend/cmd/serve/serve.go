@@ -15,9 +15,7 @@ import (
 	"golang.org/x/net/http2/h2c"
 )
 
-type ServerStruct struct {
-	redirectVRChannels *help_datastructures.MapChannels
-}
+type ServerStruct struct {}
 
 func setCors(mux http.Handler) http.Handler {
 	muxHandler := cors.Default().Handler(mux)
@@ -33,8 +31,7 @@ func setCors(mux http.Handler) http.Handler {
 }
 
 func Server() {
-	redirectVRChannels := help_datastructures.NewMap()
-	server := &ServerStruct{redirectVRChannels}
+	server := &ServerStruct{}
 
 	mux := http.NewServeMux()
 	path, handler := threedoclusionv1connect.NewScanServiceHandler(server)
