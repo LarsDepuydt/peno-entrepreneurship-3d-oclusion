@@ -119,3 +119,29 @@ message GetScanByDateResponse {
   repeated string scan_dates = 3;
 }
 
+message SendPositionScanRequest {
+  float x = 1;
+  float y = 2;
+  float z = 3;
+  float r_x = 4;
+  float r_y = 5;
+  float r_z = 6;
+  int32 scan_id = 7;
+}
+
+message SendPositionScanResponse {
+  bool saved = 1;
+}
+
+message GetPositionScanRequest {
+  int32 scan_id = 1;
+}
+
+message GetPositionScanResponse {
+  float x = 1;
+  float y = 2;
+  float z = 3;
+  float r_x = 4;
+  float r_y = 5;
+  float r_z = 6;
+}

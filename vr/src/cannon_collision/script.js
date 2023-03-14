@@ -32,6 +32,7 @@ let lj_sphere, uj_sphere;
 
 let lj_loaded = false, uj_loaded = false;
 
+let target = new THREE.Vector3();
 
 initCannon();
 initThree();
@@ -40,7 +41,7 @@ loadObjects();  // animation is started after both objects are loaded
 
 function initCannon() {
     world = new CANNON.World();
-    world.gravity.set(0,0,0);
+    world.gravity.set(0,0,9);
     world.broadphase = new CANNON.NaiveBroadphase();
     world.solver.iterations = 10;
 
@@ -190,6 +191,8 @@ function loadObjects() {
             lj_group = object;
             lj_group.scale.set(0.01, 0.01, 0.01);
             // lj_group.scale.setScalar(0.01);
+
+            // server: getCoordinates()
             lj_group.position.x = 0;
             lj_group.position.y = 0;
             lj_group.position.z = 0;
@@ -318,6 +321,11 @@ function updatePhysics() {
     uj_mesh.position.copy(uj_body.position);
     uj_mesh.quaternion.copy(uj_body.quaternion);
     uj_sphere.position.copy(uj_body.position);
+
+    target = lj_mesh.position;
+    //lj_body.getWorldPosition(target);
+    console.log("X:",target.x,"Y:",target.y,"Z:",target.z);
+    
 }
 
 
