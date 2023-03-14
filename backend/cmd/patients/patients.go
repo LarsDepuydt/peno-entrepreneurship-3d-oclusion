@@ -10,13 +10,7 @@ import (
 	threedoclusionv1 "github.com/LarsDepuydt/peno-entrepreneurship-3d-oclusion/gen/proto/threedoclusion/v1"
 )
 
-type RowDataPatient struct {
-	Id         int64
-	First_name string
-	Last_name  string
-	pinned     int64
-	notes      string
-}
+
 
 func AddPatient(req *connect.Request[threedoclusionv1.AddPatientRequest]) (*connect.Response[threedoclusionv1.AddPatientResponse], error) {
 	// Connect to the database
@@ -127,8 +121,8 @@ func GetPatientByID(req *connect.Request[threedoclusionv1.GetPatientByIDRequest]
 
 	res := connect.NewResponse(&threedoclusionv1.GetPatientByIDResponse{
 		Id:        result[0].Id,
-		FirstName: result[0].First_name,
-		LastName:  result[0].Last_name,
+		FirstName: result[0].FirstName,
+		LastName:  result[0].LastName,
 		Pinned:    result[0].Pinned,
 		Notes:     result[0].Notes,
 	})

@@ -10,10 +10,6 @@ import (
 	threedoclusionv1 "github.com/LarsDepuydt/peno-entrepreneurship-3d-oclusion/gen/proto/threedoclusion/v1"
 )
 
-type RowDataTag struct {
-	Id   int64
-	Bite string
-}
 
 func AddTag(req *connect.Request[threedoclusionv1.AddTagRequest]) (*connect.Response[threedoclusionv1.AddTagResponse], error) {
 	// Connect to the database

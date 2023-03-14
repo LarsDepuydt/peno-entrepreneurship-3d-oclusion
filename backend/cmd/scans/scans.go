@@ -10,11 +10,6 @@ import (
 	threedoclusionv1 "github.com/LarsDepuydt/peno-entrepreneurship-3d-oclusion/gen/proto/threedoclusion/v1"
 )
 
-type RowDataScan struct {
-	id   int64
-	scan string
-	date string
-}
 
 func AddScan(req *connect.Request[threedoclusionv1.AddScanRequest]) (*connect.Response[threedoclusionv1.AddScanResponse], error) {
 	// Connect to the database
