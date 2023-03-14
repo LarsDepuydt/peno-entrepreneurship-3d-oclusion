@@ -95,12 +95,12 @@ func GetResponseMakerPatient(database *sql.DB, statement string) ([]RowDataPatie
 	var rowArray []RowDataPatient
 
 	for rows.Next() {
-		var rowData RowDataPatient
-		error = rows.Scan(&rowData.Id, &rowData.First_name, &rowData.Last_name, &rowData.Pinned, &rowData.Notes)
+		//var rowData RowDataPatient
+		error = rows.Scan(&id, &first_name, &last_name, &pinned, &notes)
 		if error != nil {
 			panic(error)
 		}
-		rowArray = append(rowArray, rowData)
+		rowArray = append(rowArray, RowDataPatient{Id: id, First_name: first_name, Last_name: last_name, Pinned: pinned, Notes: notes})
 	}
 
 	return rowArray, nil

@@ -87,9 +87,25 @@ func GetAllTags(req *connect.Request[threedoclusionv1.GetAllTagsRequest]) (*conn
 	// Prepare a statement with placeholders for the condition
 	statement := "SELECT * FROM tag;"
 
-	result, error := help_functions.GetResponseMakerTag(database, statement)
+	//result, error := help_functions.GetResponseMakerTag(database, statement)
+	//if error != nil {
+	//	panic(error)
+	//}
+
+	// Execute the statement with the parameter
+	rows, error := database.Query(statement)
 	if error != nil {
-		panic(error)
+		return nil, error
+	}
+
+	var rowArray []RowDataTag
+	for rows.Next() {
+		var rowData RowDataTag
+		error = rows.Scan(&rowData.Id, &rowData.Bite)
+		if error != nil {
+			panic(error)
+		}
+		rowArray = append(rowArray, rowData)
 	}
 
 	fmt.Println("Got all tags succesfully")
@@ -98,7 +114,7 @@ func GetAllTags(req *connect.Request[threedoclusionv1.GetAllTagsRequest]) (*conn
 	//copy(copy, source[:])
 
 	res := connect.NewResponse(&threedoclusionv1.GetAllTagsResponse{
-		Tags: result,
+		Tags: rowArray,
 	})
 
 	return res, nil
