@@ -1,10 +1,10 @@
-import New_Scan from '../components/popups/new-scan'
+import New_Scan from '../components/popups/new-scan';
 
 export default function ScansPage() {
-    return (
-      <>
+  return (
+    <>
       <h2>Hello There</h2>
-      <New_Scan/>
-      </>
-    ) 
-  }
+      <New_Scan />
+    </>
+  );
+}

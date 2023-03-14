@@ -4,6 +4,7 @@ import (
 	"database/sql"
 	"fmt"
 
+	threedoclusionv1 "github.com/LarsDepuydt/peno-entrepreneurship-3d-oclusion/gen/proto/threedoclusion/v1"
 	_ "github.com/lib/pq"
 )
 
@@ -20,133 +21,72 @@ func ConnectToDataBase() (*sql.DB, error) {
 	return database, nil
 }
 
-func GetResponseMakerScan(database *sql.DB, statement string) ([]int64, []string, []string, error) {
+
+func GetResponseMakerScan(database *sql.DB, statement string) ([]*threedoclusionv1.Scan, error) {
 
 	// Execute the statement with the parameter
 	rows, error := database.Query(statement)
 	if error != nil {
-		return nil, nil, nil, error
+		return nil, error
 	}
 
-	type RowData struct {
-		id   int64
-		scan string
-		date string
-	}
-
-	var (
-		idArray   []int64
-		scanArray []string
-		dateArray []string
-	)
+	var rowArray []*threedoclusionv1.Scan
 
 	for rows.Next() {
-		var rowData RowData
-		error = rows.Scan(&rowData.id, &rowData.scan, &rowData.date)
+		var rowData *threedoclusionv1.Scan
+		error = rows.Scan(&rowData.Id, &rowData.Scan, &rowData.Date)
 		if error != nil {
 			panic(error)
 		}
-		idArray = append(idArray, rowData.id)
-		scanArray = append(scanArray, rowData.scan)
-		dateArray = append(dateArray, rowData.date)
+		rowArray = append(rowArray,  &threedoclusionv1.Scan{Id: rowData.Id, Scan: rowData.Scan, Date: rowData.Date})
 	}
 
-	return idArray, scanArray, dateArray, nil
+	return rowArray, nil
 
 }
 
-func GetResponseMakerTag(database *sql.DB, statement string) ([]int64, []string, error) {
+
+func GetResponseMakerTag(database *sql.DB, statement string) ([]*threedoclusionv1.RowDataTag, error) {
 
 	// Execute the statement with the parameter
 	rows, error := database.Query(statement)
 	if error != nil {
-		return nil, nil, error
+		return nil, error
 	}
 
-	type RowData struct {
-		id   int64
-		bite string
-	}
-
-	var (
-		idArray   []int64
-		biteArray []string
-	)
-
+	var rowArray []*threedoclusionv1.RowDataTag
 	for rows.Next() {
-		var rowData RowData
-		error = rows.Scan(&rowData.id, &rowData.bite)
+		var rowData *threedoclusionv1.RowDataTag
+		error = rows.Scan(&rowData.Id, &rowData.Bite)
 		if error != nil {
 			panic(error)
 		}
-		idArray = append(idArray, rowData.id)
-		biteArray = append(biteArray, rowData.bite)
+		rowArray = append(rowArray, &threedoclusionv1.RowDataTag{Id: rowData.Id, Bite: rowData.Bite})
 	}
 
-	return idArray, biteArray, nil
-
+	return rowArray, nil
 }
 
-func GetResponseMakerPatient(database *sql.DB, statement string) ([]int64, []string, error) {
+
+func GetResponseMakerPatient(database *sql.DB, statement string) ([]*threedoclusionv1.Patient, error) {
 
 	// Execute the statement with the parameter
 	rows, error := database.Query(statement)
 	if error != nil {
-		return nil, nil, error
+		return nil, error
 	}
 
-	type RowData struct {
-		id   int64
-		bite string
-	}
-
-	var (
-		idArray   []int64
-		biteArray []string
-	)
+	var rowArray []*threedoclusionv1.Patient
 
 	for rows.Next() {
-		var rowData RowData
-		error = rows.Scan(&rowData.id, &rowData.bite)
+		var rowData *threedoclusionv1.Patient
+		error = rows.Scan(&rowData.Id, &rowData.FirstName, &rowData.LastName, &rowData.Pinned, &rowData.Notes)
 		if error != nil {
 			panic(error)
 		}
-		idArray = append(idArray, rowData.id)
-		biteArray = append(biteArray, rowData.bite)
+		rowArray = append(rowArray, &threedoclusionv1.Patient{Id: rowData.Id, FirstName: rowData.FirstName, LastName: rowData.LastName, Pinned: rowData.Pinned, Notes: rowData.Notes})
 	}
 
-	return idArray, biteArray, nil
-
-}
-
-func GetResponseMakerDentist(database *sql.DB, statement string) ([]int64, []string, error) {
-
-	// Execute the statement with the parameter
-	rows, error := database.Query(statement)
-	if error != nil {
-		return nil, nil, error
-	}
-
-	type RowData struct {
-		id   int64
-		bite string
-	}
-
-	var (
-		idArray   []int64
-		biteArray []string
-	)
-
-	for rows.Next() {
-		var rowData RowData
-		error = rows.Scan(&rowData.id, &rowData.bite)
-		if error != nil {
-			panic(error)
-		}
-		idArray = append(idArray, rowData.id)
-		biteArray = append(biteArray, rowData.bite)
-	}
-
-	return idArray, biteArray, nil
+	return rowArray, nil
 
 }
