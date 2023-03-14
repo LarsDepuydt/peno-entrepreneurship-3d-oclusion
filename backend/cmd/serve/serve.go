@@ -6,6 +6,7 @@ import (
 
 	"github.com/LarsDepuydt/peno-entrepreneurship-3d-oclusion/cmd/help_datastructures"
 	"github.com/LarsDepuydt/peno-entrepreneurship-3d-oclusion/cmd/push"
+	"github.com/LarsDepuydt/peno-entrepreneurship-3d-oclusion/cmd/patients"
 	"github.com/LarsDepuydt/peno-entrepreneurship-3d-oclusion/cmd/scans"
 	"github.com/LarsDepuydt/peno-entrepreneurship-3d-oclusion/cmd/tags"
 	threedoclusionv1 "github.com/LarsDepuydt/peno-entrepreneurship-3d-oclusion/gen/proto/threedoclusion/v1"
