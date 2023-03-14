@@ -7,12 +7,14 @@ import LoginForm from '../components/login/login-form';
 
 const inter = Inter({ subsets: ['latin'] });
 
+
 export default function Login() {
   return (
     <>
       <main className="vh-100 d-flex justify-content-center align-items-center">
         <LoginForm />
       </main>
+      
     </>
   );
 }
