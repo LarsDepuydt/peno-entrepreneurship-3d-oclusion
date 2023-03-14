@@ -1,1 +1,5 @@
 go.work
+
+node_modules
+package.json
+package_lock.json

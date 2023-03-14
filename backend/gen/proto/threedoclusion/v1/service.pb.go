@@ -2036,33 +2036,8 @@ var file_threedoclusion_v1_service_proto_rawDesc = []byte{
 	0x08, 0x70, 0x61, 0x74, 0x69, 0x65, 0x6e, 0x74, 0x73, 0x18, 0x01, 0x20, 0x03, 0x28, 0x0b, 0x32,
 	0x1a, 0x2e, 0x74, 0x68, 0x72, 0x65, 0x65, 0x64, 0x6f, 0x63, 0x6c, 0x75, 0x73, 0x69, 0x6f, 0x6e,
 	0x2e, 0x76, 0x31, 0x2e, 0x50, 0x61, 0x74, 0x69, 0x65, 0x6e, 0x74, 0x52, 0x08, 0x70, 0x61, 0x74,
-	0x69, 0x65, 0x6e, 0x74, 0x73, 0x22, 0x45, 0x0a, 0x0d, 0x53, 0x65, 0x6e, 0x64, 0x56, 0x52, 0x52,
-	0x65, 0x71, 0x75, 0x65, 0x73, 0x74, 0x12, 0x1b, 0x0a, 0x09, 0x63, 0x6c, 0x69, 0x65, 0x6e, 0x74,
-	0x5f, 0x69, 0x64, 0x18, 0x01, 0x20, 0x01, 0x28, 0x05, 0x52, 0x08, 0x63, 0x6c, 0x69, 0x65, 0x6e,
-	0x74, 0x49, 0x64, 0x12, 0x17, 0x0a, 0x07, 0x73, 0x63, 0x61, 0x6e, 0x5f, 0x69, 0x64, 0x18, 0x02,
-	0x20, 0x01, 0x28, 0x05, 0x52, 0x06, 0x73, 0x63, 0x61, 0x6e, 0x49, 0x64, 0x22, 0x2c, 0x0a, 0x0e,
-	0x53, 0x65, 0x6e, 0x64, 0x56, 0x52, 0x52, 0x65, 0x73, 0x70, 0x6f, 0x6e, 0x73, 0x65, 0x12, 0x1a,
-	0x0a, 0x08, 0x66, 0x65, 0x65, 0x64, 0x62, 0x61, 0x63, 0x6b, 0x18, 0x01, 0x20, 0x01, 0x28, 0x09,
-	0x52, 0x08, 0x66, 0x65, 0x65, 0x64, 0x62, 0x61, 0x63, 0x6b, 0x22, 0x31, 0x0a, 0x0e, 0x57, 0x61,
-	0x69, 0x74, 0x69, 0x6e, 0x67, 0x52, 0x65, 0x71, 0x75, 0x65, 0x73, 0x74, 0x12, 0x1f, 0x0a, 0x0b,
-	0x75, 0x6e, 0x69, 0x71, 0x75, 0x65, 0x5f, 0x63, 0x6f, 0x64, 0x65, 0x18, 0x01, 0x20, 0x01, 0x28,
-	0x05, 0x52, 0x0a, 0x75, 0x6e, 0x69, 0x71, 0x75, 0x65, 0x43, 0x6f, 0x64, 0x65, 0x22, 0x3f, 0x0a,
-	0x0f, 0x57, 0x61, 0x69, 0x74, 0x69, 0x6e, 0x67, 0x52, 0x65, 0x73, 0x70, 0x6f, 0x6e, 0x73, 0x65,
-	0x12, 0x1a, 0x0a, 0x08, 0x72, 0x65, 0x64, 0x69, 0x72, 0x65, 0x63, 0x74, 0x18, 0x01, 0x20, 0x01,
-	0x28, 0x08, 0x52, 0x08, 0x72, 0x65, 0x64, 0x69, 0x72, 0x65, 0x63, 0x74, 0x12, 0x10, 0x0a, 0x03,
-	0x75, 0x72, 0x6c, 0x18, 0x02, 0x20, 0x01, 0x28, 0x09, 0x52, 0x03, 0x75, 0x72, 0x6c, 0x32, 0xe3,
-	0x0c, 0x0a, 0x0b, 0x53, 0x63, 0x61, 0x6e, 0x53, 0x65, 0x72, 0x76, 0x69, 0x63, 0x65, 0x12, 0x4f,
-	0x0a, 0x06, 0x53, 0x65, 0x6e, 0x64, 0x56, 0x52, 0x12, 0x20, 0x2e, 0x74, 0x68, 0x72, 0x65, 0x65,
-	0x64, 0x6f, 0x63, 0x6c, 0x75, 0x73, 0x69, 0x6f, 0x6e, 0x2e, 0x76, 0x31, 0x2e, 0x53, 0x65, 0x6e,
-	0x64, 0x56, 0x52, 0x52, 0x65, 0x71, 0x75, 0x65, 0x73, 0x74, 0x1a, 0x21, 0x2e, 0x74, 0x68, 0x72,
-	0x65, 0x65, 0x64, 0x6f, 0x63, 0x6c, 0x75, 0x73, 0x69, 0x6f, 0x6e, 0x2e, 0x76, 0x31, 0x2e, 0x53,
-	0x65, 0x6e, 0x64, 0x56, 0x52, 0x52, 0x65, 0x73, 0x70, 0x6f, 0x6e, 0x73, 0x65, 0x22, 0x00, 0x12,
-	0x54, 0x0a, 0x07, 0x57, 0x61, 0x69, 0x74, 0x69, 0x6e, 0x67, 0x12, 0x21, 0x2e, 0x74, 0x68, 0x72,
-	0x65, 0x65, 0x64, 0x6f, 0x63, 0x6c, 0x75, 0x73, 0x69, 0x6f, 0x6e, 0x2e, 0x76, 0x31, 0x2e, 0x57,
-	0x61, 0x69, 0x74, 0x69, 0x6e, 0x67, 0x52, 0x65, 0x71, 0x75, 0x65, 0x73, 0x74, 0x1a, 0x22, 0x2e,
-	0x74, 0x68, 0x72, 0x65, 0x65, 0x64, 0x6f, 0x63, 0x6c, 0x75, 0x73, 0x69, 0x6f, 0x6e, 0x2e, 0x76,
-	0x31, 0x2e, 0x57, 0x61, 0x69, 0x74, 0x69, 0x6e, 0x67, 0x52, 0x65, 0x73, 0x70, 0x6f, 0x6e, 0x73,
-	0x65, 0x22, 0x00, 0x30, 0x01, 0x12, 0x52, 0x0a, 0x07, 0x41, 0x64, 0x64, 0x53, 0x63, 0x61, 0x6e,
+	0x69, 0x65, 0x6e, 0x74, 0x73, 0x32, 0xbc, 0x0b, 0x0a, 0x0b, 0x53, 0x63, 0x61, 0x6e, 0x53, 0x65,
+	0x72, 0x76, 0x69, 0x63, 0x65, 0x12, 0x52, 0x0a, 0x07, 0x41, 0x64, 0x64, 0x53, 0x63, 0x61, 0x6e,
 	0x12, 0x21, 0x2e, 0x74, 0x68, 0x72, 0x65, 0x65, 0x64, 0x6f, 0x63, 0x6c, 0x75, 0x73, 0x69, 0x6f,
 	0x6e, 0x2e, 0x76, 0x31, 0x2e, 0x41, 0x64, 0x64, 0x53, 0x63, 0x61, 0x6e, 0x52, 0x65, 0x71, 0x75,
 	0x65, 0x73, 0x74, 0x1a, 0x22, 0x2e, 0x74, 0x68, 0x72, 0x65, 0x65, 0x64, 0x6f, 0x63, 0x6c, 0x75,
@@ -2183,7 +2158,7 @@ func file_threedoclusion_v1_service_proto_rawDescGZIP() []byte {
 	return file_threedoclusion_v1_service_proto_rawDescData
 }
 
-var file_threedoclusion_v1_service_proto_msgTypes = make([]protoimpl.MessageInfo, 37)
+var file_threedoclusion_v1_service_proto_msgTypes = make([]protoimpl.MessageInfo, 33)
 var file_threedoclusion_v1_service_proto_goTypes = []interface{}{
 	(*RowDataTag)(nil),               // 0: threedoclusion.v1.RowDataTag
 	(*Scan)(nil),                     // 1: threedoclusion.v1.Scan
@@ -2218,10 +2193,6 @@ var file_threedoclusion_v1_service_proto_goTypes = []interface{}{
 	(*GetPatientByIDResponse)(nil),   // 30: threedoclusion.v1.GetPatientByIDResponse
 	(*GetPatientByNameRequest)(nil),  // 31: threedoclusion.v1.GetPatientByNameRequest
 	(*GetPatientByNameResponse)(nil), // 32: threedoclusion.v1.GetPatientByNameResponse
-	(*SendVRRequest)(nil),            // 33: threedoclusion.v1.SendVRRequest
-	(*SendVRResponse)(nil),           // 34: threedoclusion.v1.SendVRResponse
-	(*WaitingRequest)(nil),           // 35: threedoclusion.v1.WaitingRequest
-	(*WaitingResponse)(nil),          // 36: threedoclusion.v1.WaitingResponse
 }
 var file_threedoclusion_v1_service_proto_depIdxs = []int32{
 	0,  // 0: threedoclusion.v1.GetAllTagsResponse.tags:type_name -> threedoclusion.v1.RowDataTag
@@ -2230,42 +2201,38 @@ var file_threedoclusion_v1_service_proto_depIdxs = []int32{
 	1,  // 3: threedoclusion.v1.GetScanByDateResponse.scans:type_name -> threedoclusion.v1.Scan
 	2,  // 4: threedoclusion.v1.GetAllPatientsResponse.patients:type_name -> threedoclusion.v1.Patient
 	2,  // 5: threedoclusion.v1.GetPatientByNameResponse.patients:type_name -> threedoclusion.v1.Patient
-	33, // 6: threedoclusion.v1.ScanService.SendVR:input_type -> threedoclusion.v1.SendVRRequest
-	35, // 7: threedoclusion.v1.ScanService.Waiting:input_type -> threedoclusion.v1.WaitingRequest
-	13, // 8: threedoclusion.v1.ScanService.AddScan:input_type -> threedoclusion.v1.AddScanRequest
-	15, // 9: threedoclusion.v1.ScanService.DeleteScan:input_type -> threedoclusion.v1.DeleteScanRequest
-	17, // 10: threedoclusion.v1.ScanService.GetAllScans:input_type -> threedoclusion.v1.GetAllScansRequest
-	19, // 11: threedoclusion.v1.ScanService.GetScanByID:input_type -> threedoclusion.v1.GetScanByIDRequest
-	21, // 12: threedoclusion.v1.ScanService.GetScanByDate:input_type -> threedoclusion.v1.GetScanByDateRequest
-	3,  // 13: threedoclusion.v1.ScanService.AddTag:input_type -> threedoclusion.v1.AddTagRequest
-	5,  // 14: threedoclusion.v1.ScanService.DeleteTag:input_type -> threedoclusion.v1.DeleteTagRequest
-	7,  // 15: threedoclusion.v1.ScanService.GetAllTags:input_type -> threedoclusion.v1.GetAllTagsRequest
-	9,  // 16: threedoclusion.v1.ScanService.GetTagByID:input_type -> threedoclusion.v1.GetTagByIDRequest
-	11, // 17: threedoclusion.v1.ScanService.GetAllTagsByType:input_type -> threedoclusion.v1.GetAllTagsByTypeRequest
-	23, // 18: threedoclusion.v1.ScanService.AddPatient:input_type -> threedoclusion.v1.AddPatientRequest
-	25, // 19: threedoclusion.v1.ScanService.DeletePatient:input_type -> threedoclusion.v1.DeletePatientRequest
-	27, // 20: threedoclusion.v1.ScanService.GetAllPatients:input_type -> threedoclusion.v1.GetAllPatientsRequest
-	29, // 21: threedoclusion.v1.ScanService.GetPatientByID:input_type -> threedoclusion.v1.GetPatientByIDRequest
-	31, // 22: threedoclusion.v1.ScanService.GetPatientByName:input_type -> threedoclusion.v1.GetPatientByNameRequest
-	34, // 23: threedoclusion.v1.ScanService.SendVR:output_type -> threedoclusion.v1.SendVRResponse
-	36, // 24: threedoclusion.v1.ScanService.Waiting:output_type -> threedoclusion.v1.WaitingResponse
-	14, // 25: threedoclusion.v1.ScanService.AddScan:output_type -> threedoclusion.v1.AddScanResponse
-	16, // 26: threedoclusion.v1.ScanService.DeleteScan:output_type -> threedoclusion.v1.DeleteScanResponse
-	18, // 27: threedoclusion.v1.ScanService.GetAllScans:output_type -> threedoclusion.v1.GetAllScansResponse
-	20, // 28: threedoclusion.v1.ScanService.GetScanByID:output_type -> threedoclusion.v1.GetScanByIDResponse
-	22, // 29: threedoclusion.v1.ScanService.GetScanByDate:output_type -> threedoclusion.v1.GetScanByDateResponse
-	4,  // 30: threedoclusion.v1.ScanService.AddTag:output_type -> threedoclusion.v1.AddTagResponse
-	6,  // 31: threedoclusion.v1.ScanService.DeleteTag:output_type -> threedoclusion.v1.DeleteTagResponse
-	8,  // 32: threedoclusion.v1.ScanService.GetAllTags:output_type -> threedoclusion.v1.GetAllTagsResponse
-	10, // 33: threedoclusion.v1.ScanService.GetTagByID:output_type -> threedoclusion.v1.GetTagByIDResponse
-	12, // 34: threedoclusion.v1.ScanService.GetAllTagsByType:output_type -> threedoclusion.v1.GetAllTagsByTypeResponse
-	24, // 35: threedoclusion.v1.ScanService.AddPatient:output_type -> threedoclusion.v1.AddPatientResponse
-	26, // 36: threedoclusion.v1.ScanService.DeletePatient:output_type -> threedoclusion.v1.DeletePatientResponse
-	28, // 37: threedoclusion.v1.ScanService.GetAllPatients:output_type -> threedoclusion.v1.GetAllPatientsResponse
-	30, // 38: threedoclusion.v1.ScanService.GetPatientByID:output_type -> threedoclusion.v1.GetPatientByIDResponse
-	32, // 39: threedoclusion.v1.ScanService.GetPatientByName:output_type -> threedoclusion.v1.GetPatientByNameResponse
-	23, // [23:40] is the sub-list for method output_type
-	6,  // [6:23] is the sub-list for method input_type
+	13, // 6: threedoclusion.v1.ScanService.AddScan:input_type -> threedoclusion.v1.AddScanRequest
+	15, // 7: threedoclusion.v1.ScanService.DeleteScan:input_type -> threedoclusion.v1.DeleteScanRequest
+	17, // 8: threedoclusion.v1.ScanService.GetAllScans:input_type -> threedoclusion.v1.GetAllScansRequest
+	19, // 9: threedoclusion.v1.ScanService.GetScanByID:input_type -> threedoclusion.v1.GetScanByIDRequest
+	21, // 10: threedoclusion.v1.ScanService.GetScanByDate:input_type -> threedoclusion.v1.GetScanByDateRequest
+	3,  // 11: threedoclusion.v1.ScanService.AddTag:input_type -> threedoclusion.v1.AddTagRequest
+	5,  // 12: threedoclusion.v1.ScanService.DeleteTag:input_type -> threedoclusion.v1.DeleteTagRequest
+	7,  // 13: threedoclusion.v1.ScanService.GetAllTags:input_type -> threedoclusion.v1.GetAllTagsRequest
+	9,  // 14: threedoclusion.v1.ScanService.GetTagByID:input_type -> threedoclusion.v1.GetTagByIDRequest
+	11, // 15: threedoclusion.v1.ScanService.GetAllTagsByType:input_type -> threedoclusion.v1.GetAllTagsByTypeRequest
+	23, // 16: threedoclusion.v1.ScanService.AddPatient:input_type -> threedoclusion.v1.AddPatientRequest
+	25, // 17: threedoclusion.v1.ScanService.DeletePatient:input_type -> threedoclusion.v1.DeletePatientRequest
+	27, // 18: threedoclusion.v1.ScanService.GetAllPatients:input_type -> threedoclusion.v1.GetAllPatientsRequest
+	29, // 19: threedoclusion.v1.ScanService.GetPatientByID:input_type -> threedoclusion.v1.GetPatientByIDRequest
+	31, // 20: threedoclusion.v1.ScanService.GetPatientByName:input_type -> threedoclusion.v1.GetPatientByNameRequest
+	14, // 21: threedoclusion.v1.ScanService.AddScan:output_type -> threedoclusion.v1.AddScanResponse
+	16, // 22: threedoclusion.v1.ScanService.DeleteScan:output_type -> threedoclusion.v1.DeleteScanResponse
+	18, // 23: threedoclusion.v1.ScanService.GetAllScans:output_type -> threedoclusion.v1.GetAllScansResponse
+	20, // 24: threedoclusion.v1.ScanService.GetScanByID:output_type -> threedoclusion.v1.GetScanByIDResponse
+	22, // 25: threedoclusion.v1.ScanService.GetScanByDate:output_type -> threedoclusion.v1.GetScanByDateResponse
+	4,  // 26: threedoclusion.v1.ScanService.AddTag:output_type -> threedoclusion.v1.AddTagResponse
+	6,  // 27: threedoclusion.v1.ScanService.DeleteTag:output_type -> threedoclusion.v1.DeleteTagResponse
+	8,  // 28: threedoclusion.v1.ScanService.GetAllTags:output_type -> threedoclusion.v1.GetAllTagsResponse
+	10, // 29: threedoclusion.v1.ScanService.GetTagByID:output_type -> threedoclusion.v1.GetTagByIDResponse
+	12, // 30: threedoclusion.v1.ScanService.GetAllTagsByType:output_type -> threedoclusion.v1.GetAllTagsByTypeResponse
+	24, // 31: threedoclusion.v1.ScanService.AddPatient:output_type -> threedoclusion.v1.AddPatientResponse
+	26, // 32: threedoclusion.v1.ScanService.DeletePatient:output_type -> threedoclusion.v1.DeletePatientResponse
+	28, // 33: threedoclusion.v1.ScanService.GetAllPatients:output_type -> threedoclusion.v1.GetAllPatientsResponse
+	30, // 34: threedoclusion.v1.ScanService.GetPatientByID:output_type -> threedoclusion.v1.GetPatientByIDResponse
+	32, // 35: threedoclusion.v1.ScanService.GetPatientByName:output_type -> threedoclusion.v1.GetPatientByNameResponse
+	21, // [21:36] is the sub-list for method output_type
+	6,  // [6:21] is the sub-list for method input_type
 	6,  // [6:6] is the sub-list for extension type_name
 	6,  // [6:6] is the sub-list for extension extendee
 	0,  // [0:6] is the sub-list for field type_name
@@ -2673,54 +2640,6 @@ func file_threedoclusion_v1_service_proto_init() {
 				return nil
 			}
 		}
-		file_threedoclusion_v1_service_proto_msgTypes[33].Exporter = func(v interface{}, i int) interface{} {
-			switch v := v.(*SendVRRequest); i {
-			case 0:
-				return &v.state
-			case 1:
-				return &v.sizeCache
-			case 2:
-				return &v.unknownFields
-			default:
-				return nil
-			}
-		}
-		file_threedoclusion_v1_service_proto_msgTypes[34].Exporter = func(v interface{}, i int) interface{} {
-			switch v := v.(*SendVRResponse); i {
-			case 0:
-				return &v.state
-			case 1:
-				return &v.sizeCache
-			case 2:
-				return &v.unknownFields
-			default:
-				return nil
-			}
-		}
-		file_threedoclusion_v1_service_proto_msgTypes[35].Exporter = func(v interface{}, i int) interface{} {
-			switch v := v.(*WaitingRequest); i {
-			case 0:
-				return &v.state
-			case 1:
-				return &v.sizeCache
-			case 2:
-				return &v.unknownFields
-			default:
-				return nil
-			}
-		}
-		file_threedoclusion_v1_service_proto_msgTypes[36].Exporter = func(v interface{}, i int) interface{} {
-			switch v := v.(*WaitingResponse); i {
-			case 0:
-				return &v.state
-			case 1:
-				return &v.sizeCache
-			case 2:
-				return &v.unknownFields
-			default:
-				return nil
-			}
-		}
 	}
 	file_threedoclusion_v1_service_proto_msgTypes[31].OneofWrappers = []interface{}{}
 	type x struct{}
@@ -2729,7 +2648,7 @@ func file_threedoclusion_v1_service_proto_init() {
 			GoPackagePath: reflect.TypeOf(x{}).PkgPath(),
 			RawDescriptor: file_threedoclusion_v1_service_proto_rawDesc,
 			NumEnums:      0,
-			NumMessages:   37,
+			NumMessages:   33,
 			NumExtensions: 0,
 			NumServices:   1,
 		},

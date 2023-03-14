@@ -8,9 +8,6 @@ import styles from '@/styles/LoginForm.module.css'
 import reluLogo from "../../../public/relu-logo-small.png";
 import bcrypt from 'bcryptjs';
 
-import reluLogo from '../../../public/relu-logo-small.png';
-
-
 const FormSchema = yup.object().shape({
   reppassword: yup.string().oneOf([yup.ref('password')], 'this does not match your password'),
 });
@@ -21,42 +18,33 @@ interface Values {
   reppassword: string;
 }
 
-export default function LoginForm() {   
-    const router = useRouter();
-    const toLogin = () => router.push('/login-page')    
+export default function LoginForm() {
+  const router = useRouter();
+  const toLogin = () => router.push('/login-page')
 
-    return (
-      <div className={styles.login_box + ' p-3'}>
-        <Image className={styles.small_logo} src={reluLogo} alt="relu logo"/>
+  return (
+    <div className={styles.login_box + ' p-3'}>
+      <Image className={styles.small_logo} src={reluLogo} alt="relu logo" />
+      <Formik
+        initialValues={{
+          username: '',
+          password: '',
+          reppassword: '',
+        }}
+        validationSchema={FormSchema}
+        onSubmit={(values) => {
+          // Hash the password
+          // Synchronously hashed
+          // blocks the thread
+          const hashedPassword = bcrypt.hashSync(values.password, 10);
 
-        
+          // Replace the password with the new password
+          values.password = hashedPassword;
 
-        <Formik
-          initialValues={{
-            username: '',
-            password: '',
-            reppassword: '',
-          }}
-
-
-          validationSchema={FormSchema}
-
-          onSubmit={(values) => {
-            // Hash the password
-            // Synchronously hashed
-            // blocks the thread
-            const hashedPassword = bcrypt.hashSync(values.password, 10);
-          
-            // Replace the password with the new password
-            values.password = hashedPassword;
-          
-            router.push('/patient');
-          }}
-          
-
-      
-        >
-          {({ errors }) => (
+          router.push('/patient');
+        }}
+      >
+        {({ errors }) => (
           <Form>
             <div className="mb-3">
               <Field
@@ -67,7 +55,6 @@ export default function LoginForm() {
                 aria-describedby="usernameHelp"
               />
             </div>
-
             <div className="mb-3">
               <Field
                 className="form-control"
@@ -78,7 +65,6 @@ export default function LoginForm() {
                 type="password"
               />
             </div>
-
             <div className="mb-3">
               <Field
                 className="form-control"
@@ -90,7 +76,6 @@ export default function LoginForm() {
               />
               {errors.reppassword && <p>{errors.reppassword}</p>}
             </div>
-
             <div className={styles.loginbtn}>
               <button type="submit" className="btn btn-primary btn-large">
                 Register

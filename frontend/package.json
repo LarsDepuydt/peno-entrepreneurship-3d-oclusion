@@ -17,6 +17,7 @@
     "@grpc/proto-loader": "^0.7.5",
     "@next/font": "13.1.6",
     "@tanstack/react-query": "^4.24.10",
+    "bcryptjs": "^2.4.3",
     "bootstrap": "v5.2.3",
     "eslint": "8.34.0",
     "eslint-config-next": "13.1.6",

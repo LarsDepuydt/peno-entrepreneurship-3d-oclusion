@@ -4,8 +4,7 @@ import (
 	"context"
 	"net/http"
 
-	"github.com/LarsDepuydt/peno-entrepreneurship-3d-oclusion/cmd/help_datastructures"
-	"github.com/LarsDepuydt/peno-entrepreneurship-3d-oclusion/cmd/push"
+	"github.com/LarsDepuydt/peno-entrepreneurship-3d-oclusion/cmd/patients"
 	"github.com/LarsDepuydt/peno-entrepreneurship-3d-oclusion/cmd/scans"
 	"github.com/LarsDepuydt/peno-entrepreneurship-3d-oclusion/cmd/tags"
 	threedoclusionv1 "github.com/LarsDepuydt/peno-entrepreneurship-3d-oclusion/gen/proto/threedoclusion/v1"
@@ -16,9 +15,7 @@ import (
 	"golang.org/x/net/http2/h2c"
 )
 
-type ServerStruct struct {
-	redirectVRChannels *help_datastructures.MapChannels
-}
+type ServerStruct struct {}
 
 func setCors(mux http.Handler) http.Handler {
 	muxHandler := cors.Default().Handler(mux)
