@@ -7,7 +7,7 @@ import styleL from '@/styles/LandingPage.module.css'
 import Image_L from "../../public/landing-image.png";
 
 
-const inter = Inter({ subsets: ['latin'] })
+const inter = Inter({ subsets: ['latin'] });
 
 export default function Login() {
   return (

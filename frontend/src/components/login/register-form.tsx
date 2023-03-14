@@ -1,4 +1,4 @@
-import { Formik, Field, Form} from 'formik';
+import { Formik, Field, Form } from 'formik';
 // most popular open source form library
 import * as yup from 'yup';
 
@@ -7,21 +7,17 @@ import Image from 'next/image'
 import styles from '@/styles/LoginForm.module.css'
 import styleB from '@/styles/Buttons.module.css'
 
-
 import reluLogo from "../../../public/relu-logo-small.png";
-
+import bcrypt from 'bcryptjs';
 
 const FormSchema = yup.object().shape({
-  reppassword: yup
-    .string()
-    .oneOf([yup.ref('password')], 'this does not match your password'),
+  reppassword: yup.string().oneOf([yup.ref('password')], 'this does not match your password'),
 });
 
-
 interface Values {
-    username: string;
-    password: string;
-    reppassword: string;
+  username: string;
+  password: string;
+  reppassword: string;
 }
 
 export default function LoginForm() {   

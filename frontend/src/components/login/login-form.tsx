@@ -1,4 +1,4 @@
-import { Formik, Field, Form} from 'formik';
+import { Formik, Field, Form } from 'formik';
 // most popular open source form library
 
 import { useRouter } from 'next/router';
@@ -7,13 +7,11 @@ import styles from '@/styles/LoginForm.module.css'
 import styleB from '@/styles/Buttons.module.css'
 
 
-import reluLogo from "../../../public/relu-logo-small.png";
-
-
+import reluLogo from '../../../public/relu-logo-small.png';
 
 interface Values {
-    username: string;
-    password: string;
+  username: string;
+  password: string;
 }
 
 export default function LoginForm() {   

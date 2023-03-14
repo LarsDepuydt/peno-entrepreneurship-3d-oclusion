@@ -17,7 +17,8 @@ export default function PatientPage({ Component, pageProps }: AppProps) {
     <Patient picture={teeth3d} patientfirstname={'Ann'} patientlastname={'Janssens'}/>
     <Patient picture={teeth3d} patientfirstname={'Yolande'} patientlastname={'Berbers'}/>
     </div>
+
     <New_Patient/>
     </>
-  ) 
+  );
 }
