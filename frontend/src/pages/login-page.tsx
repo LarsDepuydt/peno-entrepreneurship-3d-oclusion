@@ -9,9 +9,11 @@ import Image_L from "../../public/landing-image.png";
 
 const inter = Inter({ subsets: ['latin'] });
 
+
 export default function Login() {
   return (
     <>
+
       <div className={styleL.all_landing}>
 
       <div className={styleL.imgbox}>
