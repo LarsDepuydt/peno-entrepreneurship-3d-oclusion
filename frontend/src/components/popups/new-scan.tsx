@@ -2,6 +2,8 @@ import React, { useState } from "react"
 import { Formik, Field, Form, ErrorMessage} from 'formik';
 
 import styles from '@/styles/Modal.module.css'
+import styleB from '@/styles/Buttons.module.css'
+
 
 
 // TODO add files + tags
@@ -35,7 +37,7 @@ export default function ModalForm() {
         <>
 
   <div className={styles.btn_modal}>
-    <button onClick={toggleModal}  className="btn btn-large btn-outline-secondary">Add Scans</button>
+    <button onClick={toggleModal}  className={styleB.relu_btn}>Add Scans</button>
     {/* translation files bekijken */}
     </div>
 
@@ -119,8 +121,8 @@ export default function ModalForm() {
                   <h3>scans to be added here </h3>
 
                   <div className ={styles.spacingbtn}>
-                    <button type="submit" className= "btn btn-outline-secondary btn-large" >Save scans</button>
-                    <button type="button" className= "btn btn-outline-secondary btn-large" onClick={toggleModal} >Exit</button>
+                    <button type="submit" className={styleB.relu_btn} >Save scans</button>
+                    <button type="button" className={styleB.relu_btn} onClick={toggleModal} >Exit</button>
                   </div>
 
                 </Form>

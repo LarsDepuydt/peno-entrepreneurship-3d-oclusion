@@ -1,5 +1,6 @@
 
 import Welcome_Doctor from './welcoming'
+import Welcoming from './welcoming'
 import Logout_Button from './logout-button'
 import Image from 'next/image'
 
@@ -13,6 +14,7 @@ export default function Header() {
       <>
       <div className={styles.header_layout}>
       <Image className={styles.small_logo} src={reluLogo} alt="relu logo"/>
+      <Welcoming doctorfirstname={"Anna"} doctorlastname={"Proost"}/>
       <div className = {styles.logout_layout}><Logout_Button/></div>
       </div>
       </>

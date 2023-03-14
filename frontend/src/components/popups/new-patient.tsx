@@ -2,6 +2,7 @@ import React, { useState } from "react"
 import { Formik, Field, Form, ErrorMessage} from 'formik';
 
 import styles from '@/styles/Modal.module.css'
+import styleB from '@/styles/Buttons.module.css'
 
 import 'bootstrap/dist/css/bootstrap.css'
 
@@ -31,7 +32,7 @@ export default function ModalForm() {
         <>
 
     <div className={styles.btn_modal}>
-    <button onClick={toggleModal}  className="btn btn-large btn-outline-secondary">Add Patient</button>
+    <button onClick={toggleModal}  className={styleB.relu_btn}>Add Patient</button>
     {/* translation files bekijken */}
     </div>
   
@@ -89,8 +90,8 @@ export default function ModalForm() {
                   </div>
       
                   <div className ={styles.spacingbtn}>
-                  <button type="submit" className= "btn btn-outline-secondary btn-large" >Save patient</button>
-                  <button type="button" className= "btn btn-outline-secondary btn-large" onClick={toggleModal} >Exit</button>
+                  <button type="submit" className={styleB.relu_btn} >Save patient</button>
+                  <button type="button" className={styleB.relu_btn} onClick={toggleModal} >Exit</button>
                   </div>
 
                 </Form>

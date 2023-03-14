@@ -5,6 +5,7 @@ import * as yup from 'yup';
 import { useRouter } from 'next/router';
 import Image from 'next/image'
 import styles from '@/styles/LoginForm.module.css'
+import styleB from '@/styles/Buttons.module.css'
 
 
 import reluLogo from "../../../public/relu-logo-small.png";
@@ -47,7 +48,7 @@ export default function LoginForm() {
 
           validationSchema={FormSchema}
 
-          onSubmit={() => {router.push('/patient')}}
+          onSubmit={() => {router.push('/login-page')}}
 
       
         >
@@ -67,8 +68,8 @@ export default function LoginForm() {
             </div>
 
             <div className ={styles.spacingbtn}>
-            <button type="submit" className= "btn btn-outline-secondary btn-large" >Register</button>
-            <button type="button" className= "btn btn-outline-secondary btn-large" onClick={toLogin} >Login instead</button>
+            <button type="submit" className={styleB.relu_btn} >Register</button>
+            <button type="button" className={styleB.relu_btn} onClick={toLogin} >Login instead</button>
             </div>
           </Form>
         )}

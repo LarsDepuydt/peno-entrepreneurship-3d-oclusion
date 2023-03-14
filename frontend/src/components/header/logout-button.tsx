@@ -1,4 +1,5 @@
 import { useRouter } from 'next/router';
+import styleB from '@/styles/Buttons.module.css'
 
 export default function LogoutButton() { 
 
@@ -10,6 +11,6 @@ export default function LogoutButton() {
 
     return (
     <>
-    <button type="button" className= "btn btn-outline-secondary btn-large" onClick={clickLogout} >Log out</button>
+    <button type="button" className={styleB.relu_btn} onClick={clickLogout} >Log out</button>
     </> )
   }

@@ -4,7 +4,7 @@ import { Formik, Field, Form} from 'formik';
 import { useRouter } from 'next/router';
 import Image from 'next/image'
 import styles from '@/styles/LoginForm.module.css'
-import 'bootstrap/dist/css/bootstrap.css'
+import styleB from '@/styles/Buttons.module.css'
 
 
 import reluLogo from "../../../public/relu-logo-small.png";
@@ -49,8 +49,8 @@ export default function LoginForm() {
             </div>
             
             <div className ={styles.spacingbtn}>
-            <button type="submit" className="btn btn-outline-secondary btn-large" >Login</button>
-            <button type="button" className= "btn btn-outline-secondary btn-large" onClick={toRegister} >Register instead</button>
+            <button type="submit" className={styleB.relu_btn} >Login</button>
+            <button type="button" className={styleB.relu_btn} onClick={toRegister} >Register instead</button>
             </div>
           </Form>
         </Formik>

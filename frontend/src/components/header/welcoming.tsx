@@ -1,6 +1,11 @@
 // possibly welcome doctor in the future ?
 
-export default function Welcoming(doctor_name: string) { 
+interface Greeting {
+    doctorfirstname : string
+    doctorlastname : string
+}
+
+export default function Welcoming({doctorfirstname, doctorlastname}: Greeting) { 
 
     const Welcoming = (doctor_name: string) => {
         const welcome = "Welcome " + doctor_name 
@@ -9,6 +14,6 @@ export default function Welcoming(doctor_name: string) {
     
     return (
     <>
-    <h2>Welcoming(doctor_name)</h2>
+    <h2>{("Welcome Dr. ").concat(doctorfirstname, ' ', doctorlastname)}</h2>
     </> )
   }
