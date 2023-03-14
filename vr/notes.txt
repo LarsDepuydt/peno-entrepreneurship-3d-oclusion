@@ -10,3 +10,22 @@ setting up a local server:
 making localhost available to VR headset:
     - connect to same wifi network
     - execute 'ngrok http <insert localhost port>'
+
+
+login voor Relu:
+API: https://api.virtualpatientengine.com/docs#operation/testAuth_testAuth_get
+Nieuwe platform: https://creator.relu.eu/login
+login: astrid@dewever.be
+paswoord: PenO2223!
+
+
+GitHub issue met veel informatie over convex hulls en decomposition:
+https://github.com/pmndrs/cannon-es/issues/103
+
+
+dragging_teeth source:
+https://github.com/Soft8Soft/verge3d-code-examples/blob/master/webxr_vr_dragging.html
+
+
+collisions uitzetten:
+https://github.com/schteppe/cannon.js/blob/master/demos/collisionFilter.html

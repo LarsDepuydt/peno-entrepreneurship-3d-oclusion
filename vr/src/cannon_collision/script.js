@@ -6,6 +6,8 @@ import { OBJLoader } from 'three/addons/loaders/OBJLoader.js';
 import * as CANNON from 'cannon-es';
 import { MeshBVH, acceleratedRaycast } from 'three-mesh-bvh';
 import { default as CannonUtils } from 'cannon-utils';
+import { QuickHull } from './QuickHull.js';
+
 
 let container;
 let camera, scene, renderer;
@@ -40,14 +42,14 @@ loadObjects();  // animation is started after both objects are loaded
 
 function initCannon() {
     world = new CANNON.World();
-    world.gravity.set(0,0,0);
+    world.gravity.set(0,0,-1);
     world.broadphase = new CANNON.NaiveBroadphase();
     world.solver.iterations = 10;
 
     lj_body = new CANNON.Body({mass: 1});
     uj_body = new CANNON.Body({mass: 1});
-    lj_body.position.set(0,0,2);
-    uj_body.position.set(0,0,1);
+    lj_body.position.set(0,0,200);
+    uj_body.position.set(0,0,300);
     lj_body.quaternion = new CANNON.Quaternion(0, 0, 0, 1);
     uj_body.quaternion = new CANNON.Quaternion(0, 0, 0, 1);
     world.addBody(lj_body);
@@ -188,8 +190,8 @@ function loadObjects() {
         // called when resource is loaded y=green, x=red, z=blue
         function (object) {         // lj_group is a 'Group', which is a subclass of 'Object3D'
             lj_group = object;
-            lj_group.scale.set(0.01, 0.01, 0.01);
-            // lj_group.scale.setScalar(0.01);
+            //lj_group.scale.set(0.01, 0.01, 0.01);
+            lj_group.scale.setScalar(0.01);
             lj_group.position.x = 0;
             lj_group.position.y = 0;
             lj_group.position.z = 0;
@@ -200,7 +202,7 @@ function loadObjects() {
             
             lj_mesh = getFirstMesh(lj_group);
             //console.log(lj_mesh);
-            lj_shape = threeMeshToCannonMesh(lj_mesh);
+            lj_shape = threeMeshToConvexCannonMesh(lj_mesh);
             console.log("loading lj_group succeeded");
             lj_body.addShape(lj_shape);
             lj_loaded = true;
@@ -233,7 +235,7 @@ function loadObjects() {
             
             uj_mesh = getFirstMesh(uj_group);
             //console.log(uj_mesh);
-            uj_shape = threeMeshToCannonMesh(uj_mesh);
+            uj_shape = threeMeshToConvexCannonMesh(uj_mesh);
             console.log("loading uj_group succeeded");
             uj_body.addShape(uj_shape);
             uj_loaded = true;
@@ -297,6 +299,28 @@ function threeMeshToCannonMesh(mesh) {
         indices.push([i, i + 1, i + 2]);
     }
     return new CANNON.Trimesh(vertices, indices);
+}
+
+function threeMeshToConvexCannonMesh(mesh) {
+    let points = ToVertices(mesh.geometry);
+    console.log(points);
+    const faces = QuickHull.createHull(points);
+    return new CANNON.ConvexPolyhedron({vertices:points, faces});
+}
+
+function ToVertices(geometry) {
+    const positions = geometry.attributes.position;
+    const vertices = [];
+    for (let index = 0; index < positions.count; index++) {
+        vertices.push(
+            new CANNON.Vec3(
+                positions.getX(index),
+                positions.getY(index),
+                positions.getZ(index)
+            )
+        );
+    }
+    return vertices;
 }
 
 
