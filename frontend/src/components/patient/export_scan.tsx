@@ -5,8 +5,7 @@ import Image from 'next/image'
 import styles from '@/styles/LoginForm.module.css'
 import 'bootstrap/dist/css/bootstrap.css'
 
-
-import reluLogo from "../../../public/relu-logo-small.png";
+/**https://www.youtube.com/watch?v=CJvHc49kY2E */
 
 export default function LoginForm() {   
 
@@ -14,7 +13,7 @@ export default function LoginForm() {
     const router = useRouter();
 
     const exportScan = () => {
-        saveAs('../../../public/relu-logo-small.png', 'name of exported file');
+        saveAs("/relu-logo-small.png", 'relu-logo-small.png');
     }
 
     return (
