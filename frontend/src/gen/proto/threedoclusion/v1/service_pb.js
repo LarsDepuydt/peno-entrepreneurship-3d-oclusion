@@ -6,6 +6,43 @@
 import { proto3 } from "@bufbuild/protobuf";
 
 /**
+ * @generated from message threedoclusion.v1.RowDataTag
+ */
+export const RowDataTag = proto3.makeMessageType(
+  "threedoclusion.v1.RowDataTag",
+  () => [
+    { no: 1, name: "id", kind: "scalar", T: 3 /* ScalarType.INT64 */ },
+    { no: 2, name: "bite", kind: "scalar", T: 9 /* ScalarType.STRING */ },
+  ],
+);
+
+/**
+ * @generated from message threedoclusion.v1.Scan
+ */
+export const Scan = proto3.makeMessageType(
+  "threedoclusion.v1.Scan",
+  () => [
+    { no: 1, name: "id", kind: "scalar", T: 3 /* ScalarType.INT64 */ },
+    { no: 2, name: "scan", kind: "scalar", T: 9 /* ScalarType.STRING */ },
+    { no: 3, name: "date", kind: "scalar", T: 9 /* ScalarType.STRING */ },
+  ],
+);
+
+/**
+ * @generated from message threedoclusion.v1.Patient
+ */
+export const Patient = proto3.makeMessageType(
+  "threedoclusion.v1.Patient",
+  () => [
+    { no: 1, name: "id", kind: "scalar", T: 3 /* ScalarType.INT64 */ },
+    { no: 2, name: "first_name", kind: "scalar", T: 9 /* ScalarType.STRING */ },
+    { no: 3, name: "last_name", kind: "scalar", T: 9 /* ScalarType.STRING */ },
+    { no: 4, name: "pinned", kind: "scalar", T: 3 /* ScalarType.INT64 */ },
+    { no: 5, name: "notes", kind: "scalar", T: 9 /* ScalarType.STRING */ },
+  ],
+);
+
+/**
  * TAGS
  *
  * @generated from message threedoclusion.v1.AddTagRequest
@@ -52,9 +89,7 @@ export const DeleteTagResponse = proto3.makeMessageType(
  */
 export const GetAllTagsRequest = proto3.makeMessageType(
   "threedoclusion.v1.GetAllTagsRequest",
-  () => [
-    { no: 1, name: "table_name", kind: "scalar", T: 9 /* ScalarType.STRING */ },
-  ],
+  [],
 );
 
 /**
@@ -63,8 +98,7 @@ export const GetAllTagsRequest = proto3.makeMessageType(
 export const GetAllTagsResponse = proto3.makeMessageType(
   "threedoclusion.v1.GetAllTagsResponse",
   () => [
-    { no: 1, name: "id_data", kind: "scalar", T: 3 /* ScalarType.INT64 */, repeated: true },
-    { no: 2, name: "bite_data", kind: "scalar", T: 9 /* ScalarType.STRING */, repeated: true },
+    { no: 1, name: "tags", kind: "message", T: RowDataTag, repeated: true },
   ],
 );
 
@@ -105,8 +139,7 @@ export const GetAllTagsByTypeRequest = proto3.makeMessageType(
 export const GetAllTagsByTypeResponse = proto3.makeMessageType(
   "threedoclusion.v1.GetAllTagsByTypeResponse",
   () => [
-    { no: 1, name: "bite", kind: "scalar", T: 9 /* ScalarType.STRING */ },
-    { no: 2, name: "id_data", kind: "scalar", T: 3 /* ScalarType.INT64 */, repeated: true },
+    { no: 1, name: "tags", kind: "message", T: RowDataTag, repeated: true },
   ],
 );
 
@@ -158,9 +191,7 @@ export const DeleteScanResponse = proto3.makeMessageType(
  */
 export const GetAllScansRequest = proto3.makeMessageType(
   "threedoclusion.v1.GetAllScansRequest",
-  () => [
-    { no: 1, name: "table_name", kind: "scalar", T: 9 /* ScalarType.STRING */ },
-  ],
+  [],
 );
 
 /**
@@ -169,9 +200,7 @@ export const GetAllScansRequest = proto3.makeMessageType(
 export const GetAllScansResponse = proto3.makeMessageType(
   "threedoclusion.v1.GetAllScansResponse",
   () => [
-    { no: 1, name: "id_data", kind: "scalar", T: 3 /* ScalarType.INT64 */, repeated: true },
-    { no: 2, name: "scan_data", kind: "scalar", T: 9 /* ScalarType.STRING */, repeated: true },
-    { no: 3, name: "scan_dates", kind: "scalar", T: 9 /* ScalarType.STRING */, repeated: true },
+    { no: 1, name: "scans", kind: "message", T: Scan, repeated: true },
   ],
 );
 
@@ -213,9 +242,113 @@ export const GetScanByDateRequest = proto3.makeMessageType(
 export const GetScanByDateResponse = proto3.makeMessageType(
   "threedoclusion.v1.GetScanByDateResponse",
   () => [
-    { no: 1, name: "id_data", kind: "scalar", T: 3 /* ScalarType.INT64 */, repeated: true },
-    { no: 2, name: "scan_data", kind: "scalar", T: 9 /* ScalarType.STRING */, repeated: true },
-    { no: 3, name: "scan_dates", kind: "scalar", T: 9 /* ScalarType.STRING */, repeated: true },
+    { no: 1, name: "scans", kind: "message", T: Scan, repeated: true },
+  ],
+);
+
+/**
+ * @generated from message threedoclusion.v1.AddPatientRequest
+ */
+export const AddPatientRequest = proto3.makeMessageType(
+  "threedoclusion.v1.AddPatientRequest",
+  () => [
+    { no: 1, name: "first_name", kind: "scalar", T: 9 /* ScalarType.STRING */ },
+    { no: 2, name: "last_name", kind: "scalar", T: 9 /* ScalarType.STRING */ },
+    { no: 3, name: "pinned", kind: "scalar", T: 3 /* ScalarType.INT64 */ },
+    { no: 4, name: "notes", kind: "scalar", T: 9 /* ScalarType.STRING */ },
+  ],
+);
+
+/**
+ * @generated from message threedoclusion.v1.AddPatientResponse
+ */
+export const AddPatientResponse = proto3.makeMessageType(
+  "threedoclusion.v1.AddPatientResponse",
+  () => [
+    { no: 1, name: "message", kind: "scalar", T: 9 /* ScalarType.STRING */ },
+  ],
+);
+
+/**
+ * @generated from message threedoclusion.v1.DeletePatientRequest
+ */
+export const DeletePatientRequest = proto3.makeMessageType(
+  "threedoclusion.v1.DeletePatientRequest",
+  () => [
+    { no: 1, name: "id", kind: "scalar", T: 3 /* ScalarType.INT64 */ },
+  ],
+);
+
+/**
+ * @generated from message threedoclusion.v1.DeletePatientResponse
+ */
+export const DeletePatientResponse = proto3.makeMessageType(
+  "threedoclusion.v1.DeletePatientResponse",
+  () => [
+    { no: 1, name: "message", kind: "scalar", T: 9 /* ScalarType.STRING */ },
+  ],
+);
+
+/**
+ * @generated from message threedoclusion.v1.GetAllPatientsRequest
+ */
+export const GetAllPatientsRequest = proto3.makeMessageType(
+  "threedoclusion.v1.GetAllPatientsRequest",
+  [],
+);
+
+/**
+ * @generated from message threedoclusion.v1.GetAllPatientsResponse
+ */
+export const GetAllPatientsResponse = proto3.makeMessageType(
+  "threedoclusion.v1.GetAllPatientsResponse",
+  () => [
+    { no: 1, name: "patients", kind: "message", T: Patient, repeated: true },
+  ],
+);
+
+/**
+ * @generated from message threedoclusion.v1.GetPatientByIDRequest
+ */
+export const GetPatientByIDRequest = proto3.makeMessageType(
+  "threedoclusion.v1.GetPatientByIDRequest",
+  () => [
+    { no: 1, name: "id", kind: "scalar", T: 3 /* ScalarType.INT64 */ },
+  ],
+);
+
+/**
+ * @generated from message threedoclusion.v1.GetPatientByIDResponse
+ */
+export const GetPatientByIDResponse = proto3.makeMessageType(
+  "threedoclusion.v1.GetPatientByIDResponse",
+  () => [
+    { no: 1, name: "id", kind: "scalar", T: 3 /* ScalarType.INT64 */ },
+    { no: 2, name: "first_name", kind: "scalar", T: 9 /* ScalarType.STRING */ },
+    { no: 3, name: "last_name", kind: "scalar", T: 9 /* ScalarType.STRING */ },
+    { no: 4, name: "pinned", kind: "scalar", T: 3 /* ScalarType.INT64 */ },
+    { no: 5, name: "notes", kind: "scalar", T: 9 /* ScalarType.STRING */ },
+  ],
+);
+
+/**
+ * @generated from message threedoclusion.v1.GetPatientByNameRequest
+ */
+export const GetPatientByNameRequest = proto3.makeMessageType(
+  "threedoclusion.v1.GetPatientByNameRequest",
+  () => [
+    { no: 1, name: "first_name", kind: "scalar", T: 9 /* ScalarType.STRING */, opt: true },
+    { no: 2, name: "last_name", kind: "scalar", T: 9 /* ScalarType.STRING */, opt: true },
+  ],
+);
+
+/**
+ * @generated from message threedoclusion.v1.GetPatientByNameResponse
+ */
+export const GetPatientByNameResponse = proto3.makeMessageType(
+  "threedoclusion.v1.GetPatientByNameResponse",
+  () => [
+    { no: 1, name: "patients", kind: "message", T: Patient, repeated: true },
   ],
 );
 

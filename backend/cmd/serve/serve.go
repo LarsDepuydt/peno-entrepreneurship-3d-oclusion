@@ -5,6 +5,7 @@ import (
 	"net/http"
 
 	"github.com/LarsDepuydt/peno-entrepreneurship-3d-oclusion/cmd/dentists"
+	"github.com/LarsDepuydt/peno-entrepreneurship-3d-oclusion/cmd/patients"
 	"github.com/LarsDepuydt/peno-entrepreneurship-3d-oclusion/cmd/scans"
 	"github.com/LarsDepuydt/peno-entrepreneurship-3d-oclusion/cmd/tags"
 	threedoclusionv1 "github.com/LarsDepuydt/peno-entrepreneurship-3d-oclusion/gen/proto/threedoclusion/v1"
@@ -15,7 +16,7 @@ import (
 	"golang.org/x/net/http2/h2c"
 )
 
-type ServerStruct struct{}
+type ServerStruct struct {}
 
 func setCors(mux http.Handler) http.Handler {
 	muxHandler := cors.Default().Handler(mux)
@@ -116,6 +117,42 @@ func (s *ServerStruct) GetAllTagsByType(
 	req *connect.Request[threedoclusionv1.GetAllTagsByTypeRequest],
 ) (*connect.Response[threedoclusionv1.GetAllTagsByTypeResponse], error) {
 	return tags.GetAllTagsByType(req)
+}
+
+// PATIENTS
+func (s *ServerStruct) AddPatient(
+	ctx context.Context,
+	req *connect.Request[threedoclusionv1.AddPatientRequest],
+) (*connect.Response[threedoclusionv1.AddPatientResponse], error) {
+	return patients.AddPatient(req)
+}
+
+func (s *ServerStruct) DeletePatient(
+	ctx context.Context,
+	req *connect.Request[threedoclusionv1.DeletePatientRequest],
+) (*connect.Response[threedoclusionv1.DeletePatientResponse], error) {
+	return patients.DeletePatient(req)
+}
+
+func (s *ServerStruct) GetAllPatients(
+	ctx context.Context,
+	req *connect.Request[threedoclusionv1.GetAllPatientsRequest],
+) (*connect.Response[threedoclusionv1.GetAllPatientsResponse], error) {
+	return patients.GetAllPatients(req)
+}
+
+func (s *ServerStruct) GetPatientByID(
+	ctx context.Context,
+	req *connect.Request[threedoclusionv1.GetPatientByIDRequest],
+) (*connect.Response[threedoclusionv1.GetPatientByIDResponse], error) {
+	return patients.GetPatientByID(req)
+}
+
+func (s *ServerStruct) GetPatientByName(
+	ctx context.Context,
+	req *connect.Request[threedoclusionv1.GetPatientByNameRequest],
+) (*connect.Response[threedoclusionv1.GetPatientByNameResponse], error) {
+	return patients.GetPatientByName(req)
 }
 
 // DENTISTS

@@ -1,5 +1,5 @@
-import type { AppProps } from 'next/app'
-import 'bootstrap/dist/css/bootstrap.css'
+import type { AppProps } from 'next/app';
+import 'bootstrap/dist/css/bootstrap.css';
 
 import New_Patient from '../components/popups/new-patient'
 import {SinglePatient as Patient} from '../components/patient/patient-individual-overview'
@@ -14,5 +14,5 @@ export default function PatientPage({ Component, pageProps }: AppProps) {
     <Patient picture={teeth3d} patientfirstname={'Yolande'} patientlastname={'Berbers'}/>
     <New_Patient/>
     </>
-  ) 
+  );
 }

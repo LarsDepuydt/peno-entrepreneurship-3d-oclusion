@@ -10,6 +10,7 @@ import (
 	threedoclusionv1 "github.com/LarsDepuydt/peno-entrepreneurship-3d-oclusion/gen/proto/threedoclusion/v1"
 )
 
+
 func AddTag(req *connect.Request[threedoclusionv1.AddTagRequest]) (*connect.Response[threedoclusionv1.AddTagResponse], error) {
 	// Connect to the database
 	database, error := help_functions.ConnectToDataBase()
@@ -80,16 +81,18 @@ func GetAllTags(req *connect.Request[threedoclusionv1.GetAllTagsRequest]) (*conn
 	// Prepare a statement with placeholders for the condition
 	statement := "SELECT * FROM tag;"
 
-	idArray, biteArray, error := help_functions.GetResponseMakerTag(database, statement)
+	result, error := help_functions.GetResponseMakerTag(database, statement)
 	if error != nil {
 		panic(error)
 	}
 
 	fmt.Println("Got all tags succesfully")
 
+	//resultCopy := make([]RowDataTag, len(result))
+	//copy(copy, source[:])
+
 	res := connect.NewResponse(&threedoclusionv1.GetAllTagsResponse{
-		IdData:   idArray,
-		BiteData: biteArray,
+		Tags: result,
 	})
 
 	return res, nil
@@ -106,7 +109,7 @@ func GetTagByID(req *connect.Request[threedoclusionv1.GetTagByIDRequest]) (*conn
 	// Prepare a statement with placeholders for the condition
 	statement := "SELECT * FROM tag WHERE id = $1;"
 
-	idArray, biteArray, error := help_functions.GetResponseMakerTag(database, statement)
+	result, error := help_functions.GetResponseMakerTag(database, statement)
 	if error != nil {
 		panic(error)
 	}
@@ -115,8 +118,8 @@ func GetTagByID(req *connect.Request[threedoclusionv1.GetTagByIDRequest]) (*conn
 	fmt.Println(responseMessage)
 
 	res := connect.NewResponse(&threedoclusionv1.GetTagByIDResponse{
-		Id:   idArray[0],
-		Bite: biteArray[0],
+		Id:   result[0].Id,
+		Bite: result[0].Bite,
 	})
 
 	return res, nil
@@ -133,7 +136,7 @@ func GetAllTagsByType(req *connect.Request[threedoclusionv1.GetAllTagsByTypeRequ
 	// Prepare a statement with placeholders for the condition
 	statement := "SELECT * FROM tag WHERE bite = $1;"
 
-	idArray, biteArray, error := help_functions.GetResponseMakerTag(database, statement)
+	result, error := help_functions.GetResponseMakerTag(database, statement)
 	if error != nil {
 		panic(error)
 	}
@@ -142,8 +145,7 @@ func GetAllTagsByType(req *connect.Request[threedoclusionv1.GetAllTagsByTypeRequ
 	fmt.Println(responseMessage)
 
 	res := connect.NewResponse(&threedoclusionv1.GetAllTagsByTypeResponse{
-		Bite:   biteArray[0],
-		IdData: idArray,
+		Tags: result,
 	})
 
 	return res, nil

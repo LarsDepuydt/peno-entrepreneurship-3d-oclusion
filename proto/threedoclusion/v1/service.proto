@@ -2,7 +2,7 @@ syntax = "proto3";
 
 package threedoclusion.v1;
 
-option go_package = "github.com/LarsDepuydt/peno-entrepreneurship-3d-oclusie";
+option go_package = "github.com/LarsDepuydt/peno-entrepreneurship-3d-oclusion";
 
 
 service ScanService {
@@ -18,6 +18,12 @@ service ScanService {
   rpc GetTagByID(GetTagByIDRequest) returns (GetTagByIDResponse) {}
   rpc GetAllTagsByType(GetAllTagsByTypeRequest) returns (GetAllTagsByTypeResponse) {}
 
+  rpc AddPatient(AddPatientRequest) returns (AddPatientResponse) {}
+  rpc DeletePatient(DeletePatientRequest) returns (DeletePatientResponse) {}
+  rpc GetAllPatients(GetAllPatientsRequest) returns (GetAllPatientsResponse) {}
+  rpc GetPatientByID(GetPatientByIDRequest) returns (GetPatientByIDResponse) {}
+  rpc GetPatientByName(GetPatientByNameRequest) returns (GetPatientByNameResponse) {}
+
   rpc AddDentist(AddDentistRequest) returns (AddDentistResponse) {}
   rpc DeleteDentistById(DeleteDentistByIdRequest) returns (DeleteDentistByIdResponse) {}
   rpc GetAllDentists(GetAllDentistsRequest) returns (GetAllDentistsResponse) {}
@@ -28,6 +34,25 @@ service ScanService {
 }
 
 
+message RowDataTag {
+  int64 id = 1;
+  string bite = 2;
+}
+
+message Scan {
+  int64 id = 1;
+  string scan = 2;
+  string date = 3;
+}
+
+message Patient{
+  int64 id = 1;
+  string first_name = 2;
+  string last_name = 3;
+  int64 pinned = 4;
+  string notes = 5;
+  
+}
 
 // TAGS
 message AddTagRequest {
@@ -46,13 +71,10 @@ message DeleteTagResponse {
   string message = 1;
 }
 
-message GetAllTagsRequest {
-  string table_name = 1;
-}
+message GetAllTagsRequest {}
 
 message GetAllTagsResponse {
-  repeated int64 id_data = 1;
-  repeated string bite_data = 2;
+  repeated RowDataTag tags = 1;
 }
 
 message GetTagByIDRequest {
@@ -69,8 +91,7 @@ message GetAllTagsByTypeRequest {
 }
 
 message GetAllTagsByTypeResponse {
-  string bite = 1;
-  repeated int64 id_data = 2;
+  repeated RowDataTag tags = 1;
 }
 
 
@@ -78,7 +99,6 @@ message GetAllTagsByTypeResponse {
 message AddScanRequest {
   string scan_file = 1;
   string scan_date = 2;
-
 }
 
 message AddScanResponse {
@@ -93,15 +113,10 @@ message DeleteScanResponse {
   string message = 1;
 }
 
-message GetAllScansRequest {
-  string table_name = 1;
-
-}
+message GetAllScansRequest {}
 
 message GetAllScansResponse {
-  repeated int64 id_data =  1;
-  repeated string scan_data = 2;
-  repeated string scan_dates = 3;
+  repeated Scan scans = 1;
 }
 
 message GetScanByIDRequest {
@@ -119,9 +134,56 @@ message GetScanByDateRequest {
 }
 
 message GetScanByDateResponse {
-  repeated int64 id_data =  1;
-  repeated string scan_data = 2;
-  repeated string scan_dates = 3;
+  repeated Scan scans = 1;
+}
+
+//PATIENT
+
+message AddPatientRequest{
+  string first_name = 1;
+  string last_name = 2;
+  int64 pinned = 3;
+  string notes = 4;
+}
+
+message AddPatientResponse{
+  string message = 1;
+}
+
+message DeletePatientRequest{
+  int64 id = 1;
+}
+
+message DeletePatientResponse{
+  string message = 1;
+}
+
+message GetAllPatientsRequest{}
+
+message GetAllPatientsResponse{
+  repeated Patient patients = 1;
+}
+
+message GetPatientByIDRequest{
+  int64 id = 1;
+}
+
+message GetPatientByIDResponse{
+  int64 id = 1;
+  string first_name = 2;
+  string last_name = 3;
+  int64 pinned = 4;
+  string notes = 5;
+}
+
+message GetPatientByNameRequest{
+  optional string first_name = 1;
+  optional string last_name = 2;
+
+}
+
+message GetPatientByNameResponse{
+  repeated Patient patients = 1;
 }
 
 // DENTIST
