@@ -1,0 +1,5 @@
+{
+  "dependencies": {
+    "formik-file-and-image-input": "^0.0.6"
+  }
+}

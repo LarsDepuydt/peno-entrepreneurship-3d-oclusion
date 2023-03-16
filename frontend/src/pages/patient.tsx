@@ -1,6 +1,8 @@
-import type { AppProps } from 'next/app';
-import 'bootstrap/dist/css/bootstrap.css';
+import type { AppProps } from 'next/app'
+import 'bootstrap/dist/css/bootstrap.css'
+import styles from '@/styles/PatientPage.module.css'
 
+import Header from '../components/header/header'
 import New_Patient from '../components/popups/new-patient'
 import {SinglePatient as Patient} from '../components/patient/patient-individual-overview'
 import teeth3d from '../../public/3d-teeth.jpg'
@@ -41,6 +43,7 @@ const patients = [
 const App: FC = () => {
   return (
     <div>
+      <Header/>
       <h1> This is your patient overview</h1>
       <Table data={patients} />
       <New_Patient/>
