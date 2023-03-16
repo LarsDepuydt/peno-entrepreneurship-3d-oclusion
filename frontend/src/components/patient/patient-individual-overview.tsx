@@ -12,7 +12,7 @@ interface patientProfile {
 export function SinglePatient({picture, patientfirstname, patientlastname}: patientProfile) { 
 
     const clickPatient = () => {
-        router.push('/scans-page')    // change state f -> t and t -> f
+        router.push('/scans-page')  
     }
 
     const router = useRouter();
