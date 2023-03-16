@@ -8,24 +8,6 @@ import { useRouter } from 'next/router';
 import { StaticImageData } from 'next/image'
 import {FC} from 'react';
 
-
-
-/**
- * 
- * export default function PatientPage({ Component, pageProps }: AppProps) {
-  return (
-    <>
-    <Patient picture={teeth3d} patientfirstname={'Jos'} patientlastname={'Van de Velde'}/>
-    <Patient picture={teeth3d} patientfirstname={'Ann'} patientlastname={'Janssens'}/>
-    <Patient picture={teeth3d} patientfirstname={'Yolande'} patientlastname={'Berbers'}/>
-    <New_Patient/>
-    </>
-  ) 
-}
- */
-
-
-
 interface TableProps {
   data: { [key: string]: string }[];
 }
