@@ -3,16 +3,17 @@ import { useRouter } from 'next/router';
 
 import styles from '@/styles/PatientPage.module.css'
 
-interface PatientProfile {
+
+interface patientProfile {
     picture : StaticImageData
     patientfirstname : string
     patientlastname : string
 }
 
-export function SinglePatient({picture, patientfirstname, patientlastname}: PatientProfile) { 
+export function SinglePatient({picture, patientfirstname, patientlastname}: patientProfile) { 
 
     const clickPatient = () => {
-        router.push('/scans-page')    // change state f -> t and t -> f
+        router.push('/scans-page')  
     }
 
     const router = useRouter();
@@ -25,5 +26,6 @@ export function SinglePatient({picture, patientfirstname, patientlastname}: Pati
     <p>{patientfirstname.concat(' ', patientlastname)}</p>
     </div>
     </div>
-    </> )
+    </> ); 
   }
+
