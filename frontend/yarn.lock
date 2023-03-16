@@ -451,10 +451,8 @@ __metadata:
     react-native:
       optional: true
   checksum: 3b43a5acc84841364c08ed7c7d0f495008214f1f39b7fb073a95a53528ce40b4841dbc407070b4c0082d73990277bbcf9bc88df40217e70c226be4931efaa081
-
   languageName: node
   linkType: hard
-  
 
 "@types/downloadjs@npm:^1.4.3":
   version: 1.4.3
@@ -463,6 +461,12 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@types/file-saver@npm:^2.0.5":
+  version: 2.0.5
+  resolution: "@types/file-saver@npm:2.0.5"
+  checksum: a31d6ee2abf99598647139f8f35b37b6e1bacf6c7ddf05c66651b9b0e6e53381aa0e8ed13f37faa6e496e0eb1da87c97e6c70fd589d5b83b0c95c57cb64ce92a
+  languageName: node
+  linkType: hard
 
 "@types/json5@npm:^0.0.29":
   version: 0.0.29
@@ -513,21 +517,18 @@ __metadata:
   linkType: hard
 
 "@typescript-eslint/parser@npm:^5.42.0":
-
   version: 5.55.0
   resolution: "@typescript-eslint/parser@npm:5.55.0"
   dependencies:
     "@typescript-eslint/scope-manager": 5.55.0
     "@typescript-eslint/types": 5.55.0
     "@typescript-eslint/typescript-estree": 5.55.0
-
     debug: ^4.3.4
   peerDependencies:
     eslint: ^6.0.0 || ^7.0.0 || ^8.0.0
   peerDependenciesMeta:
     typescript:
       optional: true
-
   checksum: 48a20dc7e67960b5168b77bfb9d11d053a21d57bb83cf7b59f750191cbca5eea3b4636a8e6e75cc0aca5a84cdef91fed5440934fc2935f8c6fa71630a253a50c
   languageName: node
   linkType: hard
@@ -555,7 +556,6 @@ __metadata:
   dependencies:
     "@typescript-eslint/types": 5.55.0
     "@typescript-eslint/visitor-keys": 5.55.0
-
     debug: ^4.3.4
     globby: ^11.1.0
     is-glob: ^4.0.3
@@ -564,7 +564,6 @@ __metadata:
   peerDependenciesMeta:
     typescript:
       optional: true
-
   checksum: d24a11aee3d01067018d99804f420aecb8af88e43bf170d5d14f6480bd378c0a81ce49a37f5d6c36e5f0f319e3fa8b099720f295f2767338be1a4f7e9a5323e1
   languageName: node
   linkType: hard
@@ -576,7 +575,6 @@ __metadata:
     "@typescript-eslint/types": 5.55.0
     eslint-visitor-keys: ^3.3.0
   checksum: 0b24c72dff99dd2cf41c19d20067f8ab20a38aa2e82c79c5530bec7cf651031e95c80702fc21c813c9b94e5f3d4cd210f13967b2966ef38abe548cb5f05848a3
-
   languageName: node
   linkType: hard
 
@@ -1484,18 +1482,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"formik-file-and-image-input@npm:^0.0.6":
-  version: 0.0.6
-  resolution: "formik-file-and-image-input@npm:0.0.6"
-  dependencies:
-    react-dom: ^17.0.2
-  peerDependencies:
-    formik: ^2.2.6
-    react: ^17.0.2
-  checksum: d064f443d7c24ee0e2ed33bb89433742fb0c84807828b58e9f5bb6beb8a6cc2dd0b9b7eeda6d8cffc5d8592cf4916ea2c4cd34737ddb75d192be3d8cb1c9390f
-  languageName: node
-  linkType: hard
-
 "formik@npm:^2.2.9":
   version: 2.2.9
   resolution: "formik@npm:2.2.9"
@@ -1814,10 +1800,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-
-
 "is-array-buffer@npm:^3.0.1, is-array-buffer@npm:^3.0.2":
-
   version: 3.0.2
   resolution: "is-array-buffer@npm:3.0.2"
   dependencies:
@@ -2567,19 +2550,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"react-dom@npm:^17.0.2":
-  version: 17.0.2
-  resolution: "react-dom@npm:17.0.2"
-  dependencies:
-    loose-envify: ^1.1.0
-    object-assign: ^4.1.1
-    scheduler: ^0.20.2
-  peerDependencies:
-    react: 17.0.2
-  checksum: 1c1eaa3bca7c7228d24b70932e3d7c99e70d1d04e13bb0843bbf321582bc25d7961d6b8a6978a58a598af2af496d1cedcfb1bf65f6b0960a0a8161cb8dab743c
-  languageName: node
-  linkType: hard
-
 "react-fast-compare@npm:^2.0.1":
   version: 2.0.4
   resolution: "react-fast-compare@npm:2.0.4"
@@ -2722,16 +2692,6 @@ __metadata:
     get-intrinsic: ^1.1.3
     is-regex: ^1.1.4
   checksum: bc566d8beb8b43c01b94e67de3f070fd2781685e835959bbbaaec91cc53381145ca91f69bd837ce6ec244817afa0a5e974fc4e40a2957f0aca68ac3add1ddd34
-  languageName: node
-  linkType: hard
-
-"scheduler@npm:^0.20.2":
-  version: 0.20.2
-  resolution: "scheduler@npm:0.20.2"
-  dependencies:
-    loose-envify: ^1.1.0
-    object-assign: ^4.1.1
-  checksum: c4b35cf967c8f0d3e65753252d0f260271f81a81e427241295c5a7b783abf4ea9e905f22f815ab66676f5313be0a25f47be582254db8f9241b259213e999b8fc
   languageName: node
   linkType: hard
 
@@ -2981,7 +2941,6 @@ __metadata:
     eslint-config-next: 13.1.6
     file-saver: ~2.0.5
     formik: ^2.2.9
-    formik-file-and-image-input: ^0.0.6
     next: 13.1.6
     prettier: ^2.8.4
     react: 18.2.0
