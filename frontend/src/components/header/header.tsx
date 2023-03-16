@@ -18,12 +18,12 @@ export function HeaderDoctor() {
     ) 
   }
 
-export function HeaderPatient() {
+export function HeaderPatient({ patientfirstname, patientlastname }: HeaderPatientProps) {
   return (
     <>
     <div className={styles.header_layout}>
     <Image className={styles.small_logo} src={reluLogo} alt="relu logo"/>
-    <WelcomingPatient patientfirstname = {"Holger"} patientlastname = {"Willems"} doctorfirstname={"Anna"} doctorlastname={"Proost"}/>
+    <WelcomingPatient patientfirstname = {patientfirstname} patientlastname = {patientlastname} doctorfirstname={"Anna"} doctorlastname={"Proost"}/>
     <div className = {styles.logout_layout}><Logout_Button/></div>
     </div>
     </>

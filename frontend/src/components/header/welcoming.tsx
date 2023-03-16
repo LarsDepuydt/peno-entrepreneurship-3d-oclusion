@@ -28,7 +28,7 @@ interface GreetingPatient {
 export function WelcomingPatient({patientfirstname, patientlastname, doctorfirstname, doctorlastname}: GreetingPatient){
     return (
     <>
-        <h3>{("Scans of patient ").concat(patientfirstname, ' ', patientlastname)}</h3>
+        <h3>{("Scans of patient ").concat(patientfirstname, ' ', patientlastname, '\n')}</h3>
         <h4>{("under supervision of Dr. ").concat(doctorfirstname, " ", doctorlastname)} </h4>
     </>
         )
