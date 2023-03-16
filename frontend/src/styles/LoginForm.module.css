@@ -1,7 +1,11 @@
 module .login_box {
   width: 340px;
 
-  background-color: #fff;
+.login_box {
+    width: 340px;
+    text-align: center;
+    background-color: #fff;
+
 }
 
 .small_logo {
@@ -10,12 +14,19 @@ module .login_box {
   margin-bottom: 50px;
 }
 
-.loginbtn {
-  display: flex;
-  column-gap: 20px;
-  justify-content: space-between;
+.spacingbtn {
+    display: flex;
+    column-gap: 20px;
+    justify-content: space-between;
+    
 }
 
-.btn {
-  background-color: orange;
+.error {
+    color: red;
 }
+
+.center {
+    text-align: center;
+}
+
+
