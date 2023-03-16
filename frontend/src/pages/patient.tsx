@@ -2,7 +2,7 @@ import type { AppProps } from 'next/app'
 import 'bootstrap/dist/css/bootstrap.css'
 import styles from '@/styles/PatientPage.module.css'
 
-import Header from '../components/header/header'
+import {HeaderDoctor} from '../components/header/header'
 import New_Patient from '../components/popups/new-patient'
 import {SinglePatient as Patient} from '../components/patient/patient-individual-overview'
 import teeth3d from '../../public/3d-teeth.jpg'
@@ -35,15 +35,16 @@ const Table: FC<TableProps> = ({ data }) => {
 
 
 const patients = [
-  { patient1 : <Patient picture={teeth3d} patientfirstname={'Jos'} patientlastname={'Van de Velde'}/> , patient2: <Patient picture={teeth3d} patientfirstname={'Jos'} patientlastname={'Van de Velde'}/>, patient3: <Patient picture={teeth3d} patientfirstname={'Jos'} patientlastname={'Van de Velde'}/> },
-  { patient1 : <Patient picture={teeth3d} patientfirstname={'Jos'} patientlastname={'Van de Velde'}/> , patient2: <Patient picture={teeth3d} patientfirstname={'Jos'} patientlastname={'Van de Velde'}/>, patient3: <Patient picture={teeth3d} patientfirstname={'Jos'} patientlastname={'Van de Velde'}/> },
-  { patient1 : <Patient picture={teeth3d} patientfirstname={'Jos'} patientlastname={'Van de Velde'}/> , patient2: <Patient picture={teeth3d} patientfirstname={'Jos'} patientlastname={'Van de Velde'}/>, patient3: <Patient picture={teeth3d} patientfirstname={'Jos'} patientlastname={'Van de Velde'}/> },
+  { patient11 : <Patient picture={teeth3d} patientfirstname={'Jos'} patientlastname={'Van de Velde'}/> , patient12: <Patient picture={teeth3d} patientfirstname={'Anna'} patientlastname={'Janssens'}/>, patient13: <Patient picture={teeth3d} patientfirstname={'Josephine'} patientlastname={'De Goter'}/> },
+  { patient21 : <Patient picture={teeth3d} patientfirstname={'Jos'} patientlastname={'Van Rooie'}/> , patient22: <Patient picture={teeth3d} patientfirstname={'Gert'} patientlastname={'Vandamme'}/>, patient23: <Patient picture={teeth3d} patientfirstname={'Peter'} patientlastname={'Damiaans'}/> },
+  { patient31 : <Patient picture={teeth3d} patientfirstname={'Bart'} patientlastname={'De Strooper'}/> , patient32: <Patient picture={teeth3d} patientfirstname={'Kaatje'} patientlastname={'Groothals'}/>, patient33: <Patient picture={teeth3d} patientfirstname={'Lieselot'} patientlastname={'Destoffel'}/> },
+  {patient41 : <Patient picture={teeth3d} patientfirstname={'Jozef'} patientlastname={'Van Kerke'}/>}
 ];
 
 const App: FC = () => {
   return (
     <div>
-      <Header/>
+      <HeaderDoctor/>
       <h1> This is your patient overview</h1>
       <Table data={patients} />
       <New_Patient/>
