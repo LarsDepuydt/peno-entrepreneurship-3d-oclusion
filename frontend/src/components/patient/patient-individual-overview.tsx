@@ -3,6 +3,7 @@ import { useRouter } from 'next/router';
 
 import styles from '@/styles/PatientPage.module.css'
 
+
 interface patientProfile {
     picture : StaticImageData
     patientfirstname : string
@@ -28,4 +29,3 @@ export function SinglePatient({picture, patientfirstname, patientlastname}: pati
     </> ); 
   }
 
-  

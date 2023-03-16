@@ -1,5 +1,5 @@
-import type { AppProps } from 'next/app'
-import 'bootstrap/dist/css/bootstrap.css'
+import type { AppProps } from 'next/app';
+import 'bootstrap/dist/css/bootstrap.css';
 
 import New_Patient from '../components/popups/new-patient'
 import {SinglePatient as Patient} from '../components/patient/patient-individual-overview'
@@ -7,6 +7,7 @@ import teeth3d from '../../public/3d-teeth.jpg'
 import { useRouter } from 'next/router';
 import { StaticImageData } from 'next/image'
 import {FC} from 'react';
+
 
 interface TableProps {
   data: { [key: string]: string }[];

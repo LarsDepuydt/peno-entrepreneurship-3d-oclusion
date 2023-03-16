@@ -1,0 +1,12 @@
+- change near and far clipping plane for better performance
+
+- error "disallowed MIME type" wil gewoon zeggen dat hij de file niet vindt
+
+
+setting up a local server:
+    - navigate to root directory
+    - execute 'five-server .'
+
+making localhost available to VR headset:
+    - connect to same wifi network
+    - execute 'ngrok http <insert localhost port>'
