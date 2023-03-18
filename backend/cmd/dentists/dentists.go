@@ -71,20 +71,19 @@ func GetAllDentists(req *connect.Request[threedoclusionv1.GetAllDentistsRequest]
 	defer database.Close()
 
 	// Perform the database modification
-	rows, error := database.Query("SELECT * FROM dentist;")
+	statement := "SELECT * FROM dentist;"
+	result, error := help_functions.GetResponseMakerDentist(database, statement, "")
 	if error != nil {
 		return nil, error
 	}
-
-
-	responseMessage := fmt.Sprintf("Got all dentists with succes")
-	fmt.Println(responseMessage)
-
+	
+	fmt.Println("Got all dentists with succes")
+	
 	// TODO: Fix this rows issue
 	res := connect.NewResponse(&threedoclusionv1.GetAllDentistsResponse{
-		Dentists: rows,
+		Dentists: result,
 	})
-
+	
 	return res, nil
 }
 
@@ -94,21 +93,26 @@ func GetDentistById(req *connect.Request[threedoclusionv1.GetDentistByIdRequest]
 	if database == nil || error != nil {
 		return nil, error
 	}
-
+	
 	defer database.Close()
-
+	
 	// Perform the database modification
-	rows, error := database.Query("SELECT * FROM dentist WHERE id = $1;", req.Msg.Id)
+	statement := "SELECT * FROM dentist WHERE id = $1;"
+	
+	result, error := help_functions.GetResponseMakerDentist(database, statement, req.Msg.Id)
 	if error != nil {
 		return nil, error
 	}
-
+	
 	responseMessage := fmt.Sprintf("Dentists with id: %s returned with succes", req.Msg.Id)
 	fmt.Println(responseMessage)
 
 	// TODO: Check this out as well
 	res := connect.NewResponse(&threedoclusionv1.GetDentistByIdResponse{
-		Message: responseMessage,
+		Id: result[0].Id,
+		Email: result[0].Email,
+		FirstName: result[0].FirstName,
+		LastName: result[0].LastName,
 	})
 
 	return res, nil
@@ -124,12 +128,12 @@ func Login(req *connect.Request[threedoclusionv1.LoginRequest]) (*connect.Respon
 	defer database.Close()
 
 	// Perform the database modification
-	_, error = database.Query("SELECT * FROM dentist WHERE id = $1;", req.Msg.Id)
+	_, error = database.Query("SELECT * FROM dentist WHERE email = $1;", req.Msg.Email)
 	if error != nil {
 		return nil, error
 	}
 
-	responseMessage := fmt.Sprintf("Dentists with id: %s logged in with succes", req.Msg.Id)
+	responseMessage := fmt.Sprintf("Dentists with email: %s logged in with succes", req.Msg.Email)
 	fmt.Println(responseMessage)
 
 	// TODO: fix token
@@ -189,7 +193,7 @@ func UpdateDentistById(req *connect.Request[threedoclusionv1.UpdateDentistByIdRe
 		return nil, error
 	}
 
-	responseMessage := fmt.Sprintf("Dentist with email: %s updated with succes", req.Msg.Email)
+	responseMessage := fmt.Sprintf("Dentist with email: %d updated with succes", req.Msg.Email)
 	fmt.Println(responseMessage)
 
 	// TODO: fix token
