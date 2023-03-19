@@ -6,8 +6,6 @@ import { OBJLoader } from 'three/addons/loaders/OBJLoader.js';
 import * as CANNON from 'cannon-es';
 import { MeshBVH, acceleratedRaycast } from 'three-mesh-bvh';
 import { default as CannonUtils } from 'cannon-utils';
-import { QuickHull } from './QuickHull.js';
-
 
 let container;
 let camera, scene, renderer;
@@ -34,7 +32,6 @@ let lj_sphere, uj_sphere;
 
 let lj_loaded = false, uj_loaded = false;
 
-let target = new THREE.Vector3();
 
 initCannon();
 initThree();
@@ -43,18 +40,14 @@ loadObjects();  // animation is started after both objects are loaded
 
 function initCannon() {
     world = new CANNON.World();
-<<<<<<< HEAD
-    world.gravity.set(0,0,-1);
-=======
-    world.gravity.set(0,0,9);
->>>>>>> 4499c1a186fafc932e8e65409de3e751892f7baf
+    world.gravity.set(0,0,0);
     world.broadphase = new CANNON.NaiveBroadphase();
     world.solver.iterations = 10;
 
     lj_body = new CANNON.Body({mass: 1});
     uj_body = new CANNON.Body({mass: 1});
     lj_body.position.set(0,0,200);
-    uj_body.position.set(0,0,300);
+    uj_body.position.set(0,0,200);
     lj_body.quaternion = new CANNON.Quaternion(0, 0, 0, 1);
     uj_body.quaternion = new CANNON.Quaternion(0, 0, 0, 1);
     world.addBody(lj_body);
@@ -186,6 +179,184 @@ function initThree() {
 
 }
 
+// when controller pushes select button, select the object it is pointing to
+
+function onSelectStart( event ) {
+
+    const controller = event.target;
+
+    const intersections = getIntersections( controller );
+
+    if ( intersections.length > 0 ) {
+
+        const intersection = intersections[ 0 ];
+
+        const object = intersection.object;
+        object.material.emissive.b = 1;
+        //controller.attach( object );
+        addConstraintToBody(controller, object);
+
+        controller.userData.selected = object;
+
+    }
+
+}
+
+
+// when controller releases select button
+
+function onSelectEnd( event ) {
+
+    const controller = event.target;
+
+    if ( controller.userData.selected !== undefined ) {
+
+        const object = controller.userData.selected;
+        object.material.emissive.b = 0;
+        //group.attach( object );
+        removeConstraintFromBody(controller)
+
+        controller.userData.selected = undefined;
+
+    }
+}
+
+// Based on the dragging_teeth version but now for cannon.js, could be completely wrong
+function getIntersections(controller, world) {
+    const ray = new CANNON.Ray();
+    const origin = new CANNON.Vec3();
+    const direction = new CANNON.Vec3();
+  
+    // Set the origin of the ray to the controller's position in the world
+    origin.copy(controller.position);
+    world.quaternion.vmult(origin, origin); // transform from local to world space
+  
+    // Set the direction of the ray to be pointing straight ahead from the controller
+    direction.set(0, 0, -1);
+    controller.quaternion.vmult(direction, direction); // transform from local to world space
+  
+    ray.origin.copy(origin);
+    ray.direction.copy(direction);
+  
+    // intersect with all bodies in the world
+    const result = new CANNON.RaycastResult();
+    world.raycastAll(ray, result);
+  
+    return result.hasHit ? result : null;
+  }
+
+function intersectObjects( controller, intersected ) {
+
+    // Do not highlight when already selected
+
+    if ( controller.userData.selected !== undefined ) return;
+
+    const line = controller.getObjectByName( 'line' );
+    const from = line.getWorldPosition(new THREE.Vector3());
+    const to = new THREE.Vector3();
+    to.copy(from);
+    to.add(line.getWorldDirection(new THREE.Vector3()).multiplyScalar(100));
+
+    const result = new CANNON.RaycastResult();
+    const options = {
+        skipBackfaces: true,
+        collisionFilterMask: ~0 // check all bodies
+    };
+    const hit = world.raycastClosest(from, to, options, result);
+
+    if (hit) {
+
+        const object = hit.body.entity;
+        object.material.emissive.r = 1;
+        intersected.push( object );
+
+        line.scale.z = hit.distance;
+
+    } else {
+
+        line.scale.z = 5;
+
+    }
+
+}
+
+function addConstraintToBody(body, target) {
+    const constraint = new CANNON.LockConstraint(body, target, {
+      maxForce: 1000,
+      collideConnected: false,
+      wakeUpBodies: true,
+      wakeUpA: true,
+      wakeUpB: true,
+      pivotA: new CANNON.Vec3(),
+      pivotB: new CANNON.Vec3(),
+    });
+    world.addConstraint(constraint);
+    return constraint;
+}
+  
+function removeConstraintFromBody(body) {
+    const constraints = world.constraints.filter((constraint) =>
+        constraint.bodyA === body || constraint.bodyB === body
+    );
+    for (const constraint of constraints) {
+        world.removeConstraint(constraint);
+    }
+}
+
+controller1.addEventListener("selectstart", (event) => {
+    lj_sphere.visible = true;
+    lj_sphere.position.copy(controller1.position);
+    addConstraintToBody(lj_body, lj_sphere, lj_sphere.position);
+});
+  
+controller1.addEventListener("selectend", (event) => {
+    lj_sphere.visible = false;
+    removeConstraintFromBody(lj_body);
+});
+
+
+function showAxes() {
+    // Create the axes
+    const xAxis = new THREE.Vector3(1, 0, 0);
+    const yAxis = new THREE.Vector3(0, 1, 0);
+    const zAxis = new THREE.Vector3(0, 0, 1);
+    const axisLength = 100;
+  
+    const xArrowHelper = new THREE.ArrowHelper(xAxis, new THREE.Vector3(0, 0, 0), axisLength, 0xff0000);
+    const yArrowHelper = new THREE.ArrowHelper(yAxis, new THREE.Vector3(0, 0, 0), axisLength, 0x00ff00);
+    const zArrowHelper = new THREE.ArrowHelper(zAxis, new THREE.Vector3(0, 0, 0), axisLength, 0x0000ff);
+  
+    // Add the axes to the scene
+    scene.add(xArrowHelper);
+    scene.add(yArrowHelper);
+    scene.add(zArrowHelper);
+  }  
+
+
+// Lock an object to a certain axis (x, y or z)
+function lockAxis(object, axis) {
+    // Get the body of the object from the bodies array
+    const bodyIndex = meshes.indexOf(object);
+    const body = bodies[bodyIndex];
+  
+    // Lock the position and velocity of the body on the specified axis
+    switch (axis) {
+      case 'x':
+        body.velocity.y = 0;
+        body.velocity.z = 0;
+        break;
+      case 'y':
+        body.velocity.x = 0;
+        body.velocity.z = 0;
+        break;
+      case 'z':
+        body.velocity.x = 0;
+        body.velocity.y = 0;
+        break;
+    }
+  }
+  
+
 
 function loadObjects() {
     // load lower jaw
@@ -195,15 +366,8 @@ function loadObjects() {
         // called when resource is loaded y=green, x=red, z=blue
         function (object) {         // lj_group is a 'Group', which is a subclass of 'Object3D'
             lj_group = object;
-<<<<<<< HEAD
-            //lj_group.scale.set(0.01, 0.01, 0.01);
-            lj_group.scale.setScalar(0.01);
-=======
             lj_group.scale.set(0.01, 0.01, 0.01);
             // lj_group.scale.setScalar(0.01);
-
-            // server: getCoordinates()
->>>>>>> 4499c1a186fafc932e8e65409de3e751892f7baf
             lj_group.position.x = 0;
             lj_group.position.y = 0;
             lj_group.position.z = 0;
@@ -214,7 +378,7 @@ function loadObjects() {
             
             lj_mesh = getFirstMesh(lj_group);
             //console.log(lj_mesh);
-            lj_shape = threeMeshToConvexCannonMesh(lj_mesh);
+            lj_shape = threeMeshToCannonMesh(lj_mesh);
             console.log("loading lj_group succeeded");
             lj_body.addShape(lj_shape);
             lj_loaded = true;
@@ -247,7 +411,7 @@ function loadObjects() {
             
             uj_mesh = getFirstMesh(uj_group);
             //console.log(uj_mesh);
-            uj_shape = threeMeshToConvexCannonMesh(uj_mesh);
+            uj_shape = threeMeshToCannonMesh(uj_mesh);
             console.log("loading uj_group succeeded");
             uj_body.addShape(uj_shape);
             uj_loaded = true;
@@ -313,28 +477,6 @@ function threeMeshToCannonMesh(mesh) {
     return new CANNON.Trimesh(vertices, indices);
 }
 
-function threeMeshToConvexCannonMesh(mesh) {
-    let points = ToVertices(mesh.geometry);
-    console.log(points);
-    const faces = QuickHull.createHull(points);
-    return new CANNON.ConvexPolyhedron({vertices:points, faces});
-}
-
-function ToVertices(geometry) {
-    const positions = geometry.attributes.position;
-    const vertices = [];
-    for (let index = 0; index < positions.count; index++) {
-        vertices.push(
-            new CANNON.Vec3(
-                positions.getX(index),
-                positions.getY(index),
-                positions.getZ(index)
-            )
-        );
-    }
-    return vertices;
-}
-
 
 
 // main loops
@@ -354,11 +496,6 @@ function updatePhysics() {
     uj_mesh.position.copy(uj_body.position);
     uj_mesh.quaternion.copy(uj_body.quaternion);
     uj_sphere.position.copy(uj_body.position);
-
-    target = lj_mesh.position;
-    //lj_body.getWorldPosition(target);
-    console.log("X:",target.x,"Y:",target.y,"Z:",target.z);
-    
 }
 
 
@@ -370,6 +507,10 @@ function animate() {
 }
 
 function render() {
+    //cleanIntersected();
+
+    //intersectObjects( controller1 );
+    //intersectObjects( controller2 );
     renderer.render( scene, camera );
 }
 
