@@ -282,6 +282,8 @@ function onSelectEnd( event ) {
         controller.userData.selected = undefined;
 
     }
+
+
 }
 
 
@@ -339,16 +341,16 @@ function cleanIntersected() {
 
 }
 
-/*function updateObjects(){
+function updateObjects(){
     for (const object of this.updatables) {
         object.position.x += 1;
     } 
     console.log(object.getWorldPosition(vec));
-}*/
+}
 
 function animate() {
 
-    //updateObjects()
+    updateObjects()
     renderer.setAnimationLoop( render );
 }
 
