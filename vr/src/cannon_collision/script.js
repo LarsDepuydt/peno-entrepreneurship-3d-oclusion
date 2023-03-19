@@ -43,11 +43,7 @@ loadObjects();  // animation is started after both objects are loaded
 
 function initCannon() {
     world = new CANNON.World();
-<<<<<<< HEAD
-    world.gravity.set(0,0,-1);
-=======
     world.gravity.set(0,0,9);
->>>>>>> 4499c1a186fafc932e8e65409de3e751892f7baf
     world.broadphase = new CANNON.NaiveBroadphase();
     world.solver.iterations = 10;
 
@@ -195,15 +191,10 @@ function loadObjects() {
         // called when resource is loaded y=green, x=red, z=blue
         function (object) {         // lj_group is a 'Group', which is a subclass of 'Object3D'
             lj_group = object;
-<<<<<<< HEAD
-            //lj_group.scale.set(0.01, 0.01, 0.01);
-            lj_group.scale.setScalar(0.01);
-=======
             lj_group.scale.set(0.01, 0.01, 0.01);
             // lj_group.scale.setScalar(0.01);
 
             // server: getCoordinates()
->>>>>>> 4499c1a186fafc932e8e65409de3e751892f7baf
             lj_group.position.x = 0;
             lj_group.position.y = 0;
             lj_group.position.z = 0;
