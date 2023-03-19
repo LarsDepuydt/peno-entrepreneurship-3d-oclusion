@@ -19,7 +19,8 @@ service ScanService {
   rpc GetTagByID(GetTagByIDRequest) returns (GetTagByIDResponse) {}
   rpc GetAllTagsByType(GetAllTagsByTypeRequest) returns (GetAllTagsByTypeResponse) {}
 
-
+  rpc SendPositionScan (SendPositionScanRequest) returns (SendPositionScanResponse) {}
+  rpc GetPositionScan (GetPositionScanRequest) returns (GetPositionScanResponse) {}
 }
 
 

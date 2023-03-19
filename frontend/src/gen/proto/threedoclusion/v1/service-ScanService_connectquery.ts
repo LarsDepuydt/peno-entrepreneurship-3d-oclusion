@@ -5,7 +5,7 @@
 
 import { createQueryService } from "@bufbuild/connect-query";
 import { MethodKind } from "@bufbuild/protobuf";
-import { AddScanRequest, AddScanResponse, AddTagRequest, AddTagResponse, DeleteScanRequest, DeleteScanResponse, DeleteTagRequest, DeleteTagResponse, GetAllScansRequest, GetAllScansResponse, GetAllTagsByTypeRequest, GetAllTagsByTypeResponse, GetAllTagsRequest, GetAllTagsResponse, GetScanByDateRequest, GetScanByDateResponse, GetScanByIDRequest, GetScanByIDResponse, GetTagByIDRequest, GetTagByIDResponse } from "./service_pb.js";
+import { AddScanRequest, AddScanResponse, AddTagRequest, AddTagResponse, DeleteScanRequest, DeleteScanResponse, DeleteTagRequest, DeleteTagResponse, GetAllScansRequest, GetAllScansResponse, GetAllTagsByTypeRequest, GetAllTagsByTypeResponse, GetAllTagsRequest, GetAllTagsResponse, GetPositionScanRequest, GetPositionScanResponse, GetScanByDateRequest, GetScanByDateResponse, GetScanByIDRequest, GetScanByIDResponse, GetTagByIDRequest, GetTagByIDResponse, SendPositionScanRequest, SendPositionScanResponse } from "./service_pb.js";
 
 export const typeName = "threedoclusion.v1.ScanService";
 
@@ -178,3 +178,37 @@ export const getAllTagsByType = createQueryService({
     typeName: "threedoclusion.v1.ScanService",
   },
 }).getAllTagsByType;
+
+/**
+ * @generated from rpc threedoclusion.v1.ScanService.SendPositionScan
+ */
+export const sendPositionScan = createQueryService({
+  service: {
+    methods: {
+      sendPositionScan: {
+        name: "SendPositionScan",
+        kind: MethodKind.Unary,
+        I: SendPositionScanRequest,
+        O: SendPositionScanResponse,
+      },
+    },
+    typeName: "threedoclusion.v1.ScanService",
+  },
+}).sendPositionScan;
+
+/**
+ * @generated from rpc threedoclusion.v1.ScanService.GetPositionScan
+ */
+export const getPositionScan = createQueryService({
+  service: {
+    methods: {
+      getPositionScan: {
+        name: "GetPositionScan",
+        kind: MethodKind.Unary,
+        I: GetPositionScanRequest,
+        O: GetPositionScanResponse,
+      },
+    },
+    typeName: "threedoclusion.v1.ScanService",
+  },
+}).getPositionScan;

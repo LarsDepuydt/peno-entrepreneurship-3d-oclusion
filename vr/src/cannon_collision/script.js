@@ -6,6 +6,8 @@ import { OBJLoader } from 'three/addons/loaders/OBJLoader.js';
 import * as CANNON from 'cannon-es';
 import { MeshBVH, acceleratedRaycast } from 'three-mesh-bvh';
 import { default as CannonUtils } from 'cannon-utils';
+import { sendPositionScan, getPositionScan } from '../../../frontend/src/gen/proto/threedoclusion/v1/service-ScanService_connectquery'
+
 
 let container;
 let camera, scene, renderer;
@@ -33,6 +35,7 @@ let lj_sphere, uj_sphere;
 let lj_loaded = false, uj_loaded = false;
 
 let target = new THREE.Vector3();
+const clock = new THREE.Clock();
 
 initCannon();
 initThree();
@@ -143,10 +146,8 @@ function initThree() {
     renderer.shadowMap.enabled = true;
     renderer.xr.enabled = true;
     container.appendChild( renderer.domElement );
-
     document.body.appendChild( VRButton.createButton( renderer ) );
-
-
+    
     // controllers
 
     controller1 = renderer.xr.getController( 0 );
@@ -321,29 +322,69 @@ function updatePhysics() {
     uj_mesh.position.copy(uj_body.position);
     uj_mesh.quaternion.copy(uj_body.quaternion);
     uj_sphere.position.copy(uj_body.position);
-
-    target = lj_mesh.position;
-    //lj_body.getWorldPosition(target);
-    console.log("X:",target.x,"Y:",target.y,"Z:",target.z);
-    
 }
 
-
 function animate() {
-
+    checkTime();
     updatePhysics();
     render();
-
 }
 
 function render() {
     renderer.render( scene, camera );
 }
 
-
 function startAnimation() {
     if (lj_loaded && uj_loaded) {
         console.log("starting animation");
         renderer.setAnimationLoop( animate );
+    }
+}
+
+function sendPosition(){
+    const coordinate_info = lj_mesh.position;
+    const rotation_info = lj_mesh.rotation;
+
+    const {x, y, z} = coordinate_info;
+    const {r_x, r_y, r_z} = rotation_info;
+    /*
+    // Split into coordinates
+    const x = coordinate_info.x;
+    const y = coordinate_info.y;
+    const z = coordinate_info.z;
+    const r_x = rotation_info.x;
+    const r_y = rotation_info.y;
+    const r_z = rotation_info.z;
+    */
+    const scanID = 111; // Hardcoded
+    // Call service based on scan ID
+    
+    const {data} = useQuery(sendPositionScan.useQuery({ scanID, x, y, z, r_x, r_y, r_z }));
+    
+    if (!data.saved){ // Check if saved is OK else try again
+        // Maybe wait a bit?
+        sendPosition() // Repeat
+    }
+}
+
+function getPosition(){
+    target = lj_mesh.position;
+    // Call service based on scan ID
+    const scanID = 111; // Hardcoded
+    const {data} = useQuery(getPositionScan.useQuery({ scanID }));
+    
+    const {x, y, z, r_x, r_y, r_z} = data;
+    return x, y, z, r_x, r_y, r_z
+}
+
+function checkTime() {
+    const elapsedTime = clock.getElapsedTime();
+    
+    if (elapsedTime >= 5) {
+      sendPosition(); // Send position after 5 seconds)
+      console.log("5 seconds have passed");
+      
+      // reset the clock
+      clock.start();
     }
 }

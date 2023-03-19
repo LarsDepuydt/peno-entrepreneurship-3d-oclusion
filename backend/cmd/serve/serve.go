@@ -118,16 +118,16 @@ func (s *ServerStruct) GetAllTagsByType(
 	return tags.GetAllTagsByType(req)
 }
 
-func (s *ServerStruct) GetPositionScanByID(
+func (s *ServerStruct) GetPositionScan(
 	ctx context.Context,
 	req *connect.Request[threedoclusionv1.GetPositionScanRequest],
 ) (*connect.Response[threedoclusionv1.GetPositionScanResponse], error) {
-	return vr.GetPositionScanByID(req)
+	return vr.GetPositionScan(req)
 }
 
-func (s *ServerStruct) SetPositionScanByID(
+func (s *ServerStruct) SendPositionScan(
 	ctx context.Context,
 	req *connect.Request[threedoclusionv1.SendPositionScanRequest],
 ) (*connect.Response[threedoclusionv1.SendPositionScanResponse], error) {
-	return vr.SendPositionScanByID(req)
+	return vr.SendPositionScan(req)
 }

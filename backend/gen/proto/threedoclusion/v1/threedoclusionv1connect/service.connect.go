@@ -37,6 +37,8 @@ type ScanServiceClient interface {
 	GetAllTags(context.Context, *connect_go.Request[v1.GetAllTagsRequest]) (*connect_go.Response[v1.GetAllTagsResponse], error)
 	GetTagByID(context.Context, *connect_go.Request[v1.GetTagByIDRequest]) (*connect_go.Response[v1.GetTagByIDResponse], error)
 	GetAllTagsByType(context.Context, *connect_go.Request[v1.GetAllTagsByTypeRequest]) (*connect_go.Response[v1.GetAllTagsByTypeResponse], error)
+	SendPositionScan(context.Context, *connect_go.Request[v1.SendPositionScanRequest]) (*connect_go.Response[v1.SendPositionScanResponse], error)
+	GetPositionScan(context.Context, *connect_go.Request[v1.GetPositionScanRequest]) (*connect_go.Response[v1.GetPositionScanResponse], error)
 }
 
 // NewScanServiceClient constructs a client for the threedoclusion.v1.ScanService service. By
@@ -99,6 +101,16 @@ func NewScanServiceClient(httpClient connect_go.HTTPClient, baseURL string, opts
 			baseURL+"/threedoclusion.v1.ScanService/GetAllTagsByType",
 			opts...,
 		),
+		sendPositionScan: connect_go.NewClient[v1.SendPositionScanRequest, v1.SendPositionScanResponse](
+			httpClient,
+			baseURL+"/threedoclusion.v1.ScanService/SendPositionScan",
+			opts...,
+		),
+		getPositionScan: connect_go.NewClient[v1.GetPositionScanRequest, v1.GetPositionScanResponse](
+			httpClient,
+			baseURL+"/threedoclusion.v1.ScanService/GetPositionScan",
+			opts...,
+		),
 	}
 }
 
@@ -114,6 +126,8 @@ type scanServiceClient struct {
 	getAllTags       *connect_go.Client[v1.GetAllTagsRequest, v1.GetAllTagsResponse]
 	getTagByID       *connect_go.Client[v1.GetTagByIDRequest, v1.GetTagByIDResponse]
 	getAllTagsByType *connect_go.Client[v1.GetAllTagsByTypeRequest, v1.GetAllTagsByTypeResponse]
+	sendPositionScan *connect_go.Client[v1.SendPositionScanRequest, v1.SendPositionScanResponse]
+	getPositionScan  *connect_go.Client[v1.GetPositionScanRequest, v1.GetPositionScanResponse]
 }
 
 // AddScan calls threedoclusion.v1.ScanService.AddScan.
@@ -166,6 +180,16 @@ func (c *scanServiceClient) GetAllTagsByType(ctx context.Context, req *connect_g
 	return c.getAllTagsByType.CallUnary(ctx, req)
 }
 
+// SendPositionScan calls threedoclusion.v1.ScanService.SendPositionScan.
+func (c *scanServiceClient) SendPositionScan(ctx context.Context, req *connect_go.Request[v1.SendPositionScanRequest]) (*connect_go.Response[v1.SendPositionScanResponse], error) {
+	return c.sendPositionScan.CallUnary(ctx, req)
+}
+
+// GetPositionScan calls threedoclusion.v1.ScanService.GetPositionScan.
+func (c *scanServiceClient) GetPositionScan(ctx context.Context, req *connect_go.Request[v1.GetPositionScanRequest]) (*connect_go.Response[v1.GetPositionScanResponse], error) {
+	return c.getPositionScan.CallUnary(ctx, req)
+}
+
 // ScanServiceHandler is an implementation of the threedoclusion.v1.ScanService service.
 type ScanServiceHandler interface {
 	AddScan(context.Context, *connect_go.Request[v1.AddScanRequest]) (*connect_go.Response[v1.AddScanResponse], error)
@@ -178,6 +202,8 @@ type ScanServiceHandler interface {
 	GetAllTags(context.Context, *connect_go.Request[v1.GetAllTagsRequest]) (*connect_go.Response[v1.GetAllTagsResponse], error)
 	GetTagByID(context.Context, *connect_go.Request[v1.GetTagByIDRequest]) (*connect_go.Response[v1.GetTagByIDResponse], error)
 	GetAllTagsByType(context.Context, *connect_go.Request[v1.GetAllTagsByTypeRequest]) (*connect_go.Response[v1.GetAllTagsByTypeResponse], error)
+	SendPositionScan(context.Context, *connect_go.Request[v1.SendPositionScanRequest]) (*connect_go.Response[v1.SendPositionScanResponse], error)
+	GetPositionScan(context.Context, *connect_go.Request[v1.GetPositionScanRequest]) (*connect_go.Response[v1.GetPositionScanResponse], error)
 }
 
 // NewScanServiceHandler builds an HTTP handler from the service implementation. It returns the path
@@ -237,6 +263,16 @@ func NewScanServiceHandler(svc ScanServiceHandler, opts ...connect_go.HandlerOpt
 		svc.GetAllTagsByType,
 		opts...,
 	))
+	mux.Handle("/threedoclusion.v1.ScanService/SendPositionScan", connect_go.NewUnaryHandler(
+		"/threedoclusion.v1.ScanService/SendPositionScan",
+		svc.SendPositionScan,
+		opts...,
+	))
+	mux.Handle("/threedoclusion.v1.ScanService/GetPositionScan", connect_go.NewUnaryHandler(
+		"/threedoclusion.v1.ScanService/GetPositionScan",
+		svc.GetPositionScan,
+		opts...,
+	))
 	return "/threedoclusion.v1.ScanService/", mux
 }
 
@@ -281,4 +317,12 @@ func (UnimplementedScanServiceHandler) GetTagByID(context.Context, *connect_go.R
 
 func (UnimplementedScanServiceHandler) GetAllTagsByType(context.Context, *connect_go.Request[v1.GetAllTagsByTypeRequest]) (*connect_go.Response[v1.GetAllTagsByTypeResponse], error) {
 	return nil, connect_go.NewError(connect_go.CodeUnimplemented, errors.New("threedoclusion.v1.ScanService.GetAllTagsByType is not implemented"))
+}
+
+func (UnimplementedScanServiceHandler) SendPositionScan(context.Context, *connect_go.Request[v1.SendPositionScanRequest]) (*connect_go.Response[v1.SendPositionScanResponse], error) {
+	return nil, connect_go.NewError(connect_go.CodeUnimplemented, errors.New("threedoclusion.v1.ScanService.SendPositionScan is not implemented"))
+}
+
+func (UnimplementedScanServiceHandler) GetPositionScan(context.Context, *connect_go.Request[v1.GetPositionScanRequest]) (*connect_go.Response[v1.GetPositionScanResponse], error) {
+	return nil, connect_go.NewError(connect_go.CodeUnimplemented, errors.New("threedoclusion.v1.ScanService.GetPositionScan is not implemented"))
 }

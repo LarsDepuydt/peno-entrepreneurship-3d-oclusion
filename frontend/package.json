@@ -15,13 +15,17 @@
     "@bufbuild/protobuf": "^1.0.0",
     "@next/font": "13.1.6",
     "@tanstack/react-query": "^4.24.10",
+    "@types/three": "^0.149.0",
     "bootstrap": "v5.2.3",
+    "build": "^0.1.4",
+    "cannon-es": "^0.20.0",
     "eslint": "8.34.0",
     "eslint-config-next": "13.1.6",
     "formik": "^2.2.9",
     "next": "13.1.6",
     "react": "18.2.0",
     "react-dom": "18.2.0",
+    "three": "^0.150.1",
     "yup": "^1.0.0"
   },
   "devDependencies": {

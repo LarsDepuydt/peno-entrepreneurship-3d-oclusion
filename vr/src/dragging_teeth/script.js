@@ -138,7 +138,6 @@ function init() {
         }
     );
  
-    let vec = new THREE.Vector3( );
     // add renderer and enable VR
 
     renderer = new THREE.WebGLRenderer( { antialias: true } );
@@ -341,16 +340,8 @@ function cleanIntersected() {
 
 }
 
-function updateObjects(){
-    for (const object of this.updatables) {
-        object.position.x += 1;
-    } 
-    console.log(object.getWorldPosition(vec));
-}
-
 function animate() {
 
-    updateObjects()
     renderer.setAnimationLoop( render );
 }
 
