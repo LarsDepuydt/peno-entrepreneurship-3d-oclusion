@@ -270,6 +270,60 @@ export const AddPatientResponse = proto3.makeMessageType(
 );
 
 /**
+ * @generated from message threedoclusion.v1.TagResponse
+ */
+export const TagResponse = proto3.makeMessageType(
+  "threedoclusion.v1.TagResponse",
+  () => [
+    { no: 1, name: "id", kind: "scalar", T: 9 /* ScalarType.STRING */ },
+    { no: 2, name: "color", kind: "scalar", T: 9 /* ScalarType.STRING */ },
+    { no: 3, name: "text", kind: "scalar", T: 9 /* ScalarType.STRING */ },
+  ],
+);
+
+/**
+ * @generated from message threedoclusion.v1.SendVRRequest
+ */
+export const SendVRRequest = proto3.makeMessageType(
+  "threedoclusion.v1.SendVRRequest",
+  () => [
+    { no: 1, name: "client_id", kind: "scalar", T: 5 /* ScalarType.INT32 */ },
+    { no: 2, name: "scan_id", kind: "scalar", T: 5 /* ScalarType.INT32 */ },
+  ],
+);
+
+/**
+ * @generated from message threedoclusion.v1.SendVRResponse
+ */
+export const SendVRResponse = proto3.makeMessageType(
+  "threedoclusion.v1.SendVRResponse",
+  () => [
+    { no: 1, name: "feedback", kind: "scalar", T: 9 /* ScalarType.STRING */ },
+  ],
+);
+
+/**
+ * @generated from message threedoclusion.v1.WaitingRequest
+ */
+export const WaitingRequest = proto3.makeMessageType(
+  "threedoclusion.v1.WaitingRequest",
+  () => [
+    { no: 1, name: "unique_code", kind: "scalar", T: 5 /* ScalarType.INT32 */ },
+  ],
+);
+
+/**
+ * @generated from message threedoclusion.v1.WaitingResponse
+ */
+export const WaitingResponse = proto3.makeMessageType(
+  "threedoclusion.v1.WaitingResponse",
+  () => [
+    { no: 1, name: "redirect", kind: "scalar", T: 8 /* ScalarType.BOOL */ },
+    { no: 2, name: "url", kind: "scalar", T: 9 /* ScalarType.STRING */ },
+  ],
+);
+
+/**
  * @generated from message threedoclusion.v1.DeletePatientRequest
  */
 export const DeletePatientRequest = proto3.makeMessageType(
