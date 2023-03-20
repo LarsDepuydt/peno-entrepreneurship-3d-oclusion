@@ -2,7 +2,6 @@ import type { AppProps } from 'next/app';
 import 'bootstrap/dist/css/bootstrap.css';
 import styles from '@/styles/PatientPage.module.css';
 
-
 import {HeaderDoctor} from '../components/header/header'
 import New_Patient from '../components/popups/new-patient'
 import {SinglePatient as Patient} from '../components/patient/patient-individual-overview'
@@ -34,6 +33,7 @@ const Table: FC<TableProps> = ({ data }) => {
 };
 
 const patients = [
+
   { patient11 : <Patient picture={teeth3d} patientfirstname={'Jos'} patientlastname={'Van de Velde'}/> ,
    patient12: <Patient picture={teeth3d} patientfirstname={'Anna'} patientlastname={'Janssens'}/>,
    patient13: <Patient picture={teeth3d} patientfirstname={'Josephine'} patientlastname={'De Goter'}/> 
