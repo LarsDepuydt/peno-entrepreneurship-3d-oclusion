@@ -2941,7 +2941,6 @@ __metadata:
     eslint-config-next: 13.1.6
     file-saver: ~2.0.5
     formik: ^2.2.9
-    formik-file-and-image-input: ^0.0.6
     next: 13.1.6
     prettier: ^2.8.4
     react: 18.2.0
