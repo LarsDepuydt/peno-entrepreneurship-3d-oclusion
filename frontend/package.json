@@ -16,10 +16,8 @@
     "@bufbuild/protobuf": "^1.0.0",
     "@next/font": "13.1.6",
     "@tanstack/react-query": "^4.24.10",
-
-    "bcryptjs": "^2.4.3",
     "@types/downloadjs": "^1.4.3",
-
+    "bcryptjs": "^2.4.3",
     "bootstrap": "v5.2.3",
     "downloadjs": "^1.4.7",
     "eslint": "8.34.0",

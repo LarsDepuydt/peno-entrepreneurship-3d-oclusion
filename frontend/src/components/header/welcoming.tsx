@@ -1,4 +1,5 @@
 // possibly welcome doctor in the future ?
+import styles from '@/styles/PatientPage.module.css';
 
 interface GreetingDoctor {
     doctorfirstname : string
