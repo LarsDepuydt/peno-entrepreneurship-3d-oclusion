@@ -32,7 +32,30 @@ const Table: FC<TableProps> = ({ data }) => {
   );
 };
 
-const patients = [
+def get_targetPatientScans(targetPatientFirstname, targetPatientLastname){
+  const targetPatientScans = [];
+
+  all_patients.forEach(patientGroup => {
+    // Loop through each patient in the current patient group
+    Object.keys(patientGroup).forEach(patientKey => {
+      const patient = patientGroup[patientKey];
+      
+      // Check if the patient matches the target patient by first and last name
+      if (patient.props.patientfirstname === targetPatientFirstname && 
+          patient.props.patientlastname === targetPatientLastname) {
+        // Add the patient's scans to the targetPatientScans array
+        targetPatientScans.push(patient.props.scans);
+      }
+    // Create a new dictionary with the same form/layout as all_patients, but with the scans of the target patient
+    const targetPatientDict = [
+  { patient1: <Patient picture={teeth3d} patientfirstname={targetPatientFirstname} patientlastname={targetPatientLastname} /> },
+  // Add the rest of the patient groups and patients from all_patients to the new dictionary
+];  
+    });
+  });
+}
+
+const all_patients = [
 
   { patient11 : <Patient picture={teeth3d} patientfirstname={'Jos'} patientlastname={'Van de Velde'}/> ,
    patient12: <Patient picture={teeth3d} patientfirstname={'Anna'} patientlastname={'Janssens'}/>,
@@ -51,6 +74,8 @@ const patients = [
   {patient41 : <Patient picture={teeth3d} patientfirstname={'Jozef'} patientlastname={'Van Kerke'} />
   }
 ];
+
+
 
 const App: FC = () => {
   return (
