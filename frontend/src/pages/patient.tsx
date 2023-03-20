@@ -33,23 +33,30 @@ const Table: FC<TableProps> = ({ data }) => {
 };
 
 const patients = [
-
-  { patient11 : <Patient picture={teeth3d} patientfirstname={'Jos'} patientlastname={'Van de Velde'}/> ,
-   patient12: <Patient picture={teeth3d} patientfirstname={'Anna'} patientlastname={'Janssens'}/>,
-   patient13: <Patient picture={teeth3d} patientfirstname={'Josephine'} patientlastname={'De Goter'}/> 
+  {
+    patient1: <Patient picture={teeth3d} patientfirstname={'jos'} patientlastname={'Van de Velde'} />,
+    patient2: <Patient picture={teeth3d} patientfirstname={'Jos'} patientlastname={'Van de Velde'} />,
+    patient3: <Patient picture={teeth3d} patientfirstname={'Jos'} patientlastname={'Van de Velde'} />,
   },
-  
-  { patient21 : <Patient picture={teeth3d} patientfirstname={'Jos'} patientlastname={'Van Rooie'}/> ,
-   patient22: <Patient picture={teeth3d} patientfirstname={'Gert'} patientlastname={'Vandamme'}/>,
-   patient23: <Patient picture={teeth3d} patientfirstname={'Peter'} patientlastname={'Damiaans'}/> 
+  {
+    patient1: <Patient picture={teeth3d} patientfirstname={'Jos'} patientlastname={'Van de Velde'} />,
+    patient2: <Patient picture={teeth3d} patientfirstname={'Jos'} patientlastname={'Van de Velde'} />,
+    patient3: <Patient picture={teeth3d} patientfirstname={'Jos'} patientlastname={'Van de Velde'} />,
   },
-  
-  { patient31 : <Patient picture={teeth3d} patientfirstname={'Bart'} patientlastname={'De Strooper'}/> ,
-   patient32: <Patient picture={teeth3d} patientfirstname={'Kaatje'} patientlastname={'Groothals'}/>,
-   patient33: <Patient picture={teeth3d} patientfirstname={'Lieselot'} patientlastname={'Destoffel'}/> },
-  
-  {patient41 : <Patient picture={teeth3d} patientfirstname={'Jozef'} patientlastname={'Van Kerke'} />
-  }
+  {
+    patient1: <Patient picture={teeth3d} patientfirstname={'Jos'} patientlastname={'Van de Velde'} />,
+    patient2: <Patient picture={teeth3d} patientfirstname={'Jos'} patientlastname={'Van de Velde'} />,
+    patient3: <Patient picture={teeth3d} patientfirstname={'Jos'} patientlastname={'Van de Velde'} />,
+  },
+  {
+    patient1: <Patient picture={teeth3d} patientfirstname={'Jos'} patientlastname={'Van de Velde'} />,
+    patient2: <Patient picture={teeth3d} patientfirstname={'Jos'} patientlastname={'Van de Velde'} />,
+    patient3: <Patient picture={teeth3d} patientfirstname={'Jos'} patientlastname={'Van de Velde'} />,
+  },
+  {
+    patient1: <Patient picture={teeth3d} patientfirstname={'Jos'} patientlastname={'Van de Velde'} />,
+    patient2: <Patient picture={teeth3d} patientfirstname={'Jos'} patientlastname={'Van de Velde'} />,
+  },
 ];
 
 const App: FC = () => {

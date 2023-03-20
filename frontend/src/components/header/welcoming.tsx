@@ -14,23 +14,7 @@ export function WelcomingDoctor({doctorfirstname, doctorlastname}: GreetingDocto
     }
     return (
     <>
-        <h2>{("Welcome Dr. ").concat(doctorfirstname, ' ', doctorlastname)}</h2>
-    </> )
-  }
-
-
-interface GreetingPatient {
-    patientfirstname : string 
-    patientlastname : string
-    doctorfirstname : string
-    doctorlastname : string
-}
-
-export function WelcomingPatient({patientfirstname, patientlastname, doctorfirstname, doctorlastname}: GreetingPatient){
-    return (
-    <>
-        <h3>{("Scans of patient ").concat(patientfirstname, ' ', patientlastname, '\n')}</h3>
-        <h4>{("under supervision of Dr. ").concat(doctorfirstname, " ", doctorlastname)} </h4>
+      <h2 className={styles.welcoming}>{'Welcome Dr. '.concat(doctorfirstname, ' ', doctorlastname)}</h2>
     </>
-        )
+  );
 }

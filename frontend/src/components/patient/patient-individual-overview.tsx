@@ -32,7 +32,6 @@ export function SinglePatient({picture, patientfirstname, patientlastname}: pati
     <div onClick={clickPatient}>
     <Image id={patientfirstname.concat(' ', patientlastname)} className={styles.patient_picture} src={picture} alt="3d picture of teeth" width={100}/>
     <p className={styles.patientscanName}>{patientfirstname.concat(' ', patientlastname)}</p>
-
     </div>
      ); 
   }
