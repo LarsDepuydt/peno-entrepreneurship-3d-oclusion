@@ -1,26 +1,23 @@
-import { Formik, Field, Form} from 'formik';
+import { Formik, Field, Form } from 'formik';
 // most popular open source form library
 import * as yup from 'yup';
 
 import { useRouter } from 'next/router';
 import Image from 'next/image'
 import styles from '@/styles/LoginForm.module.css'
-
+import styleB from '@/styles/Buttons.module.css'
 
 import reluLogo from "../../../public/relu-logo-small.png";
-
+import bcrypt from 'bcryptjs';
 
 const FormSchema = yup.object().shape({
-  reppassword: yup
-    .string()
-    .oneOf([yup.ref('password')], 'this does not match your password'),
+  reppassword: yup.string().oneOf([yup.ref('password')], 'this does not match your password'),
 });
 
-
 interface Values {
-    username: string;
-    password: string;
-    reppassword: string;
+  username: string;
+  password: string;
+  reppassword: string;
 }
 
 export default function LoginForm() {   
@@ -47,12 +44,12 @@ export default function LoginForm() {
 
           validationSchema={FormSchema}
 
-          onSubmit={() => {router.push('/patient')}}
+          onSubmit={() => {router.push('/login-page')}}
 
       
         >
           {({ errors }) => (
-          <Form>
+          <Form className={styles.center}>
             <div className="mb-3">
               <Field className="form-control" id="username" name="username" placeholder="Username" aria-describedby="usernameHelp" />
             </div>
@@ -63,12 +60,12 @@ export default function LoginForm() {
 
             <div className="mb-3">
               <Field className="form-control" validation id="reppassword" name="reppassword" placeholder="Repeat Password" type="password" />
-              {errors.reppassword && <p>{errors.reppassword}</p>}
+              {errors.reppassword && <b className={styles.error}>{errors.reppassword}</b>}
             </div>
 
-            <div className ={styles.loginbtn}>
-            <button type="submit" className= "btn btn-primary btn-large" >Register</button>
-            <button type="button" className= "btn btn-primary btn-large" onClick={toLogin} >Login instead</button>
+            <div className ={styles.spacingbtn}>
+            <button type="submit" className={styleB.relu_btn} >Register</button>
+            <button type="button" className={styleB.relu_btn} onClick={toLogin} >Login instead</button>
             </div>
           </Form>
         )}

@@ -1,19 +1,17 @@
-import { Formik, Field, Form} from 'formik';
+import { Formik, Field, Form } from 'formik';
 // most popular open source form library
 
 import { useRouter } from 'next/router';
 import Image from 'next/image'
 import styles from '@/styles/LoginForm.module.css'
-import 'bootstrap/dist/css/bootstrap.css'
+import styleB from '@/styles/Buttons.module.css'
 
 
-import reluLogo from "../../../public/relu-logo-small.png";
-
-
+import reluLogo from '../../../public/relu-logo-small.png';
 
 interface Values {
-    username: string;
-    password: string;
+  username: string;
+  password: string;
 }
 
 export default function LoginForm() {   
@@ -48,9 +46,9 @@ export default function LoginForm() {
               <Field className="form-control" id="password" name="password" placeholder="Password" type="password" />
             </div>
             
-            <div className ={styles.loginbtn}>
-            <button type="submit" className="btn btn-primary btn-large" >Login</button>
-            <button type="button" className= "btn btn-primary btn-large" onClick={toRegister} >Register instead</button>
+            <div className ={styles.spacingbtn}>
+            <button type="submit" className={styleB.relu_btn} >Login</button>
+            <button type="button" className={styleB.relu_btn} onClick={toRegister} >Register instead</button>
             </div>
           </Form>
         </Formik>
