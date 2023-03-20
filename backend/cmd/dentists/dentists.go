@@ -18,7 +18,7 @@ func AddDentist(req *connect.Request[threedoclusionv1.AddDentistRequest]) (*conn
 	defer database.Close()
 
 	// Perform the database modification
-	_, error = database.Query(
+	_, error = database.Exec(
 		"INSERT INTO dentist (email, pass_word, first_name, last_name) VALUES ($1, $2, $3, $4);", 
 		req.Msg.Email, req.Msg.Password, req.Msg.FirstName, req.Msg.LastName,
 	)
@@ -46,7 +46,7 @@ func DeleteDentistById(req *connect.Request[threedoclusionv1.DeleteDentistByIdRe
 	defer database.Close()
 
 	// Perform the database modification
-	_, error = database.Query("DELETE FROM dentist WHERE id = $1;", req.Msg.Id)
+	_, error = database.Exec("DELETE FROM dentist WHERE id = $1;", req.Msg.Id)
 	if error != nil {
 		return nil, error
 	}
@@ -155,7 +155,7 @@ func Register(req *connect.Request[threedoclusionv1.RegisterRequest]) (*connect.
 	defer database.Close()
 
 	// Perform the database modification
-	_, error = database.Query(
+	_, error = database.Exec(
 		"INSERT INTO dentist (email, pass_word, first_name, last_name) VALUES ($1, $2, $3, $4);", 
 		req.Msg.Email, req.Msg.Password, req.Msg.FirstName, req.Msg.LastName,
 	)
@@ -185,7 +185,7 @@ func UpdateDentistById(req *connect.Request[threedoclusionv1.UpdateDentistByIdRe
 	defer database.Close()
 
 	// Perform the database modification
-	_, error = database.Query(
+	_, error = database.Exec(
 		"UPDATE dentist SET email = $2, pass_word = $3, first_name = 4, last_name = 5 WHERE id = $1 ;", 
 		req.Msg.Id, req.Msg.Email, req.Msg.Password, req.Msg.FirstName, req.Msg.LastName,
 	)
