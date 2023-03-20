@@ -9,6 +9,10 @@ import { default as CannonUtils } from 'cannon-utils';
 import { QuickHull } from './QuickHull.js';
 
 
+// mesh center does not coincide with object group center
+// this is ignored until it becomes important
+
+
 let container;
 let camera, scene, renderer;
 let controller1, controller2;
@@ -19,6 +23,7 @@ let controls;
 let raycaster;
 
 let world, timeStep=1/10;
+let frameNum = 0;
 
 
 let meshes = [], bodies = [];
@@ -57,9 +62,9 @@ function initCannon() {
     world.addBody(uj_body);
     bodies.push(lj_body);
     bodies.push(uj_body);
-    lj_body.addEventListener("collide", function(e) {
-        console.log("lj collided with body ", e.body);
-    })
+    // lj_body.addEventListener("collide", function(e) {
+    //     console.log("lj collided with body ", e.body);
+    // })
 
     let collideConstraint;
     // collideConstraint = new CANNON.Constraint(lj_body, uj_body);
@@ -69,7 +74,7 @@ function initCannon() {
     floor_shape = new CANNON.Plane();
     floor_body.addShape(floor_shape);
     // floor_body.quaternion.setFromAxisAngle(new CANNON.Vec3(1,0,0),-Math.PI/2);
-    //world.addBody(floor_body);
+    world.addBody(floor_body);
 }
 
 
@@ -309,6 +314,12 @@ function threeMeshToConvexCannonMesh(mesh) {
     return new CANNON.ConvexPolyhedron({vertices:points, faces});
 }
 
+// this could be handy but not used:
+// https://gist.github.com/duhaime/6a74b9603dc7700183d43a2485b02f0f
+// function cannonMeshToThreeMesh(shape) {
+    
+// }
+
 function ToVertices(geometry) {
     const positions = geometry.attributes.position;
     const vertices = [];
@@ -346,13 +357,15 @@ function updatePhysics() {
 
     target = lj_mesh.position;
     //lj_body.getWorldPosition(target);
-    console.log("X:",target.x,"Y:",target.y,"Z:",target.z);
+    //console.log("X:",target.x,"Y:",target.y,"Z:",target.z);
     
 }
 
 
 function animate() {
 
+    // console.log("frame", frameNum);
+    frameNum += 1;
     updatePhysics();
     render();
 
