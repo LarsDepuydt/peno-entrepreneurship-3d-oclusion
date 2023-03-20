@@ -1,8 +1,9 @@
-import React, { useState, MouseEvent } from 'react';
+import React, { useState, MouseEvent, ChangeEvent } from 'react';
 import { Formik, Field, Form, ErrorMessage, useFormik } from 'formik';
 
 import styles from '@/styles/Modal.module.css';
 import styleB from '@/styles/Buttons.module.css';
+import styleU from '@/styles/Modal.module.css';
 
 // TODO add files + tags
 
@@ -20,14 +21,9 @@ interface scanValues {
 }
 
 export default function ModalForm() {
-  const onCancelFile = (e: MouseEvent<HTMLButtonElement>) => {
-    e.preventDefault();
-    console.log('From onCancelFile');
-  };
-
-  const onUploadFile = (e: MouseEvent<HTMLButtonElement>) => {
-    e.preventDefault();
-    console.log('From onUploadFile');
+  //  file handlers
+  const onFileUploadChange = (e: ChangeEvent<HTMLInputElement>) => {
+    console.log('From onFileUploadChange');
   };
 
   const [modal, setModal] = useState(false);
@@ -72,7 +68,7 @@ export default function ModalForm() {
                 // implicit date = currentDate
                 onSubmit={(values) => {
                   console.log(values, currentDate);
-                  console.log(currentDate);
+                  console.log('From onUploadFile');
                   setModal(!modal);
                 }}
               >
@@ -158,10 +154,10 @@ export default function ModalForm() {
                       </div>
                     </div>
 
-                    <form className="w-full p-3" action="">
-                      <div className="flex flex-col md:flex-row gap-1.5 md:py-4">
-                        <label className="flex flex-col items-center justify-center flex-grow h-full py-3 transition-colors duration-150 cursor-pointer hover:text-gray-600">
-                          <input className="block w-0 h-0" name="file" type="file" />
+                    <form className="w-full p-3" action="" onSubmit={(e) => e.preventDefault()}>
+                      <div>
+                        <label>
+                          <input className="block w-0 h-0" name="file" type="file" onChange={onFileUploadChange} />
                         </label>
                       </div>
                     </form>

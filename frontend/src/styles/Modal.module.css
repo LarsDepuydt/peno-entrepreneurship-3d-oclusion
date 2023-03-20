@@ -81,15 +81,17 @@ module .login_box {
 
 .type_bite {
   display: flex;
+  /* margin: 10px; */
   /* justify-content: space-between; */
-  column-gap: 10px;
+  column-gap: 20px;
   /* width: 100%; */
 }
 
 .type_surgery {
   display: flex;
+  /* margin: 10px; */
   /* justify-content: space-between; */
-  column-gap: 10px;
+  column-gap: 20px;
   /* width: 100%; */
 }
 
