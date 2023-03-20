@@ -41,6 +41,8 @@ let lj_loaded = false, uj_loaded = false;
 let target = new THREE.Vector3();
 const clock = new THREE.Clock();
 
+let second_call = false;
+
 export default function VRView(){
     const [send, setSend] = useState(false);
     //const path_upper_jaw = '../../../../vr/assets/upper_ios_6.obj'; // Local paths
@@ -48,19 +50,18 @@ export default function VRView(){
     
     const path_upper_jaw = '/upper_ios_6.obj'; // URLs for fetch, temporarily in public folder so Nextjs can access
     const path_lower_jaw = '/lower_ios_6.obj';
-    
-    // Worked at some point without the useEffect
-    
-    useEffect(() => {
-        initCannon();
-        initThree();
-        loadObjects();  // animation is started after both objects are loaded
-        console.log('Init executed!');
-        //startAnimation();
+        
+    useEffect(() => { // https://github.com/facebook/react/issues/24502
+        if (second_call){
+            initCannon();
+            initThree();
+            loadObjects();  // animation is started after both objects are loaded
+            console.log('Init executed!');
+        }
+        else {
+            second_call = true;
+        }
       }, []);
-    
-    //startAnimation();
-    //animate();
     
     function initCannon() {
         console.log("Initialising CANNON")
@@ -450,11 +451,6 @@ export default function VRView(){
         }
     }
     return (
-        <div>
-        <title>
-            VR View
-        </title>
         <div> <SendPositionComponent/> </div>
-        </div>
     )
 }

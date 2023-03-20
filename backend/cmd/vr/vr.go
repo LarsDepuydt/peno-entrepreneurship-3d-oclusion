@@ -73,7 +73,7 @@ func SendPositionScan(req *connect.Request[threedoclusionv1.SendPositionScanRequ
 func SendPositionScan(req *connect.Request[threedoclusionv1.SendPositionScanRequest],
 ) (*connect.Response[threedoclusionv1.SendPositionScanResponse], error) {
 
-	fmt.Println("The scan ID is", req.Msg.ScanId)
+	fmt.Println("The Z coordinate is", req.Msg.Z)
 
 	res := connect.NewResponse(&threedoclusionv1.SendPositionScanResponse{ // Confirm it's ok
 		Saved: true,
