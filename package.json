@@ -1,5 +1,7 @@
 {
   "dependencies": {
+    "@types/formidable": "^2.0.5",
+    "formidable": "^2.1.1",
     "formik-file-and-image-input": "^0.0.6"
   }
 }

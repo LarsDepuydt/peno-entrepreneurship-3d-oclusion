@@ -3,77 +3,117 @@ import { Formik, Field, Form } from 'formik';
 import * as yup from 'yup';
 
 import { useRouter } from 'next/router';
-import Image from 'next/image'
-import styles from '@/styles/LoginForm.module.css'
-import styleB from '@/styles/Buttons.module.css'
+import Image from 'next/image';
+import styles from '@/styles/LoginForm.module.css';
+import styleB from '@/styles/Buttons.module.css';
 
-import reluLogo from "../../../public/relu-logo-small.png";
-import bcrypt from 'bcryptjs';
+import reluLogo from '../../../public/relu-logo-small.png';
+//import bcrypt from 'bcryptjs';
 
 const FormSchema = yup.object().shape({
   reppassword: yup.string().oneOf([yup.ref('password')], 'this does not match your password'),
 });
 
 interface Values {
+  doctorFirstName: string;
+  doctorLastName: string;
+
   username: string;
   password: string;
   reppassword: string;
 }
 
-export default function LoginForm() {   
+export default function LoginForm() {
+  const router = useRouter();
 
-  
+  const toLogin = () => router.push('/login-page');
 
-    const router = useRouter();
+  return (
+    <div className={styles.login_box + ' p-3'}>
+      <Image className={styles.small_logo_reg} src={reluLogo} alt="relu logo" />
 
-    const toLogin = () => router.push('/login-page')    
+      <Formik
+        initialValues={{
+          doctorFirstName: '',
+          doctorLastName: '',
 
-    return (
-      <div className={styles.login_box + ' p-3'}>
-        <Image className={styles.small_logo} src={reluLogo} alt="relu logo"/>
-
-        
-
-        <Formik
-          initialValues={{
-            username: '',
-            password: '',
-            reppassword: '',
-          }}
-
-
-          validationSchema={FormSchema}
-
-          onSubmit={() => {router.push('/login-page')}}
-
-      
-        >
-          {({ errors }) => (
+          email: '',
+          password: '',
+          reppassword: '',
+        }}
+        validationSchema={FormSchema}
+        onSubmit={() => {
+          router.push('/login-page');
+        }}
+      >
+        {({ errors }) => (
           <Form className={styles.center}>
-            <div className="mb-3">
-              <Field className="form-control" id="username" name="username" placeholder="Username" aria-describedby="usernameHelp" />
-            </div>
-  
-            <div className="mb-3">
-              <Field className="form-control" validate id="password" name="password" placeholder="Password" type="password" />
+            <div className={styles.firstandlast}>
+              <div className="mb-3">
+                <Field
+                  className="form-control"
+                  id="doctorFirstName"
+                  name="doctorFirstName"
+                  placeholder="First Name"
+                  aria-describedby="doctorFirstNameHelp"
+                />
+              </div>
+
+              <div className="mb-3">
+                <Field
+                  className="form-control"
+                  id="doctorLastName"
+                  name="doctorLastName"
+                  placeholder="Last Name"
+                  aria-describedby="doctorLastNameHelp"
+                />
+              </div>
             </div>
 
             <div className="mb-3">
-              <Field className="form-control" validation id="reppassword" name="reppassword" placeholder="Repeat Password" type="password" />
+              <Field
+                className="form-control"
+                id="email"
+                name="email"
+                placeholder="Email"
+                aria-describedby="emailHelp"
+              />
+            </div>
+
+            <div className="mb-3">
+              <Field
+                className="form-control"
+                validate
+                id="password"
+                name="password"
+                placeholder="Password"
+                type="password"
+              />
+            </div>
+
+            <div className="mb-3">
+              <Field
+                className="form-control"
+                validation
+                id="reppassword"
+                name="reppassword"
+                placeholder="Repeat Password"
+                type="password"
+              />
               {errors.reppassword && <b className={styles.error}>{errors.reppassword}</b>}
             </div>
 
-            <div className ={styles.spacingbtn}>
-            <button type="submit" className={styleB.relu_btn} >Register</button>
-            <button type="button" className={styleB.relu_btn} onClick={toLogin} >Login instead</button>
+            <div className={styles.spacingbtn}>
+              <button type="submit" className={styleB.relu_btn}>
+                Register
+              </button>
+              <button type="button" className={styleB.relu_btn} onClick={toLogin}>
+                Login instead
+              </button>
             </div>
           </Form>
         )}
-
-        
-        </Formik>
-
-      
-      </div>
-    );
-  };
+      </Formik>
+    </div>
+  );
+}
