@@ -18,7 +18,7 @@ interface Values {
   doctorFirstName: string;
   doctorLastName: string;
 
-  username: string;
+  email: string;
   password: string;
   reppassword: string;
 }
