@@ -27,6 +27,7 @@ export function SinglePatient({picture, patientfirstname, patientlastname}: pati
 
 
     return (
+    <>
     <div className={styles.patient_button} onClick={clickPatient}>
     <Image 
     id={patientfirstname.concat(' ', patientlastname)} 

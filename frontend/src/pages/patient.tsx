@@ -2,6 +2,7 @@ import type { AppProps } from 'next/app';
 import 'bootstrap/dist/css/bootstrap.css';
 import styles from '@/styles/PatientPage.module.css';
 
+
 import {HeaderDoctor} from '../components/header/header'
 import New_Patient from '../components/popups/new-patient'
 import {SinglePatient as Patient} from '../components/patient/patient-individual-overview'
@@ -46,6 +47,7 @@ const patients = [
   { patient31 : <Patient picture={teeth3d} patientfirstname={'Bart'} patientlastname={'De Strooper'}/> ,
    patient32: <Patient picture={teeth3d} patientfirstname={'Kaatje'} patientlastname={'Groothals'}/>,
    patient33: <Patient picture={teeth3d} patientfirstname={'Lieselot'} patientlastname={'Destoffel'}/> },
+  
   {patient41 : <Patient picture={teeth3d} patientfirstname={'Jozef'} patientlastname={'Van Kerke'} />
   }
 ];
