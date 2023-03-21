@@ -9,7 +9,7 @@ CREATE TABLE patient (
 
 CREATE TABLE dentist (
     id SERIAL PRIMARY KEY,
-    email text,
+    email text UNIQUE,
     pass_word text,
     first_name text,
     last_name text,
