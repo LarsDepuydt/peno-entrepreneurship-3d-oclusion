@@ -9,14 +9,17 @@
   width: auto;
   text-align: center;
   margin-bottom: 50px;
+
+.small_logo_log {
+  width: auto;
+  text-align: center;
+  margin-bottom: 50px;
 }
 
 .small_logo_reg {
   width: auto;
   text-align: center;
   margin-bottom: 50px;
-  /* vertical-align: middle;
-  padding-left: 10%; */
 }
 
 .spacingbtn {
