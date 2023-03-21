@@ -1,14 +1,63 @@
+.welcoming {
+  /* Welcome Dr. Name */
+  font-weight: 200;
+  margin-top: 5px;
+  text-transform: capitalize;
+  margin: auto;
+}
+
+.textWrapper {
+  float: right;
+  width: 80vw;
+}
+
 .patient_picture {
-    height: 200;
-    text-align: center;
-    margin-bottom: 5px;
-    
+  width: 20vw;
+  height: auto;
+  max-width: 30vh;
+  text-align: center;
+  margin: 10px 10px 10px 10px;
+  border-radius: 10px;
+  border-width: 2px;
+  border-style: solid;
+  border-color: #fe7d00;
 }
 
 .patient_button {
-    width: 50dvh;
-    text-align: center;
-    margin-top: 50px;
-    
+  width: 20vw;
+  height: 25vh;
+  text-align: center;
+  margin: 40px 50px 40px 50px;
+  background-color: #e6e6e6;
+  border-radius: 10px;
+  border-width: 3px;
+  float: left;
+  /*box-shadow: 0px 0px 10px 4px #989FA4 inset;*/
 }
 
+.projects {
+  display: flex;
+  column-gap: 20px;
+  justify-content: space-between;
+}
+
+.bigText {
+  text-align: center;
+  vertical-align: auto;
+  color: #fe7d00;
+  font-weight: 600;
+  letter-spacing: 3px;
+  word-spacing: 10px;
+  /*text-shadow: 2px 2px 5px #ffce99;*/
+}
+
+.patientscanName {
+  text-align: center;
+  vertical-align: auto;
+  font-weight: 300;
+  text-transform: capitalize;
+}
+
+.patientscanTable {
+  float: right;
+}

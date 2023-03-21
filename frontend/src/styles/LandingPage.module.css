@@ -1,0 +1,30 @@
+
+.image_left {
+    
+    padding:0;
+
+    height: 100%;
+    width: auto;
+    object-position: left;
+}
+
+.div#content {
+    height:100%;
+    }
+
+.loginbox {
+
+    margin: auto;
+
+} 
+
+.all_landing {
+
+    overflow: hidden;
+    height:100vh;
+    width: 100vw;
+    
+    display: flex;
+    justify-content: space-between; 
+}  
+

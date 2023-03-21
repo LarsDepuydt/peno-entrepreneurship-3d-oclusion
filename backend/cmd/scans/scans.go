@@ -10,6 +10,7 @@ import (
 	threedoclusionv1 "github.com/LarsDepuydt/peno-entrepreneurship-3d-oclusion/gen/proto/threedoclusion/v1"
 )
 
+
 func AddScan(req *connect.Request[threedoclusionv1.AddScanRequest]) (*connect.Response[threedoclusionv1.AddScanResponse], error) {
 	// Connect to the database
 	database, error := help_functions.ConnectToDataBase()
@@ -38,7 +39,7 @@ func AddScan(req *connect.Request[threedoclusionv1.AddScanRequest]) (*connect.Re
 	fmt.Println(responseMessage)
 
 	res := connect.NewResponse(&threedoclusionv1.AddScanResponse{
-		Message: "responseMessage",
+		Message: responseMessage,
 	})
 
 	fmt.Println(responseMessage)

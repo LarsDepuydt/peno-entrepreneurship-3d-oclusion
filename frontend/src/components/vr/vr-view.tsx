@@ -69,7 +69,7 @@ export default function VRView(){
         solver.iterations = 10;
 
         world = new CANNON.World({
-            gravity: new CANNON.Vec3(0, 0, 9),
+            gravity: new CANNON.Vec3(0, 0, 1),
             solver: solver,
             broadphase: new CANNON.NaiveBroadphase(),
         });
@@ -178,7 +178,7 @@ export default function VRView(){
 
 
         // controllers
-
+        /*
         controller1 = renderer.xr.getController( 0 );
         scene.add( controller1 );
 
@@ -197,7 +197,71 @@ export default function VRView(){
         controllerGrip2 = renderer.xr.getControllerGrip( 1 );
         controllerGrip2.add( controllerModelFactory.createControllerModel( controllerGrip2 ) );
         scene.add( controllerGrip2 );
-
+        */
+        // NEW HAPTIC
+        
+        if ('xr' in window.navigator) {
+            window.navigator.xr!.isSessionSupported('immersive-vr').then(() => {
+            const sessionInit = {
+                optionalFeatures: ['oculus-hand-tracking', 'hand-tracking'],
+                requiredFeatures: ['local-floor', 'bounded-floor', 'hand-tracking'],
+            };
+            navigator.xr!.requestSession('immersive-vr', sessionInit).then((session) => {
+            renderer.xr.setSession(session);
+            session.addEventListener('inputsourceschange', (event) => {
+                event.added.forEach((inputSource) => {
+                if (inputSource.gamepad && inputSource.gamepad.hapticActuators) {
+                    const hapticActuators = inputSource.gamepad.hapticActuators;
+                    const actuator = hapticActuators[0];
+                    /*hapticActuators.forEach((hapticActuator) => {
+                        hapticActuator.type = 'vibration';
+                        hapticActuator.reset();
+                    });*/
+                    
+                    const pulse = {
+                        duration: 1000, // in milliseconds
+                        intensity: 1.0, // between 0 and 1
+                    };
+                    (hapticActuators[0] as any).pulse(pulse); // TO DO: FIX      
+                }
+                });
+            });
+            });
+            });
+        } // EDIT VR-BUTTON? VR button already goes into immersive mode session
+        // Can only test in immersive mode
+        
+       /*
+        if ('xr' in window.navigator) {
+            window.navigator.xr!.isSessionSupported('immersive-vr').then(() => {
+            const sessionInit = {
+                optionalFeatures: ['oculus-hand-tracking', 'hand-tracking'],
+                requiredFeatures: ['local-floor', 'bounded-floor', 'hand-tracking'],
+            };
+            navigator.xr!.requestSession('immersive-vr', sessionInit).then((session) => {
+            renderer.xr.setSession(session);
+            session.addEventListener('inputsourceschange', (event) => {
+                event.added.forEach((inputSource) => {
+                if (inputSource.gamepad && inputSource.gamepad.hapticActuators) {
+                    const hapticActuators = inputSource.gamepad.hapticActuators;
+                    //const actuator = hapticActuators[0];
+                    hapticActuators.forEach((hapticActuator) => {
+                        //hapticActuator.type = 'vibration';
+                        //hapticActuator.reset();
+                    });
+                    
+                    const pulse = {
+                        duration: 1000, // in milliseconds
+                        intensity: 1.0, // between 0 and 1
+                    };
+                    hapticActuators[0].vibrate(pulse);                   
+                }
+                });
+            });
+            });
+            });
+        }*/
+    
 
         // lines pointing from controllers
 
@@ -360,12 +424,12 @@ export default function VRView(){
 
         // Copy coordinates from Cannon.js to Three.js
         // Following causes errors with Typescript
-        /* lj_mesh.position.copy(lj_body.position);
+        /*lj_mesh.position.copy(lj_body.position);
         lj_mesh.quaternion.copy(lj_body.quaternion);
         lj_sphere.position.copy(lj_body.position);
         uj_mesh.position.copy(uj_body.position);
         uj_mesh.quaternion.copy(uj_body.quaternion);
-        uj_sphere.position.copy(uj_body.position); */
+        uj_sphere.position.copy(uj_body.position);*/
 
         lj_mesh.position.set(lj_body.position.x, lj_body.position.y, lj_body.position.z);
         lj_mesh.quaternion.set(lj_body.quaternion.x, lj_body.quaternion.y, lj_body.quaternion.z, lj_body.quaternion.w);

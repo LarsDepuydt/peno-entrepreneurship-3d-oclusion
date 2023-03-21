@@ -5,9 +5,26 @@
 
 import { createQueryService } from "@bufbuild/connect-query";
 import { MethodKind } from "@bufbuild/protobuf";
-import { AddScanRequest, AddScanResponse, AddTagRequest, AddTagResponse, DeleteScanRequest, DeleteScanResponse, DeleteTagRequest, DeleteTagResponse, GetAllScansRequest, GetAllScansResponse, GetAllTagsByTypeRequest, GetAllTagsByTypeResponse, GetAllTagsRequest, GetAllTagsResponse, GetPositionScanRequest, GetPositionScanResponse, GetScanByDateRequest, GetScanByDateResponse, GetScanByIDRequest, GetScanByIDResponse, GetTagByIDRequest, GetTagByIDResponse, SendPositionScanRequest, SendPositionScanResponse } from "./service_pb.js";
+import { AddPatientRequest, AddPatientResponse, AddScanRequest, AddScanResponse, AddTagRequest, AddTagResponse, DeletePatientRequest, DeletePatientResponse, DeleteScanRequest, DeleteScanResponse, DeleteTagRequest, DeleteTagResponse, GetAllPatientsRequest, GetAllPatientsResponse, GetAllScansRequest, GetAllScansResponse, GetAllTagsByTypeRequest, GetAllTagsByTypeResponse, GetAllTagsRequest, GetAllTagsResponse, GetPatientByIDRequest, GetPatientByIDResponse, GetPatientByNameRequest, GetPatientByNameResponse, GetPositionScanRequest, GetPositionScanResponse, GetScanByDateRequest, GetScanByDateResponse, GetScanByIDRequest, GetScanByIDResponse, GetTagByIDRequest, GetTagByIDResponse, SendPositionScanRequest, SendPositionScanResponse, SendVRRequest, SendVRResponse } from "./service_pb.js";
 
 export const typeName = "threedoclusion.v1.ScanService";
+
+/**
+ * @generated from rpc threedoclusion.v1.ScanService.SendVR
+ */
+export const sendVR = createQueryService({
+  service: {
+    methods: {
+      sendVR: {
+        name: "SendVR",
+        kind: MethodKind.Unary,
+        I: SendVRRequest,
+        O: SendVRResponse,
+      },
+    },
+    typeName: "threedoclusion.v1.ScanService",
+  },
+}).sendVR;
 
 /**
  * @generated from rpc threedoclusion.v1.ScanService.AddScan
@@ -212,3 +229,88 @@ export const getPositionScan = createQueryService({
     typeName: "threedoclusion.v1.ScanService",
   },
 }).getPositionScan;
+
+/**
+ * @generated from rpc threedoclusion.v1.ScanService.AddPatient
+ */
+export const addPatient = createQueryService({
+  service: {
+    methods: {
+      addPatient: {
+        name: "AddPatient",
+        kind: MethodKind.Unary,
+        I: AddPatientRequest,
+        O: AddPatientResponse,
+      },
+    },
+    typeName: "threedoclusion.v1.ScanService",
+  },
+}).addPatient;
+
+/**
+ * @generated from rpc threedoclusion.v1.ScanService.DeletePatient
+ */
+export const deletePatient = createQueryService({
+  service: {
+    methods: {
+      deletePatient: {
+        name: "DeletePatient",
+        kind: MethodKind.Unary,
+        I: DeletePatientRequest,
+        O: DeletePatientResponse,
+      },
+    },
+    typeName: "threedoclusion.v1.ScanService",
+  },
+}).deletePatient;
+
+/**
+ * @generated from rpc threedoclusion.v1.ScanService.GetAllPatients
+ */
+export const getAllPatients = createQueryService({
+  service: {
+    methods: {
+      getAllPatients: {
+        name: "GetAllPatients",
+        kind: MethodKind.Unary,
+        I: GetAllPatientsRequest,
+        O: GetAllPatientsResponse,
+      },
+    },
+    typeName: "threedoclusion.v1.ScanService",
+  },
+}).getAllPatients;
+
+/**
+ * @generated from rpc threedoclusion.v1.ScanService.GetPatientByID
+ */
+export const getPatientByID = createQueryService({
+  service: {
+    methods: {
+      getPatientByID: {
+        name: "GetPatientByID",
+        kind: MethodKind.Unary,
+        I: GetPatientByIDRequest,
+        O: GetPatientByIDResponse,
+      },
+    },
+    typeName: "threedoclusion.v1.ScanService",
+  },
+}).getPatientByID;
+
+/**
+ * @generated from rpc threedoclusion.v1.ScanService.GetPatientByName
+ */
+export const getPatientByName = createQueryService({
+  service: {
+    methods: {
+      getPatientByName: {
+        name: "GetPatientByName",
+        kind: MethodKind.Unary,
+        I: GetPatientByNameRequest,
+        O: GetPatientByNameResponse,
+      },
+    },
+    typeName: "threedoclusion.v1.ScanService",
+  },
+}).getPatientByName;
