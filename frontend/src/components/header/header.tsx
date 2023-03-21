@@ -9,7 +9,7 @@ export function HeaderDoctor() {
     <>
       <div className={styles.header_layout}>
         <Image className={styles.small_logo} src={reluLogo} alt="relu logo" />
-        <h1 className={styles.bigText}> Patient Overview </h1>
+        <h1 className={styles.bigText}>Patient Overview</h1>
         <div className={styles.logout_layout}>
           <Logout_Button />
         </div>
@@ -23,7 +23,7 @@ export function HeaderPatient() {
     <>
       <div className={styles.header_layout}>
         <Image className={styles.small_logo} src={reluLogo} alt="relu logo" />
-        <h1 className={styles.bigText}> Scans Overview </h1>
+        <h1 className={styles.bigText}>Scans Overview</h1>
         <div className={styles.logout_layout}>
           <Logout_Button />
         </div>

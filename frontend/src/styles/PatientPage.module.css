@@ -9,6 +9,7 @@
 
 .patient_button {
   /* size of button is fixed to size of picture */
+  margin: 12px;
   text-align: center;
   background-color: #f8f8f8;
   border-radius: 10px;
@@ -40,6 +41,7 @@
 }
 
 .scansWrapper {
+  margin-top: 8vh;
   width: 80vw;
   float: right;
   display: flex;

@@ -1,10 +1,9 @@
 .small_logo {
   width: 100px;
-  height: auto;
+  height: auto; /* does not seem to work as intended */
   text-align: center;
   margin: 10px;
   margin-left: 15px;
-  position: fixed; /* makes the logo go along with the sidebar*/
 }
 
 .logout_layout {
@@ -14,7 +13,7 @@
 
 .header_layout {
   width: 100vw;
-  height: 10vh;
+  height: 8vh;
   display: flex;
   column-gap: 20px;
   justify-content: space-between;
@@ -23,7 +22,7 @@
 
   background-color: #f8f8f8;
   border-bottom: 1px solid #6d767e;
-  position: fixed;
+  position: fixed;  /* makes the logo go along with the sidebar */
 }
 
 .bigText {

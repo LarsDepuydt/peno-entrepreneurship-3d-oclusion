@@ -11,17 +11,17 @@
 
 .sidebarText,
 .sidebarName {
-text-align: center;
-font-weight: 450;
-color: #223C49;
-font-size: 25px;
-margin: 0px;
+  text-align: center;
+  font-weight: 450;
+  color: #223c49;
+  font-size: 25px;
+  margin: 0px;
 }
 
 .sidebarName {
   text-transform: capitalize;
 }
 
-.sidebarText{
-    margin-top: 10vh;
+.sidebarText {
+  margin-top: 8vh;
 }
