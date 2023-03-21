@@ -3,7 +3,6 @@ import 'bootstrap/dist/css/bootstrap.css';
 import styles from '@/styles/PatientPage.module.css';
 
 import {HeaderDoctor} from '../components/header/header'
-import New_Patient from '../components/popups/new-patient'
 import {SinglePatient as Patient} from '../components/patient/patient-individual-overview'
 import teeth3d from '../../public/3d-teeth.jpg'
 import { useRouter } from 'next/router';
@@ -32,49 +31,27 @@ const Table: FC<TableProps> = ({ data }) => {
   );
 };
 
-def get_targetPatientScans(targetPatientFirstname, targetPatientLastname){
-  const targetPatientScans = [];
 
-  all_patients.forEach(patientGroup => {
-    // Loop through each patient in the current patient group
-    Object.keys(patientGroup).forEach(patientKey => {
-      const patient = patientGroup[patientKey];
-      
-      // Check if the patient matches the target patient by first and last name
-      if (patient.props.patientfirstname === targetPatientFirstname && 
-          patient.props.patientlastname === targetPatientLastname) {
-        // Add the patient's scans to the targetPatientScans array
-        targetPatientScans.push(patient.props.scans);
-      }
-    // Create a new dictionary with the same form/layout as all_patients, but with the scans of the target patient
-    const targetPatientDict = [
-  { patient1: <Patient picture={teeth3d} patientfirstname={targetPatientFirstname} patientlastname={targetPatientLastname} /> },
-  // Add the rest of the patient groups and patients from all_patients to the new dictionary
-];  
-    });
-  });
-}
+const patients = [
 
-const all_patients = [
-
-  { patient11 : <Patient picture={teeth3d} patientfirstname={'Jos'} patientlastname={'Van de Velde'}/> ,
-   patient12: <Patient picture={teeth3d} patientfirstname={'Anna'} patientlastname={'Janssens'}/>,
-   patient13: <Patient picture={teeth3d} patientfirstname={'Josephine'} patientlastname={'De Goter'}/> 
+  { patient11 : <Patient picture={teeth3d} patientfirstname={'Jos'} patientlastname={'Van de Velde'} date = {new Date(2023, 2, 21)}/> ,
+    patient12: <Patient picture={teeth3d} patientfirstname={'Anna'} patientlastname={'Janssens'} date = {new Date(2023, 2, 20)} />,
+    patient13: <Patient picture={teeth3d} patientfirstname={'Josephine'} patientlastname={'De Goter'} date = {new Date(2023, 1, 10)}/> 
   },
   
-  { patient21 : <Patient picture={teeth3d} patientfirstname={'Jos'} patientlastname={'Van Rooie'}/> ,
-   patient22: <Patient picture={teeth3d} patientfirstname={'Gert'} patientlastname={'Vandamme'}/>,
-   patient23: <Patient picture={teeth3d} patientfirstname={'Peter'} patientlastname={'Damiaans'}/> 
+  { patient21 : <Patient picture={teeth3d} patientfirstname={'Jos'} patientlastname={'Van Rooie'} date = {new Date(2022, 4, 4)}/> ,
+    patient22: <Patient picture={teeth3d} patientfirstname={'Gert'} patientlastname={'Vandamme'} date = {new Date(2023, 3, 1)}/>,
+    patient23: <Patient picture={teeth3d} patientfirstname={'Peter'} patientlastname={'Damiaans'}date = {new Date(2022, 12, 23)}/> 
   },
   
-  { patient31 : <Patient picture={teeth3d} patientfirstname={'Bart'} patientlastname={'De Strooper'}/> ,
-   patient32: <Patient picture={teeth3d} patientfirstname={'Kaatje'} patientlastname={'Groothals'}/>,
-   patient33: <Patient picture={teeth3d} patientfirstname={'Lieselot'} patientlastname={'Destoffel'}/> },
+  { patient31 : <Patient picture={teeth3d} patientfirstname={'Bart'} patientlastname={'De Strooper'} date = {new Date(2023, 2, 19)}/> ,
+    patient32: <Patient picture={teeth3d} patientfirstname={'Kaatje'} patientlastname={'Groothals'} date = {new Date(2023, 3, 21)}/>,
+    patient33: <Patient picture={teeth3d} patientfirstname={'Lieselot'} patientlastname={'Destoffel'} date = {new Date(2022, 11, 7)}/> },
   
-  {patient41 : <Patient picture={teeth3d} patientfirstname={'Jozef'} patientlastname={'Van Kerke'} />
+  { patient41 : <Patient picture={teeth3d} patientfirstname={'Jozef'} patientlastname={'Van Kerke'} date = {new Date(2022, 12, 7)} />, 
+    patient42 : <Patient picture={teeth3d} patientfirstname={'Jozef'} patientlastname={'Van Kerke'} date = {new Date(2022, 12, 6)} />,
   }
 ];
-
 
 
 const App: FC = () => {
@@ -91,3 +68,27 @@ const App: FC = () => {
 };
 
 export default App;
+
+
+/**
+ * const uniquePatients = patients.reduce((acc, curr) => {
+  // Get the keys of the current patient object
+  const currKeys = Object.keys(curr);
+  // Loop through the keys and extract the patient info
+  currKeys.forEach((key) => {
+    const patientInfo = curr[key];
+    // Extract the patient's first name, last name, and scan date
+    const { patientfirstname, patientlastname, date } = patientInfo.props;
+    // Find the existing patient in the accumulator array based on the first name and last name
+    const existingPatientIndex = acc.findIndex(
+      (patient) =>
+        patient.patientfirstname === patientfirstname &&
+        patient.patientlastname === patientlastname
+    );
+    // If the patient doesn't exist, add them to the accumulator array
+    if (existingPatientIndex === -1) {
+      acc.push({ patientfirstname, patientlastname, date });
+    } else {
+      // If the patient exists, compare the scan dates and update if the current date is more recent
+      if (date >
+ */
