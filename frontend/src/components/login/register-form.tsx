@@ -10,8 +10,8 @@ import styleB from '@/styles/Buttons.module.css';
 import reluLogo from '../../../public/relu-logo-small.png';
 //import bcrypt from 'bcryptjs';
 
-import { scan } from '@proto/threedoclusion/v1/service.proto';
 import { useQuery } from '@tanstack/react-query';
+import { register } from '@/gen/proto/threedoclusion/v1/service-ScanService_connectquery';
 
 const FormSchema = yup.object().shape({
   reppassword: yup.string().oneOf([yup.ref('password')], 'this does not match your password'),
@@ -45,7 +45,16 @@ export default function LoginForm() {
           reppassword: '',
         }}
         validationSchema={FormSchema}
-        onSubmit={() => {
+        onSubmit={(values) => {
+          const { data } = useQuery(
+            register.useQuery({
+              email: values.email,
+              password: values.password,
+              firstName: values.doctorFirstName,
+              lastName: values.doctorLastName,
+            })
+          );
+          console.log(data && data.message);
           router.push('/patient');
         }}
       >
