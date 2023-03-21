@@ -71,8 +71,12 @@ func GetAllDentists(req *connect.Request[threedoclusionv1.GetAllDentistsRequest]
 	defer database.Close()
 
 	// Perform the database modification
-	statement := "SELECT * FROM dentist;"
-	result, error := help_functions.GetResponseMakerDentist(database, statement, "")
+	rows, error := database.Query("SELECT * FROM dentist;")
+	if error != nil {
+		return nil, error
+	}
+
+	result, error := help_functions.GetResponseMakerDentist(rows)
 	if error != nil {
 		return nil, error
 	}
@@ -97,9 +101,12 @@ func GetDentistById(req *connect.Request[threedoclusionv1.GetDentistByIdRequest]
 	defer database.Close()
 	
 	// Perform the database modification
-	statement := "SELECT * FROM dentist WHERE id = $1;"
+	rows, error := database.Query("SELECT * FROM dentist WHERE id = $1;", req.Msg.Id)
+	if error != nil {
+		return nil, error
+	}
 	
-	result, error := help_functions.GetResponseMakerDentist(database, statement, req.Msg.Id)
+	result, error := help_functions.GetResponseMakerDentist(rows)
 	if error != nil {
 		return nil, error
 	}

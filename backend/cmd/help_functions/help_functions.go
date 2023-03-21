@@ -91,19 +91,12 @@ func GetResponseMakerPatient(database *sql.DB, statement string) ([]*threedoclus
 
 }
 
-func GetResponseMakerDentist(database *sql.DB, statement string, id string) ([]*threedoclusionv1.Dentist, error) {
-
-	// Execute the statement with the parameter
-	rows, error := database.Query(statement, id)
-	if error != nil {
-		return nil, error
-	}
-
+func GetResponseMakerDentist(rows *sql.Rows) ([]*threedoclusionv1.Dentist, error) {
 	var rowArray []*threedoclusionv1.Dentist
 
 	for rows.Next() {
 		var rowData *threedoclusionv1.Dentist
-		error = rows.Scan(&rowData.Id, &rowData.Email, &rowData.FirstName, &rowData.LastName)
+		error := rows.Scan(&rowData.Id, &rowData.Email, &rowData.FirstName, &rowData.LastName)
 		if error != nil {
 			panic(error)
 		}
