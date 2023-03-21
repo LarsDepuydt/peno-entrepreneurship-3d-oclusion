@@ -6,8 +6,14 @@ import styles from '@/styles/Header.module.css';
 import reluLogo from '../../../public/relu-logo-small.png';
 
 interface HeaderPatientProps {
-  patientfirstname: string;
+  patientfirstname: string; 
   patientlastname: string;
+} 
+
+interface HeaderDoctorProps {
+  doctorfirstname : string
+  doctorlastname : string
+
 }
 
 export function HeaderDoctor() {
