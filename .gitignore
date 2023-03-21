@@ -1,5 +1,5 @@
 go.work
 
-node_modules
+/node_modules
 package.json
-package_lock.json
+package-lock.json

@@ -1,29 +1,44 @@
 .login_box {
-    width: 340px;
-    text-align: center;
-    background-color: #fff;
-
+  width: 450px;
+  text-align: center;
+  align-items: center;
+  background-color: #fff;
 }
 
-.small_logo {
+.small_logo_log {
+  width: auto;
+  text-align: center;
+  margin-bottom: 50px;
+
+.small_logo_log {
+  width: auto;
+  text-align: center;
+  margin-bottom: 50px;
+}
+
+.small_logo_reg {
   width: auto;
   text-align: center;
   margin-bottom: 50px;
 }
 
 .spacingbtn {
-    display: flex;
-    column-gap: 20px;
-    justify-content: space-between;
-    
+  display: flex;
+  column-gap: 20px;
+  justify-content: space-between;
 }
 
 .error {
-    color: red;
+  color: red;
 }
 
 .center {
-    text-align: center;
+  text-align: center;
 }
 
-
+.firstandlast {
+  display: flex;
+  justify-content: space-between;
+  column-gap: 10px;
+  width: 100%;
+}
