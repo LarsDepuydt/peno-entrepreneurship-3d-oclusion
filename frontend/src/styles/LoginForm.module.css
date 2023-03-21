@@ -1,21 +1,42 @@
-module .login_box {
+.login_box {
   width: 340px;
-
+  text-align: center;
+  align-items: center;
   background-color: #fff;
 }
 
-.small_logo {
+.small_logo_log {
   width: auto;
   text-align: center;
   margin-bottom: 50px;
+
 }
 
-.loginbtn {
+.small_logo_reg {
+  width: auto;
+  text-align: center;
+  margin-bottom: 50px;
+  vertical-align: middle;
+  padding-left: 10%;
+}
+
+.spacingbtn {
   display: flex;
   column-gap: 20px;
   justify-content: space-between;
 }
 
-.btn {
-  background-color: orange;
+.error {
+  color: red;
+}
+
+.center {
+  text-align: center;
+}
+
+.firstandlast {
+  display: flex;
+  justify-content: space-between;
+  column-gap: 20px;
+  width: 100%;
 }

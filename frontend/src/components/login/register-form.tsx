@@ -3,58 +3,83 @@ import { Formik, Field, Form } from 'formik';
 import * as yup from 'yup';
 
 import { useRouter } from 'next/router';
-import Image from 'next/image'
-import styles from '@/styles/LoginForm.module.css'
-import reluLogo from "../../../public/relu-logo-small.png";
-import bcrypt from 'bcryptjs';
+import Image from 'next/image';
+import styles from '@/styles/LoginForm.module.css';
+import styleB from '@/styles/Buttons.module.css';
+
+import reluLogo from '../../../public/relu-logo-small.png';
+//import bcrypt from 'bcryptjs';
 
 const FormSchema = yup.object().shape({
   reppassword: yup.string().oneOf([yup.ref('password')], 'this does not match your password'),
 });
 
 interface Values {
-  username: string;
+  doctorFirstName: string;
+  doctorLastName: string;
+
+  email: string;
   password: string;
   reppassword: string;
 }
 
 export default function LoginForm() {
   const router = useRouter();
-  const toLogin = () => router.push('/login-page')
+
+  const toLogin = () => router.push('/login-page');
 
   return (
     <div className={styles.login_box + ' p-3'}>
-      <Image className={styles.small_logo} src={reluLogo} alt="relu logo" />
+      <Image className={styles.small_logo_reg} src={reluLogo} alt="relu logo" />
+
       <Formik
         initialValues={{
-          username: '',
+          doctorFirstName: '',
+          doctorLastName: '',
+
+          email: '',
           password: '',
           reppassword: '',
         }}
         validationSchema={FormSchema}
-        onSubmit={(values) => {
-          // Hash the password
-          // Synchronously hashed
-          // blocks the thread
-          const hashedPassword = bcrypt.hashSync(values.password, 10);
-
-          // Replace the password with the new password
-          values.password = hashedPassword;
-
-          router.push('/patient');
+        onSubmit={() => {
+          router.push('/login-page');
         }}
       >
         {({ errors }) => (
-          <Form>
+          <Form className={styles.center}>
+            <div className={styles.firstandlast}>
+              <div className="mb-3">
+                <Field
+                  className="form-control"
+                  id="doctorFirstName"
+                  name="doctorFirstName"
+                  placeholder="First Name"
+                  aria-describedby="doctorFirstNameHelp"
+                />
+              </div>
+
+              <div className="mb-3">
+                <Field
+                  className="form-control"
+                  id="doctorLastName"
+                  name="doctorLastName"
+                  placeholder="Last Name"
+                  aria-describedby="doctorLastNameHelp"
+                />
+              </div>
+            </div>
+
             <div className="mb-3">
               <Field
                 className="form-control"
-                id="username"
-                name="username"
-                placeholder="Username"
-                aria-describedby="usernameHelp"
+                id="email"
+                name="email"
+                placeholder="Email"
+                aria-describedby="emailHelp"
               />
             </div>
+
             <div className="mb-3">
               <Field
                 className="form-control"
@@ -65,6 +90,7 @@ export default function LoginForm() {
                 type="password"
               />
             </div>
+
             <div className="mb-3">
               <Field
                 className="form-control"
@@ -74,13 +100,14 @@ export default function LoginForm() {
                 placeholder="Repeat Password"
                 type="password"
               />
-              {errors.reppassword && <p>{errors.reppassword}</p>}
+              {errors.reppassword && <b className={styles.error}>{errors.reppassword}</b>}
             </div>
-            <div className={styles.loginbtn}>
-              <button type="submit" className="btn btn-primary btn-large">
+
+            <div className={styles.spacingbtn}>
+              <button type="submit" className={styleB.relu_btn}>
                 Register
               </button>
-              <button type="button" className="btn btn-primary btn-large" onClick={toLogin}>
+              <button type="button" className={styleB.relu_btn} onClick={toLogin}>
                 Login instead
               </button>
             </div>

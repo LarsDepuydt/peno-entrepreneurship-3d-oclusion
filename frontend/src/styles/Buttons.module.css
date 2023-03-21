@@ -1,0 +1,36 @@
+/* .relu_btn {
+    /* margin: 100px auto 20px;
+    display: block;
+    padding: 10px 20px;
+    font-size: 25px;
+    width: 20dvw;
+    height: 25dvh; 
+    text-align: center;
+    background-color: transparent;
+    border-radius: 10px;
+    border-color: #fe7d00;
+    border-width: 1px;
+} */
+
+.relu_btn {
+    
+    background-color: transparent;
+    text-align: center;
+    padding: 5px 10px;
+    
+
+    color: #fe7d00;
+    font-size: 1rem;
+    font-weight: 400;
+    line-height: 1.5;
+    
+    border-color: #fe7d00;
+    border-width: 1px;
+    border-style: solid;
+    border-radius: 0.375rem;
+}
+
+.relu_btn:hover {
+    background-color: rgba(254, 125, 0, .25);
+
+}

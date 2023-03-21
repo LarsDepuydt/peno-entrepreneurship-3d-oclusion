@@ -5,6 +5,8 @@ module body.active_modal {
 .btn_modal {
   padding: 10px 20px;
   display: block;
+  position: absolute;
+  left: 50%;
   margin: 100px auto 0;
   font-size: 18px;
 }
@@ -45,4 +47,55 @@ module body.active_modal {
   bottom: 10px;
   right: 10px;
   padding: 5px 7px;
+}
+
+module .login_box {
+  width: 340px;
+  text-align: center;
+  background-color: #fff;
+}
+
+.small_logo {
+  width: auto;
+  text-align: center;
+  margin-bottom: 50px;
+}
+
+.spacingbtn {
+  margin-top: 10px;
+  display: flex;
+  column-gap: 20px;
+  justify-content: space-between;
+}
+
+.center {
+  text-align: center;
+}
+
+.firstandlast {
+  display: flex;
+  justify-content: space-between;
+  column-gap: 10px;
+  /* width: 100%; */
+}
+
+.type_bite {
+  display: flex;
+  /* margin: 10px; */
+  /* justify-content: space-between; */
+  column-gap: 20px;
+  /* width: 100%; */
+}
+
+.type_surgery {
+  display: flex;
+  /* margin: 10px; */
+  /* justify-content: space-between; */
+  column-gap: 20px;
+  /* width: 100%; */
+}
+
+.rightfont {
+  font-weight: 600;
+  color: #737e85;
 }

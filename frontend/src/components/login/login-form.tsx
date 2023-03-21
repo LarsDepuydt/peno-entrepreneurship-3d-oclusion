@@ -4,7 +4,7 @@ import { Formik, Field, Form } from 'formik';
 import { useRouter } from 'next/router';
 import Image from 'next/image';
 import styles from '@/styles/LoginForm.module.css';
-import 'bootstrap/dist/css/bootstrap.css';
+import styleB from '@/styles/Buttons.module.css';
 
 import reluLogo from '../../../public/relu-logo-small.png';
 
@@ -20,7 +20,7 @@ export default function LoginForm() {
 
   return (
     <div className={styles.login_box + ' p-3'}>
-      <Image className={styles.small_logo} src={reluLogo} alt="relu logo" />
+      <Image className={styles.small_logo_log} src={reluLogo} alt="relu logo" />
 
       <Formik
         initialValues={{
@@ -46,11 +46,11 @@ export default function LoginForm() {
             <Field className="form-control" id="password" name="password" placeholder="Password" type="password" />
           </div>
 
-          <div className={styles.loginbtn}>
-            <button type="submit" className="btn btn-primary btn-large">
+          <div className={styles.spacingbtn}>
+            <button type="submit" className={styleB.relu_btn}>
               Login
             </button>
-            <button type="button" className="btn btn-primary btn-large" onClick={toRegister}>
+            <button type="button" className={styleB.relu_btn} onClick={toRegister}>
               Register instead
             </button>
           </div>
