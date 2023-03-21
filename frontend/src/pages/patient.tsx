@@ -1,9 +1,12 @@
 import 'bootstrap/dist/css/bootstrap.css';
 import styles from '@/styles/PatientPage.module.css';
 
-import {HeaderDoctor} from '../components/header/header'
-import {SinglePatient as Patient} from '../components/patient/patient-individual-overview'
-import teeth3d from '../../public/3d-teeth.jpg'
+import { HeaderDoctor } from '../components/header/header';
+import New_Patient from '../components/popups/new-patient';
+import { SinglePatient as Patient } from '../components/patient/patient-individual-overview';
+import teeth3d from '../../public/3d-teeth.jpg';
+import { useRouter } from 'next/router';
+import { StaticImageData } from 'next/image';
 import { FC } from 'react';
 import Sidebar from '../components/header/sidebar';
 
@@ -30,6 +33,11 @@ const Table: FC<TableProps> = ({ data }) => {
 
 // hard coded patients - 12 scans for 10 patients. Kaatje and Jozef have each 2 scans. 
 const patients = [
+  {
+    patient11: <Patient picture={teeth3d} patientfirstname={'Jos'} patientlastname={'Van de Velde'} />,
+    patient12: <Patient picture={teeth3d} patientfirstname={'Anna'} patientlastname={'Janssens'} />,
+    patient13: <Patient picture={teeth3d} patientfirstname={'Josephine'} patientlastname={'De Goter'} />,
+  },
 
   { patient11 : <Patient id = {1} picture={teeth3d} patientfirstname={'Jos'} patientlastname={'Van de Velde'} date = {new Date(2023, 2, 21)}/> ,
    patient12: <Patient id = {2} picture={teeth3d} patientfirstname={'Anna'} patientlastname={'Janssens'} date = {new Date(2023, 2, 20)} />,
@@ -70,7 +78,7 @@ const App: FC = () => {
 
   return (
     <div>
-      <HeaderDoctor/>
+      <HeaderDoctor />
       <Sidebar />
       <div className={styles.textWrapper}>
         <h1 className={styles.bigText}> Patient Overview</h1>

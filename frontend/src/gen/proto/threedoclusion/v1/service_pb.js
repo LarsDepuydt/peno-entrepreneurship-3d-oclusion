@@ -406,3 +406,172 @@ export const GetPatientByNameResponse = proto3.makeMessageType(
   ],
 );
 
+/**
+ * DENTIST
+ *
+ * @generated from message threedoclusion.v1.Dentist
+ */
+export const Dentist = proto3.makeMessageType(
+  "threedoclusion.v1.Dentist",
+  () => [
+    { no: 1, name: "id", kind: "scalar", T: 3 /* ScalarType.INT64 */ },
+    { no: 2, name: "email", kind: "scalar", T: 9 /* ScalarType.STRING */ },
+    { no: 3, name: "first_name", kind: "scalar", T: 9 /* ScalarType.STRING */ },
+    { no: 4, name: "last_name", kind: "scalar", T: 9 /* ScalarType.STRING */ },
+  ],
+);
+
+/**
+ * @generated from message threedoclusion.v1.AddDentistRequest
+ */
+export const AddDentistRequest = proto3.makeMessageType(
+  "threedoclusion.v1.AddDentistRequest",
+  () => [
+    { no: 1, name: "email", kind: "scalar", T: 9 /* ScalarType.STRING */ },
+    { no: 2, name: "password", kind: "scalar", T: 9 /* ScalarType.STRING */ },
+    { no: 3, name: "first_name", kind: "scalar", T: 9 /* ScalarType.STRING */ },
+    { no: 4, name: "last_name", kind: "scalar", T: 9 /* ScalarType.STRING */ },
+  ],
+);
+
+/**
+ * @generated from message threedoclusion.v1.AddDentistResponse
+ */
+export const AddDentistResponse = proto3.makeMessageType(
+  "threedoclusion.v1.AddDentistResponse",
+  () => [
+    { no: 1, name: "message", kind: "scalar", T: 9 /* ScalarType.STRING */ },
+  ],
+);
+
+/**
+ * @generated from message threedoclusion.v1.GetDentistByIdRequest
+ */
+export const GetDentistByIdRequest = proto3.makeMessageType(
+  "threedoclusion.v1.GetDentistByIdRequest",
+  () => [
+    { no: 1, name: "id", kind: "scalar", T: 9 /* ScalarType.STRING */ },
+  ],
+);
+
+/**
+ * @generated from message threedoclusion.v1.GetDentistByIdResponse
+ */
+export const GetDentistByIdResponse = proto3.makeMessageType(
+  "threedoclusion.v1.GetDentistByIdResponse",
+  () => [
+    { no: 1, name: "id", kind: "scalar", T: 3 /* ScalarType.INT64 */ },
+    { no: 2, name: "email", kind: "scalar", T: 9 /* ScalarType.STRING */ },
+    { no: 3, name: "first_name", kind: "scalar", T: 9 /* ScalarType.STRING */ },
+    { no: 4, name: "last_name", kind: "scalar", T: 9 /* ScalarType.STRING */ },
+  ],
+);
+
+/**
+ * @generated from message threedoclusion.v1.GetAllDentistsRequest
+ */
+export const GetAllDentistsRequest = proto3.makeMessageType(
+  "threedoclusion.v1.GetAllDentistsRequest",
+  [],
+);
+
+/**
+ * @generated from message threedoclusion.v1.GetAllDentistsResponse
+ */
+export const GetAllDentistsResponse = proto3.makeMessageType(
+  "threedoclusion.v1.GetAllDentistsResponse",
+  () => [
+    { no: 1, name: "dentists", kind: "message", T: Dentist, repeated: true },
+  ],
+);
+
+/**
+ * @generated from message threedoclusion.v1.UpdateDentistByIdRequest
+ */
+export const UpdateDentistByIdRequest = proto3.makeMessageType(
+  "threedoclusion.v1.UpdateDentistByIdRequest",
+  () => [
+    { no: 1, name: "id", kind: "scalar", T: 3 /* ScalarType.INT64 */ },
+    { no: 2, name: "email", kind: "scalar", T: 9 /* ScalarType.STRING */, opt: true },
+    { no: 3, name: "first_name", kind: "scalar", T: 9 /* ScalarType.STRING */, opt: true },
+    { no: 4, name: "last_name", kind: "scalar", T: 9 /* ScalarType.STRING */, opt: true },
+    { no: 5, name: "password", kind: "scalar", T: 9 /* ScalarType.STRING */, opt: true },
+  ],
+);
+
+/**
+ * @generated from message threedoclusion.v1.UpdateDentistByIdResponse
+ */
+export const UpdateDentistByIdResponse = proto3.makeMessageType(
+  "threedoclusion.v1.UpdateDentistByIdResponse",
+  () => [
+    { no: 1, name: "message", kind: "scalar", T: 9 /* ScalarType.STRING */ },
+  ],
+);
+
+/**
+ * @generated from message threedoclusion.v1.DeleteDentistByIdRequest
+ */
+export const DeleteDentistByIdRequest = proto3.makeMessageType(
+  "threedoclusion.v1.DeleteDentistByIdRequest",
+  () => [
+    { no: 1, name: "id", kind: "scalar", T: 9 /* ScalarType.STRING */ },
+  ],
+);
+
+/**
+ * @generated from message threedoclusion.v1.DeleteDentistByIdResponse
+ */
+export const DeleteDentistByIdResponse = proto3.makeMessageType(
+  "threedoclusion.v1.DeleteDentistByIdResponse",
+  () => [
+    { no: 1, name: "message", kind: "scalar", T: 9 /* ScalarType.STRING */ },
+  ],
+);
+
+/**
+ * @generated from message threedoclusion.v1.LoginRequest
+ */
+export const LoginRequest = proto3.makeMessageType(
+  "threedoclusion.v1.LoginRequest",
+  () => [
+    { no: 1, name: "email", kind: "scalar", T: 9 /* ScalarType.STRING */ },
+    { no: 2, name: "password", kind: "scalar", T: 9 /* ScalarType.STRING */ },
+  ],
+);
+
+/**
+ * @generated from message threedoclusion.v1.LoginResponse
+ */
+export const LoginResponse = proto3.makeMessageType(
+  "threedoclusion.v1.LoginResponse",
+  () => [
+    { no: 1, name: "message", kind: "scalar", T: 9 /* ScalarType.STRING */ },
+    { no: 2, name: "token", kind: "scalar", T: 9 /* ScalarType.STRING */ },
+  ],
+);
+
+/**
+ * @generated from message threedoclusion.v1.RegisterRequest
+ */
+export const RegisterRequest = proto3.makeMessageType(
+  "threedoclusion.v1.RegisterRequest",
+  () => [
+    { no: 1, name: "email", kind: "scalar", T: 9 /* ScalarType.STRING */ },
+    { no: 2, name: "password", kind: "scalar", T: 9 /* ScalarType.STRING */ },
+    { no: 3, name: "first_name", kind: "scalar", T: 9 /* ScalarType.STRING */ },
+    { no: 4, name: "last_name", kind: "scalar", T: 9 /* ScalarType.STRING */ },
+  ],
+);
+
+/**
+ * @generated from message threedoclusion.v1.RegisterResponse
+ */
+export const RegisterResponse = proto3.makeMessageType(
+  "threedoclusion.v1.RegisterResponse",
+  () => [
+    { no: 1, name: "message", kind: "scalar", T: 9 /* ScalarType.STRING */ },
+    { no: 2, name: "token", kind: "scalar", T: 9 /* ScalarType.STRING */ },
+  ],
+);
+

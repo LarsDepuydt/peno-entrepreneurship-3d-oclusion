@@ -60,3 +60,19 @@ func GetResponseMakerPatient(rows *sql.Rows) ([]*threedoclusionv1.Patient, error
 	return rowArray, nil
 
 }
+
+func GetResponseMakerDentist(rows *sql.Rows) ([]*threedoclusionv1.Dentist, error) {
+	var rowArray []*threedoclusionv1.Dentist
+
+	for rows.Next() {
+		var rowData *threedoclusionv1.Dentist
+		error := rows.Scan(&rowData.Id, &rowData.Email, &rowData.FirstName, &rowData.LastName)
+		if error != nil {
+			panic(error)
+		}
+		rowArray = append(rowArray, &threedoclusionv1.Dentist{Id: rowData.Id, Email: rowData.Email, FirstName: rowData.FirstName, LastName: rowData.LastName})
+	}
+
+	return rowArray, nil
+
+}
