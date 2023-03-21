@@ -4,6 +4,7 @@ import { useQuery } from '@tanstack/react-query';
 /**
  * This is a component to test the backend link using protobuf connect
  */
+
 const Test = () => {
   const { data } = useQuery(scan.useQuery({ id: '2' }));
 
