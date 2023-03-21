@@ -1,5 +1,14 @@
 {
+<<<<<<< HEAD
+  "devDependencies": {
+    "@bufbuild/buf": "^1.15.0",
+    "@bufbuild/protoc-gen-connect-es": "^0.8.3",
+    "@bufbuild/protoc-gen-es": "^1.1.0"
+=======
   "dependencies": {
+    "@types/formidable": "^2.0.5",
+    "formidable": "^2.1.1",
     "formik-file-and-image-input": "^0.0.6"
+>>>>>>> ccf1b109c2b32fbdcba5b90dedfaab82d98fa5b3
   }
 }

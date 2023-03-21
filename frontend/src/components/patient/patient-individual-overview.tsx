@@ -1,4 +1,4 @@
-import Image, { StaticImageData } from 'next/image'
+import Image, { StaticImageData } from 'next/image';
 import { useRouter } from 'next/router';
 
 import styles from '@/styles/PatientPage.module.css'
@@ -40,9 +40,17 @@ export function SinglePatient({id, patientfirstname, patientlastname,picture, da
       });
       //useQuery(patient.DeletePatient({id : id}));  - weet niet of het werkt --> uiteindelijk de bedoeling. 
     };
-    
 
 
+  const clickPatient = () => {
+    router.push({
+      pathname: '/scans-page',
+      query: {
+        patientfirstname,
+        patientlastname,
+      },
+    });
+  };
 
     return (
     <div className={styles.patient_button}>
@@ -54,8 +62,4 @@ export function SinglePatient({id, patientfirstname, patientlastname,picture, da
     </div>
      ); 
   }
-
-
-
-
 
