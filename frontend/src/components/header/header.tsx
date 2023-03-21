@@ -5,6 +5,15 @@ import Image from 'next/image'
 import styles from '@/styles/Header.module.css'
 import reluLogo from "../../../public/relu-logo-small.png";
 
+interface HeaderPatientProps {
+  patientfirstname: string; 
+  patientlastname: string;
+} 
+
+interface HeaderDoctorProps {
+  doctorfirstname : string
+  doctorlastname : string
+}
 
 export function HeaderDoctor() {
     return (
