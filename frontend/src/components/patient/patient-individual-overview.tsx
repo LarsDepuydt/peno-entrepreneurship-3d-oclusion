@@ -2,16 +2,21 @@ import Image, { StaticImageData } from 'next/image'
 import { useRouter } from 'next/router';
 
 import styles from '@/styles/PatientPage.module.css'
+import { patient } from '@/gen/proto/threedoclusion/v1/service-ScanService_connectquery'; // moet patient worden? 
+import { useQuery } from '@tanstack/react-query';
+
 
 
 interface patientProfile {
-    picture : StaticImageData
+    id : number 
     patientfirstname : string
     patientlastname : string
+    picture : StaticImageData
     date : Date                   //ISO 8601 format: example: Date(2023, 2, 21); --> 21st March, 2023
+    deleted?: boolean             // Default value of deleted = false - tussenversie voor backend connectie  
 }
 
-export function SinglePatient({picture, patientfirstname, patientlastname, date}: patientProfile) { 
+export function SinglePatient({id, patientfirstname, patientlastname,picture, date, deleted}: patientProfile) { 
 
     const router = useRouter();
 
@@ -24,6 +29,18 @@ export function SinglePatient({picture, patientfirstname, patientlastname, date}
           }
         });
       };
+    
+    const handleDelete = () => {      // tussenversie om te zien of click on button verschilt van click on patient (erboven op de foto van de patient drukken) -> is zo: zie naar URL...
+      deleted = true; 
+      router.push({
+        pathname: '/scans-page',
+        query: { 
+          deleted 
+                }
+      });
+      //useQuery(patient.DeletePatient({id : id}));  - weet niet of het werkt --> uiteindelijk de bedoeling. 
+    };
+    
 
 
 
@@ -32,8 +49,13 @@ export function SinglePatient({picture, patientfirstname, patientlastname, date}
     <div onClick={clickPatient}>
     <Image id={patientfirstname.concat(' ', patientlastname)} className={styles.patient_picture} src={picture} alt="3d picture of teeth" width={100}/>
     <p className={styles.patientscanName}>{patientfirstname.concat(' ', patientlastname)}</p>
+    <button onClick={handleDelete}>Delete</button>
     </div>
     </div>
      ); 
   }
+
+
+
+
 

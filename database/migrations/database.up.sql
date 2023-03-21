@@ -17,7 +17,7 @@ CREATE TABLE dentist (
 CREATE TABLE scan (
     id SERIAL PRIMARY KEY,
     scan text,
-    date date
+    date_scan date
 );
 
 CREATE TABLE tag (
