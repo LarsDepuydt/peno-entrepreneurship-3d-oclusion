@@ -7,11 +7,6 @@ import Sidebar from '@/components/header/sidebar';
 import styles from '@/styles/PatientPage.module.css';
 import { FC } from 'react';
 
-
-export function ScansPage() {
-
-}
-
 interface TableProps {
   data: { [key: string]: string }[];
 }
@@ -33,39 +28,48 @@ const Table: FC<TableProps> = ({ data }) => {
   );
 };
 
-  const patients = [
 
-    { patient11 : <Patient picture={teeth3d} patientfirstname={'Jos'} patientlastname={'Van de Velde'}/> ,
-     patient12: <Patient picture={teeth3d} patientfirstname={'Anna'} patientlastname={'Janssens'}/>,
-     patient13: <Patient picture={teeth3d} patientfirstname={'Josephine'} patientlastname={'De Goter'}/> 
-    },
-    
-    { patient21 : <Patient picture={teeth3d} patientfirstname={'Jos'} patientlastname={'Van Rooie'}/> ,
-     patient22: <Patient picture={teeth3d} patientfirstname={'Gert'} patientlastname={'Vandamme'}/>,
-     patient23: <Patient picture={teeth3d} patientfirstname={'Peter'} patientlastname={'Damiaans'}/> 
-    },
-    
-    { patient31 : <Patient picture={teeth3d} patientfirstname={'Bart'} patientlastname={'De Strooper'}/> ,
-     patient32: <Patient picture={teeth3d} patientfirstname={'Kaatje'} patientlastname={'Groothals'}/>,
-     patient33: <Patient picture={teeth3d} patientfirstname={'Lieselot'} patientlastname={'Destoffel'}/> },
-    
-    {patient41 : <Patient picture={teeth3d} patientfirstname={'Jozef'} patientlastname={'Van Kerke'} />
-    }
-  ];
+const all_scans = [
+
+  { patient11 : <Patient picture={teeth3d} patientfirstname={'Jos'} patientlastname={'Van de Velde'} date = {new Date(2023, 2, 21)}/> ,
+   patient12: <Patient picture={teeth3d} patientfirstname={'Anna'} patientlastname={'Janssens'} date = {new Date(2023, 2, 20)} />,
+   patient13: <Patient picture={teeth3d} patientfirstname={'Josephine'} patientlastname={'De Goter'} date = {new Date(2023, 1, 10)}/> 
+  },
+  
+  { patient21 : <Patient picture={teeth3d} patientfirstname={'Jos'} patientlastname={'Van Rooie'} date = {new Date(2022, 4, 4)}/> ,
+   patient22: <Patient picture={teeth3d} patientfirstname={'Gert'} patientlastname={'Vandamme'} date = {new Date(2023, 3, 1)}/>,
+   patient23: <Patient picture={teeth3d} patientfirstname={'Peter'} patientlastname={'Damiaans'}date = {new Date(2022, 12, 23)}/> 
+  },
+  
+  { patient31 : <Patient picture={teeth3d} patientfirstname={'Bart'} patientlastname={'De Strooper'} date = {new Date(2023, 2, 19)}/> ,
+  patient32: <Patient picture={teeth3d} patientfirstname={'Kaatje'} patientlastname={'Groothals'} date = {new Date(2023, 3, 21)}/>,
+   patient33: <Patient picture={teeth3d} patientfirstname={'Lieselot'} patientlastname={'Destoffel'} date = {new Date(2022, 11, 7)}/> },
+  
+  {patient41 : <Patient picture={teeth3d} patientfirstname={'Jozef'} patientlastname={'Van Kerke'} date = {new Date(2022, 12, 7)} />, 
+  patient42 : <Patient picture={teeth3d} patientfirstname={'Jozef'} patientlastname={'Van Kerke'} date = {new Date(2022, 12, 6)} />,
+  }
+];
 
 
   const App: FC = () => {
     const router = useRouter();
-    const patientfirstname = router.query.patientfirstname as string;
-    const patientlastname = router.query.patientlastname as string;
+    const targetpatientfirstname = router.query.patientfirstname as string;
+    const targetpatientlastname = router.query.patientlastname as string;
+
+    const filteredPatients = all_scans.flatMap((obj) => Object.values(obj)) // flatten the array of objects into an array of patients
+    .filter((patient) => patient.props.patientfirstname === targetpatientfirstname && patient.props.patientlastname === targetpatientlastname)
+    .sort((a, b) => b.props.date.getTime() - a.props.date.getTime()); // sort by date, most recent first
+  
+  const TargetPatientScans = filteredPatients.map((patient, index) => ({[`patient${index+1}`]: patient}));
+
   return (
     <div>
-      <HeaderPatient patientfirstname = {patientfirstname} patientlastname = {patientlastname} />
+      <HeaderPatient patientfirstname = {targetpatientfirstname} patientlastname = {targetpatientlastname} />
       <Sidebar />
       <div className={styles.textWrapper}>
-      <h1 className={styles.bigText}> Patient Overview</h1>
+      <h1 className={styles.bigText}> Scan Overview</h1>
       </div>
-      <Table data={patients} />
+      <Table data={TargetPatientScans} />
     </div>
   );
 };
