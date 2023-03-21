@@ -1,6 +1,7 @@
 package patients
 
 import (
+	"database/sql"
 	"fmt"
 
 	"github.com/bufbuild/connect-go"
@@ -13,24 +14,18 @@ import (
 
 
 func AddPatient(req *connect.Request[threedoclusionv1.AddPatientRequest]) (*connect.Response[threedoclusionv1.AddPatientResponse], error) {
-	// Connect to the database
 	database, error := help_functions.ConnectToDataBase()
 	if database == nil || error != nil {
 		return nil, error
 	}
-
 	defer database.Close()
 
-	// Prepare a statement with placeholders for the values
 	statement, error := database.Prepare("INSERT INTO patient (first_name, last_name, pinned, notes) VALUES ($1, $2, $3, $4)")
-
 	if error != nil {
 		return nil, error
 	}
-
 	defer statement.Close()
 
-	// Perform database modifications, adding a patient
 	_, error = statement.Exec(req.Msg.FirstName, req.Msg.LastName, req.Msg.Pinned, req.Msg.Notes)
 	if error != nil {
 		return nil, error
@@ -48,17 +43,13 @@ func AddPatient(req *connect.Request[threedoclusionv1.AddPatientRequest]) (*conn
 }
 
 func DeletePatient(req *connect.Request[threedoclusionv1.DeletePatientRequest]) (*connect.Response[threedoclusionv1.DeletePatientResponse], error) {
-	// Connect to the database
 	database, error := help_functions.ConnectToDataBase()
-
 	if database == nil || error != nil {
 		return nil, error
 	}
 	defer database.Close()
-	// Prepare a statement with placeholders for the condition
-	statement := "DELETE FROM patient WHERE id = $1"
 
-	// Execute the statement with the parameter
+	statement := "DELETE FROM patient WHERE id = $1"
 	_, error = database.Exec(statement, req.Msg.Id)
 	if error != nil {
 		return nil, error
@@ -75,17 +66,19 @@ func DeletePatient(req *connect.Request[threedoclusionv1.DeletePatientRequest]) 
 }
 
 func GetAllPatients(req *connect.Request[threedoclusionv1.GetAllPatientsRequest]) (*connect.Response[threedoclusionv1.GetAllPatientsResponse], error) {
-	// Connect to the database
 	database, error := help_functions.ConnectToDataBase()
-
 	if database == nil || error != nil {
 		return nil, error
 	}
 	defer database.Close()
-	// Prepare a statement with placeholders for the condition
-	statement := "SELECT * FROM patient;"
 
-	result, error := help_functions.GetResponseMakerPatient(database, statement)
+	statement := "SELECT * FROM patient;"
+	rows, error := database.Query(statement)
+	if error != nil {
+		return nil, error
+	}
+
+	result, error := help_functions.GetResponseMakerPatient(rows)
 	if error != nil {
 		panic(error)
 	}
@@ -100,18 +93,19 @@ func GetAllPatients(req *connect.Request[threedoclusionv1.GetAllPatientsRequest]
 }
 
 func GetPatientByID(req *connect.Request[threedoclusionv1.GetPatientByIDRequest]) (*connect.Response[threedoclusionv1.GetPatientByIDResponse], error) {
-	// Connect to the database
 	database, error := help_functions.ConnectToDataBase()
-
 	if database == nil || error != nil {
 		return nil, error
 	}
 	defer database.Close()
 
-	// Prepare a statement with placeholders for the condition
 	statement := "SELECT * FROM patient WHERE id = $1;"
+	rows, error := database.Query(statement, req.Msg.Id)
+	if error != nil {
+		return nil, error
+	}
 
-	result, error := help_functions.GetResponseMakerPatient(database, statement)
+	result, error := help_functions.GetResponseMakerPatient(rows)
 	if error != nil {
 		panic(error)
 	}
@@ -131,18 +125,33 @@ func GetPatientByID(req *connect.Request[threedoclusionv1.GetPatientByIDRequest]
 }
 
 func GetPatientByName(req *connect.Request[threedoclusionv1.GetPatientByNameRequest]) (*connect.Response[threedoclusionv1.GetPatientByNameResponse], error) {
-	// Connect to the database
 	database, error := help_functions.ConnectToDataBase()
-
 	if database == nil || error != nil {
 		return nil, error
 	}
 	defer database.Close()
 
-	// Prepare a statement with placeholders for the condition
-	statement := "SELECT * FROM patient WHERE id = $1;"
-
-	result, error := help_functions.GetResponseMakerPatient(database, statement)
+	first_name := req.Msg.FirstName
+	last_name := req.Msg.LastName
+	var rows *sql.Rows
+	 
+	if (first_name != nil && last_name != nil ) {
+		statement := "SELECT * FROM patient WHERE first_name = $1 AND last_name = $2;"
+		rows, error = database.Query(statement, req.Msg.FirstName, req.Msg.LastName)
+	}else{
+		if first_name == nil {
+			statement := "SELECT * FROM patient WHERE last_name = $1;"
+			rows, error = database.Query(statement, req.Msg.LastName)
+		}else if last_name == nil {
+			statement := "SELECT * FROM patient WHERE first_name = $1;"
+			rows, error = database.Query(statement, req.Msg.FirstName)
+		}
+	}
+	if error != nil {
+		return nil, error
+	}
+	
+	result, error := help_functions.GetResponseMakerPatient(rows)
 	if error != nil {
 		panic(error)
 	}
