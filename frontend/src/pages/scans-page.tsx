@@ -51,25 +51,6 @@ const all_scans = [
   }
 ];
 
-  { patient11 : <Patient picture={teeth3d} patientfirstname={'Jos'} patientlastname={'Van de Velde'} date = {new Date(2023, 2, 21)}/> ,
-   patient12: <Patient picture={teeth3d} patientfirstname={'Anna'} patientlastname={'Janssens'} date = {new Date(2023, 2, 20)} />,
-   patient13: <Patient picture={teeth3d} patientfirstname={'Josephine'} patientlastname={'De Goter'} date = {new Date(2023, 1, 10)}/> 
-  },
-  
-  { patient21 : <Patient picture={teeth3d} patientfirstname={'Jos'} patientlastname={'Van Rooie'} date = {new Date(2022, 4, 4)}/> ,
-   patient22: <Patient picture={teeth3d} patientfirstname={'Gert'} patientlastname={'Vandamme'} date = {new Date(2023, 3, 1)}/>,
-   patient23: <Patient picture={teeth3d} patientfirstname={'Peter'} patientlastname={'Damiaans'}date = {new Date(2022, 12, 23)}/> 
-  },
-  
-  { patient31 : <Patient picture={teeth3d} patientfirstname={'Bart'} patientlastname={'De Strooper'} date = {new Date(2023, 2, 19)}/> ,
-  patient32: <Patient picture={teeth3d} patientfirstname={'Kaatje'} patientlastname={'Groothals'} date = {new Date(2023, 3, 21)}/>,
-   patient33: <Patient picture={teeth3d} patientfirstname={'Lieselot'} patientlastname={'Destoffel'} date = {new Date(2022, 11, 7)}/> },
-  
-  {patient41 : <Patient picture={teeth3d} patientfirstname={'Jozef'} patientlastname={'Van Kerke'} date = {new Date(2022, 12, 7)} />, 
-  patient42 : <Patient picture={teeth3d} patientfirstname={'Jozef'} patientlastname={'Van Kerke'} date = {new Date(2022, 12, 6)} />,
-  }
-];
-
 
   const App: FC = () => {
     const router = useRouter();
