@@ -29,3 +29,10 @@ https://github.com/Soft8Soft/verge3d-code-examples/blob/master/webxr_vr_dragging
 
 collisions uitzetten:
 https://github.com/schteppe/cannon.js/blob/master/demos/collisionFilter.html
+
+
+obj file samples:
+https://people.sc.fsu.edu/~jburkardt/data/obj/obj.html
+
+optimizing collision detection:
+https://github.com/schteppe/cannon.js/issues/80
