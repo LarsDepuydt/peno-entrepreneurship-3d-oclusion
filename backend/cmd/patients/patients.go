@@ -139,18 +139,19 @@ func GetPatientByName(req *connect.Request[threedoclusionv1.GetPatientByNameRequ
 		statement := "SELECT * FROM patient WHERE first_name = $1 AND last_name = $2;"
 		rows, error = database.Query(statement, req.Msg.FirstName, req.Msg.LastName)
 	}else{
-		if first_name == nil {
-			statement := "SELECT * FROM patient WHERE last_name = $1;"
-			rows, error = database.Query(statement, req.Msg.LastName)
-		}else if last_name == nil {
+		if first_name != nil {
 			statement := "SELECT * FROM patient WHERE first_name = $1;"
 			rows, error = database.Query(statement, req.Msg.FirstName)
+		}else if last_name != nil {
+			statement := "SELECT * FROM patient WHERE last_name = $1;"
+			rows, error = database.Query(statement, req.Msg.LastName)
 		}
+		
 	}
 	if error != nil {
 		return nil, error
 	}
-	
+
 	result, error := help_functions.GetResponseMakerPatient(rows)
 	if error != nil {
 		panic(error)
