@@ -10,6 +10,9 @@ import styleB from '@/styles/Buttons.module.css';
 import reluLogo from '../../../public/relu-logo-small.png';
 //import bcrypt from 'bcryptjs';
 
+import { scan } from '@proto/threedoclusion/v1/service.proto';
+import { useQuery } from '@tanstack/react-query';
+
 const FormSchema = yup.object().shape({
   reppassword: yup.string().oneOf([yup.ref('password')], 'this does not match your password'),
 });
@@ -43,7 +46,7 @@ export default function LoginForm() {
         }}
         validationSchema={FormSchema}
         onSubmit={() => {
-          router.push('/login-page');
+          router.push('/patient');
         }}
       >
         {({ errors }) => (
