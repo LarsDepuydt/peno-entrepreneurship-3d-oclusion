@@ -1,5 +1,4 @@
 import React from 'react';
-import styles from '@/styles/Header.module.css';
 import styleSidebar from '@/styles/Sidebar.module.css';
 import New_Patient from '../popups/new-patient';
 import New_Scan from '../popups/new-scan';
