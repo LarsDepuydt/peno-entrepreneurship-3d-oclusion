@@ -8,7 +8,7 @@ import { MeshBVH, acceleratedRaycast } from 'three-mesh-bvh';
 import { default as CannonUtils } from 'cannon-utils';
 
 //added
-let meshtest;
+//let meshtest;
 //var constrained;
 //
 
@@ -229,7 +229,7 @@ function initThree() {
 
     //added for testing
     // Create a Three.js geometry for the mesh
-    const testgeo = new THREE.SphereGeometry(1, 1, 1);
+    /*const testgeo = new THREE.SphereGeometry(1, 1, 1);
 
     // Create a Three.js material for the mesh
     const materialtest = new THREE.MeshBasicMaterial({ color: 0xff0000 });
@@ -237,7 +237,7 @@ function initThree() {
     // Create a Three.js mesh and add it to the scene
     meshtest = new THREE.Mesh(testgeo, materialtest);
     meshtest.scale.multiplyScalar(0.5);
-    scene.add(meshtest);
+    scene.add(meshtest);*/
     
 
     // resize
@@ -268,23 +268,27 @@ renderer.xr.addEventListener("frame", function (event) {
 
 // when controller pushes select button, select the object it is pointing to
 
-function onSelectStartold( event ) {
+function onSelectStart( event ) {
 
     const controller = event.target;
 
     const intersections = getIntersections( controller );
     console.log(intersections);
     if ( intersections.length > 0 ) {
-
+        var object_group;
         const intersection = intersections[ 0 ];
 
-        const object = intersection.object;
+        var object = intersection.object;
         object.material.emissive.b = 1;
         
-        console.log(object);
-        //controller.attach( object );
-        console.log(object);
-        console.log(uj_body);
+        if (uj_mesh.uuid == object.uuid) {object_group = uj_group};
+        if (lj_mesh.uuid == object.uuid) {object_group = lj_group};
+
+        //console.log(object);
+        //object = uj_group;
+        controller.attach( object_group );
+        //console.log(object);
+        //console.log(uj_body);
 
         controller.userData.selected = object;
 
@@ -294,7 +298,7 @@ function onSelectStartold( event ) {
 
 
 
-function onSelectStart( event ) {
+function onSelectStartnew( event ) {
 
     const controller = event.target;
     //const controller = controllerbody1;
@@ -345,15 +349,22 @@ function onSelectStart( event ) {
 // when controller releases select button
 
 function onSelectEnd( event ) {
-
+    var object_group;
     const controller = event.target;
 
     if ( controller.userData.selected !== undefined ) {
 
         const object = controller.userData.selected;
+        //console.log(object);
         object.material.emissive.b = 0;
         //group.attach( object );
-        removeConstraintFromBody(controller)
+
+        if (uj_mesh.uuid == object.uuid) {object_group = uj_group};
+        if (lj_mesh.uuid == object.uuid) {object_group = lj_group};
+        //controller.remove(object_group);
+        scene.attach(object_group);
+        //object.removeFromParent();
+        //removeConstraintFromBody(controller)
 
         controller.userData.selected = undefined;
 
@@ -477,7 +488,7 @@ function addConstraintToBody(body, target) {
     const pivotB = new CANNON.Vec3().copy(target.position);
 
     const constraint = new CANNON.LockConstraint(body, target, {
-      maxForce: 1000000000000000000000000,
+      maxForce: 1000,
       collideConnected: false,
       wakeUpBodies: true,
       wakeUpA: true,
@@ -703,7 +714,7 @@ function updatePhysics() {
     controllerbody2.position.copy(controller2.position);
     controllerbody1.quaternion.copy(controller1.quaternion);
     controllerbody2.quaternion.copy(controller2.quaternion);
-    meshtest.position.copy(controllerbody1.position);
+    //meshtest.position.copy(controllerbody1.position);
     //
 }
 
