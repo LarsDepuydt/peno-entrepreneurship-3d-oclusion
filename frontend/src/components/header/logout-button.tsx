@@ -11,6 +11,6 @@ export default function LogoutButton() {
 
     return (
     <>
-    <button type="button" className={styleB.relu_btn} onClick={clickLogout} >Log out</button>
+    <button type="button" id={styleB.logOut} className={styleB.relu_btn} onClick={clickLogout} >Log out</button>
     </> )
   }
