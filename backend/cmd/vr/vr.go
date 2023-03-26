@@ -6,10 +6,10 @@ import (
 	"github.com/bufbuild/connect-go"
 	_ "github.com/lib/pq"
 
-	"github.com/LarsDepuydt/peno-entrepreneurship-3d-oclusion/cmd/help_functions"
 	threedoclusionv1 "github.com/LarsDepuydt/peno-entrepreneurship-3d-oclusion/gen/proto/threedoclusion/v1"
 )
 
+/*
 func GetPositionScan(req *connect.Request[threedoclusionv1.GetPositionScanRequest],
 ) (*connect.Response[threedoclusionv1.GetPositionScanResponse], error) {
 	// Connect to the database
@@ -37,7 +37,21 @@ func GetPositionScan(req *connect.Request[threedoclusionv1.GetPositionScanReques
 		RZ: r_zArray[0],
 	})
 	return res, nil
-}
+}*/
+
+func GetPositionScan(req *connect.Request[threedoclusionv1.GetPositionScanRequest],
+	) (*connect.Response[threedoclusionv1.GetPositionScanResponse], error) {
+	
+		res := connect.NewResponse(&threedoclusionv1.GetPositionScanResponse{
+			X:  1,
+			Y:  2,
+			Z:  3,
+			RX: 4,
+			RY: 5,
+			RZ: 6,
+		})
+		return res, nil
+	}
 
 /*
 func SendPositionScan(req *connect.Request[threedoclusionv1.SendPositionScanRequest],

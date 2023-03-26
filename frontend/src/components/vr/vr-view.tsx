@@ -289,22 +289,9 @@ function render() {
     renderer.render( scene, camera );
 }
 
-function getPosition(){ // FIrst check if defined
-    target = lj_mesh.position;
-    // Call service based on scan ID
-    const scanID = 111; // Hardcoded
-    const {data} = useQuery(getPositionScan.useQuery({ scanId: scanID }));
-
-    if (data == undefined){
-        return []
-    }
-
-    const {x, y, z, rX, rY, rZ} = data;
-    return [x, y, z, rX, rY, rZ]
-}
-
 export default function VRView(){
     const [send, setSend] = useState(false);
+    const [getPosition, setGetPosition] = useState(false);
 
     useEffect(() => { // https://github.com/facebook/react/issues/24502
         if (second_call){
@@ -411,6 +398,7 @@ function loadObjects() {
         if (elapsedTime >= 5) {
             setSend(true); // Send position every 5 seconds
             console.log(elapsedTime, "seconds have passed");
+            //setGetPosition(true);
         
         // reset the clock
         clock.start();
@@ -419,38 +407,54 @@ function loadObjects() {
 
     function SendPositionComponent() {
         const scanId = 111; // Hardcoded
-        const [saved, setSaved] = useState(false);
+        //const [saved, setSaved] = useState(false);
     
         const coordinate_info = lj_mesh?.position;
         const rotation_info = lj_mesh?.rotation;
         const { x, y, z } = coordinate_info ?? {};
         const { x: r_x, y: r_y, z: r_z } = rotation_info ?? {};
 
-        if (send){
-            const { data, isLoading, isError } = useQuery(sendPositionScan.useQuery({ scanId, x, y, z, rX: r_x, rY: r_y, rZ: r_z }));
-        }
+        const query = sendPositionScan.useQuery({ scanId, x, y, z, rX: r_x, rY: r_y, rZ: r_z });
+        //query.enabled = false; const { data, refetch } = useQuery(query);
+        const { data, refetch } = useQuery(query.queryKey, query.queryFn, { enabled: false });
+        
+        //console.log(data); // When enabled: true data sometimes gets received properly
 
         useEffect(() => {
             if (send) {
-                //updateData(data);
+                refetch();
+                //console.log(data); // Undefined?
                 setSend(false);
             }
         }, [send]);
-    
-        async function updateData(data: any) {
-        if (lj_mesh) {
-            if (data) {
-            setSaved(data.saved);
+        return null;
+    }
+
+
+    function GetPositionComponent(){ // FIrst check if defined
+        // Call service based on scan ID
+        const scanID = 111; // Hardcoded
+
+        const query = getPositionScan.useQuery({ scanId: scanID });
+        const {data, refetch} = useQuery(query.queryKey, query.queryFn, { enabled: false });
+
+        useEffect(() => {
+            if (getPosition) {
+                refetch();
+                setGetPosition(false);
             }
-        } else {
-            console.log('Mesh undefined!');
-        }
-        }
-        // Do something with data here
+        }, [getPosition]);
+
+        if (data) console.log(data);
+        //const {x, y, z, rX, rY, rZ} = data!;
+        //console.log(x, y, z, rX, rY, rZ);
         return null;
     }
 
     return (
-        <div> <SendPositionComponent/> </div>
+        <div> 
+        <SendPositionComponent/>
+        <GetPositionComponent/> 
+        </div>
     )
 }

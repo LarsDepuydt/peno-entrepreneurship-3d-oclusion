@@ -1,6 +1,6 @@
 import { sendVR } from '@/gen/proto/threedoclusion/v1/service-ScanService_connectquery'
 import { useQuery } from '@tanstack/react-query';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 
 
 export default function ClientPage() {
@@ -9,8 +9,7 @@ export default function ClientPage() {
     const [submitOK, setSubmitOK] = useState(false);
     
     const query = sendVR.useQuery({ clientId, scanId });
-    const { data, refetch } = useQuery(query.queryKey, query.queryFn, { enabled: submitOK });
-
+    const { data, refetch } = useQuery(query.queryKey, query.queryFn, { enabled: false });
 
     function afterSubmit(event: React.FormEvent<HTMLFormElement>) {
       event.preventDefault();
@@ -19,12 +18,14 @@ export default function ClientPage() {
       if (codeInput){
         setClientId(parseInt(codeInput.value, 10));
       }
+      setSubmitOK(true);
     }
 
     const handleRedirect = () => {
-        setSubmitOK(true);
+       if (submitOK){
         refetch();
-        setSubmitOK(false); // Just to be sure
+        setSubmitOK(false);
+       }
     };
 
   return (

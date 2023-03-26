@@ -5,7 +5,6 @@ import { XRControllerModelFactory } from 'three/examples/jsm/webxr/XRControllerM
 import { OBJLoader } from 'three/examples/jsm/loaders/OBJLoader.js';
 import { useState, useEffect } from 'react';
 
-
 let container: HTMLDivElement;
 let camera: THREE.PerspectiveCamera, scene: THREE.Scene, renderer: THREE.WebGLRenderer;
 let controller1: THREE.XRTargetRaySpace, controller2: THREE.XRTargetRaySpace;
@@ -19,9 +18,9 @@ const tempMatrix = new THREE.Matrix4();
 let controls, group: THREE.Group;
 let second_call = false;
 
-
 const path_upper_jaw = '/upper_ios_6.obj'; // URLs for fetch, temporarily in public folder so Nextjs can access
 const path_lower_jaw = '/lower_ios_6.obj';
+const SCALE_MODEL = 0.01;
 
 function init() {
     // create container
@@ -89,7 +88,7 @@ function init() {
             lowerjaw.position.z = 0.12
             lowerjaw.rotation.x = 1.5 * Math.PI
             //lowerjaw.rotation.y = Math.PI
-            lowerjaw.scale.setScalar(0.01);
+            lowerjaw.scale.setScalar(SCALE_MODEL);
 
             group.add(lowerjaw);
 
@@ -120,7 +119,7 @@ function init() {
             upperjaw.position.z = 0.12
             upperjaw.rotation.x = 1.5 * Math.PI
             //upperjaw.rotation.y = Math.PI
-            upperjaw.scale.setScalar(0.01);
+            upperjaw.scale.setScalar(SCALE_MODEL);
             upperjaw.name = "upperjaw";
 
 
@@ -164,7 +163,6 @@ function initThree(){
     controller2.addEventListener( 'selectstart', onSelectStart );
     controller2.addEventListener( 'selectend', onSelectEnd );
     scene.add( controller2 );
-
 
     // add controller models
     const controllerModelFactory = new XRControllerModelFactory();
@@ -221,12 +219,36 @@ function onSelectStart( event: any ) {
 
         const object: any = intersection.object;
         object.material.emissive.b = 1;
-        controller.attach( object );
+
+        //controller.attach(object);
 
         controller.userData.selected = object;
-
     }
 
+}
+
+
+function beforeRender( controller: any ){
+    changeControlledCoordinates(controller, 0);
+}
+
+function changeControlledCoordinates( controller: any, coordinate: number ){ // 0, 1, 2: x, y, z
+    if (controller.userData.selected === undefined) return;
+    switch (coordinate) {
+        case 0: {
+            controller.userData.selected.position.setX(controller.position.x / SCALE_MODEL)
+            break;
+        }
+        case 1: {
+            controller.userData.selected.position.setY(controller.position.y / SCALE_MODEL);
+            break;
+        }
+        case 2: {
+            controller.userData.selected.position.setZ(controller.position.z / SCALE_MODEL);
+            break;
+        }
+        
+    }
 }
 
 // when controller releases select button
@@ -309,6 +331,9 @@ function render() {
 
     intersectObjects( controller1 );
     intersectObjects( controller2 );
+
+    beforeRender(controller1);
+    beforeRender(controller2);
 
     renderer.render( scene, camera );
 }
