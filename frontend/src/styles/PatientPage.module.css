@@ -7,6 +7,15 @@
   border-radius: 10px;
 }
 
+.invisible_patient_picture {
+  width: 250px;
+  height: auto;
+  text-align: center;
+  margin: 10px 10px 10px 10px;
+  border-radius: 10px;
+  opacity: 0;
+}
+
 .patient_button {
   /* size of button is fixed to size of picture */
   margin: 12px;
@@ -20,9 +29,16 @@
   flex-basis: auto;
 }
 
-
 .patient_button:hover {
-  background-color: #4CAF50;
+  background-color: #f8f8f8;
+  margin: 12px;
+  text-align: center;
+  border-radius: 10px;
+  border-width: 3px;
+  border-width: 1.5px;
+  border-style: solid;
+  border-color: #fe7d00;
+  flex-basis: auto;
 }
 
 .projects {

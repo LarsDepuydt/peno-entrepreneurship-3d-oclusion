@@ -37,18 +37,6 @@ export function SinglePatient({ picture, patientfirstname, patientlastname }: pa
 
   return (
     <div className={styles.patient_button} onMouseEnter={handleMouseEnter} onMouseLeave={handleMouseLeave}>
-      <div onClick={clickPatient}>
-        <Image
-          id={patientfirstname.concat(' ', patientlastname)}
-          className={styles.patient_picture}
-          src={picture}
-          alt="3d picture of teeth"
-          width={100}
-        />
-        <div className={styles.patientscanNameWrapper}>
-          <p className={styles.patientscanName}>{patientfirstname.concat(' ', patientlastname)}</p>
-        </div>
-      </div>
       {showButtons && (
         <div className="sub-buttons">
           <DeleteButton />
@@ -56,6 +44,23 @@ export function SinglePatient({ picture, patientfirstname, patientlastname }: pa
           <button>Button 3</button>
         </div>
       )}
+      {!showButtons && (
+        <div className="content">
+          {' '}
+          <Image
+            id={patientfirstname.concat(' ', patientlastname)}
+            className={showButtons ? styles.invisible_patient_picture : styles.patient_picture}
+            src={picture}
+            alt="3d picture of teeth"
+          />
+        </div>
+      )}
+
+      <div onClick={clickPatient}>
+        <div className={styles.patientscanNameWrapper}>
+          <p className={styles.patientscanName}>{patientfirstname.concat(' ', patientlastname)}</p>
+        </div>
+      </div>
     </div>
   );
 }
