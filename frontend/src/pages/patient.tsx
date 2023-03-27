@@ -10,34 +10,8 @@ import { StaticImageData } from 'next/image';
 import { FC } from 'react';
 import { SidebarDoctor } from '../components/header/sidebar';
 
-interface TableProps {
-  data: { [key: string]: any }[];
-}
-
-const Table: FC<TableProps> = ({ data }) => {
-  return (
-    <table>
-      <thead></thead>
-      <tbody>
-        {data.map((row, index) => (
-          <tr key={index}>
-            {Object.values(row).map((value, index) => (
-              <td key={index}>{value}</td>
-            ))}
-          </tr>
-        ))}
-      </tbody>
-    </table>
-  );
-};
-
 // hard coded patients - 12 scans for 10 patients. Kaatje and Jozef have each 2 scans.
 const patients = [
-  {
-    patient11: <Patient id={1000} picture={teeth3d} patientfirstname={'Jos'} patientlastname={'Van de Velde'} />,
-    patient12: <Patient id={123} picture={teeth3d} patientfirstname={'Anna'} patientlastname={'Janssens'} />,
-    patient13: <Patient id={666} picture={teeth3d} patientfirstname={'Josephine'} patientlastname={'De Goter'} />,
-  },
 
   {
     patient11: (
@@ -160,18 +134,17 @@ const patients = [
   },
 ];
 
-const patientMap = new Map();
-patients.forEach((patientGroup) => {
-  Object.values(patientGroup).forEach((patient) => {
-    if (!patientMap.has(patient.props.id) || patient.props.date > patientMap.get(patient.props.id).props.date) {
-      patientMap.set(patient.props.id, patient);
-    }
-  });
-});
 
-const TargetPatientScans = Array.from(patientMap.values())
-  // .sort((a, b) => b.props.date.getTime() - a.props.date.getTime())
-  .map((patient, index) => ({ [`patient${index + 1}`]: patient }));
+const filteredPatients = patients
+  .flatMap((obj) => Object.values(obj)) // flatten the array of objects into an array of patients
+  .reduce((acc, patient) => {
+    const foundPatient = acc.find((p) => p.props.id === patient.props.id);
+    if (!foundPatient) {
+      acc.push(patient);
+    }
+    return acc;
+  }, []);
+
 
 const App: FC = () => {
   return (
@@ -179,7 +152,16 @@ const App: FC = () => {
       <SidebarDoctor />
       <HeaderDoctor />
       <div className={styles.scansWrapper}>
-        <Table data={TargetPatientScans} />
+        {filteredPatients.map((patient, index) => (
+          <div key={`patient${index + 1}`}>
+            <Patient
+              id={patient.props.id}
+              picture={patient.props.picture}
+              patientfirstname={patient.props.patientfirstname}
+              patientlastname={patient.props.patientlastname}
+            />
+          </div>
+        ))}
       </div>
     </div>
   );
