@@ -8,7 +8,7 @@ import teeth3d from '../../public/3d-teeth.jpg';
 import { useRouter } from 'next/router';
 import { StaticImageData } from 'next/image';
 import { FC } from 'react';
-import Sidebar from '../components/header/sidebar';
+import { SidebarDoctor } from '../components/header/sidebar';
 
 interface TableProps {
   data: { [key: string]: any }[];
@@ -16,7 +16,7 @@ interface TableProps {
 
 const Table: FC<TableProps> = ({ data }) => {
   return (
-    <table className={styles.patientscanTable}>
+    <table>
       <thead></thead>
       <tbody>
         {data.map((row, index) => (
@@ -46,7 +46,7 @@ const patients = [
         picture={teeth3d}
         patientfirstname={'Jos'}
         patientlastname={'Van de Velde'}
-        date={new Date(2023, 2, 21)}
+        //date={new Date(2023, 2, 21)}
       />
     ),
     patient12: (
@@ -55,7 +55,7 @@ const patients = [
         picture={teeth3d}
         patientfirstname={'Anna'}
         patientlastname={'Janssens'}
-        date={new Date(2023, 2, 20)}
+        //date={new Date(2023, 2, 20)}
       />
     ),
     patient13: (
@@ -64,7 +64,7 @@ const patients = [
         picture={teeth3d}
         patientfirstname={'Josephine'}
         patientlastname={'De Goter'}
-        date={new Date(2023, 1, 10)}
+        //date={new Date(2023, 1, 10)}
       />
     ),
   },
@@ -76,7 +76,7 @@ const patients = [
         picture={teeth3d}
         patientfirstname={'Jos'}
         patientlastname={'Van Rooie'}
-        date={new Date(2022, 4, 4)}
+        //date={new Date(2022, 4, 4)}
       />
     ),
     patient22: (
@@ -85,7 +85,7 @@ const patients = [
         picture={teeth3d}
         patientfirstname={'Gert'}
         patientlastname={'Vandamme'}
-        date={new Date(2023, 3, 1)}
+        //date={new Date(2023, 3, 1)}
       />
     ),
     patient23: (
@@ -94,7 +94,7 @@ const patients = [
         picture={teeth3d}
         patientfirstname={'Peter'}
         patientlastname={'Damiaans'}
-        date={new Date(2022, 12, 23)}
+        //date={new Date(2022, 12, 23)}
       />
     ),
   },
@@ -106,7 +106,7 @@ const patients = [
         picture={teeth3d}
         patientfirstname={'Bart'}
         patientlastname={'De Strooper'}
-        date={new Date(2023, 2, 19)}
+        //date={new Date(2023, 2, 19)}
       />
     ),
     patient32: (
@@ -115,7 +115,7 @@ const patients = [
         picture={teeth3d}
         patientfirstname={'Kaatje'}
         patientlastname={'Groothals'}
-        date={new Date(2023, 3, 21)}
+        //date={new Date(2023, 3, 21)}
       />
     ),
     patient33: (
@@ -124,7 +124,7 @@ const patients = [
         picture={teeth3d}
         patientfirstname={'Lieselot'}
         patientlastname={'Destoffel'}
-        date={new Date(2022, 11, 7)}
+        //date={new Date(2022, 11, 7)}
       />
     ),
   },
@@ -136,7 +136,7 @@ const patients = [
         picture={teeth3d}
         patientfirstname={'Jozef'}
         patientlastname={'Van Kerke'}
-        date={new Date(2022, 12, 7)}
+        //date={new Date(2022, 12, 7)}
       />
     ),
     patient42: (
@@ -145,7 +145,7 @@ const patients = [
         picture={teeth3d}
         patientfirstname={'Jozef'}
         patientlastname={'Van Kerke'}
-        date={new Date(2022, 12, 6)}
+        //date={new Date(2022, 12, 6)}
       />
     ),
     patient43: (
@@ -154,7 +154,7 @@ const patients = [
         picture={teeth3d}
         patientfirstname={'Kaatje'}
         patientlastname={'Groothals'}
-        date={new Date(2023, 2, 21)}
+        //date={new Date(2023, 2, 21)}
       />
     ),
   },
@@ -176,12 +176,11 @@ const TargetPatientScans = Array.from(patientMap.values())
 const App: FC = () => {
   return (
     <div>
+      <SidebarDoctor />
       <HeaderDoctor />
-      <Sidebar />
-      <div className={styles.textWrapper}>
-        <h1 className={styles.bigText}> Patient Overview</h1>
+      <div className={styles.scansWrapper}>
+        <Table data={TargetPatientScans} />
       </div>
-      <Table data={TargetPatientScans} />
     </div>
   );
 };
