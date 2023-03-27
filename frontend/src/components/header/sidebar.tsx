@@ -1,4 +1,5 @@
 import React from 'react';
+import stylesButton from '@/styles/Buttons.module.css';
 import styleSidebar from '@/styles/Sidebar.module.css';
 import New_Patient from '../popups/new-patient';
 import New_Scan from '../popups/new-scan';
@@ -19,7 +20,9 @@ export function SidebarDoctor() {
     <>
       <div className={styleSidebar.sidebar}>
         <WelcomingDoctor doctorfirstname={'Anna'} doctorlastname={'Proost'} />
-        <New_Patient />
+        <div className={stylesButton.sidebarButton}>
+          <New_Patient />
+        </div>
       </div>
     </>
   );
@@ -30,7 +33,9 @@ export function SidebarPatient({ patientfirstname, patientlastname }: HeaderPati
     <>
       <div className={styleSidebar.sidebar}>
         <WelcomingPatient patientfirstname={patientfirstname} patientlastname={patientlastname} />
-        <New_Scan />
+        <div className={stylesButton.sidebarButton}>
+          <New_Scan />
+        </div>
       </div>
     </>
   );
