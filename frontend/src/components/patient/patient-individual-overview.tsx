@@ -37,22 +37,17 @@ export function SinglePatient({ picture, patientfirstname, patientlastname }: pa
 
   return (
     <div className={styles.patient_button} onMouseEnter={handleMouseEnter} onMouseLeave={handleMouseLeave}>
+      <Image
+        id={patientfirstname.concat(' ', patientlastname)}
+        className={showButtons ? styles.invisible_patient_picture : styles.patient_picture}
+        src={picture}
+        alt="3d picture of teeth"
+      />
       {showButtons && (
         <div className="sub-buttons">
           <DeleteButton />
           <button>Button 2</button>
           <button>Button 3</button>
-        </div>
-      )}
-      {!showButtons && (
-        <div className="content">
-          {' '}
-          <Image
-            id={patientfirstname.concat(' ', patientlastname)}
-            className={showButtons ? styles.invisible_patient_picture : styles.patient_picture}
-            src={picture}
-            alt="3d picture of teeth"
-          />
         </div>
       )}
 
