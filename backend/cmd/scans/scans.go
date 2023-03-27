@@ -10,25 +10,20 @@ import (
 	threedoclusionv1 "github.com/LarsDepuydt/peno-entrepreneurship-3d-oclusion/gen/proto/threedoclusion/v1"
 )
 
+
 func AddScan(req *connect.Request[threedoclusionv1.AddScanRequest]) (*connect.Response[threedoclusionv1.AddScanResponse], error) {
-	// Connect to the database
 	database, error := help_functions.ConnectToDataBase()
 	if database == nil || error != nil {
 		return nil, error
 	}
-
 	defer database.Close()
 
-	// Prepare a statement with placeholders for the values
 	statement, error := database.Prepare("INSERT INTO scan (scan_file, scan_date) VALUES ($1, $2)")
-
 	if error != nil {
 		return nil, error
 	}
-
 	defer statement.Close()
 
-	// Perform database modifications, adding a scan
 	_, error = statement.Exec(req.Msg.ScanFile, req.Msg.ScanDate)
 	if error != nil {
 		return nil, error
@@ -38,7 +33,7 @@ func AddScan(req *connect.Request[threedoclusionv1.AddScanRequest]) (*connect.Re
 	fmt.Println(responseMessage)
 
 	res := connect.NewResponse(&threedoclusionv1.AddScanResponse{
-		Message: "responseMessage",
+		Message: responseMessage,
 	})
 
 	fmt.Println(responseMessage)
@@ -46,17 +41,13 @@ func AddScan(req *connect.Request[threedoclusionv1.AddScanRequest]) (*connect.Re
 }
 
 func DeleteScan(req *connect.Request[threedoclusionv1.DeleteScanRequest]) (*connect.Response[threedoclusionv1.DeleteScanResponse], error) {
-	// Connect to the database
 	database, error := help_functions.ConnectToDataBase()
-
 	if database == nil || error != nil {
 		return nil, error
 	}
 	defer database.Close()
-	// Prepare a statement with placeholders for the condition
-	statement := "DELETE FROM scan WHERE id = $1"
 
-	// Execute the statement with the parameter
+	statement := "DELETE FROM scan WHERE id = $1"
 	_, error = database.Exec(statement, req.Msg.Id)
 	if error != nil {
 		return nil, error
@@ -73,17 +64,19 @@ func DeleteScan(req *connect.Request[threedoclusionv1.DeleteScanRequest]) (*conn
 }
 
 func GetAllScans(req *connect.Request[threedoclusionv1.GetAllScansRequest]) (*connect.Response[threedoclusionv1.GetAllScansResponse], error) {
-	// Connect to the database
 	database, error := help_functions.ConnectToDataBase()
-
 	if database == nil || error != nil {
 		return nil, error
 	}
 	defer database.Close()
-	// Prepare a statement with placeholders for the condition
-	statement := "SELECT * FROM scan;"
 
-	idArray, _, _, _, _, _, _, dateArray, error := help_functions.GetResponseMakerScan(database, statement)
+	statement := "SELECT * FROM scan;"
+	rows, error := database.Query(statement)
+	if error != nil {
+		return nil, error
+	}
+
+	result, error := help_functions.GetResponseMakerScan(rows)
 	if error != nil {
 		panic(error)
 	}
@@ -91,50 +84,51 @@ func GetAllScans(req *connect.Request[threedoclusionv1.GetAllScansRequest]) (*co
 	fmt.Println("Got all scans succesfully")
 
 	res := connect.NewResponse(&threedoclusionv1.GetAllScansResponse{
-		IdData:    idArray,
-		ScanDates: dateArray,
+		Scans: result,
 	})
 
 	return res, nil
 }
 
 func GetScanByID(req *connect.Request[threedoclusionv1.GetScanByIDRequest]) (*connect.Response[threedoclusionv1.GetScanByIDResponse], error) {
-	// Connect to the database
 	database, error := help_functions.ConnectToDataBase()
-
 	if database == nil || error != nil {
 		return nil, error
 	}
 	defer database.Close()
 
-	// Prepare a statement with placeholders for the condition
 	statement := "SELECT * FROM scan WHERE id = $1;"
+	rows, error := database.Query(statement, req.Msg.Id)
+	if error != nil {
+		return nil, error
+	}
 
-	idArray, _, _, _, _, _, _, dateArray, error := help_functions.GetResponseMakerScan(database, statement)
+	result, error := help_functions.GetResponseMakerScan(rows)
 	if error != nil {
 		panic(error)
 	}
 
 	res := connect.NewResponse(&threedoclusionv1.GetScanByIDResponse{
-		Id:       idArray[0],
-		ScanDate: dateArray[0],
+		Scan: result[0],
 	})
 
 	return res, nil
 }
 
 func GetScanByDate(req *connect.Request[threedoclusionv1.GetScanByDateRequest]) (*connect.Response[threedoclusionv1.GetScanByDateResponse], error) {
-	// Connect to the database
 	database, error := help_functions.ConnectToDataBase()
-
 	if database == nil || error != nil {
 		return nil, error
 	}
 	defer database.Close()
-	// Prepare a statement with placeholders for the condition
-	statement := "SELECT * FROM scan WHERE scan_date = $1;"
 
-	idArray, _, _, _, _, _, _, dateArray, error := help_functions.GetResponseMakerScan(database, statement)
+	statement := "SELECT * FROM scan WHERE scan_date = $1;"
+	rows, error := database.Query(statement, req.Msg.Date)
+	if error != nil {
+		return nil, error
+	}
+
+	result, error := help_functions.GetResponseMakerScan(rows)
 	if error != nil {
 		panic(error)
 	}
@@ -143,8 +137,7 @@ func GetScanByDate(req *connect.Request[threedoclusionv1.GetScanByDateRequest]) 
 	fmt.Println(responseMessage)
 
 	res := connect.NewResponse(&threedoclusionv1.GetScanByDateResponse{
-		IdData:    idArray,
-		ScanDates: dateArray,
+		Scans: result,
 	})
 
 	return res, nil

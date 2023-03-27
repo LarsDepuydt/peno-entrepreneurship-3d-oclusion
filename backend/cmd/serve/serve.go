@@ -4,6 +4,10 @@ import (
 	"context"
 	"net/http"
 
+	"github.com/LarsDepuydt/peno-entrepreneurship-3d-oclusion/cmd/dentists"
+	"github.com/LarsDepuydt/peno-entrepreneurship-3d-oclusion/cmd/help_datastructures"
+	"github.com/LarsDepuydt/peno-entrepreneurship-3d-oclusion/cmd/patients"
+	"github.com/LarsDepuydt/peno-entrepreneurship-3d-oclusion/cmd/push"
 	"github.com/LarsDepuydt/peno-entrepreneurship-3d-oclusion/cmd/scans"
 	"github.com/LarsDepuydt/peno-entrepreneurship-3d-oclusion/cmd/tags"
 	"github.com/LarsDepuydt/peno-entrepreneurship-3d-oclusion/cmd/vr"
@@ -15,7 +19,9 @@ import (
 	"golang.org/x/net/http2/h2c"
 )
 
-type ServerStruct struct{}
+type ServerStruct struct {
+	redirectVRChannels *help_datastructures.MapChannels
+}
 
 func setCors(mux http.Handler) http.Handler {
 	muxHandler := cors.Default().Handler(mux)
@@ -31,7 +37,8 @@ func setCors(mux http.Handler) http.Handler {
 }
 
 func Server() {
-	server := &ServerStruct{}
+	redirectVRChannels := help_datastructures.NewMap()
+	server := &ServerStruct{redirectVRChannels}
 
 	mux := http.NewServeMux()
 	path, handler := threedoclusionv1connect.NewScanServiceHandler(server)
@@ -44,6 +51,21 @@ func Server() {
 		// Use h2c so we can serve HTTP/2 without TLS.
 		h2c.NewHandler(muxHandler, &http2.Server{}),
 	)
+}
+
+// PUSH
+func (s *ServerStruct) SendVR(
+	ctx context.Context,
+	req *connect.Request[threedoclusionv1.SendVRRequest],
+) (*connect.Response[threedoclusionv1.SendVRResponse], error) {
+	return push.SendToVR(req, s.redirectVRChannels)
+}
+
+func (s *ServerStruct) Waiting(
+	ctx context.Context,
+	req *connect.Request[threedoclusionv1.WaitingRequest], stream *connect.ServerStream[threedoclusionv1.WaitingResponse],
+) error {
+	return push.GetWaitingResponse(req, stream, s.redirectVRChannels)
 }
 
 // SCANS
@@ -130,4 +152,89 @@ func (s *ServerStruct) SendPositionScan(
 	req *connect.Request[threedoclusionv1.SendPositionScanRequest],
 ) (*connect.Response[threedoclusionv1.SendPositionScanResponse], error) {
 	return vr.SendPositionScan(req)
+}
+// PATIENTS
+func (s *ServerStruct) AddPatient(
+	ctx context.Context,
+	req *connect.Request[threedoclusionv1.AddPatientRequest],
+) (*connect.Response[threedoclusionv1.AddPatientResponse], error) {
+	return patients.AddPatient(req)
+}
+
+func (s *ServerStruct) DeletePatient(
+	ctx context.Context,
+	req *connect.Request[threedoclusionv1.DeletePatientRequest],
+) (*connect.Response[threedoclusionv1.DeletePatientResponse], error) {
+	return patients.DeletePatient(req)
+}
+
+func (s *ServerStruct) GetAllPatients(
+	ctx context.Context,
+	req *connect.Request[threedoclusionv1.GetAllPatientsRequest],
+) (*connect.Response[threedoclusionv1.GetAllPatientsResponse], error) {
+	return patients.GetAllPatients(req)
+}
+
+func (s *ServerStruct) GetPatientByID(
+	ctx context.Context,
+	req *connect.Request[threedoclusionv1.GetPatientByIDRequest],
+) (*connect.Response[threedoclusionv1.GetPatientByIDResponse], error) {
+	return patients.GetPatientByID(req)
+}
+
+func (s *ServerStruct) GetPatientByName(
+	ctx context.Context,
+	req *connect.Request[threedoclusionv1.GetPatientByNameRequest],
+) (*connect.Response[threedoclusionv1.GetPatientByNameResponse], error) {
+	return patients.GetPatientByName(req)
+}
+
+// DENTISTS
+func (s *ServerStruct) AddDentist(
+	ctx context.Context,
+	req *connect.Request[threedoclusionv1.AddDentistRequest],
+) (*connect.Response[threedoclusionv1.AddDentistResponse], error) {
+	return dentists.AddDentist(req)
+}
+
+func (s *ServerStruct) DeleteDentistById(
+	ctx context.Context,
+	req *connect.Request[threedoclusionv1.DeleteDentistByIdRequest],
+) (*connect.Response[threedoclusionv1.DeleteDentistByIdResponse], error) {
+	return dentists.DeleteDentistById(req)
+}
+
+func (s *ServerStruct) GetAllDentists(
+	ctx context.Context,
+	req *connect.Request[threedoclusionv1.GetAllDentistsRequest],
+) (*connect.Response[threedoclusionv1.GetAllDentistsResponse], error) {
+	return dentists.GetAllDentists(req)
+}
+
+func (s *ServerStruct) GetDentistById(
+	ctx context.Context,
+	req *connect.Request[threedoclusionv1.GetDentistByIdRequest],
+) (*connect.Response[threedoclusionv1.GetDentistByIdResponse], error) {
+	return dentists.GetDentistById(req)
+}
+
+func (s *ServerStruct) Login(
+	ctx context.Context,
+	req *connect.Request[threedoclusionv1.LoginRequest],
+) (*connect.Response[threedoclusionv1.LoginResponse], error) {
+	return dentists.Login(req)
+}
+
+func (s *ServerStruct) Register(
+	ctx context.Context,
+	req *connect.Request[threedoclusionv1.RegisterRequest],
+) (*connect.Response[threedoclusionv1.RegisterResponse], error) {
+	return dentists.Register(req)
+}
+
+func (s *ServerStruct) UpdateDentistById(
+	ctx context.Context,
+	req *connect.Request[threedoclusionv1.UpdateDentistByIdRequest],
+) (*connect.Response[threedoclusionv1.UpdateDentistByIdResponse], error) {
+	return dentists.UpdateDentistById(req)
 }

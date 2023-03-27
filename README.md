@@ -1,4 +1,4 @@
-# 3D Oclusion
+# 3D Occlusion
 
 ## Run backend
 

@@ -6,10 +6,10 @@ import (
 	"github.com/bufbuild/connect-go"
 	_ "github.com/lib/pq"
 
-	"github.com/LarsDepuydt/peno-entrepreneurship-3d-oclusion/cmd/help_functions"
 	threedoclusionv1 "github.com/LarsDepuydt/peno-entrepreneurship-3d-oclusion/gen/proto/threedoclusion/v1"
 )
 
+/*
 func GetPositionScan(req *connect.Request[threedoclusionv1.GetPositionScanRequest],
 ) (*connect.Response[threedoclusionv1.GetPositionScanResponse], error) {
 	// Connect to the database
@@ -37,7 +37,30 @@ func GetPositionScan(req *connect.Request[threedoclusionv1.GetPositionScanReques
 		RZ: r_zArray[0],
 	})
 	return res, nil
-}
+}*/
+
+func GetPositionScan(req *connect.Request[threedoclusionv1.GetPositionScanRequest],
+	) (*connect.Response[threedoclusionv1.GetPositionScanResponse], error) {
+	
+		res := connect.NewResponse(&threedoclusionv1.GetPositionScanResponse{
+			Scan:  &threedoclusionv1.Scan{
+				LowerY:  1,
+				LowerZ:  1,
+				LowerRX: 1,
+				LowerRY: 1,
+				LowerRZ: 1,
+				UpperX:  1,
+				UpperY:  1,
+				UpperZ:  1,
+				UpperRX: 1,
+				UpperRY: 1,
+				UpperRZ: 1,
+				Id: 12,
+				Date: "2022",
+			},
+		})
+		return res, nil
+	}
 
 /*
 func SendPositionScan(req *connect.Request[threedoclusionv1.SendPositionScanRequest],
@@ -73,7 +96,7 @@ func SendPositionScan(req *connect.Request[threedoclusionv1.SendPositionScanRequ
 func SendPositionScan(req *connect.Request[threedoclusionv1.SendPositionScanRequest],
 ) (*connect.Response[threedoclusionv1.SendPositionScanResponse], error) {
 
-	fmt.Println("The scan ID is", req.Msg.ScanId)
+	fmt.Println("The Z coordinate of the lower jaw is", req.Msg.Scan.LowerZ);
 
 	res := connect.NewResponse(&threedoclusionv1.SendPositionScanResponse{ // Confirm it's ok
 		Saved: true,
