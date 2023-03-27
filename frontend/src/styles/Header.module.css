@@ -1,10 +1,9 @@
 .small_logo {
   width: 100px;
-  height: auto;
+  height: auto; /* does not seem to work as intended */
   text-align: center;
   margin: 10px;
   margin-left: 15px;
-  position: fixed; /* makes the logo go along with the sidebar*/
 }
 
 .logout_layout {
@@ -13,23 +12,25 @@
 }
 
 .header_layout {
-  border-radius: 15px;
-  margin: 10px;
+  width: 100vw;
+  height: 8vh;
   display: flex;
   column-gap: 20px;
   justify-content: space-between;
 
+  text-align: center;
+
   background-color: #f8f8f8;
-  border: 1px solid #6d767e;
+  border-bottom: 1px solid #6d767e;
+  position: fixed;  /* makes the logo go along with the sidebar */
 }
 
-.sidebar {
-  position: fixed;
-  top: 85px;
-  bottom: -15px;
-  left: -15px;
-  width: 20vw;
-  background-color: #e6e6e6;
-  box-shadow: 0px 0px 15px 1px #989fa4 inset; /* fix: can't get shadow only on one side, fixed by making position negative ^ */
-  border-radius: 0px 10px 0px 0px;
+.bigText {
+  margin: auto;
+  text-align: center;
+  vertical-align: auto;
+  font-weight: 600;
+  letter-spacing: 3px;
+  word-spacing: 10px;
+  color: #223C49;
 }

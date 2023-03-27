@@ -14,7 +14,6 @@ service ScanService {
   rpc GetScanByID(GetScanByIDRequest) returns (GetScanByIDResponse) {}
   rpc GetScanByDate(GetScanByDateRequest) returns (GetScanByDateResponse) {}
 
-
   rpc AddTag(AddTagRequest) returns (AddTagResponse) {}
   rpc DeleteTag(DeleteTagRequest) returns (DeleteTagResponse) {}
   rpc GetAllTags(GetAllTagsRequest) returns (GetAllTagsResponse) {}
@@ -29,25 +28,43 @@ service ScanService {
   rpc GetPatientByID(GetPatientByIDRequest) returns (GetPatientByIDResponse) {}
   rpc GetPatientByName(GetPatientByNameRequest) returns (GetPatientByNameResponse) {}
 
+  rpc AddDentist(AddDentistRequest) returns (AddDentistResponse) {}
+  rpc DeleteDentistById(DeleteDentistByIdRequest) returns (DeleteDentistByIdResponse) {}
+  rpc GetAllDentists(GetAllDentistsRequest) returns (GetAllDentistsResponse) {}
+  rpc GetDentistById(GetDentistByIdRequest) returns (GetDentistByIdResponse) {}
+  rpc UpdateDentistById(UpdateDentistByIdRequest) returns (UpdateDentistByIdResponse) {}
+  rpc Login(LoginRequest) returns (LoginResponse) {}
+  rpc Register(RegisterRequest) returns (RegisterResponse) {}
 }
 
 
 message RowDataTag {
-  int64 id = 1;
+  int32 id = 1;
   string bite = 2;
 }
 
 message Scan {
-  int64 id = 1;
-  string scan = 2;
-  string date = 3;
+  float lower_x = 1;
+  float lower_y = 2;
+  float lower_z = 3;
+  float lower_r_x = 4;
+  float lower_r_y = 5;
+  float lower_r_z = 6;
+  float upper_x = 7;
+  float upper_y = 8;
+  float upper_z = 9;
+  float upper_r_x = 10;
+  float upper_r_y = 11;
+  float upper_r_z = 12;
+  int32 id = 13;
+  string date = 14;
 }
 
 message Patient{
-  int64 id = 1;
+  int32 id = 1;
   string first_name = 2;
   string last_name = 3;
-  int64 pinned = 4;
+  int32 pinned = 4;
   string notes = 5;
   
 }
@@ -62,7 +79,7 @@ message AddTagResponse {
 }
 
 message DeleteTagRequest {
-  int64 id = 1;
+  int32 id = 1;
 }
 
 message DeleteTagResponse {
@@ -76,11 +93,11 @@ message GetAllTagsResponse {
 }
 
 message GetTagByIDRequest {
-  int64 id = 1;
+  int32 id = 1;
 }
 
 message GetTagByIDResponse {
-  int64 id = 1;
+  int32 id = 1;
   string bite = 2;
 }
 
@@ -104,7 +121,7 @@ message AddScanResponse {
 }
 
 message DeleteScanRequest{
-  int64 id = 1;
+  int32 id = 1;
 }
 
 message DeleteScanResponse {
@@ -114,17 +131,15 @@ message DeleteScanResponse {
 message GetAllScansRequest {}
 
 message GetAllScansResponse {
-  repeated int64 id_data =  1;
-  repeated string scan_dates = 3;
+  repeated Scan scans = 1;
 }
 
 message GetScanByIDRequest {
-  int64 id = 1;
+  int32 id = 1;
 }
 
 message GetScanByIDResponse {
-  int64 id =  1;
-  string scan_date = 3;
+  Scan scan = 1;
 }
 
 message GetScanByDateRequest {
@@ -132,8 +147,7 @@ message GetScanByDateRequest {
 }
 
 message GetScanByDateResponse {
-  repeated int64 id_data =  1;
-  repeated string scan_dates = 3;
+  repeated Scan scans = 1;
 }
 
 //PATIENT
@@ -141,7 +155,7 @@ message GetScanByDateResponse {
 message AddPatientRequest{
   string first_name = 1;
   string last_name = 2;
-  int64 pinned = 3;
+  int32 pinned = 3;
   string notes = 4;
 }
 
@@ -162,19 +176,7 @@ message SendVRRequest {
 }
 
 message SendPositionScanRequest {
-  float lower_x = 1;
-  float lower_y = 2;
-  float lower_z = 3;
-  float lower_r_x = 4;
-  float lower_r_y = 5;
-  float lower_r_z = 6;
-  float upper_x = 7;
-  float upper_y = 8;
-  float upper_z = 9;
-  float upper_r_x = 10;
-  float upper_r_y = 11;
-  float upper_r_z = 12;
-  int32 scan_id = 13;
+  Scan scan = 1;
 }
 
 message SendPositionScanResponse {
@@ -186,18 +188,7 @@ message GetPositionScanRequest {
 }
 
 message GetPositionScanResponse {
-  float lower_x = 1;
-  float lower_y = 2;
-  float lower_z = 3;
-  float lower_r_x = 4;
-  float lower_r_y = 5;
-  float lower_r_z = 6;
-  float upper_x = 7;
-  float upper_y = 8;
-  float upper_z = 9;
-  float upper_r_x = 10;
-  float upper_r_y = 11;
-  float upper_r_z = 12;
+  Scan scan = 1;
 }
 message SendVRResponse {
   string feedback = 1;
@@ -213,7 +204,7 @@ message WaitingResponse {
 }
 
 message DeletePatientRequest{
-  int64 id = 1;
+  int32 id = 1;
 }
 
 message DeletePatientResponse{
@@ -227,14 +218,14 @@ message GetAllPatientsResponse{
 }
 
 message GetPatientByIDRequest{
-  int64 id = 1;
+  int32 id = 1;
 }
 
 message GetPatientByIDResponse{
-  int64 id = 1;
+  int32 id = 1;
   string first_name = 2;
   string last_name = 3;
-  int64 pinned = 4;
+  int32 pinned = 4;
   string notes = 5;
 }
 
@@ -246,4 +237,82 @@ message GetPatientByNameRequest{
 
 message GetPatientByNameResponse{
   repeated Patient patients = 1;
+}
+
+// DENTIST
+message Dentist {
+  int64 id = 1;
+  string email = 2;
+  string first_name = 3;
+  string last_name = 4;
+}
+
+message AddDentistRequest {
+  string email = 1;
+  string password = 2;
+  string first_name = 3;
+  string last_name = 4;
+}
+
+message AddDentistResponse {
+  string message = 1;
+}
+
+message GetDentistByIdRequest {
+  string id = 1;
+}
+
+message GetDentistByIdResponse {
+  int64 id = 1;
+  string email = 2;
+  string first_name = 3;
+  string last_name = 4;
+}
+
+message GetAllDentistsRequest {}
+
+message GetAllDentistsResponse {
+  repeated Dentist dentists = 1;
+}
+
+message UpdateDentistByIdRequest {
+  int64 id = 1;
+  optional string email = 2;
+  optional string first_name = 3;
+  optional string last_name = 4;
+  optional string password = 5;
+}
+
+message UpdateDentistByIdResponse {
+  string message = 1;
+}
+
+message DeleteDentistByIdRequest {
+  string id = 1;
+}
+
+message DeleteDentistByIdResponse {
+  string message = 1;
+}
+
+message LoginRequest {
+  string email = 1;
+  string password = 2;
+}
+
+message LoginResponse {
+  string message = 1;
+  string token = 2;
+}
+
+message RegisterRequest {
+  string email = 1;
+  string password = 2;
+  string first_name = 3;
+  string last_name = 4;
+}
+
+message RegisterResponse {
+  string message = 1;
+  string token = 2;
 }

@@ -1,5 +1,5 @@
 .login_box {
-  width: 340px;
+  width: 450px;
   text-align: center;
   align-items: center;
   background-color: #fff;
@@ -9,15 +9,18 @@
   width: auto;
   text-align: center;
   margin-bottom: 50px;
+}
 
+.small_logo_log {
+  width: auto;
+  text-align: center;
+  margin-bottom: 50px;
 }
 
 .small_logo_reg {
   width: auto;
   text-align: center;
   margin-bottom: 50px;
-  vertical-align: middle;
-  padding-left: 10%;
 }
 
 .spacingbtn {
@@ -37,6 +40,6 @@
 .firstandlast {
   display: flex;
   justify-content: space-between;
-  column-gap: 20px;
+  column-gap: 10px;
   width: 100%;
 }

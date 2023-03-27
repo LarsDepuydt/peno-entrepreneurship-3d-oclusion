@@ -34,3 +34,11 @@
     background-color: rgba(254, 125, 0, .25);
 
 }
+
+#logOut {
+    margin-right: 20px;
+}
+
+.sidebarButton {
+    margin: auto;
+  }

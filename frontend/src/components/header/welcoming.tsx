@@ -1,36 +1,32 @@
 // possibly welcome doctor in the future ?
 import styles from '@/styles/PatientPage.module.css';
+import styleH from '@/styles/Header.module.css';
+import styleSidebar from '@/styles/Sidebar.module.css';
 
 interface GreetingDoctor {
-    doctorfirstname : string
-    doctorlastname : string
+  doctorfirstname: string;
+  doctorlastname: string;
 }
 
-export function WelcomingDoctor({doctorfirstname, doctorlastname}: GreetingDoctor) { 
-
-    const Welcoming = (doctor_name: string) => {
-        const welcome = "Welcome " + doctor_name 
-        return welcome
-    }
-    return (
+export function WelcomingDoctor({ doctorfirstname, doctorlastname }: GreetingDoctor) {
+  return (
     <>
-        <h2>{("Welcome Dr. ").concat(doctorfirstname, ' ', doctorlastname)}</h2>
-    </> )
-  }
-
+      <p className={styleSidebar.sidebarText}>{'Welcome Dr. '}</p>
+      <p className={styleSidebar.sidebarName}>{''.concat(doctorfirstname, ' ', doctorlastname, '\n')}</p>
+    </>
+  );
+}
 
 interface GreetingPatient {
-    patientfirstname : string 
-    patientlastname : string
-    doctorfirstname : string
-    doctorlastname : string
+  patientfirstname: string;
+  patientlastname: string;
 }
 
-export function WelcomingPatient({patientfirstname, patientlastname, doctorfirstname, doctorlastname}: GreetingPatient){
-    return (
+export function WelcomingPatient({ patientfirstname, patientlastname }: GreetingPatient) {
+  return (
     <>
-        <h3>{("Scans of patient ").concat(patientfirstname, ' ', patientlastname, '\n')}</h3>
-        <h4>{("under supervision of Dr. ").concat(doctorfirstname, " ", doctorlastname)} </h4>
+      <p className={styleSidebar.sidebarText}>{'Scans of patient:'}</p>
+      <p className={styleSidebar.sidebarName}>{''.concat(patientfirstname, ' ', patientlastname, '\n')}</p>
     </>
-        )
+  );
 }
