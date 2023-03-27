@@ -39,6 +39,12 @@
   border-style: solid;
   border-color: #fe7d00;
   flex-basis: auto;
+
+  display: flex;
+  flex-direction: column;
+  flex-wrap: nowrap;
+  justify-content: space-evenly;
+  align-items: center;
 }
 
 .projects {
@@ -70,4 +76,9 @@
   flex-wrap: wrap;
   justify-content: space-evenly;
   align-items: center;
+}
+
+.subButtons {
+  /* wrapper around the sub buttons in the patient button */
+  flex-basis: auto;
 }

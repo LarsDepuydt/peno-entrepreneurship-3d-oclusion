@@ -44,7 +44,7 @@ export function SinglePatient({ picture, patientfirstname, patientlastname }: pa
         alt="3d picture of teeth"
       />
       {showButtons && (
-        <div className="sub-buttons">
+        <div className={styles.subButtons}>
           <DeleteButton />
           <button>Button 2</button>
           <button>Button 3</button>
