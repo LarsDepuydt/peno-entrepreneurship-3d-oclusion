@@ -20,6 +20,11 @@
   flex-basis: auto;
 }
 
+
+.patient_button:hover {
+  background-color: #4CAF50;
+}
+
 .projects {
   display: flex;
   column-gap: 20px;

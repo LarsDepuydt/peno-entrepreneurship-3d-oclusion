@@ -2,6 +2,7 @@ import Image, { StaticImageData } from 'next/image';
 import { useRouter } from 'next/router';
 
 import styles from '@/styles/PatientPage.module.css';
+import DeleteButton from '../patient/delete_patient';
 
 interface patientProfile {
   id: number;
@@ -36,7 +37,7 @@ export function SinglePatient({ picture, patientfirstname, patientlastname }: pa
         <div className={styles.patientscanNameWrapper}>
           <p className={styles.patientscanName}>{patientfirstname.concat(' ', patientlastname)}</p>
         </div>
-        {/* <button onClick={handleDelete}>Delete</button> */}
+        <DeleteButton />
       </div>
     </div>
   );

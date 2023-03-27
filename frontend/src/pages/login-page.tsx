@@ -6,8 +6,6 @@ import LoginForm from '../components/login/login-form';
 import styleL from '@/styles/LandingPage.module.css';
 import Image_L from '../../public/landing-image.png';
 
-import DeleteButton from '../components/patient/delete_patient'; // for testing purposes
-
 const inter = Inter({ subsets: ['latin'] });
 
 export default function Login() {
@@ -20,7 +18,6 @@ export default function Login() {
 
         <div className={styleL.loginbox}>
           <LoginForm />
-          <DeleteButton />
         </div>
       </div>
     </>
