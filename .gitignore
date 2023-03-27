@@ -1,1 +1,4 @@
+.gitignore
 go.work
+vr/src/cannon_collision/old_scene.html
+vr/src/cannon_collision/old_script.js
