@@ -419,9 +419,14 @@ function loadObjects() {
         const { x: upperX, y: upperY, z: upperZ } = coordinate_info_upper ?? {};
         const { x: upperRX, y: upperRY, z: upperRZ } = rotation_info_upper ?? {};
 
-
-        const query = sendPositionScan.useQuery({ scanId, lowerX, lowerY, lowerZ, lowerRX, lowerRY, lowerRZ, 
-            upperX, upperY, upperZ, upperRX, upperRY, upperRZ});
+        const scan = { scanId, date: "2022",
+            lowerX, lowerY, lowerZ, lowerRX, lowerRY, lowerRZ, 
+            upperX, upperY, upperZ, upperRX, upperRY, upperRZ};
+        
+        /*const query = sendPositionScan.useQuery({ scanId, lowerX, lowerY, lowerZ, lowerRX, lowerRY, lowerRZ, 
+            upperX, upperY, upperZ, upperRX, upperRY, upperRZ});*/
+        
+        const query = sendPositionScan.useQuery({scan});
 
         const { data, refetch } = useQuery(query.queryKey, query.queryFn, { enabled: false });
         //console.log(data); // When enabled: true data sometimes gets received properly
