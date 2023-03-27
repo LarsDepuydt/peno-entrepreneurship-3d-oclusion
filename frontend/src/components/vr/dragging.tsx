@@ -229,14 +229,15 @@ function onSelectStart( event: any ) {
 
 
 function beforeRender( controller: any ){
-    changeControlledCoordinates(controller, 0);
+    changeControlledCoordinates(controller, 1);
 }
 
 function changeControlledCoordinates( controller: any, coordinate: number ){ // 0, 1, 2: x, y, z
     if (controller.userData.selected === undefined) return;
+
     switch (coordinate) {
         case 0: {
-            controller.userData.selected.position.setX(controller.position.x / SCALE_MODEL)
+            controller.userData.selected.position.setX(controller.position.x / SCALE_MODEL);
             break;
         }
         case 1: {

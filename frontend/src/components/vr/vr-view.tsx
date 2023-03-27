@@ -409,15 +409,21 @@ function loadObjects() {
         const scanId = 111; // Hardcoded
         //const [saved, setSaved] = useState(false);
     
-        const coordinate_info = lj_mesh?.position;
-        const rotation_info = lj_mesh?.rotation;
-        const { x, y, z } = coordinate_info ?? {};
-        const { x: r_x, y: r_y, z: r_z } = rotation_info ?? {};
+        const coordinate_info_lower = lj_mesh?.position;
+        const coordinate_info_upper = uj_mesh?.position;
+        const rotation_info_lower = lj_mesh?.rotation;
+        const rotation_info_upper = uj_mesh?.rotation;
 
-        const query = sendPositionScan.useQuery({ scanId, x, y, z, rX: r_x, rY: r_y, rZ: r_z });
-        //query.enabled = false; const { data, refetch } = useQuery(query);
+        const { x: lowerX, y: lowerY, z: lowerZ } = coordinate_info_lower ?? {};
+        const { x: lowerRX, y: lowerRY, z: lowerRZ } = rotation_info_lower ?? {};
+        const { x: upperX, y: upperY, z: upperZ } = coordinate_info_upper ?? {};
+        const { x: upperRX, y: upperRY, z: upperRZ } = rotation_info_upper ?? {};
+
+
+        const query = sendPositionScan.useQuery({ scanId, lowerX, lowerY, lowerZ, lowerRX, lowerRY, lowerRZ, 
+            upperX, upperY, upperZ, upperRX, upperRY, upperRZ});
+
         const { data, refetch } = useQuery(query.queryKey, query.queryFn, { enabled: false });
-        
         //console.log(data); // When enabled: true data sometimes gets received properly
 
         useEffect(() => {
@@ -431,7 +437,7 @@ function loadObjects() {
     }
 
 
-    function GetPositionComponent(){ // FIrst check if defined
+    function GetPositionComponent(){ // First check if defined
         // Call service based on scan ID
         const scanID = 111; // Hardcoded
 
@@ -446,8 +452,7 @@ function loadObjects() {
         }, [getPosition]);
 
         if (data) console.log(data);
-        //const {x, y, z, rX, rY, rZ} = data!;
-        //console.log(x, y, z, rX, rY, rZ);
+        //const {lowerX, lowerY, lowerZ, lowerRX, lowerRY, lowerRZ, upperX, upperY, upperZ, upperRX, upperRY, upperRZ} = data!;
         return null;
     }
 

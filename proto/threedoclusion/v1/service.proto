@@ -162,13 +162,19 @@ message SendVRRequest {
 }
 
 message SendPositionScanRequest {
-  float x = 1;
-  float y = 2;
-  float z = 3;
-  float r_x = 4;
-  float r_y = 5;
-  float r_z = 6;
-  int32 scan_id = 7;
+  float lower_x = 1;
+  float lower_y = 2;
+  float lower_z = 3;
+  float lower_r_x = 4;
+  float lower_r_y = 5;
+  float lower_r_z = 6;
+  float upper_x = 7;
+  float upper_y = 8;
+  float upper_z = 9;
+  float upper_r_x = 10;
+  float upper_r_y = 11;
+  float upper_r_z = 12;
+  int32 scan_id = 13;
 }
 
 message SendPositionScanResponse {
@@ -180,12 +186,18 @@ message GetPositionScanRequest {
 }
 
 message GetPositionScanResponse {
-  float x = 1;
-  float y = 2;
-  float z = 3;
-  float r_x = 4;
-  float r_y = 5;
-  float r_z = 6;
+  float lower_x = 1;
+  float lower_y = 2;
+  float lower_z = 3;
+  float lower_r_x = 4;
+  float lower_r_y = 5;
+  float lower_r_z = 6;
+  float upper_x = 7;
+  float upper_y = 8;
+  float upper_z = 9;
+  float upper_r_x = 10;
+  float upper_r_y = 11;
+  float upper_r_z = 12;
 }
 message SendVRResponse {
   string feedback = 1;

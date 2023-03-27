@@ -84,7 +84,7 @@ func GetAllScans(req *connect.Request[threedoclusionv1.GetAllScansRequest]) (*co
 	// Prepare a statement with placeholders for the condition
 	statement := "SELECT * FROM scan;"
 
-	idArray, _, _, _, _, _, _, dateArray, error := help_functions.GetResponseMakerScan(database, statement)
+	idArray, _, _, _, _, _, _, _, _, _, _, _, _, dateArray, error := help_functions.GetResponseMakerScan(database, statement)
 	if error != nil {
 		panic(error)
 	}
@@ -111,7 +111,7 @@ func GetScanByID(req *connect.Request[threedoclusionv1.GetScanByIDRequest]) (*co
 	// Prepare a statement with placeholders for the condition
 	statement := "SELECT * FROM scan WHERE id = $1;"
 
-	idArray, _, _, _, _, _, _, dateArray, error := help_functions.GetResponseMakerScan(database, statement)
+	idArray, _, _, _, _, _, _, _, _, _, _, _, _, dateArray, error := help_functions.GetResponseMakerScan(database, statement)
 	if error != nil {
 		panic(error)
 	}
@@ -135,7 +135,7 @@ func GetScanByDate(req *connect.Request[threedoclusionv1.GetScanByDateRequest]) 
 	// Prepare a statement with placeholders for the condition
 	statement := "SELECT * FROM scan WHERE scan_date = $1;"
 
-	idArray, _, _, _, _, _, _, dateArray, error := help_functions.GetResponseMakerScan(database, statement)
+	idArray, _, _, _, _, _, _, _, _, _, _, _, _, dateArray, error := help_functions.GetResponseMakerScan(database, statement)
 	if error != nil {
 		panic(error)
 	}

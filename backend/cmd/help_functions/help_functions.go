@@ -21,53 +21,73 @@ func ConnectToDataBase() (*sql.DB, error) {
 	return database, nil
 }
 
-func GetResponseMakerScan(database *sql.DB, statement string) ([]int64, []float32, []float32, []float32, []float32, []float32, []float32, []string, error) {
+func GetResponseMakerScan(database *sql.DB, statement string) ([]int64, []float32, []float32, []float32, []float32, []float32, []float32, []float32, []float32, []float32, []float32, []float32, []float32, []string, error) {
 
 	// Execute the statement with the parameter
 	rows, error := database.Query(statement)
 	if error != nil {
-		return nil, nil, nil, nil, nil, nil, nil, nil, error
+		return nil, nil, nil, nil, nil, nil, nil, nil, nil, nil, nil, nil, nil, nil, error
 	}
 
 	type RowData struct {
 		id   int64
-		x    float32
-		y    float32
-		z    float32
-		r_x  float32
-		r_y  float32
-		r_z  float32
+		lower_x    float32
+		lower_y    float32
+		lower_z    float32
+		lower_r_x  float32
+		lower_r_y  float32
+		lower_r_z  float32
+		upper_x    float32
+		upper_y    float32
+		upper_z    float32
+		upper_r_x  float32
+		upper_r_y  float32
+		upper_r_z  float32
 		date string
 	}
 
 	var (
 		idArray   []int64
-		xArray    []float32
-		yArray    []float32
-		zArray    []float32
-		r_xArray  []float32
-		r_yArray  []float32
-		r_zArray  []float32
+		lower_xArray    []float32
+		lower_yArray    []float32
+		lower_zArray    []float32
+		lower_r_xArray  []float32
+		lower_r_yArray  []float32
+		lower_r_zArray  []float32
+		upper_xArray    []float32
+		upper_yArray    []float32
+		upper_zArray    []float32
+		upper_r_xArray  []float32
+		upper_r_yArray  []float32
+		upper_r_zArray  []float32
 		dateArray []string
 	)
 
 	for rows.Next() {
 		var rowData RowData
-		error = rows.Scan(&rowData.id, &rowData.x, &rowData.y, &rowData.z, &rowData.r_x, &rowData.r_y, &rowData.r_z, &rowData.date)
+		error = rows.Scan(&rowData.id, &rowData.lower_x, &rowData.lower_y, &rowData.lower_z, &rowData.lower_r_x, &rowData.lower_r_y, &rowData.lower_r_z, 
+			&rowData.upper_x, &rowData.upper_y, &rowData.upper_z, &rowData.upper_r_x, &rowData.upper_r_y, &rowData.upper_r_z, &rowData.date)
 		if error != nil {
 			panic(error)
 		}
 		idArray = append(idArray, rowData.id)
-		xArray = append(xArray, rowData.x)
-		yArray = append(yArray, rowData.y)
-		zArray = append(zArray, rowData.z)
-		r_xArray = append(r_xArray, rowData.r_x)
-		r_yArray = append(r_yArray, rowData.r_y)
-		r_zArray = append(r_zArray, rowData.r_z)
+		lower_xArray = append(lower_xArray, rowData.lower_x)
+		lower_yArray = append(lower_yArray, rowData.lower_y)
+		lower_zArray = append(lower_zArray, rowData.lower_z)
+		lower_r_xArray = append(lower_r_xArray, rowData.lower_r_x)
+		lower_r_yArray = append(lower_r_yArray, rowData.lower_r_y)
+		lower_r_zArray = append(lower_r_zArray, rowData.lower_r_z)
+
+		upper_xArray = append(upper_xArray, rowData.upper_x)
+		upper_yArray = append(upper_yArray, rowData.upper_y)
+		upper_zArray = append(upper_zArray, rowData.upper_z)
+		upper_r_xArray = append(upper_r_xArray, rowData.upper_r_x)
+		upper_r_yArray = append(upper_r_yArray, rowData.upper_r_y)
+		upper_r_zArray = append(upper_r_zArray, rowData.upper_r_z)
 		dateArray = append(dateArray, rowData.date)
 	}
 
-	return idArray, xArray, yArray, zArray, r_xArray, r_yArray, r_zArray, dateArray, nil
+	return idArray, lower_xArray, lower_yArray, lower_zArray, lower_r_xArray, lower_r_yArray, lower_r_zArray, upper_xArray, upper_yArray, upper_zArray, upper_r_xArray, upper_r_yArray, upper_r_zArray, dateArray, nil
 
 }
 
