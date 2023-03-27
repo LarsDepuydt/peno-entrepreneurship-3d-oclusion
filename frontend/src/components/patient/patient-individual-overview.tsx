@@ -3,6 +3,7 @@ import { useRouter } from 'next/router';
 
 import styles from '@/styles/PatientPage.module.css';
 import DeleteButton from '../patient/delete_patient';
+import React, { useState } from 'react';
 
 interface patientProfile {
   id: number;
@@ -12,6 +13,16 @@ interface patientProfile {
 }
 
 export function SinglePatient({ picture, patientfirstname, patientlastname }: patientProfile) {
+  const [showButtons, setShowButtons] = useState(false);
+
+  const handleMouseEnter = () => {
+    setShowButtons(true);
+  };
+
+  const handleMouseLeave = () => {
+    setShowButtons(false);
+  };
+
   const router = useRouter();
 
   const clickPatient = () => {
@@ -25,7 +36,7 @@ export function SinglePatient({ picture, patientfirstname, patientlastname }: pa
   };
 
   return (
-    <div className={styles.patient_button}>
+    <div className={styles.patient_button} onMouseEnter={handleMouseEnter} onMouseLeave={handleMouseLeave}>
       <div onClick={clickPatient}>
         <Image
           id={patientfirstname.concat(' ', patientlastname)}
@@ -37,8 +48,14 @@ export function SinglePatient({ picture, patientfirstname, patientlastname }: pa
         <div className={styles.patientscanNameWrapper}>
           <p className={styles.patientscanName}>{patientfirstname.concat(' ', patientlastname)}</p>
         </div>
-        <DeleteButton />
       </div>
+      {showButtons && (
+        <div className="sub-buttons">
+          <DeleteButton />
+          <button>Button 2</button>
+          <button>Button 3</button>
+        </div>
+      )}
     </div>
   );
 }
