@@ -1,12 +1,13 @@
 package scans
 
 import (
+	"context"
 	"database/sql"
 	"fmt"
 	"io/ioutil"
 	"os"
 
-	firebase "firebase.google.com/go/v4"
+	firebase "firebase.google.com/go"
 	"firebase.google.com/go/v4/storage"
 	"google.golang.org/api/option"
 
