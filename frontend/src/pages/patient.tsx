@@ -1,5 +1,5 @@
 import 'bootstrap/dist/css/bootstrap.css';
-import styles from '@/styles/PatientPage.module.css';
+import styles from '@/styles/PatientPage.module.scss';
 
 import { HeaderDoctor } from '../components/header/header';
 import { SinglePatient as Patient } from '../components/patient/patient-individual-overview';

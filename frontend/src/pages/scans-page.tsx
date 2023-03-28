@@ -4,122 +4,38 @@ import { useRouter } from 'next/router';
 import { SingleScan as Scan } from '../components/scan_gallery/scan_individual_overview';
 import teeth3d from '../../public/3d-teeth.jpg';
 import { SidebarPatient } from '@/components/header/sidebar';
-import styles from '@/styles/PatientPage.module.css';
+import styles from '@/styles/PatientPage.module.scss';
 import { FC } from 'react';
 import Head from 'next/head';
 
 // hard coded patients - 12 scans for 10 patients. Kaatje and Jozef (patientid 10 and 8) have each 2 scans. (scanid 1 and 2)
 const all_scans = [
   {
-    scan11: (
-      <Scan
-        scanid ={1}
-        patientid = {1}
-        picture={teeth3d}
-        date={new Date(2023, 2, 21)}
-      />
-    ),
-    scan12: (
-      <Scan
-        scanid ={1}
-        patientid = {2}
-        picture={teeth3d}
-        date={new Date(2023, 2, 20)}
-      />
-    ),
-    scan13: (
-      <Scan
-        scanid ={1}
-        patientid = {3}
-        picture={teeth3d}
-        date={new Date(2023, 1, 10)}
-      />
-    ),
+    scan11: <Scan scanid={1} patientid={1} picture={teeth3d} date={new Date(2023, 2, 21)} />,
+    scan12: <Scan scanid={1} patientid={2} picture={teeth3d} date={new Date(2023, 2, 20)} />,
+    scan13: <Scan scanid={1} patientid={3} picture={teeth3d} date={new Date(2023, 1, 10)} />,
   },
 
   {
-    scan21: (
-      <Scan
-        scanid ={1}
-        patientid = {4}
-        picture={teeth3d}
-        date={new Date(2022, 4, 4)}
-      />
-    ),
+    scan21: <Scan scanid={1} patientid={4} picture={teeth3d} date={new Date(2022, 4, 4)} />,
 
-    scan22: (
-      <Scan
-        scanid ={1}
-        patientid = {5}
-        picture={teeth3d}
-        date={new Date(2023, 3, 1)}
-      />
-    ),
+    scan22: <Scan scanid={1} patientid={5} picture={teeth3d} date={new Date(2023, 3, 1)} />,
 
-    scan23: (
-      <Scan
-        scanid ={1}
-        patientid = {6}
-        picture={teeth3d}
-        date={new Date(2022, 12, 23)}
-      />
-    ),
+    scan23: <Scan scanid={1} patientid={6} picture={teeth3d} date={new Date(2022, 12, 23)} />,
   },
   {
-    scan31: (
-      <Scan
-        scanid ={1}
-        patientid = {7}
-        picture={teeth3d}
-        date={new Date(2023, 2, 19)}
-      />
-    ),
-    scan32: (
-      <Scan
-        scanid ={1}
-        patientid = {8}
-        picture={teeth3d}
-        date={new Date(2023, 3, 21)}
-      />
-    ),
+    scan31: <Scan scanid={1} patientid={7} picture={teeth3d} date={new Date(2023, 2, 19)} />,
+    scan32: <Scan scanid={1} patientid={8} picture={teeth3d} date={new Date(2023, 3, 21)} />,
 
-    scan33: (
-      <Scan
-        scanid ={1}
-        patientid = {9}
-        picture={teeth3d}
-        date={new Date(2022, 11, 7)}
-      />
-    ),
+    scan33: <Scan scanid={1} patientid={9} picture={teeth3d} date={new Date(2022, 11, 7)} />,
   },
 
   {
-    scan41: (
-      <Scan
-        scanid ={1}
-        patientid = {10}
-        picture={teeth3d}
-        date={new Date(2022, 12, 7)}
-      />
-    ),
+    scan41: <Scan scanid={1} patientid={10} picture={teeth3d} date={new Date(2022, 12, 7)} />,
 
-    scan42: (
-      <Scan
-        scanid ={2}
-        patientid = {10}
-        picture={teeth3d}
-        date={new Date(2022, 12, 6)}
-      />
-    ),
+    scan42: <Scan scanid={2} patientid={10} picture={teeth3d} date={new Date(2022, 12, 6)} />,
 
-    scan43: (
-      <Scan
-        scanid ={2}
-        patientid = {8}
-        picture={teeth3d}
-        date={new Date(2023, 2, 21)}
-      />
-    ),
+    scan43: <Scan scanid={2} patientid={8} picture={teeth3d} date={new Date(2023, 2, 21)} />,
   },
 ];
 
@@ -131,7 +47,6 @@ const App: FC = () => {
     .flatMap((obj) => Object.values(obj)) // flatten the array of objects into an array of patients
     .filter((patient) => patient.props.patientid === parseInt(targetpatientID));
 
-
   return (
     <div>
       <SidebarPatient patientfirstname={'TEST'} patientlastname={'TEST3'} />
@@ -140,14 +55,13 @@ const App: FC = () => {
         {filteredPatients.map((patient, index) => (
           <div key={`patient${index + 1}`}>
             <Scan
-              scanid = {patient.props.scanid}
+              scanid={patient.props.scanid}
               patientid={patient.props.patientid}
               picture={patient.props.picture}
-              date = {patient.props.date}
+              date={patient.props.date}
             />
           </div>
         ))}
-
       </div>
     </div>
   );

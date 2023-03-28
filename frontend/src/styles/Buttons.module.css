@@ -16,9 +16,6 @@
   background-color: transparent;
   text-align: center;
   padding: 5px 10px;
-  /* display: block;
-
-  position: relative; */
 
   color: #fe7d00;
   font-size: 1rem;
@@ -46,9 +43,14 @@
 }
 
 #logOut {
-    margin-right: 20px;
+  margin-right: 20px;
 }
 
 .sidebarButton {
-    margin: auto;
-  }
+  margin: auto;
+}
+
+#appearOnHoverButton {
+    margin: 8px auto;
+    width: 230px;
+}
