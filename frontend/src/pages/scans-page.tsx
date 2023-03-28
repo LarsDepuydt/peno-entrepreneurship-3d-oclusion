@@ -132,21 +132,16 @@ const all_scans = [
 
 const App: FC = () => {
   const router = useRouter();
-  const targetpatientfirstname = router.query.patientfirstname as string;
-  const targetpatientlastname = router.query.patientlastname as string;
+  const targetpatientID = router.query.patientID as string;
 
   const filteredPatients = all_scans
     .flatMap((obj) => Object.values(obj)) // flatten the array of objects into an array of patients
-    .filter(
-      (patient) =>
-        patient.props.patientfirstname === targetpatientfirstname &&
-        patient.props.patientlastname === targetpatientlastname
-    )
+    .filter((patient) => patient.props.id === parseInt(targetpatientID));
 
 
   return (
     <div>
-      <SidebarPatient patientfirstname={targetpatientfirstname} patientlastname={targetpatientlastname} />
+      <SidebarPatient patientfirstname={'TEST'} patientlastname={'TEST3'} />
       <HeaderPatient />
       <div className={styles.scansWrapper}>
         {filteredPatients.map((patient, index) => (

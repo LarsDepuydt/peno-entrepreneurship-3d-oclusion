@@ -2,13 +2,13 @@ import 'bootstrap/dist/css/bootstrap.css';
 import styles from '@/styles/PatientPage.module.css';
 
 import { HeaderDoctor } from '../components/header/header';
-import New_Patient from '../components/popups/new-patient';
 import { SinglePatient as Patient } from '../components/patient/patient-individual-overview';
 import teeth3d from '../../public/3d-teeth.jpg';
 import { useRouter } from 'next/router';
 import { StaticImageData } from 'next/image';
 import { FC } from 'react';
 import { SidebarDoctor } from '../components/header/sidebar';
+
 
 // hard coded patients - 12 scans for 10 patients. Kaatje and Jozef have each 2 scans.
 const patients = [
