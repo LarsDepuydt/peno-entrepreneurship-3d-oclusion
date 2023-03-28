@@ -7,24 +7,16 @@ import useStorage from '../../hooks/useStorage';
 const DownloadButton = () => {
   const router = useRouter();
   const path = 'gs://relu-vr-scan-database.appspot.com/Patiënt-Scans/Patient-1/upper_ios_6.obj';
-  const { url, loading, error } = useStorage(path);
+  const { handleDownloadClick, loading, error } = useStorage(path);
 
-  const handleDownloadClick = useCallback(() => {
-    if (!url) return;
-    const anchor = document.createElement('a');
-    anchor.href = url;
-    anchor.download = 'lowerjaw_holger.obj';
-    document.body.appendChild(anchor);
-    anchor.click();
-    document.body.removeChild(anchor);
-  }, [url]);
-
+  
   if (loading) {
     return <button type="button" className="btn btn-primary btn-large" disabled>Loading...</button>;
   }
 
   if (error) {
-    return <button type="button" className="btn btn-primary btn-large" disabled>console.error()</button>;
+    console.error(error);
+    return <button type="button" className="btn btn-primary btn-large" disabled>Error</button>;
   }
 
   return (

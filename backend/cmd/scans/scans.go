@@ -1,15 +1,8 @@
 package scans
 
 import (
-	"context"
 	"database/sql"
 	"fmt"
-	"io/ioutil"
-	"os"
-
-	firebase "firebase.google.com/go"
-	"firebase.google.com/go/v4/storage"
-	"google.golang.org/api/option"
 
 	"github.com/bufbuild/connect-go"
 	_ "github.com/lib/pq"
@@ -94,46 +87,7 @@ func GetScanByID(req *connect.Request[threedoclusionv1.GetScanByIDRequest], data
 	responseMessage := fmt.Sprintf("scan with id: %d returned with succes;", req.Msg.Id)
 	fmt.Println(responseMessage)
 	
-	client, ctx, error := InitializeScanDatabase()
-
-	if error!= nil {
-        return nil, error
-    }
-
-	bucketName := "relu-vr-scan-database.appspot.com"
-	bucket, err := client.Bucket(bucketName)
-	if err != nil {
-		return nil, err
-	}
-
-	path_to_scan := result[0].Scan
-
-	fileRef := bucket.Object(path_to_scan)
-	reader, err := fileRef.NewReader(ctx)
-	if err != nil {
-		return nil, err
-	}
-	defer reader.Close()
-
-	localFile, err := os.Create("local-file.obj")
-	if err != nil {
-		// Handle error
-	}
-
-	defer localFile.Close()
-
-	if _, err := fileRef.DownloadTo(context.Background(), localFile); err != nil {
-		// Handle error
-	}
-
-	data, err := ioutil.ReadAll(reader)
-	if err != nil {
-		return nil, err
-	}
-
-
-
-
+	
 	res := connect.NewResponse(&threedoclusionv1.GetScanByIDResponse{
 		Id:       result[0].Id,
 		ScanData: result[0].Scan,
@@ -165,21 +119,3 @@ func GetScanByDate(req *connect.Request[threedoclusionv1.GetScanByDateRequest], 
 	return res, nil
 }
 
-func InitializeScanDatabase() (*storage.Client, context.Context,error){
-	ctx := context.Background()
-	config := &firebase.Config{
-		// Your firebase configuration
-	}
-
-	opt := option.WithCredentialsFile("firebase-adminsdk.json")
-	app, err := firebase.NewApp(ctx, config, opt)
-	if err != nil {
-		return nil, nil, err
-	}
-	client, err := app.Storage(ctx)
-	if err != nil {
-		return nil, nil, err
-	}
-
-	return client, ctx, nil
-}

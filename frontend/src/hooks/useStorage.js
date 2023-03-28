@@ -1,6 +1,7 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useCallback} from "react";
 import { ref, getDownloadURL } from "firebase/storage";
 import { storage } from "../firebase";
+
 
 
 const useStorage = (path) => {
@@ -22,7 +23,17 @@ const useStorage = (path) => {
       });
   }, [path]);
 
-  return { url, loading, error };
+  const handleDownloadClick = useCallback(() => {
+     if (!url) return;
+     const anchor = document.createElement('a');
+     anchor.href = url;
+     anchor.download = 'lowerjaw_holger.obj';
+     document.body.appendChild(anchor);
+     anchor.click();
+     document.body.removeChild(anchor);
+  }, [url]);
+
+  return { handleDownloadClick, loading, error };
 };
 
 export default useStorage;
