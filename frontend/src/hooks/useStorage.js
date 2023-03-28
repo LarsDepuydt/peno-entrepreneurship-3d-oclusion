@@ -1,5 +1,7 @@
 import { useState, useEffect } from "react";
+import { ref, getDownloadURL } from "firebase/storage";
 import { storage } from "../firebase";
+
 
 const useStorage = (path) => {
   const [url, setUrl] = useState(null);
@@ -7,10 +9,9 @@ const useStorage = (path) => {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    const storageRef = storage.ref(path);
+    const storageRef = ref(storage, path);
 
-    storageRef
-      .getDownloadURL()
+    getDownloadURL(storageRef)
       .then((url) => {
         setUrl(url);
         setLoading(false);

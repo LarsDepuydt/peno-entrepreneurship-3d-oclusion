@@ -1,6 +1,5 @@
 import styleL from '@/styles/LandingPage.module.css';
-import DownloadButton from '../components/patient/export_scan'; // for testing purposes
-
+import DownloadButton from '../components/patient/export_scan'; 
 
 export default function DownloadScanTest() {
   return (
