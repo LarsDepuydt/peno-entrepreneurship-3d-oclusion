@@ -57,9 +57,15 @@ func GetResponseMakerDentist(rows *sql.Rows) ([]*threedoclusionv1.Dentist, error
 		var rowData *threedoclusionv1.Dentist
 		error := rows.Scan(&rowData.Id, &rowData.Email, &rowData.FirstName, &rowData.LastName)
 		if error != nil {
-			panic(error)
+			return nil, error
 		}
 		rowArray = append(rowArray, &threedoclusionv1.Dentist{Id: rowData.Id, Email: rowData.Email, FirstName: rowData.FirstName, LastName: rowData.LastName})
+	}
+
+	// get any error encountered during iteration
+	error := rows.Err()
+	if error != nil {
+		return nil, error
 	}
 
 	return rowArray, nil
