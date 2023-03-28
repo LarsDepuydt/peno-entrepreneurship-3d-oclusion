@@ -1,3 +1,4 @@
+
 import { WaitingRequest } from "@/gen/proto/threedoclusion/v1/service_pb";
 import { ScanService } from "@/gen/proto/threedoclusion/v1/service_connect";
 
@@ -6,21 +7,15 @@ import { createConnectTransport } from "@bufbuild/connect-web";
 import { useRouter } from 'next/router';
 import { useState } from "react";
 
-import Image from 'next/image';
-import { Inter } from '@next/font/google';
-
-import LoginForm from '../components/login/token-login';
 import styleL from '@/styles/LandingPage.module.css';
-import Image_L from '../../public/landing-image.png';
 
-import { Values } from '../components/login/token-login';
+import Image from 'next/image';
+import reluLogo from '../../public/relu-logo-small.png';
 
-import DeleteButton from '../components/patient/delete_patient'; // for testing purposes
-
-const inter = Inter({ subsets: ['latin'] });
+import styles2 from '@/styles/LoginForm.module.css';
+import styleB from '@/styles/Buttons.module.css';
 
 import styles from "@/styles/WaitPage.module.css"
-//import styles from "@/styles/globals.css"
 
 export default function WaitPage() {
   const [submitted, setSubmitted] = useState(false);
@@ -32,25 +27,31 @@ export default function WaitPage() {
 
   const router = useRouter();
 
-  function afterSubmit(values: Values) {
-    let codeValue = 0; // Default
+  function afterSubmit(event: React.FormEvent<HTMLFormElement>) {
+    event.preventDefault();
+    let codeInput = document.getElementById("code") as HTMLInputElement | null;
+    let codeString = ""
+    let codeValue = 0 // Default
     let submitOK = true;
+
+    if (codeInput){
+      codeString = codeInput.value
+      codeValue = parseInt(codeString, 10)
+    }
   
-    if (values.username.length > 10) {
+    if (codeString.length > 10) {
       alert("The code may have no more than 10 characters");
       submitOK = false;
     }
-  
+
     // Additional criteria
-  
-    if (submitOK) {
-      // Trigger waiting procedure
+
+    if (submitOK) { // Trigger waiting procedure
       waitForResponse(codeValue);
       setSubmitted(true); // Set submitted state to true
       setFormVisible(false); // Set formVisible to false
     }
   }
-  
   // See _app, can't use queryClient for streams so I made a new client here -> implement in _app as well to support other streams?
 
   async function waitForResponse(codeValue: number) {
@@ -72,42 +73,47 @@ export default function WaitPage() {
       <div className={styleL.all_landing}>
 
         <div className={styleL.loginbox}>
-        <LoginForm afterSubmit={afterSubmit} />
-        </div>
+    <div>
+    <Image className={styles.small_logo_log} src={reluLogo} alt="relu logo" />
+    <form onSubmit={afterSubmit} className={"mb-3"}>
+      Code: <input type="number" id="code" size={20} name="code"/><br/>
+      <input type="submit" value="Submit" className={styleB.relu_btn}/> 
+    </form>
+    </div>
+    </div>
       </div>
-      )}
+    )}
 
-      {submitted && ( // Display the following divs only if submitted is true
-        <div className={styles.bodah}>
-          <div className={styles.loading}>
-            <div className={styles.dot}></div>
-            <div className={styles.dot}></div>
-            <div className={styles.dot}></div>
-            <div className={styles.dot}></div>
-            <div className={styles.dot}></div>
-          </div>
-        </div>
-      )}
+    {submitted && ( // Display the following divs only if submitted is true
+    <div className={styles.bodah}>
+    <div className={styles.loading}>
+      <div className={styles.dot}></div>
+      <div className={styles.dot}></div>
+      <div className={styles.dot}></div>
+      <div className={styles.dot}></div>
+      <div className={styles.dot}></div>
+    </div>
+  </div>
+    )}
     </div>
   )
 }
 
-/*  <div className={styles.spinner}>
-    <div className={styles.bounce1}></div>
-    <div className={styles.bounce2}></div>
-    <div className={styles.bounce3}></div>
-    </div> */
 
 
-/*
 
-      {formVisible && ( // Display the form only if formVisible is true
-        <div>
-          <h1>Waiting Page</h1>
-          <form onSubmit={afterSubmit}>
-            Code: <input type="number" id="code" size={20} name="code"/><br/>
-            <input type="submit" value="Submit"/> 
-          </form>
-        </div>
-      )}
-      */
+/*<div className="mb-3">
+            <Field
+              className="form-control"
+              id="username"
+              name="username"
+              placeholder="User token"
+              aria-describedby="usernameHelp"
+            />
+          </div>
+
+          <div className={styles.spacingbtn}>
+            <button type="submit" className={styleB.relu_btn}>
+              Submit
+            </button>
+          </div>  */
