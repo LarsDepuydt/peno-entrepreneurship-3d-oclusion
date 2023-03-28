@@ -3,30 +3,9 @@ import { HeaderPatient } from '../components/header/header';
 import { useRouter } from 'next/router';
 import { SinglePatient as Patient } from '../components/patient/patient-individual-overview';
 import teeth3d from '../../public/3d-teeth.jpg';
-import Sidebar from '@/components/header/sidebar';
+import { SidebarPatient } from '@/components/header/sidebar';
 import styles from '@/styles/PatientPage.module.css';
 import { FC } from 'react';
-
-interface TableProps {
-  data: { [key: string]: string }[];
-}
-
-const Table: FC<TableProps> = ({ data }) => {
-  return (
-    <table className={styles.patientscanTable}>
-      <thead></thead>
-      <tbody>
-        {data.map((row, index) => (
-          <tr key={index}>
-            {Object.values(row).map((value, index) => (
-              <td key={index}>{value}</td>
-            ))}
-          </tr>
-        ))}
-      </tbody>
-    </table>
-  );
-};
 
 // hard coded patients - 12 scans for 10 patients. Kaatje and Jozef have each 2 scans.
 const all_scans = [
@@ -37,7 +16,7 @@ const all_scans = [
         picture={teeth3d}
         patientfirstname={'Jos'}
         patientlastname={'Van de Velde'}
-        date={new Date(2023, 2, 21)}
+        //date={new Date(2023, 2, 21)}
       />
     ),
     patient12: (
@@ -46,7 +25,7 @@ const all_scans = [
         picture={teeth3d}
         patientfirstname={'Anna'}
         patientlastname={'Janssens'}
-        date={new Date(2023, 2, 20)}
+        //date={new Date(2023, 2, 20)}
       />
     ),
     patient13: (
@@ -55,7 +34,7 @@ const all_scans = [
         picture={teeth3d}
         patientfirstname={'Josephine'}
         patientlastname={'De Goter'}
-        date={new Date(2023, 1, 10)}
+        //date={new Date(2023, 1, 10)}
       />
     ),
   },
@@ -67,7 +46,7 @@ const all_scans = [
         picture={teeth3d}
         patientfirstname={'Jos'}
         patientlastname={'Van Rooie'}
-        date={new Date(2022, 4, 4)}
+        //date={new Date(2022, 4, 4)}
       />
     ),
     patient22: (
@@ -76,7 +55,7 @@ const all_scans = [
         picture={teeth3d}
         patientfirstname={'Gert'}
         patientlastname={'Vandamme'}
-        date={new Date(2023, 3, 1)}
+        //date={new Date(2023, 3, 1)}
       />
     ),
     patient23: (
@@ -85,7 +64,7 @@ const all_scans = [
         picture={teeth3d}
         patientfirstname={'Peter'}
         patientlastname={'Damiaans'}
-        date={new Date(2022, 12, 23)}
+        //date={new Date(2022, 12, 23)}
       />
     ),
   },
@@ -97,7 +76,7 @@ const all_scans = [
         picture={teeth3d}
         patientfirstname={'Bart'}
         patientlastname={'De Strooper'}
-        date={new Date(2023, 2, 19)}
+        //date={new Date(2023, 2, 19)}
       />
     ),
     patient32: (
@@ -106,7 +85,7 @@ const all_scans = [
         picture={teeth3d}
         patientfirstname={'Kaatje'}
         patientlastname={'Groothals'}
-        date={new Date(2023, 3, 21)}
+        //date={new Date(2023, 3, 21)}
       />
     ),
     patient33: (
@@ -115,7 +94,7 @@ const all_scans = [
         picture={teeth3d}
         patientfirstname={'Lieselot'}
         patientlastname={'Destoffel'}
-        date={new Date(2022, 11, 7)}
+        //date={new Date(2022, 11, 7)}
       />
     ),
   },
@@ -127,7 +106,7 @@ const all_scans = [
         picture={teeth3d}
         patientfirstname={'Jozef'}
         patientlastname={'Van Kerke'}
-        date={new Date(2022, 12, 7)}
+        //date={new Date(2022, 12, 7)}
       />
     ),
     patient42: (
@@ -136,7 +115,7 @@ const all_scans = [
         picture={teeth3d}
         patientfirstname={'Jozef'}
         patientlastname={'Van Kerke'}
-        date={new Date(2022, 12, 6)}
+        //date={new Date(2022, 12, 6)}
       />
     ),
     patient43: (
@@ -145,7 +124,7 @@ const all_scans = [
         picture={teeth3d}
         patientfirstname={'Kaatje'}
         patientlastname={'Groothals'}
-        date={new Date(2023, 2, 21)}
+        //date={new Date(2023, 2, 21)}
       />
     ),
   },
@@ -163,18 +142,24 @@ const App: FC = () => {
         patient.props.patientfirstname === targetpatientfirstname &&
         patient.props.patientlastname === targetpatientlastname
     )
-    .sort((a, b) => b.props.date.getTime() - a.props.date.getTime()); // sort by date, most recent first
 
-  const TargetPatientScans = filteredPatients.map((patient, index) => ({ [`patient${index + 1}`]: patient }));
 
   return (
     <div>
-      <HeaderPatient patientfirstname={targetpatientfirstname} patientlastname={targetpatientlastname} />
-      <Sidebar />
-      <div className={styles.textWrapper}>
-        <h1 className={styles.bigText}> Scan Overview</h1>
+      <SidebarPatient patientfirstname={targetpatientfirstname} patientlastname={targetpatientlastname} />
+      <HeaderPatient />
+      <div className={styles.scansWrapper}>
+        {filteredPatients.map((patient, index) => (
+          <div key={`patient${index + 1}`}>
+            <Patient
+              id={patient.props.id}
+              picture={patient.props.picture}
+              patientfirstname={patient.props.patientfirstname}
+              patientlastname={patient.props.patientlastname}
+            />
+          </div>
+        ))}
       </div>
-      <Table data={TargetPatientScans} />
     </div>
   );
 };

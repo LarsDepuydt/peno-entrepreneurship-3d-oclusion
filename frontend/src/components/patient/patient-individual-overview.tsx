@@ -33,7 +33,9 @@ export function SinglePatient({ picture, patientfirstname, patientlastname }: pa
           alt="3d picture of teeth"
           width={100}
         />
-        <p className={styles.patientscanName}>{patientfirstname.concat(' ', patientlastname)}</p>
+        <div className={styles.patientscanNameWrapper}>
+          <p className={styles.patientscanName}>{patientfirstname.concat(' ', patientlastname)}</p>
+        </div>
         {/* <button onClick={handleDelete}>Delete</button> */}
       </div>
     </div>

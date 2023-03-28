@@ -1,6 +1,7 @@
 package tags
 
 import (
+	"database/sql"
 	"fmt"
 
 	"github.com/bufbuild/connect-go"
@@ -11,23 +12,14 @@ import (
 )
 
 
-func AddTag(req *connect.Request[threedoclusionv1.AddTagRequest]) (*connect.Response[threedoclusionv1.AddTagResponse], error) {
-	// Connect to the database
-	database, error := help_functions.ConnectToDataBase()
-	if database == nil || error != nil {
-		return nil, error
-	}
-
-	defer database.Close()
-
-	// Prepare a statement with placeholders for the values
+func AddTag(req *connect.Request[threedoclusionv1.AddTagRequest], database *sql.DB) (*connect.Response[threedoclusionv1.AddTagResponse], error) {
 	statement, error := database.Prepare("INSERT INTO tag (bite) VALUES ($1)")
-
 	if error != nil {
 		return nil, error
 	}
+	defer statement.Close()
 
-	// Perform database modifications, adding a tag
+
 	_, error = statement.Exec(req.Msg.Bite)
 	if error != nil {
 		return nil, error
@@ -43,19 +35,9 @@ func AddTag(req *connect.Request[threedoclusionv1.AddTagRequest]) (*connect.Resp
 	return res, nil
 }
 
-func DeleteTag(req *connect.Request[threedoclusionv1.DeleteTagRequest]) (*connect.Response[threedoclusionv1.DeleteTagResponse], error) {
-	// Connect to the database
-	database, error := help_functions.ConnectToDataBase()
-
-	if database == nil || error != nil {
-		return nil, error
-	}
-	defer database.Close()
-	// Prepare a statement with placeholders for the condition
+func DeleteTag(req *connect.Request[threedoclusionv1.DeleteTagRequest], database *sql.DB) (*connect.Response[threedoclusionv1.DeleteTagResponse], error) {
 	statement := "DELETE FROM tag WHERE id = $1"
-
-	// Execute the statement with the parameter
-	_, error = database.Exec(statement, req.Msg.Id)
+	_, error := database.Exec(statement, req.Msg.Id)
 	if error != nil {
 		return nil, error
 	}
@@ -70,26 +52,19 @@ func DeleteTag(req *connect.Request[threedoclusionv1.DeleteTagRequest]) (*connec
 	return res, nil
 }
 
-func GetAllTags(req *connect.Request[threedoclusionv1.GetAllTagsRequest]) (*connect.Response[threedoclusionv1.GetAllTagsResponse], error) {
-	// Connect to the database
-	database, error := help_functions.ConnectToDataBase()
-
-	if database == nil || error != nil {
+func GetAllTags(req *connect.Request[threedoclusionv1.GetAllTagsRequest], database *sql.DB) (*connect.Response[threedoclusionv1.GetAllTagsResponse], error) {
+	statement := "SELECT * FROM tag;"
+	rows, error := database.Query(statement)
+	if error != nil {
 		return nil, error
 	}
-	defer database.Close()
-	// Prepare a statement with placeholders for the condition
-	statement := "SELECT * FROM tag;"
 
-	result, error := help_functions.GetResponseMakerTag(database, statement)
+	result, error := help_functions.GetResponseMakerTag(rows)
 	if error != nil {
 		panic(error)
 	}
 
-	fmt.Println("Got all tags succesfully")
-
-	//resultCopy := make([]RowDataTag, len(result))
-	//copy(copy, source[:])
+	fmt.Println("Got all tags successfully")
 
 	res := connect.NewResponse(&threedoclusionv1.GetAllTagsResponse{
 		Tags: result,
@@ -98,18 +73,14 @@ func GetAllTags(req *connect.Request[threedoclusionv1.GetAllTagsRequest]) (*conn
 	return res, nil
 }
 
-func GetTagByID(req *connect.Request[threedoclusionv1.GetTagByIDRequest]) (*connect.Response[threedoclusionv1.GetTagByIDResponse], error) {
-	// Connect to the database
-	database, error := help_functions.ConnectToDataBase()
-
-	if database == nil || error != nil {
+func GetTagByID(req *connect.Request[threedoclusionv1.GetTagByIDRequest], database *sql.DB) (*connect.Response[threedoclusionv1.GetTagByIDResponse], error) {
+	statement := "SELECT bite FROM tag WHERE id = $1;"
+	rows, error := database.Query(statement, req.Msg.Id)
+	if error != nil {
 		return nil, error
 	}
-	defer database.Close()
-	// Prepare a statement with placeholders for the condition
-	statement := "SELECT * FROM tag WHERE id = $1;"
 
-	result, error := help_functions.GetResponseMakerTag(database, statement)
+	result, error := help_functions.GetResponseMakerTag(rows)
 	if error != nil {
 		panic(error)
 	}
@@ -125,18 +96,14 @@ func GetTagByID(req *connect.Request[threedoclusionv1.GetTagByIDRequest]) (*conn
 	return res, nil
 }
 
-func GetAllTagsByType(req *connect.Request[threedoclusionv1.GetAllTagsByTypeRequest]) (*connect.Response[threedoclusionv1.GetAllTagsByTypeResponse], error) {
-	// Connect to the database
-	database, error := help_functions.ConnectToDataBase()
-
-	if database == nil || error != nil {
+func GetAllTagsByType(req *connect.Request[threedoclusionv1.GetAllTagsByTypeRequest], database *sql.DB) (*connect.Response[threedoclusionv1.GetAllTagsByTypeResponse], error) {
+	statement := "SELECT * FROM tag WHERE bite = $1;"
+	rows, error := database.Query(statement, req.Msg.Type)
+	if error != nil {
 		return nil, error
 	}
-	defer database.Close()
-	// Prepare a statement with placeholders for the condition
-	statement := "SELECT * FROM tag WHERE bite = $1;"
 
-	result, error := help_functions.GetResponseMakerTag(database, statement)
+	result, error := help_functions.GetResponseMakerTag(rows)
 	if error != nil {
 		panic(error)
 	}

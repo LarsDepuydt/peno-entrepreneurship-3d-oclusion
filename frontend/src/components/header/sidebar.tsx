@@ -1,29 +1,42 @@
 import React from 'react';
-import styles from '@/styles/Header.module.css';
+import stylesButton from '@/styles/Buttons.module.css';
+import styleSidebar from '@/styles/Sidebar.module.css';
 import New_Patient from '../popups/new-patient';
 import New_Scan from '../popups/new-scan';
-import Search_Name from '../search/search-name';
-import Search_ID from '../search/search-id';
-import Filter_Tags from '../search/filter-tags';
+import { WelcomingDoctor, WelcomingPatient } from './welcoming';
 
-function Sidebar() {
+interface HeaderPatientProps {
+  patientfirstname: string;
+  patientlastname: string;
+}
+
+interface HeaderDoctorProps {
+  doctorfirstname: string;
+  doctorlastname: string;
+}
+
+export function SidebarDoctor() {
   return (
     <>
-      <div className={styles.sidebar}>
-        {/* <div className={styles.buttons}>
-        <New_Patient />
-        </div> */}
-        <div className={styles.buttons}>
-          <Search_Name />
+      <div className={styleSidebar.sidebar}>
+        <WelcomingDoctor doctorfirstname={'Anna'} doctorlastname={'Proost'} />
+        <div className={stylesButton.sidebarButton}>
+          <New_Patient />
         </div>
-        {/* <div className={styles.buttons}>
-          <Search_ID />
-        </div> */}
-        {/* <New_Scan /> */}
-        {/* </div> */}
       </div>
     </>
   );
 }
 
-export default Sidebar;
+export function SidebarPatient({ patientfirstname, patientlastname }: HeaderPatientProps) {
+  return (
+    <>
+      <div className={styleSidebar.sidebar}>
+        <WelcomingPatient patientfirstname={patientfirstname} patientlastname={patientlastname} />
+        <div className={stylesButton.sidebarButton}>
+          <New_Scan />
+        </div>
+      </div>
+    </>
+  );
+}

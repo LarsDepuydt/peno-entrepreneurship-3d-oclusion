@@ -44,3 +44,11 @@
   column-gap: 20px;
   justify-content: space-between;
 }
+
+#logOut {
+    margin-right: 20px;
+}
+
+.sidebarButton {
+    margin: auto;
+  }

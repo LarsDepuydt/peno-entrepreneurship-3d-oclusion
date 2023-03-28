@@ -8,6 +8,7 @@ option go_package = "github.com/LarsDepuydt/peno-entrepreneurship-3d-oclusion";
 service ScanService {
   rpc SendVR(SendVRRequest) returns (SendVRResponse) {}
   rpc Waiting(WaitingRequest) returns (stream WaitingResponse) {}
+
   rpc AddScan(AddScanRequest) returns (AddScanResponse) {}
   rpc DeleteScan(DeleteScanRequest) returns (DeleteScanResponse) {}
   rpc GetAllScans(GetAllScansRequest) returns (GetAllScansResponse) {}
@@ -37,21 +38,21 @@ service ScanService {
 
 
 message RowDataTag {
-  int64 id = 1;
+  int32 id = 1;
   string bite = 2;
 }
 
 message Scan {
-  int64 id = 1;
+  int32 id = 1;
   string scan = 2;
   string date = 3;
 }
 
 message Patient{
-  int64 id = 1;
+  int32 id = 1;
   string first_name = 2;
   string last_name = 3;
-  int64 pinned = 4;
+  int32 pinned = 4;
   string notes = 5;
   
 }
@@ -66,7 +67,7 @@ message AddTagResponse {
 }
 
 message DeleteTagRequest {
-  int64 id = 1;
+  int32 id = 1;
 }
 
 message DeleteTagResponse {
@@ -80,11 +81,11 @@ message GetAllTagsResponse {
 }
 
 message GetTagByIDRequest {
-  int64 id = 1;
+  int32 id = 1;
 }
 
 message GetTagByIDResponse {
-  int64 id = 1;
+  int32 id = 1;
   string bite = 2;
 }
 
@@ -108,7 +109,7 @@ message AddScanResponse {
 }
 
 message DeleteScanRequest{
-  int64 id = 1;
+  int32 id = 1;
 }
 
 message DeleteScanResponse {
@@ -122,11 +123,11 @@ message GetAllScansResponse {
 }
 
 message GetScanByIDRequest {
-  int64 id = 1;
+  int32 id = 1;
 }
 
 message GetScanByIDResponse {
-  int64 id =  1;
+  int32 id =  1;
   string scan_data = 2;
   string scan_date = 3;
 }
@@ -144,7 +145,7 @@ message GetScanByDateResponse {
 message AddPatientRequest{
   string first_name = 1;
   string last_name = 2;
-  int64 pinned = 3;
+  int32 pinned = 3;
   string notes = 4;
 }
 
@@ -178,11 +179,11 @@ message WaitingResponse {
 }
 
 message DeletePatientRequest{
-  int64 id = 1;
+  int32 id = 1;
 }
 
 message DeletePatientResponse{
-  string message = 1;
+  string message = 1;http://localhost:3001
 }
 
 message GetAllPatientsRequest{}
@@ -192,14 +193,14 @@ message GetAllPatientsResponse{
 }
 
 message GetPatientByIDRequest{
-  int64 id = 1;
+  int32 id = 1;
 }
 
 message GetPatientByIDResponse{
-  int64 id = 1;
+  int32 id = 1;
   string first_name = 2;
   string last_name = 3;
-  int64 pinned = 4;
+  int32 pinned = 4;
   string notes = 5;
 }
 
