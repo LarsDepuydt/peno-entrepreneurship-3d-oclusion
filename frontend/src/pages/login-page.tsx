@@ -19,9 +19,9 @@ export default function Login() {
       </Head>
 
       <div className={styleL.all_landing}>
-        {/* <div className={styleL.imgbox}>
+        <div className={styleL.imgbox}>
           <Image className={styleL.image_left} src={Image_L} alt="relu logo" />
-        </div> */}
+        </div>
 
         <div className={styleL.loginbox}>
           <LoginForm />
