@@ -1,6 +1,7 @@
 package dentists
 
 import (
+	"database/sql"
 	"fmt"
 
 	"github.com/LarsDepuydt/peno-entrepreneurship-3d-oclusion/cmd/help_functions"
@@ -8,17 +9,9 @@ import (
 	"github.com/bufbuild/connect-go"
 )
 
-func AddDentist(req *connect.Request[threedoclusionv1.AddDentistRequest]) (*connect.Response[threedoclusionv1.AddDentistResponse], error) {
-	// Connect to database
-	database, error := help_functions.ConnectToDataBase()
-	if database == nil || error != nil {
-		return nil, error
-	}
-
-	defer database.Close()
-
+func AddDentist(req *connect.Request[threedoclusionv1.AddDentistRequest], database *sql.DB) (*connect.Response[threedoclusionv1.AddDentistResponse], error) {
 	// Perform the database modification
-	_, error = database.Exec(
+	_, error := database.Exec(
 		"INSERT INTO dentist (email, pass_word, first_name, last_name) VALUES ($1, $2, $3, $4);", 
 		req.Msg.Email, req.Msg.Password, req.Msg.FirstName, req.Msg.LastName,
 	)
@@ -36,17 +29,9 @@ func AddDentist(req *connect.Request[threedoclusionv1.AddDentistRequest]) (*conn
 	return res, nil
 }
 
-func DeleteDentistById(req *connect.Request[threedoclusionv1.DeleteDentistByIdRequest]) (*connect.Response[threedoclusionv1.DeleteDentistByIdResponse], error) {
-	// Connect to database
-	database, error := help_functions.ConnectToDataBase()
-	if database == nil || error != nil {
-		return nil, error
-	}
-
-	defer database.Close()
-
+func DeleteDentistById(req *connect.Request[threedoclusionv1.DeleteDentistByIdRequest], database *sql.DB) (*connect.Response[threedoclusionv1.DeleteDentistByIdResponse], error) {
 	// Perform the database modification
-	_, error = database.Exec("DELETE FROM dentist WHERE id = $1;", req.Msg.Id)
+	_, error := database.Exec("DELETE FROM dentist WHERE id = $1;", req.Msg.Id)
 	if error != nil {
 		return nil, error
 	}
@@ -61,15 +46,7 @@ func DeleteDentistById(req *connect.Request[threedoclusionv1.DeleteDentistByIdRe
 	return res, nil
 }
 
-func GetAllDentists(req *connect.Request[threedoclusionv1.GetAllDentistsRequest]) (*connect.Response[threedoclusionv1.GetAllDentistsResponse], error) {
-	// Connect to database
-	database, error := help_functions.ConnectToDataBase()
-	if database == nil || error != nil {
-		return nil, error
-	}
-
-	defer database.Close()
-
+func GetAllDentists(req *connect.Request[threedoclusionv1.GetAllDentistsRequest], database *sql.DB) (*connect.Response[threedoclusionv1.GetAllDentistsResponse], error) {
 	// Perform the database modification
 	rows, error := database.Query("SELECT * FROM dentist;")
 	if error != nil {
@@ -91,15 +68,7 @@ func GetAllDentists(req *connect.Request[threedoclusionv1.GetAllDentistsRequest]
 	return res, nil
 }
 
-func GetDentistById(req *connect.Request[threedoclusionv1.GetDentistByIdRequest]) (*connect.Response[threedoclusionv1.GetDentistByIdResponse], error) {
-	// Connect to database
-	database, error := help_functions.ConnectToDataBase()
-	if database == nil || error != nil {
-		return nil, error
-	}
-	
-	defer database.Close()
-	
+func GetDentistById(req *connect.Request[threedoclusionv1.GetDentistByIdRequest], database *sql.DB) (*connect.Response[threedoclusionv1.GetDentistByIdResponse], error) {
 	// Perform the database modification
 	rows, error := database.Query("SELECT * FROM dentist WHERE id = $1;", req.Msg.Id)
 	if error != nil {
@@ -125,17 +94,9 @@ func GetDentistById(req *connect.Request[threedoclusionv1.GetDentistByIdRequest]
 	return res, nil
 }
 
-func Login(req *connect.Request[threedoclusionv1.LoginRequest]) (*connect.Response[threedoclusionv1.LoginResponse], error) {
-	// Connect to database
-	database, error := help_functions.ConnectToDataBase()
-	if database == nil || error != nil {
-		return nil, error
-	}
-
-	defer database.Close()
-
+func Login(req *connect.Request[threedoclusionv1.LoginRequest], database *sql.DB) (*connect.Response[threedoclusionv1.LoginResponse], error) {
 	// Perform the database modification
-	_, error = database.Query("SELECT * FROM dentist WHERE email = $1;", req.Msg.Email)
+	_, error := database.Query("SELECT * FROM dentist WHERE email = $1;", req.Msg.Email)
 	if error != nil {
 		return nil, error
 	}
@@ -152,17 +113,9 @@ func Login(req *connect.Request[threedoclusionv1.LoginRequest]) (*connect.Respon
 	return res, nil
 }
 
-func Register(req *connect.Request[threedoclusionv1.RegisterRequest]) (*connect.Response[threedoclusionv1.RegisterResponse], error) {
-	// Connect to database
-	database, error := help_functions.ConnectToDataBase()
-	if database == nil || error != nil {
-		return nil, error
-	}
-
-	defer database.Close()
-
+func Register(req *connect.Request[threedoclusionv1.RegisterRequest], database *sql.DB) (*connect.Response[threedoclusionv1.RegisterResponse], error) {
 	// Perform the database modification
-	_, error = database.Exec(
+	_, error := database.Exec(
 		"INSERT INTO dentist (email, pass_word, first_name, last_name) VALUES ($1, $2, $3, $4);", 
 		req.Msg.Email, req.Msg.Password, req.Msg.FirstName, req.Msg.LastName,
 	)
@@ -182,17 +135,9 @@ func Register(req *connect.Request[threedoclusionv1.RegisterRequest]) (*connect.
 	return res, nil
 }
 
-func UpdateDentistById(req *connect.Request[threedoclusionv1.UpdateDentistByIdRequest]) (*connect.Response[threedoclusionv1.UpdateDentistByIdResponse], error) {
-	// Connect to database
-	database, error := help_functions.ConnectToDataBase()
-	if database == nil || error != nil {
-		return nil, error
-	}
-
-	defer database.Close()
-
+func UpdateDentistById(req *connect.Request[threedoclusionv1.UpdateDentistByIdRequest], database *sql.DB) (*connect.Response[threedoclusionv1.UpdateDentistByIdResponse], error) {
 	// Perform the database modification
-	_, error = database.Exec(
+	_, error := database.Exec(
 		"UPDATE dentist SET email = $2, pass_word = $3, first_name = 4, last_name = 5 WHERE id = $1 ;", 
 		req.Msg.Id, req.Msg.Email, req.Msg.Password, req.Msg.FirstName, req.Msg.LastName,
 	)

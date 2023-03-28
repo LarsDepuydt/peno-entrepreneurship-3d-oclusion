@@ -6,6 +6,7 @@ import teeth3d from '../../public/3d-teeth.jpg';
 import { SidebarPatient } from '@/components/header/sidebar';
 import styles from '@/styles/PatientPage.module.css';
 import { FC } from 'react';
+import Head from 'next/head';
 
 // hard coded patients - 12 scans for 10 patients. Kaatje and Jozef (patientid 10 and 8) have each 2 scans. (scanid 1 and 2)
 const all_scans = [
@@ -146,8 +147,9 @@ const App: FC = () => {
             />
           </div>
         ))}
+
       </div>
-    </div>
+    </>
   );
 };
 
