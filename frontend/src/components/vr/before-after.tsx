@@ -5,6 +5,7 @@ import { XRControllerModelFactory } from 'three/examples/jsm/webxr/XRControllerM
 import { OBJLoader } from 'three/examples/jsm/loaders/OBJLoader.js';
 import { useState, useEffect } from 'react';
 import { boolean } from 'yup';
+import { InterpolateLinear } from 'three';
 
 let container: HTMLDivElement;
 let camera: THREE.PerspectiveCamera, scene: THREE.Scene, renderer: THREE.WebGLRenderer;
@@ -18,15 +19,17 @@ const path_lower_jaw = '/lower_ios_6.obj';
 const SCALE_MODEL = 0.01;
 
 // Animate
-const initialPosition = new THREE.Vector3(0, 2, 0.12); const initialRotation = new THREE.Euler(1.5 * Math.PI, 0, 0);
+const initialPosition = new THREE.Vector3(0, 2, 0.12); const initialRotation = new THREE.Euler(1.5 * Math.PI, 0, 0, "XYZ");
 const initialPositionLower = initialPosition; const initialPositionUpper = initialPosition;
 const initialRotationLower = initialRotation; const initialRotationUpper = initialRotation;
 
-const finalPositionLower = new THREE.Vector3(0, 2, 0.12);; const finalPositionUpper = new THREE.Vector3(1, 3, 1.12);;
+const finalPositionLower = new THREE.Vector3(0, 2, 0.12);; const finalPositionUpper = new THREE.Vector3(1, 3, 1.12);
+const finalRotationLower = new THREE.Euler(2 * Math.PI, 0, 0, "XYZ"); const finalRotationUpper = new THREE.Euler(2 * Math.PI, 0.5 * Math.PI, 0, "XYZ"); 
 
 const clock = new THREE.Clock();
 let upperMove = new THREE.Object3D();
 let inLastPosition = false;
+let inInitialPosition = true;
 let captureRunning = false;
 let animationSaved = false;
 
@@ -178,10 +181,16 @@ function initThree(){
 function checkAnimation(duration: number, rest_time: number) {
     let elapsedTime = clock.getElapsedTime();
     
-
-    if (inLastPosition){ // Rest
+    if (inLastPosition){ // Rest at the end 
         if (elapsedTime >= rest_time){
             inLastPosition = false;
+            inInitialPosition = true;
+            clock.start();
+        }
+    }
+    if (inInitialPosition){ // Rest at the start point
+        if (elapsedTime >= rest_time){
+            inInitialPosition = false;
             clock.start();
         }
     }
@@ -203,7 +212,7 @@ function checkAnimation(duration: number, rest_time: number) {
         }
         clock.start(); // Reset clock
     }
-    if (clock.running && !inLastPosition){
+    if (clock.running && !inLastPosition && !inInitialPosition){
         if (!captureRunning && !animationSaved) { recorder.start(); captureRunning = true;}
         
         moveWithFactor(duration, elapsedTime, upperMove);
@@ -229,19 +238,26 @@ function moveWithFactor(duration: number, time_passed: number, jawToMove: any){ 
     
     // Let's say lower is the reference; set currentsave pos of lower to initial one and then only upper needs to move relatively, with 
     const diff_pos_lower = finalPositionLower.clone().sub(initialPositionLower);
-    //const diff_rot_lower = currentSave_lower.rotation.sub(initialRotationLower);
     const diff_pos_upper = finalPositionUpper.clone().sub(initialPositionUpper);
-    //const diff_rot_upper = currentSave_upper.rotation.sub(initialRotationUpper);
 
     const diff_pos_between = diff_pos_upper.clone().sub(diff_pos_lower);
-    //const diff_rot_between = diff_rot_upper.sub(diff_rot_lower);
+    
+    const initialQuaternionLower = new THREE.Quaternion().setFromEuler(initialRotationLower);
+    const finalQuaternionLower = new THREE.Quaternion().setFromEuler(finalRotationLower);
+    const initialQuaternionUpper = new THREE.Quaternion().setFromEuler(initialRotationUpper);
+    const finalQuaternionUpper = new THREE.Quaternion().setFromEuler(finalRotationUpper);
 
+    // Get the rotation difference between initialRotationLower and finalRotationLower
+    const deltaQuaternionLower = finalQuaternionLower.clone().multiply(initialQuaternionLower.clone().invert()); // Invert or not??
+    const deltaQuaternionUpper = finalQuaternionUpper.clone().multiply(initialQuaternionUpper.clone().invert());
+
+    const targetQuaternion = initialQuaternionUpper.clone().multiply(deltaQuaternionLower).multiply(deltaQuaternionUpper);
 
     const factor = time_passed / duration // Let checktime handle so it's <= 1
 
-    // jawToMove -- non-reference
+
     jawToMove.position.copy(initialPositionLower.clone().add( diff_pos_between.clone().multiplyScalar(factor) ));
-    // Think about rotation
+    jawToMove.quaternion.copy(jawToMove.quaternion.slerpQuaternions ( initialQuaternionUpper, targetQuaternion, factor ));    
 }
 
 function animate() {
