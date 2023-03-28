@@ -341,7 +341,10 @@ function cleanIntersected() {
 }
 
 function animate() {
+<<<<<<< HEAD
 
+=======
+>>>>>>> 67c0a5d7600c5620173c3949d4ffebee81c4026b
     renderer.setAnimationLoop( render );
 }
 

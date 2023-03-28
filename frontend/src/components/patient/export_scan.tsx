@@ -1,34 +1,32 @@
-import { Formik, Field, Form} from 'formik';
-import download from 'downloadjs';
 import { useRouter } from 'next/router';
-import Image from 'next/image'
-import styles from '@/styles/LoginForm.module.css'
 import 'bootstrap/dist/css/bootstrap.css'
+import React, { useCallback } from 'react';
+import useStorage from '../../hooks/useStorage';
 
-function handleDownloadClick() {
-    const fileUrl = '/lowerjaw_holger.obj';
-    download(fileUrl, 'lowerjaw_holger.obj');
-  }
+
+const DownloadButton = () => {
+  const router = useRouter();
+  const path = 'gs://relu-vr-scan-database.appspot.com/Patiënt-Scans/Patient-1/upper_ios_6.obj';
+  const { handleDownloadClick, loading, error } = useStorage(path);
+
   
-  function App() {
-    return (
-      <div>
-        <button onClick={handleDownloadClick}>Download Large File</button>
-      </div>
-    );
+  if (loading) {
+    return <button type="button" className="btn btn-primary btn-large" disabled>Loading...</button>;
   }
 
-export default function LoginForm() {   
+  if (error) {
+    console.error(error);
+    return <button type="button" className="btn btn-primary btn-large" disabled>Error</button>;
+  }
 
+  return (
+    <>
+      <button type="button" className="btn btn-primary btn-large" onClick={handleDownloadClick}>
+        Download
+      </button>
+    </>
+  );
+};
 
-    const router = useRouter();
+export default DownloadButton;
 
-
-    return (
-        <>
-
-        <button type="button" className="btn btn-primary btn-large" onClick={handleDownloadClick} >download</button>
-        </>
-
-    );
-  };
