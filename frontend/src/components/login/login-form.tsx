@@ -7,14 +7,30 @@ import styles from '@/styles/LoginForm.module.css';
 import styleB from '@/styles/Buttons.module.css';
 
 import reluLogo from '../../../public/relu-logo-small.png';
+import { useMutation, useQuery } from '@tanstack/react-query';
+import { login } from '@/gen/proto/threedoclusion/v1/service-ScanService_connectquery';
+import axios from 'axios';
+import { useState } from 'react';
 
-interface Values {
+interface LUser {
   username: string;
   password: string;
 }
 
 export default function LoginForm() {
+  const [credentials, setData] = useState({ username: '', password: '' });
+
+  const { data } = useMutation(login.useQuery(credentials));
+
   const router = useRouter();
+
+  function SubmitFunct(input: LUser) {
+    console.log('button was clicked x2');
+
+    const gotten = setData(input);
+    console.log(gotten);
+    router.push('/patient');
+  }
 
   const toRegister = () => router.push('/register-page');
 
@@ -27,7 +43,11 @@ export default function LoginForm() {
           username: '',
           password: '',
         }}
-        onSubmit={() => {
+        onSubmit={(values) => {
+          console.log('button was clicked !');
+          console.log(values);
+          //const gotten = setData(values);
+          //console.log(gotten);
           router.push('/patient');
         }}
       >
