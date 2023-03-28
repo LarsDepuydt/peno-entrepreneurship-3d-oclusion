@@ -13,7 +13,6 @@ CREATE TABLE dentist (
     pass_word text,
     first_name text,
     last_name text,
-    patient_id SERIAL REFERENCES patient(id)
 );
 
 CREATE TABLE scan (
@@ -25,8 +24,15 @@ CREATE TABLE scan (
 
 CREATE TABLE tag (
     id SERIAL PRIMARY KEY,
-    bite text,
-    scan_id SERIAL REFERENCES scan(id),
-    patient_id SERIAL REFERENCES patient(id)
+    bite text
 );
+
+CREATE TABLE scan_tag (
+    id SERIAL PRIMARY KEY,
+    scan_id INTEGER REFERENCES scan(id),
+    tag_id INTEGER REFERENCES tag(id),
+    UNIQUE (scan_id, tag_id)
+);
+
+
 
