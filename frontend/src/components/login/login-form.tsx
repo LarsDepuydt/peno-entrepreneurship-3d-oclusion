@@ -31,7 +31,7 @@ export default function LoginForm() {
 
   useEffect(() => {
     data?.token && credentials.email && router.push('/patient');
-  }, [data])
+  }, [data, credentials])
 
   const toRegister = () => router.push('/register-page');
 
