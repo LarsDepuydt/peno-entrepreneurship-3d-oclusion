@@ -12,7 +12,6 @@ import { SidebarDoctor } from '../components/header/sidebar';
 
 // hard coded patients - 12 scans for 10 patients. Kaatje and Jozef have each 2 scans.
 const patients = [
-
   {
     patient11: (
       <Patient
@@ -134,7 +133,6 @@ const patients = [
   },
 ];
 
-
 const filteredPatients = patients
   .flatMap((obj) => Object.values(obj)) // flatten the array of objects into an array of patients
   .reduce((acc, patient) => {
@@ -144,7 +142,6 @@ const filteredPatients = patients
     }
     return acc;
   }, []);
-
 
 const App: FC = () => {
   return (
@@ -162,6 +159,17 @@ const App: FC = () => {
             />
           </div>
         ))}
+        <div className={styles.patient_filler}></div>
+        <div className={styles.patient_filler}></div>
+        <div className={styles.patient_filler}></div>
+        <div className={styles.patient_filler}></div>
+        <div className={styles.patient_filler}></div>
+        <div className={styles.patient_filler}></div>
+        <div className={styles.patient_filler}></div>
+        <div className={styles.patient_filler}></div>
+        <div className={styles.patient_filler}></div>
+        <div className={styles.patient_filler}></div>
+        <div className={styles.patient_filler}></div>
       </div>
     </div>
   );

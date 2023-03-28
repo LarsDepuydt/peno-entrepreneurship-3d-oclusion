@@ -20,6 +20,12 @@
   flex-basis: auto;
 }
 
+.patient_filler {
+  /* size of button is zero, to allign items */
+  width: 294px; /* full width of patient button */
+  flex-basis: auto;
+}
+
 .projects {
   display: flex;
   column-gap: 20px;
