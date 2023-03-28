@@ -73,11 +73,13 @@ export default function WaitPage() {
       <div className={styleL.all_landing}>
 
         <div className={styleL.loginbox}>
-    <div>
-    <Image className={styles.small_logo_log} src={reluLogo} alt="relu logo" />
-    <form onSubmit={afterSubmit} className={"mb-3"}>
-      Code: <input type="number" id="code" size={20} name="code"/><br/>
-      <input type="submit" value="Submit" className={styleB.relu_btn}/> 
+    <div className={styles.container}>
+    <Image className={styles2.small_logo_log} src={reluLogo} alt="relu logo" />
+    <form onSubmit={afterSubmit}>
+      Code: <input type="number" id="code" size={20} name="code" className={styles.inputstyle}/><br/>
+      <div>
+      <input type="submit" value="Submit" className={styles.relu_btn}/> 
+      </div>
     </form>
     </div>
     </div>
@@ -86,6 +88,7 @@ export default function WaitPage() {
 
     {submitted && ( // Display the following divs only if submitted is true
     <div className={styles.bodah}>
+          <Image className={styles.small_logo_log} src={reluLogo} alt="relu logo" />
     <div className={styles.loading}>
       <div className={styles.dot}></div>
       <div className={styles.dot}></div>
@@ -93,7 +96,7 @@ export default function WaitPage() {
       <div className={styles.dot}></div>
       <div className={styles.dot}></div>
     </div>
-  </div>
+    </div>
     )}
     </div>
   )
