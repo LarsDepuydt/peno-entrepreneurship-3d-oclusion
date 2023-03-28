@@ -12,14 +12,15 @@
 .sidebarText,
 .sidebarName {
   text-align: center;
-  font-weight: 450;
-  color: #223c49;
+  font-weight: 300;
+  color: #1c3c4c;
   font-size: 25px;
   margin: 0px;
 }
 
 .sidebarName {
   text-transform: capitalize;
+  font-weight: 350;
 }
 
 .sidebarText {

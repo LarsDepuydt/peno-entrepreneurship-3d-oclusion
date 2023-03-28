@@ -3,6 +3,7 @@ import stylesButton from '@/styles/Buttons.module.css';
 import styleSidebar from '@/styles/Sidebar.module.css';
 import New_Patient from '../popups/new-patient';
 import New_Scan from '../popups/new-scan';
+import Filter_Tags from '../search/filter-tags';
 import { WelcomingDoctor, WelcomingPatient } from './welcoming';
 
 interface HeaderPatientProps {
