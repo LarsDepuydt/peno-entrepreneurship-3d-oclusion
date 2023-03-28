@@ -4,7 +4,7 @@ import { useRouter } from 'next/router';
 import { SinglePatient as Patient } from '../components/patient/patient-individual-overview';
 import teeth3d from '../../public/3d-teeth.jpg';
 import { SidebarPatient } from '@/components/header/sidebar';
-import styles from '@/styles/PatientPage.module.css';
+import styles from '@/styles/PatientPage.module.scss';
 import { FC } from 'react';
 
 interface TableProps {

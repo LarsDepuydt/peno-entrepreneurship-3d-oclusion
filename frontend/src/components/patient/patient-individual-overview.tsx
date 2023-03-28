@@ -1,7 +1,7 @@
 import Image, { StaticImageData } from 'next/image';
 import { useRouter } from 'next/router';
 
-import styles from '@/styles/PatientPage.module.css';
+import styles from '@/styles/PatientPage.module.scss';
 import DeleteButton from '../patient/delete_patient';
 import React, { useState } from 'react';
 
@@ -45,9 +45,12 @@ export function SinglePatient({ picture, patientfirstname, patientlastname }: pa
       />
       {showButtons && (
         <div className={styles.subButtons}>
+          {' '}
+          {/* Patient: delete-patient, inspect-scans, edit-patient( also edits notes )*/}
+          {/* Scan: delete-scan, inspect-scans-VR, edit-patient( also edits notes ), export-scan | show notes of the patient in the sidebar*/}
           <DeleteButton />
-          <button>Button 2</button>
-          <button>Button 3</button>
+          <DeleteButton />
+          <DeleteButton />
         </div>
       )}
 
