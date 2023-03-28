@@ -21,16 +21,22 @@ export default function LoginForm() {
   const [credentials, setData] = useState({ username: '', password: '' });
 
   const { data } = useMutation(login.useQuery(credentials));
+  console.log('this is data ' + data);
 
   const router = useRouter();
 
-  function SubmitFunct(input: LUser) {
-    console.log('button was clicked x2');
+  // function SubmitFunct(input: LUser) {
+  //   console.log('button was clicked x2');
+  //   router.push('/patient');
+  // }
 
-    const gotten = setData(input);
-    console.log(gotten);
-    router.push('/patient');
-  }
+  const submitFunction = (values: LUser) => {
+    console.log(values);
+
+    setData(values);
+
+    // router.push('/patient');
+  };
 
   const toRegister = () => router.push('/register-page');
 
@@ -43,13 +49,7 @@ export default function LoginForm() {
           username: '',
           password: '',
         }}
-        onSubmit={(values) => {
-          console.log('button was clicked !');
-          console.log(values);
-          //const gotten = setData(values);
-          //console.log(gotten);
-          router.push('/patient');
-        }}
+        onSubmit={submitFunction}
       >
         <Form>
           <div className="mb-3">
