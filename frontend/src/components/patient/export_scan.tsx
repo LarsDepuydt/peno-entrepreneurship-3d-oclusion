@@ -6,7 +6,7 @@ import useStorage from '../../hooks/useStorage';
 
 const DownloadButton = () => {
   const router = useRouter();
-  const path = 'gs://relu-vr-scan-database.appspot.com/Patiënt-Scans/Patient-1/lower_ios_6.obj';
+  const path = 'gs://relu-vr-scan-database.appspot.com/Patiënt-Scans/Patient-1/upper_ios_6.obj';
   const { url, loading, error } = useStorage(path);
 
   const handleDownloadClick = useCallback(() => {
