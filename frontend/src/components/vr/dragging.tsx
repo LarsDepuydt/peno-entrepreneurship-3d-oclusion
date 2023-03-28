@@ -20,6 +20,7 @@ let second_call = false;
 
 const path_upper_jaw = '/upper_ios_6.obj'; // URLs for fetch, temporarily in public folder so Nextjs can access
 const path_lower_jaw = '/lower_ios_6.obj';
+
 const SCALE_MODEL = 0.01;
 
 function init() {
