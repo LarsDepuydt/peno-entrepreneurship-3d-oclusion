@@ -183,7 +183,7 @@ message DeletePatientRequest{
 }
 
 message DeletePatientResponse{
-  string message = 1;http://localhost:3001
+  string message = 1;
 }
 
 message GetAllPatientsRequest{}
