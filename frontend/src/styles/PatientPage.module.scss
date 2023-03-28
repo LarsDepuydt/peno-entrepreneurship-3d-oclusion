@@ -1,0 +1,92 @@
+$patientWidth: 270px;
+$patientMargin: 20px;
+$borderradius: 10px;
+$patientscanNameWrapperHeight: 30px;
+$patientBorder-width: 1.5px;
+
+.patient_picture {
+  /* size of picture is fixed, margin will scale with screen-width */
+  width: 250px;
+  height: auto;
+  text-align: center;
+  margin: 10px 10px 10px 10px;
+  border-radius: $borderradius;
+}
+
+.invisible_patient_picture {
+  width: 250px;
+  height: auto;
+  text-align: center;
+  margin: 10px 10px 10px 10px;
+  border-radius: $borderradius;
+  opacity: 0.35;
+}
+
+.patient_button {
+  /* size of button is fixed to size of picture */
+  margin: $patientMargin;
+  width: $patientWidth;
+  text-align: center;
+  background-color: #f8f8f8;
+  border-radius: $borderradius;
+  border-width: $patientBorder-width;
+  border-style: solid;
+  border-color: #fe7d00;
+  flex-basis: auto;
+}
+
+.patient_button:hover { 
+  background-color: #f8f8f8;
+  margin: $patientMargin;
+  width: $patientWidth;
+  text-align: center;
+  border-radius: $borderradius; 
+  box-shadow: 0px 0px 0px 4px #fe7d00 inset; /* on hover make border wider */
+  border-width: $patientBorder-width; 
+  border-style: solid;
+  border-color: #fe7d00;
+  flex-basis: auto;
+
+  display: flex;
+  flex-direction: column;
+  flex-wrap: nowrap;
+  justify-content: space-evenly;
+  align-items: center;
+}
+
+.projects {
+  display: flex;
+  column-gap: 20px;
+  justify-content: space-between;
+}
+
+.patientscanName {
+  text-align: center;
+  vertical-align: auto;
+  font-weight: 300;
+  text-transform: capitalize;
+}
+
+.patientscanNameWrapper {
+  width: 100%;
+  height: $patientscanNameWrapperHeight;
+  background-color: #ebebeb;
+  border-radius: 0px 0px $borderradius $borderradius;
+}
+
+.scansWrapper {
+  margin-top: 8vh;
+  width: 80vw;
+  float: right;
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  justify-content: space-evenly;
+  align-items: center;
+}
+
+.subButtons {
+  /* wrapper around the sub buttons in the patient button */
+  margin-bottom: $patientscanNameWrapperHeight;
+  position: absolute;
+}

@@ -6,13 +6,16 @@ import LoginForm from '../components/login/login-form';
 import styleL from '@/styles/LandingPage.module.css';
 import Image_L from '../../public/landing-image.png';
 
-import DeleteButton from '../components/patient/delete_patient'; // for testing purposes
-
 const inter = Inter({ subsets: ['latin'] });
 
 export default function Login() {
   return (
     <>
+      <Head>
+        <title>relu</title>
+        <link rel="icon" href="/relu_icon.ico" />
+      </Head>
+
       <div className={styleL.all_landing}>
         <div className={styleL.imgbox}>
           <Image className={styleL.image_left} src={Image_L} alt="relu logo" />
@@ -20,7 +23,6 @@ export default function Login() {
 
         <div className={styleL.loginbox}>
           <LoginForm />
-          <DeleteButton />
         </div>
       </div>
     </>

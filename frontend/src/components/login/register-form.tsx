@@ -10,14 +10,15 @@ import styleB from '@/styles/Buttons.module.css';
 import reluLogo from '../../../public/relu-logo-small.png';
 //import bcrypt from 'bcryptjs';
 
-import { useQuery } from '@tanstack/react-query';
+import { useQuery, useMutation } from '@tanstack/react-query';
 import { register } from '@/gen/proto/threedoclusion/v1/service-ScanService_connectquery';
+import { SetStateAction, useState } from 'react';
 
 const FormSchema = yup.object().shape({
   reppassword: yup.string().oneOf([yup.ref('password')], 'this does not match your password'),
 });
 
-interface Values {
+interface RUser {
   doctorFirstName: string;
   doctorLastName: string;
 
@@ -27,6 +28,22 @@ interface Values {
 }
 
 export default function LoginForm() {
+  const [email, setEmail] = useState('');
+  const [firstName, setFirstName] = useState('');
+  const [LastName, setLastName] = useState('');
+  const [password, setPassword] = useState('');
+
+  const reg_call = (values: RUser) => {
+    const { data } = useQuery(
+      register.useQuery({
+        email: values.email,
+        password: values.password,
+        firstName: values.doctorFirstName,
+        lastName: values.doctorLastName,
+      })
+    );
+    return data;
+  };
   const router = useRouter();
 
   const toLogin = () => router.push('/login-page');
@@ -46,15 +63,10 @@ export default function LoginForm() {
         }}
         validationSchema={FormSchema}
         onSubmit={(values) => {
-          const { data } = useQuery(
-            register.useQuery({
-              email: values.email,
-              password: values.password,
-              firstName: values.doctorFirstName,
-              lastName: values.doctorLastName,
-            })
-          );
-          console.log(data && data.message);
+          console.log('button was clicked');
+          // const data = reg_call(values);
+
+          //console.log(data && data.message);
           router.push('/patient');
         }}
       >
