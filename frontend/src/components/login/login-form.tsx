@@ -7,36 +7,31 @@ import styles from '@/styles/LoginForm.module.css';
 import styleB from '@/styles/Buttons.module.css';
 
 import reluLogo from '../../../public/relu-logo-small.png';
-import { useMutation, useQuery } from '@tanstack/react-query';
+import { useQuery } from '@tanstack/react-query';
 import { login } from '@/gen/proto/threedoclusion/v1/service-ScanService_connectquery';
-import axios from 'axios';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 
 interface LUser {
-  username: string;
+  email: string;
   password: string;
 }
 
 export default function LoginForm() {
-  const [credentials, setData] = useState({ username: '', password: '' });
+  const [credentials, setData] = useState({ email: '', password: '' });
 
-  const { data } = useMutation(login.useQuery(credentials));
-  console.log('this is data ' + data);
+  const { data } = useQuery(login.useQuery(credentials));
 
   const router = useRouter();
-
-  // function SubmitFunct(input: LUser) {
-  //   console.log('button was clicked x2');
-  //   router.push('/patient');
-  // }
 
   const submitFunction = (values: LUser) => {
     console.log(values);
 
     setData(values);
-
-    // router.push('/patient');
   };
+
+  useEffect(() => {
+    data?.token && credentials.email && router.push('/patient');
+  }, [data, credentials])
 
   const toRegister = () => router.push('/register-page');
 
@@ -46,7 +41,7 @@ export default function LoginForm() {
 
       <Formik
         initialValues={{
-          username: '',
+          email: '',
           password: '',
         }}
         onSubmit={submitFunction}
@@ -55,7 +50,7 @@ export default function LoginForm() {
           <div className="mb-3">
             <Field
               className="form-control"
-              id="username"
+              id="email"
               name="username"
               placeholder="Username"
               aria-describedby="usernameHelp"
