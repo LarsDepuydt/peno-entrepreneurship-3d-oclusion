@@ -400,8 +400,8 @@ function loadObjects() {
             console.log(elapsedTime, "seconds have passed");
             //setGetPosition(true);
         
-        // reset the clock
-        clock.start();
+            // reset the clock
+            clock.start();
         }
     }
 

@@ -6,11 +6,8 @@ import { OBJLoader } from 'three/addons/loaders/OBJLoader.js';
 import * as CANNON from 'cannon-es';
 import { MeshBVH, acceleratedRaycast } from 'three-mesh-bvh';
 import { default as CannonUtils } from 'cannon-utils';
-<<<<<<< HEAD
 import { sendPositionScan, getPositionScan } from '../../../frontend/src/gen/proto/threedoclusion/v1/service-ScanService_connectquery'
-=======
 import { QuickHull } from './QuickHull.js';
->>>>>>> 67c0a5d7600c5620173c3949d4ffebee81c4026b
 
 
 let container;
@@ -38,13 +35,11 @@ let lj_sphere, uj_sphere;
 
 let lj_loaded = false, uj_loaded = false;
 
-<<<<<<< HEAD
+
 let target = new THREE.Vector3();
 const clock = new THREE.Clock();
-=======
 let lj_target = new THREE.Vector3();
 let uj_target = new THREE.Vector3();
->>>>>>> 67c0a5d7600c5620173c3949d4ffebee81c4026b
 
 initCannon();
 initThree();
@@ -363,22 +358,14 @@ function updatePhysics() {
     uj_mesh.position.copy(uj_body.position);
     uj_mesh.quaternion.copy(uj_body.quaternion);
     uj_sphere.position.copy(uj_body.position);
-<<<<<<< HEAD
-=======
-
-    lj_target = lj_mesh.position;
-    uj_target = uj_mesh.position;
->>>>>>> 67c0a5d7600c5620173c3949d4ffebee81c4026b
 }
 
 function animate() {
-<<<<<<< HEAD
     checkTime();
-=======
+
 
     console.log("frame", frameNum);
     frameNum += 1;
->>>>>>> 67c0a5d7600c5620173c3949d4ffebee81c4026b
     updatePhysics();
     render();
 }
