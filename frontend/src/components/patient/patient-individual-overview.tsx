@@ -1,5 +1,7 @@
 import Image, { StaticImageData } from 'next/image';
 import { useRouter } from 'next/router';
+import { InspectScans } from '../../components/patient/inspect_scans'
+
 
 import styles from '@/styles/PatientPage.module.css';
 
@@ -10,22 +12,10 @@ interface patientProfile {
   patientlastname: string;
 }
 
-export function SinglePatient({ picture, patientfirstname, patientlastname }: patientProfile) {
-  const router = useRouter();
-
-  const clickPatient = () => {
-    router.push({
-      pathname: '/scans-page',
-      query: {
-        patientfirstname,
-        patientlastname,
-      },
-    });
-  };
+export function SinglePatient({ id, picture, patientfirstname, patientlastname }: patientProfile) {
 
   return (
-    <div className={styles.patient_button}>
-      <div onClick={clickPatient}>
+    <div className={styles.patient_button}> 
         <Image
           id={patientfirstname.concat(' ', patientlastname)}
           className={styles.patient_picture}
@@ -36,8 +26,7 @@ export function SinglePatient({ picture, patientfirstname, patientlastname }: pa
         <div className={styles.patientscanNameWrapper}>
           <p className={styles.patientscanName}>{patientfirstname.concat(' ', patientlastname)}</p>
         </div>
-        {/* <button onClick={handleDelete}>Delete</button> */}
+        <InspectScans patientID={id} />
       </div>
-    </div>
   );
 }
