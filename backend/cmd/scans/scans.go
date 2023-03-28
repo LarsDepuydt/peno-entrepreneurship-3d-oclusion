@@ -84,6 +84,11 @@ func GetScanByID(req *connect.Request[threedoclusionv1.GetScanByIDRequest], data
 		panic(error)
 	}
 
+	responseMessage := fmt.Sprintf("scan with id: %d returned with succes;", req.Msg.Id)
+	fmt.Println(responseMessage)
+	
+	
+
 	res := connect.NewResponse(&threedoclusionv1.GetScanByIDResponse{
 		Scan: result[0],
 	})
@@ -111,4 +116,5 @@ func GetScanByDate(req *connect.Request[threedoclusionv1.GetScanByDateRequest], 
 	})
 
 	return res, nil
+
 }
