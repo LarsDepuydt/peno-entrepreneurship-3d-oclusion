@@ -2,6 +2,7 @@ package serve
 
 import (
 	"context"
+	"database/sql"
 	"net/http"
 
 	"github.com/LarsDepuydt/peno-entrepreneurship-3d-oclusion/cmd/dentists"
@@ -10,6 +11,7 @@ import (
 	"github.com/LarsDepuydt/peno-entrepreneurship-3d-oclusion/cmd/push"
 	"github.com/LarsDepuydt/peno-entrepreneurship-3d-oclusion/cmd/scans"
 	"github.com/LarsDepuydt/peno-entrepreneurship-3d-oclusion/cmd/tags"
+	"github.com/LarsDepuydt/peno-entrepreneurship-3d-oclusion/cmd/vr"
 	threedoclusionv1 "github.com/LarsDepuydt/peno-entrepreneurship-3d-oclusion/gen/proto/threedoclusion/v1"
 	"github.com/LarsDepuydt/peno-entrepreneurship-3d-oclusion/gen/proto/threedoclusion/v1/threedoclusionv1connect"
 	"github.com/bufbuild/connect-go"
@@ -19,6 +21,7 @@ import (
 )
 
 type ServerStruct struct {
+	database *sql.DB
 	redirectVRChannels *help_datastructures.MapChannels
 }
 
@@ -35,9 +38,9 @@ func setCors(mux http.Handler) http.Handler {
 	return muxHandler
 }
 
-func Server() {
+func Server(database *sql.DB) {
 	redirectVRChannels := help_datastructures.NewMap()
-	server := &ServerStruct{redirectVRChannels}
+	server := &ServerStruct{database, redirectVRChannels}
 
 	mux := http.NewServeMux()
 	path, handler := threedoclusionv1connect.NewScanServiceHandler(server)
@@ -72,35 +75,35 @@ func (s *ServerStruct) AddScan(
 	ctx context.Context,
 	req *connect.Request[threedoclusionv1.AddScanRequest],
 ) (*connect.Response[threedoclusionv1.AddScanResponse], error) {
-	return scans.AddScan(req)
+	return scans.AddScan(req, s.database)
 }
 
 func (s *ServerStruct) DeleteScan(
 	ctx context.Context,
 	req *connect.Request[threedoclusionv1.DeleteScanRequest],
 ) (*connect.Response[threedoclusionv1.DeleteScanResponse], error) {
-	return scans.DeleteScan(req)
+	return scans.DeleteScan(req, s.database)
 }
 
 func (s *ServerStruct) GetAllScans(
 	ctx context.Context,
 	req *connect.Request[threedoclusionv1.GetAllScansRequest],
 ) (*connect.Response[threedoclusionv1.GetAllScansResponse], error) {
-	return scans.GetAllScans(req)
+	return scans.GetAllScans(req, s.database)
 }
 
 func (s *ServerStruct) GetScanByID(
 	ctx context.Context,
 	req *connect.Request[threedoclusionv1.GetScanByIDRequest],
 ) (*connect.Response[threedoclusionv1.GetScanByIDResponse], error) {
-	return scans.GetScanByID(req)
+	return scans.GetScanByID(req, s.database)
 }
 
 func (s *ServerStruct) GetScanByDate(
 	ctx context.Context,
 	req *connect.Request[threedoclusionv1.GetScanByDateRequest],
 ) (*connect.Response[threedoclusionv1.GetScanByDateResponse], error) {
-	return scans.GetScanByDate(req)
+	return scans.GetScanByDate(req, s.database)
 }
 
 // TAGS
@@ -108,71 +111,84 @@ func (s *ServerStruct) AddTag(
 	ctx context.Context,
 	req *connect.Request[threedoclusionv1.AddTagRequest],
 ) (*connect.Response[threedoclusionv1.AddTagResponse], error) {
-	return tags.AddTag(req)
+	return tags.AddTag(req, s.database)
 }
 
 func (s *ServerStruct) DeleteTag(
 	ctx context.Context,
 	req *connect.Request[threedoclusionv1.DeleteTagRequest],
 ) (*connect.Response[threedoclusionv1.DeleteTagResponse], error) {
-	return tags.DeleteTag(req)
+	return tags.DeleteTag(req, s.database)
 }
 
 func (s *ServerStruct) GetAllTags(
 	ctx context.Context,
 	req *connect.Request[threedoclusionv1.GetAllTagsRequest],
 ) (*connect.Response[threedoclusionv1.GetAllTagsResponse], error) {
-	return tags.GetAllTags(req)
+	return tags.GetAllTags(req, s.database)
 }
 
 func (s *ServerStruct) GetTagByID(
 	ctx context.Context,
 	req *connect.Request[threedoclusionv1.GetTagByIDRequest],
 ) (*connect.Response[threedoclusionv1.GetTagByIDResponse], error) {
-	return tags.GetTagByID(req)
+	return tags.GetTagByID(req, s.database)
 }
 
 func (s *ServerStruct) GetAllTagsByType(
 	ctx context.Context,
 	req *connect.Request[threedoclusionv1.GetAllTagsByTypeRequest],
 ) (*connect.Response[threedoclusionv1.GetAllTagsByTypeResponse], error) {
-	return tags.GetAllTagsByType(req)
+	return tags.GetAllTagsByType(req, s.database)
 }
 
+func (s *ServerStruct) GetPositionScan(
+	ctx context.Context,
+	req *connect.Request[threedoclusionv1.GetPositionScanRequest],
+) (*connect.Response[threedoclusionv1.GetPositionScanResponse], error) {
+	return vr.GetPositionScan(req)
+}
+
+func (s *ServerStruct) SendPositionScan(
+	ctx context.Context,
+	req *connect.Request[threedoclusionv1.SendPositionScanRequest],
+) (*connect.Response[threedoclusionv1.SendPositionScanResponse], error) {
+	return vr.SendPositionScan(req)
+}
 // PATIENTS
 func (s *ServerStruct) AddPatient(
 	ctx context.Context,
 	req *connect.Request[threedoclusionv1.AddPatientRequest],
 ) (*connect.Response[threedoclusionv1.AddPatientResponse], error) {
-	return patients.AddPatient(req)
+	return patients.AddPatient(req, s.database)
 }
 
 func (s *ServerStruct) DeletePatient(
 	ctx context.Context,
 	req *connect.Request[threedoclusionv1.DeletePatientRequest],
 ) (*connect.Response[threedoclusionv1.DeletePatientResponse], error) {
-	return patients.DeletePatient(req)
+	return patients.DeletePatient(req, s.database)
 }
 
 func (s *ServerStruct) GetAllPatients(
 	ctx context.Context,
 	req *connect.Request[threedoclusionv1.GetAllPatientsRequest],
 ) (*connect.Response[threedoclusionv1.GetAllPatientsResponse], error) {
-	return patients.GetAllPatients(req)
+	return patients.GetAllPatients(req, s.database)
 }
 
 func (s *ServerStruct) GetPatientByID(
 	ctx context.Context,
 	req *connect.Request[threedoclusionv1.GetPatientByIDRequest],
 ) (*connect.Response[threedoclusionv1.GetPatientByIDResponse], error) {
-	return patients.GetPatientByID(req)
+	return patients.GetPatientByID(req, s.database)
 }
 
 func (s *ServerStruct) GetPatientByName(
 	ctx context.Context,
 	req *connect.Request[threedoclusionv1.GetPatientByNameRequest],
 ) (*connect.Response[threedoclusionv1.GetPatientByNameResponse], error) {
-	return patients.GetPatientByName(req)
+	return patients.GetPatientByName(req, s.database)
 }
 
 // DENTISTS
@@ -180,47 +196,47 @@ func (s *ServerStruct) AddDentist(
 	ctx context.Context,
 	req *connect.Request[threedoclusionv1.AddDentistRequest],
 ) (*connect.Response[threedoclusionv1.AddDentistResponse], error) {
-	return dentists.AddDentist(req)
+	return dentists.AddDentist(req, s.database)
 }
 
 func (s *ServerStruct) DeleteDentistById(
 	ctx context.Context,
 	req *connect.Request[threedoclusionv1.DeleteDentistByIdRequest],
 ) (*connect.Response[threedoclusionv1.DeleteDentistByIdResponse], error) {
-	return dentists.DeleteDentistById(req)
+	return dentists.DeleteDentistById(req, s.database)
 }
 
 func (s *ServerStruct) GetAllDentists(
 	ctx context.Context,
 	req *connect.Request[threedoclusionv1.GetAllDentistsRequest],
 ) (*connect.Response[threedoclusionv1.GetAllDentistsResponse], error) {
-	return dentists.GetAllDentists(req)
+	return dentists.GetAllDentists(req, s.database)
 }
 
 func (s *ServerStruct) GetDentistById(
 	ctx context.Context,
 	req *connect.Request[threedoclusionv1.GetDentistByIdRequest],
 ) (*connect.Response[threedoclusionv1.GetDentistByIdResponse], error) {
-	return dentists.GetDentistById(req)
+	return dentists.GetDentistById(req, s.database)
 }
 
 func (s *ServerStruct) Login(
 	ctx context.Context,
 	req *connect.Request[threedoclusionv1.LoginRequest],
 ) (*connect.Response[threedoclusionv1.LoginResponse], error) {
-	return dentists.Login(req)
+	return dentists.Login(req, s.database)
 }
 
 func (s *ServerStruct) Register(
 	ctx context.Context,
 	req *connect.Request[threedoclusionv1.RegisterRequest],
 ) (*connect.Response[threedoclusionv1.RegisterResponse], error) {
-	return dentists.Register(req)
+	return dentists.Register(req, s.database)
 }
 
 func (s *ServerStruct) UpdateDentistById(
 	ctx context.Context,
 	req *connect.Request[threedoclusionv1.UpdateDentistByIdRequest],
 ) (*connect.Response[threedoclusionv1.UpdateDentistByIdResponse], error) {
-	return dentists.UpdateDentistById(req)
+	return dentists.UpdateDentistById(req, s.database)
 }

@@ -1,7 +1,7 @@
 version: "3.8"
 
 services:
-  db: 
+  db:
     image: postgres:15.2
     ports:
       - "5430:5432"
@@ -14,8 +14,7 @@ services:
       - "dbdata:/var/lib/postgresql/data"
       # only for local development, TODO: find a fix for prod
       - ./database/migrations/database.up.sql:/docker-entrypoint-initdb.d/create_tables.sql
-  app:
-    &app
+  app: &app
     build:
       context: .
       dockerfile: Dockerfile
@@ -28,7 +27,7 @@ services:
     entrypoint: "bash -c"
   backend:
     <<: *app
-    image: 'patient_server'
+    image: "patient_server"
     environment:
       DB_PASSWORD: &postgres_password
       DB_USER: &postgres_user
@@ -46,11 +45,10 @@ services:
       - backend
     restart: always
     working_dir: /usr/src/app/frontend
-    ports: 
+    ports:
       - "3000:3000"
     entrypoint: "yarn dev"
 volumes:
   dbdata: {}
   gomod-cache: {}
   gobuild-cache: {}
- 

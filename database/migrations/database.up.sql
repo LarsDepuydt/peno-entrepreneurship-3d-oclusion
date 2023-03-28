@@ -16,8 +16,18 @@ CREATE TABLE dentist (
 
 CREATE TABLE scan (
     id SERIAL PRIMARY KEY,
+<<<<<<< HEAD
+    x real,
+    y real,
+    z real,
+    r_x real,
+    r_y real,
+    r_z real,
+    date date
+=======
     scan text,
     date_scan date
+>>>>>>> origin
 );
 
 CREATE TABLE tag (

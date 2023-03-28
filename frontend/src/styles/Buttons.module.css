@@ -32,6 +32,16 @@
   background-color: rgba(254, 125, 0, 0.25);
 }
 
+.search_btn {
+  float: center;
+
+  padding: 20px;
+
+  display: flex;
+  column-gap: 20px;
+  justify-content: space-between;
+}
+
 #logOut {
   margin-right: 20px;
 }

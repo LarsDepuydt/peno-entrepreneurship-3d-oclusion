@@ -11,6 +11,11 @@ const inter = Inter({ subsets: ['latin'] });
 export default function Login() {
   return (
     <>
+      <Head>
+        <title>relu</title>
+        <link rel="icon" href="/relu_icon.ico" />
+      </Head>
+
       <div className={styleL.all_landing}>
         <div className={styleL.imgbox}>
           <Image className={styleL.image_left} src={Image_L} alt="relu logo" />

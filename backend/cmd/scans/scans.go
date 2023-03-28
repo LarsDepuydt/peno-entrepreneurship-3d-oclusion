@@ -1,6 +1,7 @@
 package scans
 
 import (
+	"database/sql"
 	"fmt"
 
 	"github.com/bufbuild/connect-go"
@@ -11,14 +12,8 @@ import (
 )
 
 
-func AddScan(req *connect.Request[threedoclusionv1.AddScanRequest]) (*connect.Response[threedoclusionv1.AddScanResponse], error) {
-	database, error := help_functions.ConnectToDataBase()
-	if database == nil || error != nil {
-		return nil, error
-	}
-	defer database.Close()
-
-	statement, error := database.Prepare("INSERT INTO scan (scan_file, scan_date) VALUES ($1, $2)")
+func AddScan(req *connect.Request[threedoclusionv1.AddScanRequest], database *sql.DB) (*connect.Response[threedoclusionv1.AddScanResponse], error) {
+	statement, error := database.Prepare("INSERT INTO scan (scan, date_scan) VALUES ($1, $2)")
 	if error != nil {
 		return nil, error
 	}
@@ -40,15 +35,9 @@ func AddScan(req *connect.Request[threedoclusionv1.AddScanRequest]) (*connect.Re
 	return res, nil
 }
 
-func DeleteScan(req *connect.Request[threedoclusionv1.DeleteScanRequest]) (*connect.Response[threedoclusionv1.DeleteScanResponse], error) {
-	database, error := help_functions.ConnectToDataBase()
-	if database == nil || error != nil {
-		return nil, error
-	}
-	defer database.Close()
-
+func DeleteScan(req *connect.Request[threedoclusionv1.DeleteScanRequest], database *sql.DB) (*connect.Response[threedoclusionv1.DeleteScanResponse], error) {
 	statement := "DELETE FROM scan WHERE id = $1"
-	_, error = database.Exec(statement, req.Msg.Id)
+	_, error := database.Exec(statement, req.Msg.Id)
 	if error != nil {
 		return nil, error
 	}
@@ -63,15 +52,8 @@ func DeleteScan(req *connect.Request[threedoclusionv1.DeleteScanRequest]) (*conn
 	return res, nil
 }
 
-func GetAllScans(req *connect.Request[threedoclusionv1.GetAllScansRequest]) (*connect.Response[threedoclusionv1.GetAllScansResponse], error) {
-	database, error := help_functions.ConnectToDataBase()
-	if database == nil || error != nil {
-		return nil, error
-	}
-	defer database.Close()
-
-	statement := "SELECT * FROM scan;"
-	rows, error := database.Query(statement)
+func GetAllScans(req *connect.Request[threedoclusionv1.GetAllScansRequest], database *sql.DB) (*connect.Response[threedoclusionv1.GetAllScansResponse], error) {
+	rows, error := database.Query("SELECT * FROM scan;")
 	if error != nil {
 		return nil, error
 	}
@@ -90,13 +72,7 @@ func GetAllScans(req *connect.Request[threedoclusionv1.GetAllScansRequest]) (*co
 	return res, nil
 }
 
-func GetScanByID(req *connect.Request[threedoclusionv1.GetScanByIDRequest]) (*connect.Response[threedoclusionv1.GetScanByIDResponse], error) {
-	database, error := help_functions.ConnectToDataBase()
-	if database == nil || error != nil {
-		return nil, error
-	}
-	defer database.Close()
-
+func GetScanByID(req *connect.Request[threedoclusionv1.GetScanByIDRequest], database *sql.DB) (*connect.Response[threedoclusionv1.GetScanByIDResponse], error) {
 	statement := "SELECT * FROM scan WHERE id = $1;"
 	rows, error := database.Query(statement, req.Msg.Id)
 	if error != nil {
@@ -108,25 +84,14 @@ func GetScanByID(req *connect.Request[threedoclusionv1.GetScanByIDRequest]) (*co
 		panic(error)
 	}
 
-	responseMessage := fmt.Sprintf("scan with id: %d returned with succes;", req.Msg.Id)
-	fmt.Println(responseMessage)
-
 	res := connect.NewResponse(&threedoclusionv1.GetScanByIDResponse{
-		Id:       result[0].Id,
-		ScanData: result[0].Scan,
-		ScanDate: result[0].Date,
+		Scan: result[0],
 	})
 
 	return res, nil
 }
 
-func GetScanByDate(req *connect.Request[threedoclusionv1.GetScanByDateRequest]) (*connect.Response[threedoclusionv1.GetScanByDateResponse], error) {
-	database, error := help_functions.ConnectToDataBase()
-	if database == nil || error != nil {
-		return nil, error
-	}
-	defer database.Close()
-
+func GetScanByDate(req *connect.Request[threedoclusionv1.GetScanByDateRequest], database *sql.DB) (*connect.Response[threedoclusionv1.GetScanByDateResponse], error) {
 	statement := "SELECT * FROM scan WHERE scan_date = $1;"
 	rows, error := database.Query(statement, req.Msg.Date)
 	if error != nil {

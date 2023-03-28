@@ -8,6 +8,7 @@ option go_package = "github.com/LarsDepuydt/peno-entrepreneurship-3d-oclusion";
 service ScanService {
   rpc SendVR(SendVRRequest) returns (SendVRResponse) {}
   rpc Waiting(WaitingRequest) returns (stream WaitingResponse) {}
+
   rpc AddScan(AddScanRequest) returns (AddScanResponse) {}
   rpc DeleteScan(DeleteScanRequest) returns (DeleteScanResponse) {}
   rpc GetAllScans(GetAllScansRequest) returns (GetAllScansResponse) {}
@@ -20,6 +21,8 @@ service ScanService {
   rpc GetTagByID(GetTagByIDRequest) returns (GetTagByIDResponse) {}
   rpc GetAllTagsByType(GetAllTagsByTypeRequest) returns (GetAllTagsByTypeResponse) {}
 
+  rpc SendPositionScan (SendPositionScanRequest) returns (SendPositionScanResponse) {}
+  rpc GetPositionScan (GetPositionScanRequest) returns (GetPositionScanResponse) {}
   rpc AddPatient(AddPatientRequest) returns (AddPatientResponse) {}
   rpc DeletePatient(DeletePatientRequest) returns (DeletePatientResponse) {}
   rpc GetAllPatients(GetAllPatientsRequest) returns (GetAllPatientsResponse) {}
@@ -42,9 +45,20 @@ message RowDataTag {
 }
 
 message Scan {
-  int32 id = 1;
-  string scan = 2;
-  string date = 3;
+  float lower_x = 1;
+  float lower_y = 2;
+  float lower_z = 3;
+  float lower_r_x = 4;
+  float lower_r_y = 5;
+  float lower_r_z = 6;
+  float upper_x = 7;
+  float upper_y = 8;
+  float upper_z = 9;
+  float upper_r_x = 10;
+  float upper_r_y = 11;
+  float upper_r_z = 12;
+  int32 id = 13;
+  string date = 14;
 }
 
 message Patient{
@@ -126,9 +140,7 @@ message GetScanByIDRequest {
 }
 
 message GetScanByIDResponse {
-  int32 id =  1;
-  string scan_data = 2;
-  string scan_date = 3;
+  Scan scan = 1;
 }
 
 message GetScanByDateRequest {
@@ -164,6 +176,21 @@ message SendVRRequest {
   int32 scan_id = 2;
 }
 
+message SendPositionScanRequest {
+  Scan scan = 1;
+}
+
+message SendPositionScanResponse {
+  bool saved = 1;
+}
+
+message GetPositionScanRequest {
+  int32 scan_id = 1;
+}
+
+message GetPositionScanResponse {
+  Scan scan = 1;
+}
 message SendVRResponse {
   string feedback = 1;
 }
@@ -182,7 +209,7 @@ message DeletePatientRequest{
 }
 
 message DeletePatientResponse{
-  string message = 1;http://localhost:3001
+  string message = 1;
 }
 
 message GetAllPatientsRequest{}

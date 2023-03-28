@@ -13,13 +13,7 @@ import (
 
 
 
-func AddPatient(req *connect.Request[threedoclusionv1.AddPatientRequest]) (*connect.Response[threedoclusionv1.AddPatientResponse], error) {
-	database, error := help_functions.ConnectToDataBase()
-	if database == nil || error != nil {
-		return nil, error
-	}
-	defer database.Close()
-
+func AddPatient(req *connect.Request[threedoclusionv1.AddPatientRequest], database *sql.DB) (*connect.Response[threedoclusionv1.AddPatientResponse], error) {
 	statement, error := database.Prepare("INSERT INTO patient (first_name, last_name, pinned, notes) VALUES ($1, $2, $3, $4)")
 	if error != nil {
 		return nil, error
@@ -42,15 +36,9 @@ func AddPatient(req *connect.Request[threedoclusionv1.AddPatientRequest]) (*conn
 	return res, nil
 }
 
-func DeletePatient(req *connect.Request[threedoclusionv1.DeletePatientRequest]) (*connect.Response[threedoclusionv1.DeletePatientResponse], error) {
-	database, error := help_functions.ConnectToDataBase()
-	if database == nil || error != nil {
-		return nil, error
-	}
-	defer database.Close()
-
+func DeletePatient(req *connect.Request[threedoclusionv1.DeletePatientRequest], database *sql.DB) (*connect.Response[threedoclusionv1.DeletePatientResponse], error) {
 	statement := "DELETE FROM patient WHERE id = $1"
-	_, error = database.Exec(statement, req.Msg.Id)
+	_, error := database.Exec(statement, req.Msg.Id)
 	if error != nil {
 		return nil, error
 	}
@@ -65,13 +53,7 @@ func DeletePatient(req *connect.Request[threedoclusionv1.DeletePatientRequest]) 
 	return res, nil
 }
 
-func GetAllPatients(req *connect.Request[threedoclusionv1.GetAllPatientsRequest]) (*connect.Response[threedoclusionv1.GetAllPatientsResponse], error) {
-	database, error := help_functions.ConnectToDataBase()
-	if database == nil || error != nil {
-		return nil, error
-	}
-	defer database.Close()
-
+func GetAllPatients(req *connect.Request[threedoclusionv1.GetAllPatientsRequest], database *sql.DB) (*connect.Response[threedoclusionv1.GetAllPatientsResponse], error) {
 	statement := "SELECT * FROM patient;"
 	rows, error := database.Query(statement)
 	if error != nil {
@@ -92,13 +74,7 @@ func GetAllPatients(req *connect.Request[threedoclusionv1.GetAllPatientsRequest]
 	return res, nil
 }
 
-func GetPatientByID(req *connect.Request[threedoclusionv1.GetPatientByIDRequest]) (*connect.Response[threedoclusionv1.GetPatientByIDResponse], error) {
-	database, error := help_functions.ConnectToDataBase()
-	if database == nil || error != nil {
-		return nil, error
-	}
-	defer database.Close()
-
+func GetPatientByID(req *connect.Request[threedoclusionv1.GetPatientByIDRequest], database *sql.DB) (*connect.Response[threedoclusionv1.GetPatientByIDResponse], error) {
 	statement := "SELECT * FROM patient WHERE id = $1;"
 	rows, error := database.Query(statement, req.Msg.Id)
 	if error != nil {
@@ -124,15 +100,11 @@ func GetPatientByID(req *connect.Request[threedoclusionv1.GetPatientByIDRequest]
 	return res, nil
 }
 
-func GetPatientByName(req *connect.Request[threedoclusionv1.GetPatientByNameRequest]) (*connect.Response[threedoclusionv1.GetPatientByNameResponse], error) {
-	database, error := help_functions.ConnectToDataBase()
-	if database == nil || error != nil {
-		return nil, error
-	}
-	defer database.Close()
-
+func GetPatientByName(req *connect.Request[threedoclusionv1.GetPatientByNameRequest], database *sql.DB) (*connect.Response[threedoclusionv1.GetPatientByNameResponse], error) {
 	first_name := req.Msg.FirstName
 	last_name := req.Msg.LastName
+
+	var error error
 	var rows *sql.Rows
 	 
 	if (first_name != nil && last_name != nil ) {

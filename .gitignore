@@ -1,5 +1,11 @@
+.gitignore
 go.work
+<<<<<<< HEAD
+vr/src/cannon_collision/old_scene.html
+vr/src/cannon_collision/old_script.js
+=======
 
 /node_modules
 package.json
 package-lock.json
+>>>>>>> origin
