@@ -7,27 +7,6 @@ import { SidebarPatient } from '@/components/header/sidebar';
 import styles from '@/styles/PatientPage.module.css';
 import { FC } from 'react';
 
-interface TableProps {
-  data: { [key: string]: string }[];
-}
-
-const Table: FC<TableProps> = ({ data }) => {
-  return (
-    <table>
-      <thead></thead>
-      <tbody>
-        {data.map((row, index) => (
-          <tr key={index}>
-            {Object.values(row).map((value, index) => (
-              <td key={index}>{value}</td>
-            ))}
-          </tr>
-        ))}
-      </tbody>
-    </table>
-  );
-};
-
 // hard coded patients - 12 scans for 10 patients. Kaatje and Jozef have each 2 scans.
 const all_scans = [
   {
@@ -163,16 +142,23 @@ const App: FC = () => {
         patient.props.patientfirstname === targetpatientfirstname &&
         patient.props.patientlastname === targetpatientlastname
     )
-    .sort((a, b) => b.props.date.getTime() - a.props.date.getTime()); // sort by date, most recent first
 
-  const TargetPatientScans = filteredPatients.map((patient, index) => ({ [`patient${index + 1}`]: patient }));
 
   return (
     <div>
       <SidebarPatient patientfirstname={targetpatientfirstname} patientlastname={targetpatientlastname} />
       <HeaderPatient />
       <div className={styles.scansWrapper}>
-        <Table data={TargetPatientScans} />
+        {filteredPatients.map((patient, index) => (
+          <div key={`patient${index + 1}`}>
+            <Patient
+              id={patient.props.id}
+              picture={patient.props.picture}
+              patientfirstname={patient.props.patientfirstname}
+              patientlastname={patient.props.patientlastname}
+            />
+          </div>
+        ))}
       </div>
     </div>
   );
