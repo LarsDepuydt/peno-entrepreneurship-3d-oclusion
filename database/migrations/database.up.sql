@@ -19,6 +19,7 @@ CREATE TABLE scan (
     id SERIAL PRIMARY KEY,
     scan text,
     date_scan date,
+    notes text,
     patient_id SERIAL REFERENCES patient(id)
 );
 
