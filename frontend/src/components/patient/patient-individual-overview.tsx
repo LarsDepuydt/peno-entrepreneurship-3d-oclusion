@@ -1,6 +1,6 @@
 import Image, { StaticImageData } from 'next/image';
 import { useRouter } from 'next/router';
-import { InspectScans } from '../../components/patient/inspect_scans'
+import { InspectScans } from '../../components/patient/inspect_scans';
 
 import styles from '@/styles/PatientPage.module.scss';
 import DeleteButton from '../patient/delete_patient';
@@ -45,11 +45,10 @@ export function SinglePatient({ id, picture, patientfirstname, patientlastname }
         </div>
       )}
 
-      <div onClick={clickPatient}>
-        <div className={styles.patientscanNameWrapper}>
-          <p className={styles.patientscanName}>{patientfirstname.concat(' ', patientlastname)}</p>
-        </div>
-        <InspectScans patientID={id} />
+      <div className={styles.patientscanNameWrapper}>
+        <p className={styles.patientscanName}>{patientfirstname.concat(' ', patientlastname)}</p>
       </div>
+      <InspectScans patientID={id} />
+    </div>
   );
 }
