@@ -21,15 +21,8 @@
     "@types/three": "^0.149.0",
     "bcryptjs": "^2.4.3",
     "bootstrap": "v5.2.3",
-<<<<<<< HEAD
-    "cannon": "^0.6.2",
-    "cannon-es": "^0.20.0",
-    "canvas-capture": "^2.0.6",
-    "ccapture.js": "^1.1.0",
-=======
     "build": "^0.1.4",
     "cannon-es": "^0.20.0",
->>>>>>> 037c630fbdf00f93d9126d099a5805976e5ab7b9
     "downloadjs": "^1.4.7",
     "eslint": "8.34.0",
     "eslint-config-next": "13.1.6",
@@ -42,10 +35,7 @@
     "next": "13.1.6",
     "react": "18.2.0",
     "react-dom": "18.2.0",
-<<<<<<< HEAD
-=======
     "sass": "^1.60.0",
->>>>>>> 037c630fbdf00f93d9126d099a5805976e5ab7b9
     "three": "^0.150.1",
     "yup": "^1.0.0"
   },
