@@ -31,7 +31,7 @@ export default function LoginForm() {
 
   useEffect(() => {
     data?.token && credentials.email && router.push('/patient');
-  }, [data, credentials])
+  }, [data, credentials]);
 
   const toRegister = () => router.push('/register-page');
 
@@ -51,8 +51,8 @@ export default function LoginForm() {
             <Field
               className="form-control"
               id="email"
-              name="username"
-              placeholder="Username"
+              name="email"
+              placeholder="email"
               aria-describedby="usernameHelp"
             />
           </div>
