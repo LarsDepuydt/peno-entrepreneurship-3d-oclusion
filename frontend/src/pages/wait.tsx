@@ -28,6 +28,7 @@ export default function WaitPage() {
 
   const transport = createConnectTransport({
     baseUrl: "http://0.0.0.0:8080",
+    //baseUrl: "https://a952-84-198-210-207.eu.ngrok.io",
   });
 
   const router = useRouter();

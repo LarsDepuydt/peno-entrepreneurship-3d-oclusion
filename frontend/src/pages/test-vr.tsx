@@ -4,6 +4,8 @@ import dynamic from 'next/dynamic';
 
 const VRView = dynamic(() => import('@/components/vr/vr-view'), { ssr: false });
 const DraggingView = dynamic(() => import('@/components/vr/dragging'), { ssr: false });
+const BeforeAfter = dynamic(() => import('@/components/vr/before-after'), { ssr: false });
+
 
 export default function TestVRPage(){ 
     const [isComponentMounted, setIsComponentMounted] = useState(false)
@@ -17,7 +19,7 @@ export default function TestVRPage(){
     return ( // Only executed on the client side
         <div>
             {isNavigatorAvailable}
-            < VRView />
+            < BeforeAfter />
         </div>
     )
 }
