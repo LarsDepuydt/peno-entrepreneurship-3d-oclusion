@@ -6,6 +6,19 @@ import { createConnectTransport } from "@bufbuild/connect-web";
 import { useRouter } from 'next/router';
 import { useState } from "react";
 
+import Image from 'next/image';
+import { Inter } from '@next/font/google';
+
+import LoginForm from '../components/login/token-login';
+import styleL from '@/styles/LandingPage.module.css';
+import Image_L from '../../public/landing-image.png';
+
+import { Values } from '../components/login/token-login';
+
+import DeleteButton from '../components/patient/delete_patient'; // for testing purposes
+
+const inter = Inter({ subsets: ['latin'] });
+
 import styles from "@/styles/WaitPage.module.css"
 //import styles from "@/styles/globals.css"
 
@@ -19,31 +32,25 @@ export default function WaitPage() {
 
   const router = useRouter();
 
-  function afterSubmit(event: React.FormEvent<HTMLFormElement>) {
-    event.preventDefault();
-    let codeInput = document.getElementById("code") as HTMLInputElement | null;
-    let codeString = ""
-    let codeValue = 0 // Default
+  function afterSubmit(values: Values) {
+    let codeValue = 0; // Default
     let submitOK = true;
-
-    if (codeInput){
-      codeString = codeInput.value
-      codeValue = parseInt(codeString, 10)
-    }
   
-    if (codeString.length > 10) {
+    if (values.username.length > 10) {
       alert("The code may have no more than 10 characters");
       submitOK = false;
     }
-
+  
     // Additional criteria
-
-    if (submitOK) { // Trigger waiting procedure
+  
+    if (submitOK) {
+      // Trigger waiting procedure
       waitForResponse(codeValue);
       setSubmitted(true); // Set submitted state to true
       setFormVisible(false); // Set formVisible to false
     }
   }
+  
   // See _app, can't use queryClient for streams so I made a new client here -> implement in _app as well to support other streams?
 
   async function waitForResponse(codeValue: number) {
@@ -61,15 +68,15 @@ export default function WaitPage() {
 
   return (
     <div>
-      {formVisible && ( // Display the form only if formVisible is true
-        <div>
-          <h1>Waiting Page</h1>
-          <form onSubmit={afterSubmit}>
-            Code: <input type="number" id="code" size={20} name="code"/><br/>
-            <input type="submit" value="Submit"/> 
-          </form>
+      {formVisible && (
+      <div className={styleL.all_landing}>
+
+        <div className={styleL.loginbox}>
+        <LoginForm afterSubmit={afterSubmit} />
         </div>
+      </div>
       )}
+
       {submitted && ( // Display the following divs only if submitted is true
         <div className={styles.bodah}>
           <div className={styles.loading}>
@@ -90,3 +97,17 @@ export default function WaitPage() {
     <div className={styles.bounce2}></div>
     <div className={styles.bounce3}></div>
     </div> */
+
+
+/*
+
+      {formVisible && ( // Display the form only if formVisible is true
+        <div>
+          <h1>Waiting Page</h1>
+          <form onSubmit={afterSubmit}>
+            Code: <input type="number" id="code" size={20} name="code"/><br/>
+            <input type="submit" value="Submit"/> 
+          </form>
+        </div>
+      )}
+      */
