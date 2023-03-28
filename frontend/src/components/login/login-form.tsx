@@ -35,7 +35,7 @@ export default function LoginForm() {
 
     setData(values);
 
-    // router.push('/patient');
+    router.push('/patient');
   };
 
   const toRegister = () => router.push('/register-page');

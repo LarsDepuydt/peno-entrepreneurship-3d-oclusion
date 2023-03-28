@@ -1,13 +1,13 @@
 .small_logo {
-  width: 100px;
-  height: auto; /* does not seem to work as intended */
+  height: 5vh;
+  width: auto; /* does not seem to work as intended */
   text-align: center;
-  margin: 10px;
+  margin-top: 10px;
   margin-left: 15px;
 }
 
 .logout_layout {
-  margin: 10px;
+  margin-top: 8px;
   margin-right: 15px;
 }
 
@@ -22,17 +22,20 @@
 
   background-color: #f8f8f8;
   border-bottom: 1px solid #6d767e;
-  position: fixed;  /* makes the logo go along with the sidebar */
+  position: fixed; /* makes the logo go along with the sidebar */
 }
 
 .bigText {
+  margin-top: 2px;
   margin: auto;
   text-align: center;
   vertical-align: auto;
-  font-weight: 600;
+
+  font-weight: 300;
+  color: #1c3c4c;
+
   letter-spacing: 3px;
   word-spacing: 10px;
-  color: #223C49;
 }
 
 .buttons {
