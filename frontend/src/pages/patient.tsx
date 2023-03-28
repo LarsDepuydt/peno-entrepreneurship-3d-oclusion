@@ -9,10 +9,10 @@ import { useRouter } from 'next/router';
 import { StaticImageData } from 'next/image';
 import { FC } from 'react';
 import { SidebarDoctor } from '../components/header/sidebar';
+import Head from 'next/head';
 
 // hard coded patients - 12 scans for 10 patients. Kaatje and Jozef have each 2 scans.
 const patients = [
-
   {
     patient11: (
       <Patient
@@ -134,7 +134,6 @@ const patients = [
   },
 ];
 
-
 const filteredPatients = patients
   .flatMap((obj) => Object.values(obj)) // flatten the array of objects into an array of patients
   .reduce((acc, patient) => {
@@ -145,25 +144,42 @@ const filteredPatients = patients
     return acc;
   }, []);
 
-
 const App: FC = () => {
   return (
-    <div>
-      <SidebarDoctor />
-      <HeaderDoctor />
-      <div className={styles.scansWrapper}>
-        {filteredPatients.map((patient, index) => (
-          <div key={`patient${index + 1}`}>
-            <Patient
-              id={patient.props.id}
-              picture={patient.props.picture}
-              patientfirstname={patient.props.patientfirstname}
-              patientlastname={patient.props.patientlastname}
-            />
-          </div>
-        ))}
+    <>
+      <Head>
+        <title>relu</title>
+        <link rel="icon" href="/relu_icon.ico" />
+      </Head>
+
+      <div>
+        <SidebarDoctor />
+        <HeaderDoctor />
+        <div className={styles.scansWrapper}>
+          {filteredPatients.map((patient, index) => (
+            <div key={`patient${index + 1}`}>
+              <Patient
+                id={patient.props.id}
+                picture={patient.props.picture}
+                patientfirstname={patient.props.patientfirstname}
+                patientlastname={patient.props.patientlastname}
+              />
+            </div>
+          ))}
+          <div className={styles.patient_filler}></div>
+          <div className={styles.patient_filler}></div>
+          <div className={styles.patient_filler}></div>
+          <div className={styles.patient_filler}></div>
+          <div className={styles.patient_filler}></div>
+          <div className={styles.patient_filler}></div>
+          <div className={styles.patient_filler}></div>
+          <div className={styles.patient_filler}></div>
+          <div className={styles.patient_filler}></div>
+          <div className={styles.patient_filler}></div>
+          <div className={styles.patient_filler}></div>
+        </div>
       </div>
-    </div>
+    </>
   );
 };
 
