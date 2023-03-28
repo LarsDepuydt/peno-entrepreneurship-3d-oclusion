@@ -167,7 +167,13 @@ function initThree(){
     // Mediarecorder
     stream = renderer.domElement.captureStream();
     recorder = new MediaRecorder(stream, {mimeType: 'video/webm; codecs=vp9'});
+    // Register an event listener for the dataavailable event
+    recorder.addEventListener('dataavailable', (event: any) => {
+        chunks.push(event.data);
+    });
 }
+
+
 
 function checkAnimation(duration: number, rest_time: number) {
     let elapsedTime = clock.getElapsedTime();
@@ -189,13 +195,16 @@ function checkAnimation(duration: number, rest_time: number) {
             const url = URL.createObjectURL(blob);
             const video = document.createElement('video');
             video.src = url;
-            document.body.appendChild(video);
+            //document.body.appendChild(video);
+            console.log(url);
+
             animationSaved = true;
+            captureRunning = false;
         }
         clock.start(); // Reset clock
     }
     if (clock.running && !inLastPosition){
-        if (!captureRunning && !animationSaved) { recorder.start();; captureRunning = true;}
+        if (!captureRunning && !animationSaved) { recorder.start(); captureRunning = true;}
         
         moveWithFactor(duration, elapsedTime, upperMove);
     }
@@ -242,6 +251,7 @@ function animate() {
 function render() {
     checkAnimation(5, 2); // 5 seconds duration
     //console.log("X, Y, Z of Upper:", upperMove.position.x, upperMove.position.y, upperMove.position.z );
+    if (captureRunning) recorder.requestData();
     renderer.render( scene, camera );
 }
 
