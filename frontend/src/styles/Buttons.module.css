@@ -50,7 +50,50 @@
   margin: auto;
 }
 
-#appearOnHoverButton {
-    margin: 8px auto;
-    width: 230px;
+#deleteIcon {
+  width: 48px;
+  height: 48px;
+  margin: 8px;
+  background-image: url(../../public/delete-icon.png);
+  background-repeat: no-repeat;
+}
+
+#exportIcon {
+  width: 48px;
+  height: 48px;
+  margin: 8px;
+  background-image: url(../../public/export-icon.png);
+  background-repeat: no-repeat;
+}
+
+#InspectScansIcon {
+  width: 48px;
+  height: 48px;
+  margin: 8px;
+  background-image: url(../../public/open-browser-icon.png);
+  background-repeat: no-repeat;
+}
+
+#InspectVR {
+  width: 48px;
+  height: 48px;
+  margin: 8px;
+  background-image: url(../../public/open-VR-icon.png);
+  background-repeat: no-repeat;
+}
+
+#editIcon {
+  width: 48px;
+  height: 48px;
+  margin: 8px;
+  background-image: url(../../public/edit-icon.png);
+  background-repeat: no-repeat;
+}
+
+#loadingIcon {
+  width: 48px;
+  height: 48px;
+  margin: 8px;
+  background-image: url(../../public/menu-icon.png);
+  background-repeat: no-repeat;
 }

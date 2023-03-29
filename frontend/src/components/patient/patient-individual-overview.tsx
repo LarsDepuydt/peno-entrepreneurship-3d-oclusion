@@ -1,10 +1,11 @@
 import Image, { StaticImageData } from 'next/image';
 import { useRouter } from 'next/router';
-import { InspectScans } from '../../components/patient/inspect_scans';
-
 import styles from '@/styles/PatientPage.module.scss';
-import DeleteButton from '../patient/delete_patient';
 import React, { useState } from 'react';
+
+import { InspectScans } from '../../components/patient/inspect_scans';
+import DeleteButton from '../patient/delete_patient';
+import EditButton from '../patient/edit_patient';
 
 interface patientProfile {
   id: number;
@@ -39,16 +40,15 @@ export function SinglePatient({ id, picture, patientfirstname, patientlastname }
           {' '}
           {/* Patient: delete-patient, inspect-scans, edit-patient( also edits notes )*/}
           {/* Scan: delete-scan, inspect-scans-VR, edit-patient( also edits notes ), export-scan | show notes of the patient in the sidebar*/}
-          <DeleteButton />
-          <DeleteButton />
+          <InspectScans patientID={id} />
+          <EditButton />
           <DeleteButton />
         </div>
       )}
 
-      <div className={styles.patientscanNameWrapper}>
+      <div className={showButtons ? styles.patientscanNameWrapperInvisible : styles.patientscanNameWrapper}>
         <p className={styles.patientscanName}>{patientfirstname.concat(' ', patientlastname)}</p>
       </div>
-      <InspectScans patientID={id} />
     </div>
   );
 }
