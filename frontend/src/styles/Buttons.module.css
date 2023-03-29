@@ -50,6 +50,30 @@
   margin: auto;
 }
 
+#homeIcon {
+  width: 48px;
+  height: 48px;
+  margin: 8px;
+  background-image: url(../../public/home-icon.png);
+  background-repeat: no-repeat;
+  background-position: center;
+  position: absolute;
+  bottom: 25px;
+  right: 10px;
+}
+
+#LinkIcon {
+  width: 48px;
+  height: 48px;
+  margin: 8px;
+  background-image: url(../../public/mail-icon.png);
+  background-repeat: no-repeat;
+  background-position: center;
+  position: absolute;
+  bottom: 25px;
+  left: 25px;
+}
+
 #menuIcon {
   width: 48px;
   height: 24px;
