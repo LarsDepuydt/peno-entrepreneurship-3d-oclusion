@@ -2,12 +2,14 @@ import Image, { StaticImageData } from 'next/image';
 import { useRouter } from 'next/router';
 import React, { useState } from 'react';
 import styles from '@/styles/PatientPage.module.scss';
+import styleB from '@/styles/Buttons.module.css';
 
 import { InspectVR } from '../../components/scan_gallery/inspect_VR';
 import DeleteButton from '../../components/scan_gallery/delete_scan';
 import EditButton from '../../components/scan_gallery/edit_scan';
 import ExportButton from '../../components/scan_gallery/export_scan';
 import DropdownButton from '../../components/scan_gallery/scan_dropdown';
+import dropdownPatientButton from '../patient/patient_dropdown';
 
 interface scanProfile {
   scanid: number;
@@ -47,6 +49,14 @@ export function SingleScan({ scanid, patientid, picture, date }: scanProfile) {
     setShowButtons(false);
   };
 
+  const [dropDown, setDropDown] = useState(false);
+  const handleDropDown = () => {
+    setDropDown(true);
+  };
+  const handleDropGone = () => {
+    setDropDown(false);
+  };
+
   return (
     <div className={styles.patient_button} onMouseEnter={handleMouseEnter} onMouseLeave={handleMouseLeave}>
       <Image
@@ -57,14 +67,22 @@ export function SingleScan({ scanid, patientid, picture, date }: scanProfile) {
       />
       {showButtons && (
         <div className={styles.subButtons}>
-          {' '}
           {/* Patient: delete-patient, inspect-scans, edit-patient( also edits notes )*/}
           {/* Scan: delete-scan, inspect-scans-VR, edit-patient( also edits notes ), export-scan | show notes of the patient in the sidebar*/}
-          <DropdownButton />
+          <div>
+            <button type="button" className={styleB.relu_btn} id={styleB.menuIcon} onClick={handleDropDown}></button>
+          </div>
           <ExportButton />
           <InspectVR patientID={patientid} scanID={scanid} />
           <EditButton />
           <DeleteButton />
+        </div>
+      )}
+      {dropDown && (
+        <div className={styles.dropDown}>
+          <div>
+            <button type="button" className={styleB.relu_btn} id={styleB.exitIcon} onClick={handleDropGone}></button>
+          </div>
         </div>
       )}
       <div className={showButtons ? styles.patientscanNameWrapperInvisible : styles.patientscanNameWrapper}>

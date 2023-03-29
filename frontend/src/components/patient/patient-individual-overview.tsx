@@ -38,7 +38,6 @@ export function SinglePatient({ id, picture, patientfirstname, patientlastname }
       />
       {showButtons && (
         <div className={styles.subButtons}>
-          {' '}
           {/* Patient: delete-patient, inspect-scans, edit-patient( also edits notes )*/}
           {/* Scan: delete-scan, inspect-scans-VR, edit-patient( also edits notes ), export-scan | show notes of the patient in the sidebar*/}
           <DropdownButton />
