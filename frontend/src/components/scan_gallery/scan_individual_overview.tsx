@@ -7,6 +7,7 @@ import { InspectVR } from '../../components/scan_gallery/inspect_VR';
 import DeleteButton from '../../components/scan_gallery/delete_scan';
 import EditButton from '../../components/scan_gallery/edit_scan';
 import ExportButton from '../../components/scan_gallery/export_scan';
+import DropdownButton from '../../components/scan_gallery/scan_dropdown';
 
 interface scanProfile {
   scanid: number;
@@ -59,6 +60,7 @@ export function SingleScan({ scanid, patientid, picture, date }: scanProfile) {
           {' '}
           {/* Patient: delete-patient, inspect-scans, edit-patient( also edits notes )*/}
           {/* Scan: delete-scan, inspect-scans-VR, edit-patient( also edits notes ), export-scan | show notes of the patient in the sidebar*/}
+          <DropdownButton />
           <ExportButton />
           <InspectVR patientID={patientid} scanID={scanid} />
           <EditButton />

@@ -6,6 +6,7 @@ import React, { useState } from 'react';
 import { InspectScans } from '../../components/patient/inspect_scans';
 import DeleteButton from '../patient/delete_patient';
 import EditButton from '../patient/edit_patient';
+import DropdownButton from '../patient/patient_dropdown';
 
 interface patientProfile {
   id: number;
@@ -40,6 +41,7 @@ export function SinglePatient({ id, picture, patientfirstname, patientlastname }
           {' '}
           {/* Patient: delete-patient, inspect-scans, edit-patient( also edits notes )*/}
           {/* Scan: delete-scan, inspect-scans-VR, edit-patient( also edits notes ), export-scan | show notes of the patient in the sidebar*/}
+          <DropdownButton />
           <InspectScans patientID={id} />
           <EditButton />
           <DeleteButton />

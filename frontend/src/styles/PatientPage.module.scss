@@ -1,4 +1,5 @@
 $patientWidth: 270px;
+$pictureWidth: 250px;
 $patientMargin: 20px;
 $borderradius: 10px; /* also change patientscanNameWrapperInvisible */
 $patientscanNameWrapperHeight: 30px; /* also change patientscanNameWrapperInvisible */
@@ -6,7 +7,7 @@ $patientBorder-width: 1.5px;
 
 .patient_picture {
   /* size of picture is fixed, margin will scale with screen-width */
-  width: 250px;
+  width: $pictureWidth;
   height: auto;
   text-align: center;
   margin: 10px 10px 10px 10px;
@@ -14,7 +15,7 @@ $patientBorder-width: 1.5px;
 }
 
 .invisible_patient_picture {
-  width: 250px;
+  width: $pictureWidth;
   height: auto;
   text-align: center;
   margin: 10px 10px 10px 10px;
@@ -103,4 +104,6 @@ $patientBorder-width: 1.5px;
   flex-wrap: nowrap;
   justify-content: space-evenly;
   align-items: center;
+  width: 260px;
+  height: auto;
 }
