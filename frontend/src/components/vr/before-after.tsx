@@ -175,49 +175,50 @@ function initThree(){
 }
 
 
-
 function checkAnimation(duration: number, rest_time: number) {
     let elapsedTime = clock.getElapsedTime();
     
     if (inLastPosition){ // Rest at the end 
-        if (elapsedTime >= rest_time){
-            inLastPosition = false;
-            inInitialPosition = true;
-            clock.start();
-        }
+      if (elapsedTime >= rest_time){
+        inLastPosition = false;
+        inInitialPosition = true;
+      }
     }
+    
     if (inInitialPosition){ // Rest at the start point
-        if (elapsedTime >= rest_time){
-            inInitialPosition = false;
-            clock.start();
-        }
+      if (elapsedTime >= rest_time){
+        inInitialPosition = false;
+        clock.start();
+        elapsedTime = 0; // Set elapsedTime to 0 when animation resets
+      }
     }
-
-    if (elapsedTime >= duration) {
-        inLastPosition = true;
-
-        if (!animationSaved){
-            recorder.stop(); // Stop running
-            const blob = new Blob(chunks, {type: 'video/webm'});
-            const url = URL.createObjectURL(blob);
-            const video = document.createElement('video');
-            video.src = url;
-            //document.body.appendChild(video);
-            console.log(url);
-
-            animationSaved = true;
-            captureRunning = false;
-        }
-        clock.start(); // Reset clock
-    }
+      
     if (clock.running && !inLastPosition && !inInitialPosition){
-        if (!captureRunning && !animationSaved) { recorder.start(); captureRunning = true;}
-        
-        moveWithFactor(duration, elapsedTime, upperMove);
+      if (!captureRunning && !animationSaved) { recorder.start(); captureRunning = true;}
+      
+      if (elapsedTime >= duration) {
+        inLastPosition = true;
+    
+        if (!animationSaved){
+          recorder.stop(); // Stop running
+          const blob = new Blob(chunks, {type: 'video/webm'});
+          const url = URL.createObjectURL(blob);
+          const video = document.createElement('video');
+          video.src = url;
+          //document.body.appendChild(video);
+          console.log(url);
+    
+          animationSaved = true;
+          captureRunning = false;
+        }
+    
+        elapsedTime = duration; // Set elapsedTime to duration when animation ends
+        clock.start(); // Restart clock after animation ends
+      }
+      moveWithFactor(duration, elapsedTime, upperMove);
     }
-    // Problem A: last step doesn't get executed -> solution: elapsedTime = duration -> problem: can't stop?
-    // Solution: stop when clock has stopped running -> problem: last step doesn't get executed
 }
+  
 
 // Accept 4 models: initialLower, initialUpper, lastLower, lastUpper
 function moveWithFactor(duration: number, time_passed: number, jawToMove: any){ // Maybe after user has exited VR session -> new scene to render the animation in the webpage along with an alert to save or sth
@@ -252,7 +253,6 @@ function moveWithFactor(duration: number, time_passed: number, jawToMove: any){ 
     const targetQuaternion = initialQuaternionUpper.clone().multiply(deltaQuaternionLower).multiply(deltaQuaternionUpper);
 
     const factor = time_passed / duration // Let checktime handle so it's <= 1
-
 
     jawToMove.position.copy(initialPositionLower.clone().add( diff_pos_between.clone().multiplyScalar(factor) ));
     jawToMove.quaternion.copy(jawToMove.quaternion.slerpQuaternions ( initialQuaternionUpper, targetQuaternion, factor ));    
@@ -290,8 +290,6 @@ export default function BeforeAfter(){
             second_call = true;
         }
     }, []);
-
-    // resize
 
     window.addEventListener( 'resize', onWindowResize );
     
