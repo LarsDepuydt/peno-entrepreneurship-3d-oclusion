@@ -1,11 +1,9 @@
 import * as THREE from 'three';
 import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls';
-import { VRButton } from 'three/examples/jsm/webxr/VRButton.js';
-import { XRControllerModelFactory } from 'three/examples/jsm/webxr/XRControllerModelFactory.js';
 import { OBJLoader } from 'three/examples/jsm/loaders/OBJLoader.js';
-import { useState, useEffect } from 'react';
+import { useRef, useEffect, useState } from 'react';
 
-let container: HTMLDivElement;
+//let container: HTMLDivElement;
 let camera: THREE.PerspectiveCamera, scene: THREE.Scene, renderer: THREE.WebGLRenderer;
 
 let controls, group: THREE.Group;
@@ -21,7 +19,7 @@ const initialPosition = new THREE.Vector3(0, 2, 0.12); const initialRotation = n
 const initialPositionLower = initialPosition; const initialPositionUpper = initialPosition;
 const initialRotationLower = initialRotation; const initialRotationUpper = initialRotation;
 
-const finalPositionLower = new THREE.Vector3(0, 2, 0.12);; const finalPositionUpper = new THREE.Vector3(1, 3, 1.12);
+const finalPositionLower = new THREE.Vector3(0, 2, 0.12); const finalPositionUpper = new THREE.Vector3(1, 3, 1.12);
 const finalRotationLower = new THREE.Euler(2 * Math.PI, 0, 0, "XYZ"); const finalRotationUpper = new THREE.Euler(2 * Math.PI, 0.5 * Math.PI, 0, "XYZ"); 
 
 const clock = new THREE.Clock();
@@ -36,8 +34,7 @@ const chunks: any = [];
 let stream: any;
 let recorder: any;
 
-
-function init() {
+function init(container: any) {
     // create container
     container = document.createElement( 'div' );
     document.body.appendChild( container );
@@ -46,12 +43,14 @@ function init() {
     scene = new THREE.Scene();
     scene.background = new THREE.Color( 0x808080 );
     camera = new THREE.PerspectiveCamera( 50, window.innerWidth / window.innerHeight, 0.1, 1000 );
-    camera.position.set( 0, 1.6, 3 );
+    camera.position.set( 0, 1.6, 5 );
+    // Set camera based on initial and final position?
 
     // add controls
     controls = new OrbitControls( camera, container );
     controls.target.set( 0, 1.6, 0 );
     controls.update();
+    // Can be useful for 'controlling' the camera w the mouse if not embedded in a div? See earlier commits
 
     // axis
     var axesHelper = new THREE.AxesHelper( 5 );
@@ -89,10 +88,60 @@ function init() {
     group = new THREE.Group();
     scene.add( group );
 
+    const loadingManager = new THREE.LoadingManager();
+    loadingManager.onLoad = function () { // Messy, clean up and adjustable reference jaw; for animating as well
+        // Callback function to be executed when all resources have finished loading
+        
+        // Create bounding boxes for upper and lower halves
+        
+        // Calculate the combined bounding box that contains both objects
+        const combinedBox = new THREE.Box3();
+
+        //upperjaw.position.copy(finalPositionUpper.clone().add(finalPositionLower).clone().sub(initialPositionLower));
+        const diff_pos_lower = finalPositionLower.clone().sub(initialPositionLower);
+        const diff_pos_upper = finalPositionUpper.clone().sub(initialPositionUpper);
+        const diff_pos_between = diff_pos_upper.clone().sub(diff_pos_lower);
+        
+        // Lower is reference
+        upperjaw.position.copy(initialPositionLower.clone().add( diff_pos_between ));
+
+        combinedBox.expandByObject(upperjaw);
+        combinedBox.expandByObject(lowerjaw);
+        
+
+        upperjaw.position.copy(initialPositionUpper);
+        lowerjaw.position.copy(initialPositionLower);
+        combinedBox.expandByObject(upperjaw);
+        combinedBox.expandByObject(lowerjaw);
+
+        // Get the center of the bounding box
+        fitCameraToObject(camera, combinedBox);
+      };
+      
+      function fitCameraToObject(camera: THREE.PerspectiveCamera, boundingBox: THREE.Box3) {
+        const referencePosition = initialPositionLower;
+        const center = boundingBox.getCenter(new THREE.Vector3());
+        const size = boundingBox.getSize(new THREE.Vector3());
+      
+        //const distance = Math.max(size.x, size.y, size.z) / Math.tan(camera.fov * Math.PI / 360);
+        const padding = 1.2; // 20% padding
+        const distance = Math.max(size.x, size.y, size.z) / Math.tan(camera.fov * Math.PI / 360) * padding;
+
+        // Set the camera position and target
+        const adjusted_center = new THREE.Vector3(referencePosition.x, center.y, center.z); // Front view
+        camera.position.set(referencePosition.x, center.y, distance);
+        //const adjusted_center = new THREE.Vector3(center.x, center.y, referencePosition.z); // For side view
+        //camera.position.set(distance, center.y, center.z);
+
+        camera.lookAt(adjusted_center); // Normally just center
+        
+      }
+      
 
     // load lower jaw
-    const loader = new OBJLoader();
-    var lowerjaw: THREE.Group;
+    const loader = new OBJLoader(loadingManager);
+    //var lowerjaw: THREE.Group;
+    let lowerjaw : THREE.Group;
     loader.load(
         path_lower_jaw,
         // called when resource is loaded y=green, x=red, z=blue
@@ -121,7 +170,8 @@ function init() {
 
     // load upper jaw
     //const loader2 = new OBJLoader();
-    var upperjaw: THREE.Group;
+    //var upperjaw: THREE.Group;
+    let upperjaw : THREE.Group;
     loader.load(
         path_upper_jaw,
         // called when resource is loaded y=green, x=red, z=blue
@@ -152,18 +202,19 @@ function init() {
     );
 }
 
-function initThree(){
+function initThree(container: any){
 
     // add renderer and enable VR
     renderer = new THREE.WebGLRenderer( { antialias: true } );
     renderer.setPixelRatio( window.devicePixelRatio );
-    renderer.setSize( window.innerWidth, window.innerHeight );
+    //renderer.setSize( window.innerWidth, window.innerHeight );
+    renderer.setSize( container.clientWidth, container.clientHeight );
     renderer.outputEncoding = THREE.sRGBEncoding;
     renderer.shadowMap.enabled = true;
     renderer.xr.enabled = true;
     container.appendChild( renderer.domElement );
 
-    document.body.appendChild( VRButton.createButton( renderer ) );
+    //document.body.appendChild( VRButton.createButton( renderer ) );
 
     // Mediarecorder
     stream = renderer.domElement.captureStream();
@@ -175,7 +226,7 @@ function initThree(){
 }
 
 
-function checkAnimation(duration: number, rest_time: number) {
+function checkAnimation(duration: number, rest_time: number, setVideoChunks: any, onVideoChunksChange: any) {
     let elapsedTime = clock.getElapsedTime();
     
     if (inLastPosition){ // Rest at the end 
@@ -201,19 +252,22 @@ function checkAnimation(duration: number, rest_time: number) {
     
         if (!animationSaved){
           recorder.stop(); // Stop running
-          const blob = new Blob(chunks, {type: 'video/webm'});
-          const url = URL.createObjectURL(blob);
-          const video = document.createElement('video');
-          video.src = url;
+          //const blob = new Blob(chunks, {type: 'video/webm'});
+          //const url = URL.createObjectURL(blob);
+          //const video = document.createElement('video');
+          //video.src = url;
           //document.body.appendChild(video);
-          console.log(url);
+          //console.log(url);
+          setVideoChunks(chunks);
+          onVideoChunksChange(chunks); // call the onVideoChunksChange function with the chunks
+          
     
           animationSaved = true;
           captureRunning = false;
         }
     
         elapsedTime = duration; // Set elapsedTime to duration when animation ends
-        clock.start(); // Restart clock after animation ends
+        clock.start(); // Restart clock after animation ends so it loops
       }
       moveWithFactor(duration, elapsedTime, upperMove);
     }
@@ -258,32 +312,39 @@ function moveWithFactor(duration: number, time_passed: number, jawToMove: any){ 
     jawToMove.quaternion.copy(jawToMove.quaternion.slerpQuaternions ( initialQuaternionUpper, targetQuaternion, factor ));    
 }
 
-function animate() {
-    renderer.setAnimationLoop( render );
+function animate(setVideoChunks: any, onVideoChunksChange: any) {
+    //renderer.setAnimationLoop( render );
+    renderer.setAnimationLoop( function(){
+        render(setVideoChunks, onVideoChunksChange);
+    });
 }
 
-function render() {
-    checkAnimation(5, 2); // 5 seconds duration
-    //console.log("X, Y, Z of Upper:", upperMove.position.x, upperMove.position.y, upperMove.position.z );
+function render(setVideoChunks: any, onVideoChunksChange: any) {
+    checkAnimation(5, 2, setVideoChunks, onVideoChunksChange); // 5 seconds duration
     if (captureRunning) recorder.requestData();
     renderer.render( scene, camera );
 }
-
+/*
 function onWindowResize() {
 
-    camera.aspect = window.innerWidth / window.innerHeight;
+    camera.aspect = window.innerWidth / window.innerHeight; // Or container?
     camera.updateProjectionMatrix();
 
     renderer.setSize( window.innerWidth, window.innerHeight );
 
-}
+}*/
 
-export default function BeforeAfter(){
+export default function BeforeAfter({ onVideoChunksChange }: {onVideoChunksChange: any}){
+    const containerRef = useRef(null);
+    const [videoChunks, setVideoChunks] = useState([]);
+
+    // Pass as parameters as well as onVideoChunksChange!!!
+
     useEffect(() => { // https://github.com/facebook/react/issues/24502
         if (second_call){
-            init();
-            initThree();
-            animate(); // Sets 
+            init(containerRef.current);
+            initThree(containerRef.current);
+            animate(setVideoChunks, onVideoChunksChange);
             console.log('Init executed!');
         }
         else {
@@ -291,7 +352,13 @@ export default function BeforeAfter(){
         }
     }, []);
 
-    window.addEventListener( 'resize', onWindowResize );
-    
-    return null;
+    //window.addEventListener( 'resize', onWindowResize );    
+    return <div ref={containerRef} id="canvas">
+        <style jsx>{`
+        #canvas {
+            width: 100%;
+            height: 100%;
+        }
+        `}</style>
+    </div>;
 }
