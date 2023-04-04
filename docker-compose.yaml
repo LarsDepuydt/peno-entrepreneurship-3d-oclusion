@@ -12,8 +12,6 @@ services:
     volumes:
       - ./database:/usr/src/app/database
       - "dbdata:/var/lib/postgresql/data"
-      # only for local development, TODO: find a fix for prod
-      - ./database/migrations/database.up.sql:/docker-entrypoint-initdb.d/create_tables.sql
   flyway:
     image: flyway/flyway
     command: migrate

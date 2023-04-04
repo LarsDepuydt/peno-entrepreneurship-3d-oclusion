@@ -1,5 +1,5 @@
 .PHONY: up
-up:
+up: migrate
 	@docker compose up -d --build --force-recreate backend frontend
 
 .PHONY: down
@@ -23,3 +23,9 @@ shell:
 .PHONY: install_frontend
 install_frontend:
 	@docker compose run --workdir /usr/src/app/frontend --rm app "yarn install"
+
+.PHONY: migrate
+migrate:
+	@echo "🔄  Running database migrations..."
+	@docker compose run --rm flyway migrate
+
