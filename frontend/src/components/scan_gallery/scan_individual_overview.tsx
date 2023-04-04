@@ -58,36 +58,45 @@ export function SingleScan({ scanid, patientid, picture, date }: scanProfile) {
   };
 
   return (
-    <div className={styles.patient_button} onMouseEnter={handleMouseEnter} onMouseLeave={handleMouseLeave}>
-      <Image
-        id={date.toISOString()}
-        className={showButtons ? styles.invisible_patient_picture : styles.patient_picture}
-        src={picture}
-        alt="3d picture of teeth"
-      />
-      {showButtons && (
-        <div className={styles.subButtons}>
-          {/* Patient: delete-patient, inspect-scans, edit-patient( also edits notes )*/}
-          {/* Scan: delete-scan, inspect-scans-VR, edit-patient( also edits notes ), export-scan | show notes of the patient in the sidebar*/}
-          <div>
-            <button type="button" className={styleB.relu_btn} id={styleB.menuIcon} onClick={handleDropDown}></button>
-          </div>
-          <ExportButton />
-          <InspectVR patientID={patientid} scanID={scanid} />
-          <EditButton />
-          <DeleteButton />
-        </div>
-      )}
+    <div className={styles.patientScan_container}>
       {dropDown && (
-        <div className={styles.dropDown}>
-          <div>
-            <button type="button" className={styleB.relu_btn} id={styleB.exitIcon} onClick={handleDropGone}></button>
+        <div className={styles.patientScan_dropDown}>
+          <button type="button" className={styleB.relu_btn} id={styleB.exitIcon} onClick={handleDropGone}></button>
+        </div>
+      )}
+      {!dropDown && (
+        <div className={styles.patientScan_normal} onMouseEnter={handleMouseEnter} onMouseLeave={handleMouseLeave}>
+          <div className={styles.picture_wrapper}>
+            <Image
+              id={date.toISOString()}
+              className={showButtons ? styles.picture_hover : styles.picture}
+              src={picture}
+              alt="3d picture of teeth"
+            />
+          </div>
+          {showButtons && (
+            <div className={styles.subButtons}>
+              {/* Patient: delete-patient, inspect-scans, edit-patient( also edits notes )*/}
+              {/* Scan: delete-scan, inspect-scans-VR, edit-patient( also edits notes ), export-scan | show notes of the patient in the sidebar*/}
+              <div>
+                <button
+                  type="button"
+                  className={styleB.relu_btn}
+                  id={styleB.menuIcon}
+                  onClick={handleDropDown}
+                ></button>
+              </div>
+              <ExportButton />
+              <InspectVR patientID={patientid} scanID={scanid} />
+              <EditButton />
+              <DeleteButton />
+            </div>
+          )}
+          <div className={showButtons ? styles.patientscanNameWrapperInvisible : styles.patientscanNameWrapper}>
+            <p className={styles.patientscanName}>{dateString}</p>
           </div>
         </div>
       )}
-      <div className={showButtons ? styles.patientscanNameWrapperInvisible : styles.patientscanNameWrapper}>
-        <p className={styles.patientscanName}>{dateString}</p>
-      </div>
     </div>
   );
 }

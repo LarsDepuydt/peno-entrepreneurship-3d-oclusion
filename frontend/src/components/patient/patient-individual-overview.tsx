@@ -29,26 +29,32 @@ export function SinglePatient({ id, picture, patientfirstname, patientlastname }
   const router = useRouter();
 
   return (
-    <div className={styles.patient_button} onMouseEnter={handleMouseEnter} onMouseLeave={handleMouseLeave}>
-      <Image
-        id={patientfirstname.concat(' ', patientlastname)}
-        className={showButtons ? styles.invisible_patient_picture : styles.patient_picture}
-        src={picture}
-        alt="3d picture of teeth"
-      />
-      {showButtons && (
-        <div className={styles.subButtons}>
-          {/* Patient: delete-patient, inspect-scans, edit-patient( also edits notes )*/}
-          {/* Scan: delete-scan, inspect-scans-VR, edit-patient( also edits notes ), export-scan | show notes of the patient in the sidebar*/}
-          <DropdownButton />
-          <InspectScans patientID={id} />
-          <EditButton />
-          <DeleteButton />
+    <div className={styles.patientScan_container}>
+      <div className={styles.patientScan_normal} onMouseEnter={handleMouseEnter} onMouseLeave={handleMouseLeave}>
+        <div className={styles.picture_wrapper}>
+          {' '}
+          <Image
+            id={patientfirstname.concat(' ', patientlastname)}
+            className={showButtons ? styles.picture_hover : styles.picture}
+            src={picture}
+            alt="3d picture of teeth"
+          />
         </div>
-      )}
 
-      <div className={showButtons ? styles.patientscanNameWrapperInvisible : styles.patientscanNameWrapper}>
-        <p className={styles.patientscanName}>{patientfirstname.concat(' ', patientlastname)}</p>
+        {showButtons && (
+          <div className={styles.subButtons}>
+            {/* Patient: delete-patient, inspect-scans, edit-patient( also edits notes )*/}
+            {/* Scan: delete-scan, inspect-scans-VR, edit-patient( also edits notes ), export-scan | show notes of the patient in the sidebar*/}
+            <DropdownButton />
+            <InspectScans patientID={id} />
+            <EditButton />
+            <DeleteButton />
+          </div>
+        )}
+
+        <div className={showButtons ? styles.patientscanNameWrapperInvisible : styles.patientscanNameWrapper}>
+          <p className={styles.patientscanName}>{patientfirstname.concat(' ', patientlastname)}</p>
+        </div>
       </div>
     </div>
   );
