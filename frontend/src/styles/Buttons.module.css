@@ -50,6 +50,11 @@
   margin: auto;
 }
 
+#dropDownButton {
+  width: 100%;
+  margin: 0px;
+}
+
 #homeIcon {
   width: 48px;
   height: 48px;
@@ -93,9 +98,7 @@
   background-image: url(../../public/profile-icon.png); /* add propper ICON */
   background-repeat: no-repeat;
   background-position: center;
-  position: absolute;
-  top: 0px;
-  left: 0px;
+  float: left;
 }
 
 #deleteIcon {

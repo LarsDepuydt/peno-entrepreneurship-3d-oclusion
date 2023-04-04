@@ -1,4 +1,5 @@
 import styleB from '@/styles/Buttons.module.css';
+/* not used right now */
 
 /* still needs to be implemented, just a dummy button */
 

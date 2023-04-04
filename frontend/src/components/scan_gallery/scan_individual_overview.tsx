@@ -62,8 +62,23 @@ export function SingleScan({ scanid, patientid, picture, date }: scanProfile) {
       {dropDown && (
         <div className={styles.patientScan_dropDown}>
           <button type="button" className={styleB.relu_btn} id={styleB.exitIcon} onClick={handleDropGone}></button>
+          <div className={styles.dropDownButtonWrapper}>
+            <button className={styleB.relu_btn} id={styleB.dropDownButton}>
+              test
+            </button>
+            <button className={styleB.relu_btn} id={styleB.dropDownButton}>
+              test
+            </button>
+            <button className={styleB.relu_btn} id={styleB.dropDownButton}>
+              test
+            </button>
+            <button className={styleB.relu_btn} id={styleB.dropDownButton}>
+              test
+            </button>
+          </div>
         </div>
       )}
+
       {!dropDown && (
         <div className={styles.patientScan_normal} onMouseEnter={handleMouseEnter} onMouseLeave={handleMouseLeave}>
           <div className={styles.picture_wrapper}>
@@ -74,10 +89,9 @@ export function SingleScan({ scanid, patientid, picture, date }: scanProfile) {
               alt="3d picture of teeth"
             />
           </div>
+
           {showButtons && (
             <div className={styles.subButtons}>
-              {/* Patient: delete-patient, inspect-scans, edit-patient( also edits notes )*/}
-              {/* Scan: delete-scan, inspect-scans-VR, edit-patient( also edits notes ), export-scan | show notes of the patient in the sidebar*/}
               <div>
                 <button
                   type="button"
@@ -92,6 +106,7 @@ export function SingleScan({ scanid, patientid, picture, date }: scanProfile) {
               <DeleteButton />
             </div>
           )}
+
           <div className={showButtons ? styles.patientscanNameWrapperInvisible : styles.patientscanNameWrapper}>
             <p className={styles.patientscanName}>{dateString}</p>
           </div>

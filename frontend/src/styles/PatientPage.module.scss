@@ -79,13 +79,12 @@ $patientBorder-width: 1.5px;
 
 .patientScan_dropDown {
   /* overlay of dropdown on top of patient-button */
-  margin: $patientMargin;
-  width: $patientWidth;
+  height: 100%;
+  background-color: white;
   text-align: center;
-  background-color: #f8f8f8;
   border-radius: $borderradius;
 
-  flex-basis: auto;
+
 }
 
 .patientscanName {
@@ -111,7 +110,7 @@ $patientBorder-width: 1.5px;
 }
 
 .subButtons {
-  /* wrapper around the sub buttons in the patient button */
+  /* wrapper around the sub buttons in the patient */
   margin-bottom: $patientscanNameWrapperHeight;
   width: $patientWidth;
   position: absolute;
@@ -123,6 +122,20 @@ $patientBorder-width: 1.5px;
   justify-content: space-evenly;
   align-items: center;
   height: auto;
+}
+
+.dropDownButtonWrapper {
+  /* wrapper around the sub buttons in the dropdown */
+  padding: 8px 0px; /* make the buttons level with the exit dropdown button */
+  float: left;
+  width: 190px;
+
+  display: flex;
+  flex-direction: column;
+  flex-wrap: nowrap;
+  justify-content: space-between;
+  align-items: center;
+  height: 100%;
 }
 
 .projects {
