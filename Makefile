@@ -29,3 +29,7 @@ migrate:
 	@echo "🔄  Running database migrations..."
 	@docker compose run --rm flyway migrate
 
+.PHONY: migrate_info
+migrate_info:
+	@echo "Showing database migration history..."
+	@docker compose run --rm flyway info

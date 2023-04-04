@@ -22,5 +22,5 @@ Send request atm
 ```
 
 ## Migrate database schema
-run : docker compose run --rm flyway migrate
-info: docker compose run --rm flyway info
+Run `make migrate` to migrate the database schema to the latest version.
+Run `make migrate_info` to get migrations information.
