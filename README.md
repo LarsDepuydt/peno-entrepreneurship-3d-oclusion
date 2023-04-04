@@ -20,3 +20,7 @@ Send request atm
   --data '{"id": "Jane"}' \
   http://localhost:8080/threedoclusion.v1.ScanService/Scan
 ```
+
+## Migrate database schema
+run : docker compose run --rm flyway migrate
+info: docker compose run --rm flyway info

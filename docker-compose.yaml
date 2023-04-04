@@ -13,11 +13,11 @@ services:
       - ./database:/usr/src/app/database
       - "dbdata:/var/lib/postgresql/data"
   flyway:
-    image: flyway/flyway
-    command: migrate
+    image: flyway/flyway:9.16.1
+    command: -configFiles=/flyway/conf/flyway.conf info
     volumes:
-      - ./database/migrations:/flyway/sql
       - ./flyway.conf:/flyway/conf/flyway.conf
+      - ./database/migrations:/flyway/sql
     depends_on:
       - db
   app:
