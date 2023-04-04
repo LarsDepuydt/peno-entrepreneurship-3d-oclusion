@@ -5,7 +5,7 @@
 
 import { createQueryService } from "@bufbuild/connect-query";
 import { MethodKind } from "@bufbuild/protobuf";
-import { AddPatientRequest, AddPatientResponse, AddScanRequest, AddScanResponse, AddTagRequest, AddTagResponse, DeletePatientRequest, DeletePatientResponse, DeleteScanRequest, DeleteScanResponse, DeleteTagRequest, DeleteTagResponse, GetAllPatientsRequest, GetAllPatientsResponse, GetAllScansRequest, GetAllScansResponse, GetAllTagsByTypeRequest, GetAllTagsByTypeResponse, GetAllTagsRequest, GetAllTagsResponse, GetPatientByIDRequest, GetPatientByIDResponse, GetPatientByNameRequest, GetPatientByNameResponse, GetScanByDateRequest, GetScanByDateResponse, GetScanByIDRequest, GetScanByIDResponse, GetTagByIDRequest, GetTagByIDResponse, SendVRRequest, SendVRResponse } from "./service_pb.js";
+import { AddDentistRequest, AddDentistResponse, AddPatientRequest, AddPatientResponse, AddScanRequest, AddScanResponse, AddTagRequest, AddTagResponse, DeleteDentistByIdRequest, DeleteDentistByIdResponse, DeletePatientRequest, DeletePatientResponse, DeleteScanRequest, DeleteScanResponse, DeleteTagRequest, DeleteTagResponse, GetAllDentistsRequest, GetAllDentistsResponse, GetAllPatientsRequest, GetAllPatientsResponse, GetAllScansRequest, GetAllScansResponse, GetAllTagsByTypeRequest, GetAllTagsByTypeResponse, GetAllTagsRequest, GetAllTagsResponse, GetDentistByIdRequest, GetDentistByIdResponse, GetPatientByIDRequest, GetPatientByIDResponse, GetPatientByNameRequest, GetPatientByNameResponse, GetPositionScanRequest, GetPositionScanResponse, GetScanByDateRequest, GetScanByDateResponse, GetScanByIDRequest, GetScanByIDResponse, GetTagByIDRequest, GetTagByIDResponse, LoginRequest, LoginResponse, RegisterRequest, RegisterResponse, SendPositionScanRequest, SendPositionScanResponse, SendVRRequest, SendVRResponse, UpdateDentistByIdRequest, UpdateDentistByIdResponse } from "./service_pb.js";
 
 export const typeName = "threedoclusion.v1.ScanService";
 
@@ -197,6 +197,40 @@ export const getAllTagsByType = createQueryService({
 }).getAllTagsByType;
 
 /**
+ * @generated from rpc threedoclusion.v1.ScanService.SendPositionScan
+ */
+export const sendPositionScan = createQueryService({
+  service: {
+    methods: {
+      sendPositionScan: {
+        name: "SendPositionScan",
+        kind: MethodKind.Unary,
+        I: SendPositionScanRequest,
+        O: SendPositionScanResponse,
+      },
+    },
+    typeName: "threedoclusion.v1.ScanService",
+  },
+}).sendPositionScan;
+
+/**
+ * @generated from rpc threedoclusion.v1.ScanService.GetPositionScan
+ */
+export const getPositionScan = createQueryService({
+  service: {
+    methods: {
+      getPositionScan: {
+        name: "GetPositionScan",
+        kind: MethodKind.Unary,
+        I: GetPositionScanRequest,
+        O: GetPositionScanResponse,
+      },
+    },
+    typeName: "threedoclusion.v1.ScanService",
+  },
+}).getPositionScan;
+
+/**
  * @generated from rpc threedoclusion.v1.ScanService.AddPatient
  */
 export const addPatient = createQueryService({
@@ -280,3 +314,122 @@ export const getPatientByName = createQueryService({
     typeName: "threedoclusion.v1.ScanService",
   },
 }).getPatientByName;
+
+/**
+ * @generated from rpc threedoclusion.v1.ScanService.AddDentist
+ */
+export const addDentist = createQueryService({
+  service: {
+    methods: {
+      addDentist: {
+        name: "AddDentist",
+        kind: MethodKind.Unary,
+        I: AddDentistRequest,
+        O: AddDentistResponse,
+      },
+    },
+    typeName: "threedoclusion.v1.ScanService",
+  },
+}).addDentist;
+
+/**
+ * @generated from rpc threedoclusion.v1.ScanService.DeleteDentistById
+ */
+export const deleteDentistById = createQueryService({
+  service: {
+    methods: {
+      deleteDentistById: {
+        name: "DeleteDentistById",
+        kind: MethodKind.Unary,
+        I: DeleteDentistByIdRequest,
+        O: DeleteDentistByIdResponse,
+      },
+    },
+    typeName: "threedoclusion.v1.ScanService",
+  },
+}).deleteDentistById;
+
+/**
+ * @generated from rpc threedoclusion.v1.ScanService.GetAllDentists
+ */
+export const getAllDentists = createQueryService({
+  service: {
+    methods: {
+      getAllDentists: {
+        name: "GetAllDentists",
+        kind: MethodKind.Unary,
+        I: GetAllDentistsRequest,
+        O: GetAllDentistsResponse,
+      },
+    },
+    typeName: "threedoclusion.v1.ScanService",
+  },
+}).getAllDentists;
+
+/**
+ * @generated from rpc threedoclusion.v1.ScanService.GetDentistById
+ */
+export const getDentistById = createQueryService({
+  service: {
+    methods: {
+      getDentistById: {
+        name: "GetDentistById",
+        kind: MethodKind.Unary,
+        I: GetDentistByIdRequest,
+        O: GetDentistByIdResponse,
+      },
+    },
+    typeName: "threedoclusion.v1.ScanService",
+  },
+}).getDentistById;
+
+/**
+ * @generated from rpc threedoclusion.v1.ScanService.UpdateDentistById
+ */
+export const updateDentistById = createQueryService({
+  service: {
+    methods: {
+      updateDentistById: {
+        name: "UpdateDentistById",
+        kind: MethodKind.Unary,
+        I: UpdateDentistByIdRequest,
+        O: UpdateDentistByIdResponse,
+      },
+    },
+    typeName: "threedoclusion.v1.ScanService",
+  },
+}).updateDentistById;
+
+/**
+ * @generated from rpc threedoclusion.v1.ScanService.Login
+ */
+export const login = createQueryService({
+  service: {
+    methods: {
+      login: {
+        name: "Login",
+        kind: MethodKind.Unary,
+        I: LoginRequest,
+        O: LoginResponse,
+      },
+    },
+    typeName: "threedoclusion.v1.ScanService",
+  },
+}).login;
+
+/**
+ * @generated from rpc threedoclusion.v1.ScanService.Register
+ */
+export const register = createQueryService({
+  service: {
+    methods: {
+      register: {
+        name: "Register",
+        kind: MethodKind.Unary,
+        I: RegisterRequest,
+        O: RegisterResponse,
+      },
+    },
+    typeName: "threedoclusion.v1.ScanService",
+  },
+}).register;

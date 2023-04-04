@@ -2,13 +2,9 @@ module body.active_modal {
   overflow-y: hidden;
 }
 
-.btn_modal {
-  padding: 10px 20px;
-  display: block;
-  position: absolute;
-  left: 50%;
-  margin: 100px auto 0;
-  font-size: 18px;
+.btn_modal { /* add patient and scan */
+  text-align: center;
+  margin: 20px 0px;
 }
 
 .modal,
@@ -37,7 +33,7 @@ module body.active_modal {
   line-height: 1.4;
   background: #f1f1f1;
   padding: 14px 28px;
-  border-radius: 3px;
+  border-radius: 10px;
   max-width: 500px;
   min-width: 500px;
 }
@@ -98,4 +94,8 @@ module .login_box {
 .rightfont {
   font-weight: 600;
   color: #737e85;
+}
+
+.right {
+  float: right;
 }
