@@ -38,6 +38,8 @@ WORKDIR /usr/src/app
 WORKDIR /usr/src/app/backend
 COPY ./backend/go.mod ./backend/go.sum ./
 RUN --mount=type=cache,mode=0777,target=/go/pkg/mod go mod download
+#RUN go get github.com/LarsDepuydt/peno-entrepreneurship-3d-oclusion/backend/cmd/serve
+
 
 COPY backend backend
 
@@ -53,4 +55,5 @@ RUN --mount=type=cache,mode=0777,target=/go/pkg/mod \
 FROM scratch AS backend
 WORKDIR / 
 COPY --from=backend-builder /usr/src/app/backend ./
+ENV PORT 8080
 ENTRYPOINT ["/serve"]
