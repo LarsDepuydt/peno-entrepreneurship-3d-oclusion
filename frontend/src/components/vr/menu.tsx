@@ -1,6 +1,6 @@
 import { useState } from "react";
 
-const Menu = () => {
+const Menu = () => { // Add props with positions
   const [isOpen, setIsOpen] = useState(true);
 
   const toggleMenu = () => {
