@@ -1,4 +1,6 @@
 import React, { useEffect, useState } from 'react'
+import Menu from '@/components/vr/menu'
+
 
 import dynamic from 'next/dynamic';
 
@@ -7,7 +9,8 @@ const DraggingView = dynamic(() => import('@/components/vr/dragging'), { ssr: fa
 const BeforeAfter = dynamic(() => import('@/components/vr/before-after'), { ssr: false });
 
 
-export default function TestVRPage(){ 
+
+export default function StartVRPage(){ 
     const [isComponentMounted, setIsComponentMounted] = useState(false)
   
     useEffect(() => setIsComponentMounted(true), [])
@@ -19,7 +22,7 @@ export default function TestVRPage(){
     return ( // Only executed on the client side
         <div>
             {isNavigatorAvailable}
-            < VRView />
+            < DraggingView />
         </div>
     )
 }
