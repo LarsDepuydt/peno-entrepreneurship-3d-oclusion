@@ -27,12 +27,14 @@ func main() {
 	defer database.Close()
 
 	// Check if the database connection works
-	err = database.Ping()
-  if err != nil {
-    panic(err)
-  }
+	/*err = database.Ping()
+	if err != nil {
+		panic(err)
+	}
 
-  fmt.Println("Successfully connected!")
+  	fmt.Println("Successfully connected!"
+	So no error -> still won't be able to use database but better than panic
+	)*/
 
 	serve.Server(database)
 }

@@ -3,7 +3,9 @@ import { WaitingRequest } from "@/gen/proto/threedoclusion/v1/service_pb";
 import { ScanService } from "@/gen/proto/threedoclusion/v1/service_connect";
 
 import { createPromiseClient } from "@bufbuild/connect";
-import { createConnectTransport } from "@bufbuild/connect-web";
+import { useTransport } from "@bufbuild/connect-query";
+
+
 import { useRouter } from 'next/router';
 import { useState } from "react";
 
@@ -21,9 +23,7 @@ export default function WaitPage() {
   const [submitted, setSubmitted] = useState(false);
   const [formVisible, setFormVisible] = useState(true); // Add formVisible state
 
-  const transport = createConnectTransport({
-    baseUrl: "http://0.0.0.0:8080",
-  });
+  const transport = useTransport();
 
   const router = useRouter();
 
@@ -52,7 +52,6 @@ export default function WaitPage() {
       setFormVisible(false); // Set formVisible to false
     }
   }
-  // See _app, can't use queryClient for streams so I made a new client here -> implement in _app as well to support other streams?
 
   async function waitForResponse(codeValue: number) {
     const client = createPromiseClient(ScanService, transport);

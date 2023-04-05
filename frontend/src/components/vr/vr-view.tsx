@@ -306,78 +306,78 @@ export default function VRView(){
       }, []);
 
     
-function loadObjects() {
-    // load lower jaw
-    const loader = new OBJLoader();
-    loader.load(
-        path_lower_jaw,
-        // called when resource is loaded y=green, x=red, z=blue
-        function (object) {         // lj_group is a 'Group', which is a subclass of 'Object3D'
-            lj_group = object;
-            lj_group.scale.set(0.01, 0.01, 0.01);
-            // lj_group.scale.setScalar(0.01);
+    function loadObjects() {
+        // load lower jaw
+        const loader = new OBJLoader();
+        loader.load(
+            path_lower_jaw,
+            // called when resource is loaded y=green, x=red, z=blue
+            function (object) {         // lj_group is a 'Group', which is a subclass of 'Object3D'
+                lj_group = object;
+                lj_group.scale.set(0.01, 0.01, 0.01);
+                // lj_group.scale.setScalar(0.01);
 
-            // server: getCoordinates()
-            lj_group.position.x = 0;
-            lj_group.position.y = 0;
-            lj_group.position.z = 0;
-            lj_group.rotation.x = 1.5 * Math.PI;
-            //lj_group.rotation.y = Math.PI
-            console.log(lj_group);
-            scene.add(lj_group);
+                // server: getCoordinates()
+                lj_group.position.x = 0;
+                lj_group.position.y = 0;
+                lj_group.position.z = 0;
+                lj_group.rotation.x = 1.5 * Math.PI;
+                //lj_group.rotation.y = Math.PI
+                console.log(lj_group);
+                scene.add(lj_group);
+                
+                lj_mesh = getFirstMesh(lj_group);
+                //console.log(lj_mesh);
+                lj_shape = threeMeshToCannonMesh(lj_mesh);
+                console.log("loading lj_group succeeded");
+                lj_body.addShape(lj_shape);
+                lj_loaded = true;
+                startAnimation();
+            },
             
-            lj_mesh = getFirstMesh(lj_group);
-            //console.log(lj_mesh);
-            lj_shape = threeMeshToCannonMesh(lj_mesh);
-            console.log("loading lj_group succeeded");
-            lj_body.addShape(lj_shape);
-            lj_loaded = true;
-            startAnimation();
-        },
-        
-        // called when loading in progress
-        function (xhr) {
-            //console.log( "lj_group " + (xhr.loaded / xhr.total * 100 ) + '% loaded');
-        },
-        // called when loading has errors
-        function (error) {
-            console.log('An error happened while loading lj_group: ' + error);
-        }
-    );
+            // called when loading in progress
+            function (xhr) {
+                //console.log( "lj_group " + (xhr.loaded / xhr.total * 100 ) + '% loaded');
+            },
+            // called when loading has errors
+            function (error) {
+                console.log('An error happened while loading lj_group: ' + error);
+            }
+        );
 
-    // load upper jaw
-    loader.load(
-        path_upper_jaw,
-        // called when resource is loaded y=green, x=red, z=blue
-        function (object) {
-            uj_group = object;
-            uj_group.position.x = 0;
-            uj_group.position.y = 0;
-            uj_group.position.z = 0;
-            uj_group.rotation.x = 1.5 * Math.PI;
-            //uj_group.rotation.y = Math.PI
-            uj_group.scale.setScalar(0.01);
-            scene.add(uj_group);
+        // load upper jaw
+        loader.load(
+            path_upper_jaw,
+            // called when resource is loaded y=green, x=red, z=blue
+            function (object) {
+                uj_group = object;
+                uj_group.position.x = 0;
+                uj_group.position.y = 0;
+                uj_group.position.z = 0;
+                uj_group.rotation.x = 1.5 * Math.PI;
+                //uj_group.rotation.y = Math.PI
+                uj_group.scale.setScalar(0.01);
+                scene.add(uj_group);
+                
+                uj_mesh = getFirstMesh(uj_group);
+                //console.log(uj_mesh);
+                uj_shape = threeMeshToCannonMesh(uj_mesh);
+                console.log("loading uj_group succeeded");
+                uj_body.addShape(uj_shape);
+                uj_loaded = true;
+                startAnimation();
+            },
             
-            uj_mesh = getFirstMesh(uj_group);
-            //console.log(uj_mesh);
-            uj_shape = threeMeshToCannonMesh(uj_mesh);
-            console.log("loading uj_group succeeded");
-            uj_body.addShape(uj_shape);
-            uj_loaded = true;
-            startAnimation();
-        },
-        
-        // called when loading in progress
-        function (xhr) {
-            //console.log( "uj_group " + (xhr.loaded / xhr.total * 100 ) + '% loaded');
-        },
-        // called when loading has errors
-        function (error) {
-            console.log('An error happened while loading uj_group: ' + error);
-        }
-    );
-}
+            // called when loading in progress
+            function (xhr) {
+                //console.log( "uj_group " + (xhr.loaded / xhr.total * 100 ) + '% loaded');
+            },
+            // called when loading has errors
+            function (error) {
+                console.log('An error happened while loading uj_group: ' + error);
+            }
+        );
+    }
 
     function startAnimation() {
         if (lj_loaded && uj_loaded) {
@@ -419,26 +419,39 @@ function loadObjects() {
         const { x: upperX, y: upperY, z: upperZ } = coordinate_info_upper ?? {};
         const { x: upperRX, y: upperRY, z: upperRZ } = rotation_info_upper ?? {};
 
-        const scan = { scanId, date: "2022",
-            lowerX, lowerY, lowerZ, lowerRX, lowerRY, lowerRZ, 
-            upperX, upperY, upperZ, upperRX, upperRY, upperRZ};
-        
+        //const scan = { scanId, date: "2022", lowerX, lowerY, lowerZ, lowerRX, lowerRY, lowerRZ, upperX, upperY, upperZ, upperRX, upperRY, upperRZ};
+        const scan = { scanId: 1, date: "2022", lowerX: 1, lowerY:1, lowerZ:1, lowerRX:1, lowerRY:1, lowerRZ:1, upperX:1, upperY:1, upperZ:1, upperRX:1, upperRY:1, upperRZ:1};
         /*const query = sendPositionScan.useQuery({ scanId, lowerX, lowerY, lowerZ, lowerRX, lowerRY, lowerRZ, 
             upperX, upperY, upperZ, upperRX, upperRY, upperRZ});*/
         
         const query = sendPositionScan.useQuery({scan});
 
-        const { data, refetch } = useQuery(query.queryKey, query.queryFn, { enabled: false });
+        const { data, isLoading, isError, refetch } = useQuery(query.queryKey, query.queryFn, { enabled: false });
         //console.log(data); // When enabled: true data sometimes gets received properly
 
         useEffect(() => {
             if (send) {
                 refetch();
-                //console.log(data); // Undefined?
+                console.log(data); // Undefined?
                 setSend(false);
             }
         }, [send]);
-        return null;
+
+        useEffect(() => {
+            if (data) {
+                console.log(data);
+            }
+        }, [data]);
+
+        if (isLoading) {
+            return <div>Loading...</div>;
+        }
+        
+        if (isError) {
+        return <div>Error!</div>;
+        }
+        
+        return <div>Scan sent</div>;
     }
 
 
@@ -466,5 +479,5 @@ function loadObjects() {
         <SendPositionComponent/>
         <GetPositionComponent/> 
         </div>
-    )
+    );
 }

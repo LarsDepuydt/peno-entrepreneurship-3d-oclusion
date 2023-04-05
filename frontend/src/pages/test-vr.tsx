@@ -19,7 +19,7 @@ export default function TestVRPage(){
     return ( // Only executed on the client side
         <div>
             {isNavigatorAvailable}
-            < BeforeAfter />
+            < VRView />
         </div>
     )
 }

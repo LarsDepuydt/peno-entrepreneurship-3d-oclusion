@@ -25,6 +25,7 @@ export default function ClientPage() {
        if (submitOK){
         refetch();
         setSubmitOK(false);
+        //console.log(data); // Undefined?
        }
     };
 

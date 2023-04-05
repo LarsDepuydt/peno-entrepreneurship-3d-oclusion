@@ -21,6 +21,7 @@ const initialRotationLower = initialRotation; const initialRotationUpper = initi
 
 const finalPositionLower = new THREE.Vector3(0, 2, 0.12); const finalPositionUpper = new THREE.Vector3(1, 3, 1.12);
 const finalRotationLower = new THREE.Euler(2 * Math.PI, 0, 0, "XYZ"); const finalRotationUpper = new THREE.Euler(2 * Math.PI, 0.5 * Math.PI, 0, "XYZ"); 
+// Get from request
 
 const clock = new THREE.Clock();
 let upperMove = new THREE.Object3D();
