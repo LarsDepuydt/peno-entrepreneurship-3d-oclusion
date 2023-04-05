@@ -7,8 +7,8 @@ import (
 
 	"github.com/bufbuild/connect-go"
 
-	"github.com/LarsDepuydt/peno-entrepreneurship-3d-oclusion/cmd/help_datastructures"
-	threedoclusionv1 "github.com/LarsDepuydt/peno-entrepreneurship-3d-oclusion/gen/proto/threedoclusion/v1"
+	"github.com/LarsDepuydt/peno-entrepreneurship-3d-oclusion/backend/cmd/help_datastructures"
+	threedoclusionv1 "github.com/LarsDepuydt/peno-entrepreneurship-3d-oclusion/backend/gen/proto/threedoclusion/v1"
 )
 
 func SendToVR(req *connect.Request[threedoclusionv1.SendVRRequest], redirectVRChannels *help_datastructures.MapChannels) (*connect.Response[threedoclusionv1.SendVRResponse], error) {

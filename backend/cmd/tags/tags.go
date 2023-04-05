@@ -7,8 +7,8 @@ import (
 	"github.com/bufbuild/connect-go"
 	_ "github.com/lib/pq"
 
-	"github.com/LarsDepuydt/peno-entrepreneurship-3d-oclusion/cmd/help_functions"
-	threedoclusionv1 "github.com/LarsDepuydt/peno-entrepreneurship-3d-oclusion/gen/proto/threedoclusion/v1"
+	"github.com/LarsDepuydt/peno-entrepreneurship-3d-oclusion/backend/cmd/help_functions"
+	threedoclusionv1 "github.com/LarsDepuydt/peno-entrepreneurship-3d-oclusion/backend/gen/proto/threedoclusion/v1"
 )
 
 

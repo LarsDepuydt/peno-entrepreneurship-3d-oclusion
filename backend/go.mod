@@ -1,4 +1,4 @@
-module github.com/LarsDepuydt/peno-entrepreneurship-3d-oclusion
+module github.com/LarsDepuydt/peno-entrepreneurship-3d-oclusion/backend
 
 go 1.19
 

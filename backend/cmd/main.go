@@ -7,7 +7,7 @@ import (
 	"net/http"
 	"os"
 
-	"github.com/LarsDepuydt/peno-entrepreneurship-3d-oclusion/cmd/serve"
+	"github.com/LarsDepuydt/peno-entrepreneurship-3d-oclusion/backend/cmd/serve"
 )
 
 const (
@@ -17,6 +17,8 @@ const (
   password = "docker1"
   dbname   = "patient_server"
 )
+
+
 
 func main() {
 	psqlInfo := fmt.Sprintf("host=%s port=%d user=%s "+
@@ -37,19 +39,20 @@ func main() {
 
   	fmt.Println("Successfully connected!")
 
-	  port := os.Getenv("PORT")
-	  if port == "" {
-		  port = "8080" // Set a default port if not provided
-	  }
+	port := os.Getenv("PORT")
+	if port == "" {
+		port = "8080" // Set a default port if not provided
+	}
   
-	  http.HandleFunc("/", func(w http.ResponseWriter, r *http.Request) {
-		  fmt.Fprint(w, "Hello, World!")
-	  })
-  
-	  log.Printf("Starting server on :%s", port)
-	  if err := http.ListenAndServe(":"+port, nil); err != nil {
-		  log.Fatalf("Server failed to start: %v", err)
-	  }
-
+	http.HandleFunc("/", func(w http.ResponseWriter, r *http.Request) {
+		fmt.Fprint(w, "Hello, World!")
+	})
+		
+	log.Printf("Starting server on :%s", port)
+	if err := http.ListenAndServe(":"+port, nil); err != nil {
+		log.Fatalf("Server failed to start: %v", err)
+	}
+	
 	serve.Server(database)
 }
+
