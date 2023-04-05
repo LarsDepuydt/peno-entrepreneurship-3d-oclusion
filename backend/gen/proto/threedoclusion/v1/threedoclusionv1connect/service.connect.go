@@ -7,7 +7,7 @@ package threedoclusionv1connect
 import (
 	context "context"
 	errors "errors"
-	v1 "github.com/LarsDepuydt/peno-entrepreneurship-3d-oclusion/backend/gen/proto/threedoclusion/v1"
+	v1 "github.com/LarsDepuydt/peno-entrepreneurship-3d-oclusion/gen/proto/threedoclusion/v1"
 	connect_go "github.com/bufbuild/connect-go"
 	http "net/http"
 	strings "strings"

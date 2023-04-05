@@ -1,4 +1,4 @@
-module github.com/LarsDepuydt/peno-entrepreneurship-3d-oclusion/backend
+module github.com/LarsDepuydt/peno-entrepreneurship-3d-oclusion
 
 go 1.19
 
@@ -12,4 +12,3 @@ require (
 require github.com/rs/cors v1.8.3
 
 require github.com/lib/pq v1.10.7
-

@@ -7,7 +7,7 @@ import (
 	"net/http"
 	"os"
 
-	"github.com/LarsDepuydt/peno-entrepreneurship-3d-oclusion/backend/cmd/serve"
+	"github.com/LarsDepuydt/peno-entrepreneurship-3d-oclusion/cmd/serve"
 )
 
 const (
@@ -42,6 +42,7 @@ func main() {
 	port := os.Getenv("PORT")
 	if port == "" {
 		port = "8080" // Set a default port if not provided
+		fmt.Println(port)
 	}
   
 	http.HandleFunc("/", func(w http.ResponseWriter, r *http.Request) {
@@ -49,10 +50,13 @@ func main() {
 	})
 		
 	log.Printf("Starting server on :%s", port)
+	fmt.Printf("Starting server on :%s", port)
 	if err := http.ListenAndServe(":"+port, nil); err != nil {
 		log.Fatalf("Server failed to start: %v", err)
 	}
 	
 	serve.Server(database)
 }
+
+
 

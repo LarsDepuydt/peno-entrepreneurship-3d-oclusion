@@ -32,28 +32,24 @@ WORKDIR /usr/src/app
 
 FROM dev AS backend-builder
 
-# Change the WORKDIR in the backend-builder stage
-WORKDIR /usr/src/app
-
-# pre-copy/cache go.mod for pre-downloading dependencies and only redownloading them in subsequent builds if they change
+WORKDIR /usr/src/app/backend
 COPY ./backend/go.mod ./backend/go.sum ./
 RUN --mount=type=cache,mode=0777,target=/go/pkg/mod go mod download
-#RUN go get github.com/LarsDepuydt/peno-entrepreneurship-3d-oclusion/backend/cmd/serve
 
-COPY . ./
-RUN ls
-# Use native go packages (CGO_ENABLED)
+WORKDIR /usr/src/app
+COPY . .
+
+WORKDIR /usr/src/app/backend
 RUN --mount=type=cache,mode=0777,target=/go/pkg/mod \
     --mount=type=cache,mode=0777,target=/.cache/go-build \
-    CGO_ENABLED=0 GOOS=linux go build -o serve ./backend/cmd/main.go
-
+    CGO_ENABLED=0 GOOS=linux go build -o serve ./cmd/main.go
 
 ################################
 # Run backend
 ################################
 
 FROM scratch AS backend
-WORKDIR / 
-COPY --from=backend-builder /usr/src/app/backend ./
+WORKDIR /
+COPY --from=backend-builder /usr/src/app/backend/serve ./
 ENV PORT 8080
 ENTRYPOINT ["/serve"]
