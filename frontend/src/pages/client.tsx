@@ -29,7 +29,6 @@ export default function ClientPage() {
     function afterSubmit(event: React.FormEvent<HTMLFormElement>) {
       event.preventDefault();
       let codeInput = document.getElementById("code") as HTMLInputElement | null;
-  
       if (codeInput){
         setClientId(parseInt(codeInput.value, 10));
       }

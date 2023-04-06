@@ -1,10 +1,11 @@
 import * as THREE from 'three';
 import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls';
 import { OBJLoader } from 'three/examples/jsm/loaders/OBJLoader.js';
-import { useRef, useEffect, useState } from 'react';
+import { useRef, useEffect } from 'react';
+import { createFFmpeg, fetchFile } from '@ffmpeg/ffmpeg';
 
-//let container: HTMLDivElement;
-let camera: THREE.PerspectiveCamera, scene: THREE.Scene, renderer: THREE.WebGLRenderer;
+let container: HTMLDivElement;
+let camera: THREE.PerspectiveCamera, scene: THREE.Scene, renderer: THREE.WebGLRenderer, renderTarget: THREE.WebGLRenderTarget;
 
 let controls, group: THREE.Group;
 let second_call = false;
@@ -23,19 +24,22 @@ const finalPositionLower = new THREE.Vector3(0, 2, 0.12); const finalPositionUpp
 const finalRotationLower = new THREE.Euler(2 * Math.PI, 0, 0, "XYZ"); const finalRotationUpper = new THREE.Euler(2 * Math.PI, 0.5 * Math.PI, 0, "XYZ"); 
 // Get from request
 
-const clock = new THREE.Clock();
 let upperMove = new THREE.Object3D();
 let inLastPosition = false;
 let inInitialPosition = true;
-let captureRunning = false;
-let animationSaved = false;
 
-// Create a MediaRecorder instance
-const chunks: any = [];
-let stream: any;
-let recorder: any;
+const frameRate = 30; // FPS
+const durationVideo = 5; // 5 seconds
+const numFrames = frameRate * durationVideo; // Should put in function
+// create ffmpeg instance
+const ffmpeg = createFFmpeg({ 
+    mainName: 'main',
+    log: true,
+    corePath: 'https://unpkg.com/@ffmpeg/core-st@0.11.1/dist/ffmpeg-core.js'
+});
 
-function init(container: any) {
+
+function init() {
     // create container
     container = document.createElement( 'div' );
     document.body.appendChild( container );
@@ -203,73 +207,45 @@ function init(container: any) {
     );
 }
 
-function initThree(container: any){
+function initThree(){
 
     // add renderer and enable VR
     renderer = new THREE.WebGLRenderer( { antialias: true } );
     renderer.setPixelRatio( window.devicePixelRatio );
-    //renderer.setSize( window.innerWidth, window.innerHeight );
-    renderer.setSize( container.clientWidth, container.clientHeight );
+    renderer.setSize( window.innerWidth, window.innerHeight );
+    //renderer.setSize( container.clientWidth, container.clientHeight );
     renderer.outputEncoding = THREE.sRGBEncoding;
     renderer.shadowMap.enabled = true;
     renderer.xr.enabled = true;
+
+    //renderTarget = new THREE.WebGLRenderTarget( window.innerWidth, window.innerHeight );
+    //renderer.setRenderTarget(renderTarget);   
+
     container.appendChild( renderer.domElement );
-
-    //document.body.appendChild( VRButton.createButton( renderer ) );
-
-    // Mediarecorder
-    stream = renderer.domElement.captureStream();
-    recorder = new MediaRecorder(stream, {mimeType: 'video/webm; codecs=vp9'});
-    // Register an event listener for the dataavailable event
-    recorder.addEventListener('dataavailable', (event: any) => {
-        chunks.push(event.data);
-    });
 }
 
-function checkAnimation(duration: number, rest_time: number, setVideoChunks: any, onVideoChunksChange: any) {
-    let elapsedTime = clock.getElapsedTime();
-    
+function checkAnimation(elapsedTime: number, durationVideo: number, restTime: number) {    
     if (inLastPosition){ // Rest at the end 
-      if (elapsedTime >= rest_time){
+      if (elapsedTime >= restTime){
         inLastPosition = false;
         inInitialPosition = true;
       }
     }
     
     if (inInitialPosition){ // Rest at the start point
-      if (elapsedTime >= rest_time){
+      if (elapsedTime >= restTime){
         inInitialPosition = false;
-        clock.start();
-        elapsedTime = 0; // Set elapsedTime to 0 when animation resets
+        //elapsedTime = 0; // Set elapsedTime to 0 when animation resets
+        // To move with
       }
     }
       
-    if (clock.running && !inLastPosition && !inInitialPosition){
-      if (!captureRunning && !animationSaved) { recorder.start(); captureRunning = true;}
-      
-      if (elapsedTime >= duration) {
+    if (!inLastPosition && !inInitialPosition){      
+      if (elapsedTime - restTime >= durationVideo) {
         inLastPosition = true;
-    
-        if (!animationSaved){
-          recorder.stop(); // Stop running
-          //const blob = new Blob(chunks, {type: 'video/webm'});
-          //const url = URL.createObjectURL(blob);
-          //const video = document.createElement('video');
-          //video.src = url;
-          //document.body.appendChild(video);
-          //console.log(url);
-          setVideoChunks(chunks);
-          onVideoChunksChange(chunks); // call the onVideoChunksChange function with the chunks
-          
-    
-          animationSaved = true;
-          captureRunning = false;
-        }
-    
-        elapsedTime = duration; // Set elapsedTime to duration when animation ends
-        clock.start(); // Restart clock after animation ends so it loops
+        elapsedTime = durationVideo; // Set elapsedTime to duration when animation ends
       }
-      moveWithFactor(duration, elapsedTime, upperMove);
+      moveWithFactor(durationVideo-restTime, elapsedTime-restTime, upperMove);
     }
 }
   
@@ -311,53 +287,69 @@ function moveWithFactor(duration: number, time_passed: number, jawToMove: any){ 
     jawToMove.quaternion.copy(jawToMove.quaternion.slerpQuaternions ( initialQuaternionUpper, targetQuaternion, factor ));    
 }
 
-function animate(setVideoChunks: any, onVideoChunksChange: any) {
-    //renderer.setAnimationLoop( render );
-    renderer.setAnimationLoop( function(){
-        render(setVideoChunks, onVideoChunksChange);
-    });
+async function animate() {
+    for (let i = 0; i < numFrames; i++) {
+        const time = i / frameRate;
+        // ... update objects in the scene ...
+      
+        // render the frame
+        // renderer.render(scene, camera, renderTarget);
+        render(time);
+        const dataUrl = renderer.domElement.toDataURL('image/png');
+      
+        // save the frame to ffmpeg
+        if (!ffmpeg.isLoaded()) await ffmpeg.load();
+        ffmpeg.FS('writeFile', `frame_${i}.png`, await fetchFile(dataUrl));
+    }
+
+    // encode video using ffmpeg
+    await ffmpeg.run(
+        '-framerate', `${frameRate}`,
+        '-i', 'frame_%d.png',
+        '-c:v', 'libx264',
+        '-preset', 'medium',
+        '-crf', '18',
+        '-pix_fmt', 'yuv420p',
+        'output.mp4'
+    );
+    
+    // get the video file
+    const output = ffmpeg.FS('readFile', 'output.mp4');
+    const videoUrl = URL.createObjectURL(new Blob([output.buffer], { type: "video/mp4" }));
+    console.log(videoUrl);
 }
 
-function render(setVideoChunks: any, onVideoChunksChange: any) {
-    checkAnimation(5, 2, setVideoChunks, onVideoChunksChange); // 5 seconds duration
-    if (captureRunning) recorder.requestData();
+function render(time: number) {
+    checkAnimation(time, durationVideo, 2); // 5 seconds duration 
     renderer.render( scene, camera );
 }
-/*
-function onWindowResize() {
 
-    camera.aspect = window.innerWidth / window.innerHeight; // Or container?
-    camera.updateProjectionMatrix();
-
-    renderer.setSize( window.innerWidth, window.innerHeight );
-
-}*/
-
-export default function BeforeAfter({ onVideoChunksChange }: {onVideoChunksChange: any}){
-    const containerRef = useRef(null);
-    const [videoChunks, setVideoChunks] = useState([]);
-
+function RenderVideo(){
     // Pass as parameters as well as onVideoChunksChange!!!
 
     useEffect(() => { // https://github.com/facebook/react/issues/24502
         if (second_call){
-            init(containerRef.current);
-            initThree(containerRef.current);
-            animate(setVideoChunks, onVideoChunksChange);
+            init();
+            initThree();
+            animate();
             console.log('Init executed!');
         }
         else {
             second_call = true;
         }
     }, []);
+    
 
     //window.addEventListener( 'resize', onWindowResize );    
-    return <div ref={containerRef} id="canvas">
+    /*return <div ref={containerRef} id="canvas">
         <style jsx>{`
         #canvas {
             width: 100%;
             height: 100%;
         }
         `}</style>
-    </div>;
+    </div>;*/
+    return null;
 }
+
+export default RenderVideo;
