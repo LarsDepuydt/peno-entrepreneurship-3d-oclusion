@@ -203,7 +203,6 @@ function initThree() {
 
 }
 
-
 function onWindowResize() {
 
     camera.aspect = window.innerWidth / window.innerHeight;
@@ -289,7 +288,7 @@ function render() {
     renderer.render( scene, camera );
 }
 
-export default function VRView(){
+export default function VRView(){ // Always gets rendered twice - makes it so sendpositioncomponent logs twice as well -> could make use of the secondcall but outside of dev build not needed
     const [send, setSend] = useState(false);
     const [getPosition, setGetPosition] = useState(false);
 
@@ -389,14 +388,14 @@ export default function VRView(){
     function animate() {
         updatePhysics();
         render();
-        checkTime();
+        checkTime(5); // Save every 5 seconds -> make less frequent later, just for testing purposes
     }
 
-    function checkTime() {
+    function checkTime(autosaveTime: number) {
         const elapsedTime = clock.getElapsedTime();
         
-        if (elapsedTime >= 5) {
-            setSend(true); // Send position every 5 seconds
+        if (elapsedTime >= autosaveTime) {
+            setSend(true);
             console.log(elapsedTime, "seconds have passed");
             //setGetPosition(true);
         
@@ -421,63 +420,42 @@ export default function VRView(){
 
         //const scan = { scanId, date: "2022", lowerX, lowerY, lowerZ, lowerRX, lowerRY, lowerRZ, upperX, upperY, upperZ, upperRX, upperRY, upperRZ};
         const scan = { scanId: 1, date: "2022", lowerX: 1, lowerY:1, lowerZ:1, lowerRX:1, lowerRY:1, lowerRZ:1, upperX:1, upperY:1, upperZ:1, upperRX:1, upperRY:1, upperRZ:1};
-        /*const query = sendPositionScan.useQuery({ scanId, lowerX, lowerY, lowerZ, lowerRX, lowerRY, lowerRZ, 
-            upperX, upperY, upperZ, upperRX, upperRY, upperRZ});*/
-        
-        const query = sendPositionScan.useQuery({scan});
 
-        const { data, isLoading, isError, refetch } = useQuery(query.queryKey, query.queryFn, { enabled: false });
-        //console.log(data); // When enabled: true data sometimes gets received properly
-
-        useEffect(() => {
-            if (send) {
-                refetch();
-                console.log(data); // Undefined?
-                setSend(false);
-            }
-        }, [send]);
+        const { data } = useQuery( sendPositionScan.useQuery({scan}) );
 
         useEffect(() => {
             if (data) {
                 console.log(data);
+                setSend(false);
             }
         }, [data]);
 
-        if (isLoading) {
-            return <div>Loading...</div>;
-        }
-        
-        if (isError) {
-        return <div>Error!</div>;
-        }
-        
-        return <div>Scan sent</div>;
+        return null;
     }
 
-
-    function GetPositionComponent(){ // First check if defined
+    function GetPositionComponent(){
         // Call service based on scan ID
         const scanID = 111; // Hardcoded
 
-        const query = getPositionScan.useQuery({ scanId: scanID });
-        const {data, refetch} = useQuery(query.queryKey, query.queryFn, { enabled: false });
+        //const query = getPositionScan.useQuery({ scanId: scanID });
+        //const {data, isLoading, isError, refetch} = useQuery(query.queryKey, query.queryFn, { enabled: false });
+        const { data } = useQuery(  getPositionScan.useQuery({ scanId: scanID }) );
 
         useEffect(() => {
-            if (getPosition) {
-                refetch();
+            if (data) {
+                console.log(data);
                 setGetPosition(false);
             }
-        }, [getPosition]);
+        }, [data]);
 
-        if (data) console.log(data);
         //const {lowerX, lowerY, lowerZ, lowerRX, lowerRY, lowerRZ, upperX, upperY, upperZ, upperRX, upperRY, upperRZ} = data!;
         return null;
     }
 
     return (
         <div> 
-        <SendPositionComponent/>
-        <GetPositionComponent/> 
+        {send && <SendPositionComponent/>}
+        {getPosition && <GetPositionComponent/>}
         </div>
     );
 }
