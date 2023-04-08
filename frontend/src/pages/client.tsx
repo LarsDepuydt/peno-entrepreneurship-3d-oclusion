@@ -15,11 +15,12 @@ export default function ClientPage() {
     const { data, refetch } = useQuery(query.queryKey, query.queryFn, { enabled: false });
 
 
+
     useEffect(() => {
       async function fetchData() { // Still lacking -> make server side streaming as well so don't need to repeatedly call for check up of redirect OK
         if (submitOK) {
           await refetch();
-          console.log(data);
+          //console.log(data);
           setSendOK(false);
         }
       }
@@ -42,7 +43,7 @@ export default function ClientPage() {
        // if redirect OK -> Redirect OK prompt. Open new connection to /start-VR TO CHECK STATUS
        // With new connection:
        // If manual exit here: send to /start-VR
-       // If data from new connection: saved: OK -> Prompt saved successfully.
+       // If data from new connection: exit: OK, saved: OK or NOT OK -> Prompt saved successfully.
     };
 
   return (

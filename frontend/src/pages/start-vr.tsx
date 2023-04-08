@@ -21,7 +21,7 @@ export default function StartVRPage(){
     return ( // Only executed on the client side
         <div>
             {isNavigatorAvailable}
-            < VRView />
+            < Menu />
         </div>
     )
 }

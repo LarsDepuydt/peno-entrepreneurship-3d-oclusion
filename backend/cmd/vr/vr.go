@@ -44,6 +44,7 @@ func GetPositionScan(req *connect.Request[threedoclusionv1.GetPositionScanReques
 	
 		res := connect.NewResponse(&threedoclusionv1.GetPositionScanResponse{
 			Scan:  &threedoclusionv1.Scan{
+				LowerX: 1,
 				LowerY:  1,
 				LowerZ:  1,
 				LowerRX: 1,

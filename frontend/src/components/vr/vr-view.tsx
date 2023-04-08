@@ -292,7 +292,7 @@ export default function VRView(){ // Always gets rendered twice - makes it so se
     const [send, setSend] = useState(false);
     const [getPosition, setGetPosition] = useState(false);
 
-    useEffect(() => { // https://github.com/facebook/react/issues/24502
+    useEffect(() => { // https://github.com/facebook/react/issues/24502, https://stackoverflow.com/questions/72238175/why-useeffect-running-twice-and-how-to-handle-it-well-in-react/72238236#72238236
         if (second_call){
             initCannon();
             initThree();

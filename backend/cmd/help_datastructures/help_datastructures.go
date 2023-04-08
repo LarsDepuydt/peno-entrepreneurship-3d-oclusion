@@ -1,6 +1,12 @@
 package help_datastructures
 
-import "sync"
+import (
+	"fmt"
+	"sync"
+
+	threedoclusionv1 "github.com/LarsDepuydt/peno-entrepreneurship-3d-oclusion/gen/proto/threedoclusion/v1"
+	"github.com/bufbuild/connect-go"
+)
 
 type WaitingChannelResponse struct { // If client sends more data can be expanded this way
 	Redirect bool
@@ -49,4 +55,52 @@ func (map_instance *MapChannels) ReleaseChannel(clientID int32) {
 	// If it does, close the channel and remove it from the map
 	close(ch)
 	delete(map_instance.dict, clientID)
+}
+
+type MapConnections struct {
+	dict       map[int32]*connect.BidiStream[threedoclusionv1.ConnectionStatusUpdatesRequest, threedoclusionv1.ConnectionStatusUpdatesResponse] // map of client ID to bidistream
+	mutex_lock sync.Mutex                            // mutex for thread-safe access to map
+}
+
+func NewConnections() *MapConnections {
+	return &MapConnections{
+		dict: make(map[int32]*connect.BidiStream[threedoclusionv1.ConnectionStatusUpdatesRequest, threedoclusionv1.ConnectionStatusUpdatesResponse]),
+	}
+}
+
+
+func (map_instance *MapConnections) AddConnection(scanID int32, stream *connect.BidiStream[threedoclusionv1.ConnectionStatusUpdatesRequest, threedoclusionv1.ConnectionStatusUpdatesResponse]) {
+	map_instance.mutex_lock.Lock()
+	defer map_instance.mutex_lock.Unlock()
+
+	_, ok := map_instance.dict[scanID]
+	if ok {
+		return
+	} // ERROR? Already has a connection
+
+	map_instance.dict[scanID] = stream;
+}
+
+
+func (map_instance *MapConnections) DeleteConnection(scanID int32) {
+	map_instance.mutex_lock.Lock()
+	defer map_instance.mutex_lock.Unlock()
+
+	_, ok := map_instance.dict[scanID]
+	if !ok {
+		return
+	}
+
+	delete(map_instance.dict, scanID)
+}
+
+func (map_instance *MapConnections) GetConnection(scanID int32) (*connect.BidiStream[threedoclusionv1.ConnectionStatusUpdatesRequest, threedoclusionv1.ConnectionStatusUpdatesResponse], error) {
+	map_instance.mutex_lock.Lock()
+	defer map_instance.mutex_lock.Unlock()
+
+	connection, ok := map_instance.dict[scanID]
+	if ok {
+		return connection, nil
+	}
+	return nil, fmt.Errorf("no connection for this ID")
 }
