@@ -28,7 +28,7 @@ export const ScanService = {
       name: "ConnectionStatusUpdates",
       I: ConnectionStatusUpdatesRequest,
       O: ConnectionStatusUpdatesResponse,
-      kind: MethodKind.BiDiStreaming,
+      kind: MethodKind.ServerStreaming,
     },
     /**
      * @generated from rpc threedoclusion.v1.ScanService.SendVR

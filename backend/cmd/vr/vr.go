@@ -61,7 +61,7 @@ func GetPositionScan(req *connect.Request[threedoclusionv1.GetPositionScanReques
 			},
 		})
 		return res, nil
-	}
+}
 
 /*
 func SendPositionScan(req *connect.Request[threedoclusionv1.SendPositionScanRequest],

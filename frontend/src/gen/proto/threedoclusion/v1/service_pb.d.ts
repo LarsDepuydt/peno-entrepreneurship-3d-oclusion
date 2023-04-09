@@ -859,16 +859,12 @@ export declare class SendMenuOptionRequest extends Message<SendMenuOptionRequest
    */
   optionData: {
     /**
-     * Save or save and quit
-     *
      * @generated from field: threedoclusion.v1.Scan save_data = 2;
      */
     value: Scan;
     case: "saveData";
   } | {
     /**
-     * If load or quit
-     *
      * @generated from field: int32 scan_id = 4;
      */
     value: number;
@@ -971,37 +967,13 @@ export declare class SendMenuOptionResponse_Wrapper extends Message<SendMenuOpti
 }
 
 /**
- * @generated from message threedoclusion.v1.ConnectionStatus
- */
-export declare class ConnectionStatus extends Message<ConnectionStatus> {
-  /**
-   * @generated from field: bool is_connected = 1;
-   */
-  isConnected: boolean;
-
-  constructor(data?: PartialMessage<ConnectionStatus>);
-
-  static readonly runtime: typeof proto3;
-  static readonly typeName = "threedoclusion.v1.ConnectionStatus";
-  static readonly fields: FieldList;
-
-  static fromBinary(bytes: Uint8Array, options?: Partial<BinaryReadOptions>): ConnectionStatus;
-
-  static fromJson(jsonValue: JsonValue, options?: Partial<JsonReadOptions>): ConnectionStatus;
-
-  static fromJsonString(jsonString: string, options?: Partial<JsonReadOptions>): ConnectionStatus;
-
-  static equals(a: ConnectionStatus | PlainMessage<ConnectionStatus> | undefined, b: ConnectionStatus | PlainMessage<ConnectionStatus> | undefined): boolean;
-}
-
-/**
  * @generated from message threedoclusion.v1.ConnectionStatusUpdatesRequest
  */
 export declare class ConnectionStatusUpdatesRequest extends Message<ConnectionStatusUpdatesRequest> {
   /**
-   * @generated from field: threedoclusion.v1.ConnectionStatus connection_status = 1;
+   * @generated from field: bool is_connected = 1;
    */
-  connectionStatus?: ConnectionStatus;
+  isConnected: boolean;
 
   /**
    * @generated from field: int32 scan_id = 2;
@@ -1033,14 +1005,19 @@ export declare class ConnectionStatusUpdatesRequest extends Message<ConnectionSt
  */
 export declare class ConnectionStatusUpdatesResponse extends Message<ConnectionStatusUpdatesResponse> {
   /**
-   * @generated from field: threedoclusion.v1.ConnectionStatus connection_status = 1;
+   * @generated from field: bool is_connected = 1;
    */
-  connectionStatus?: ConnectionStatus;
+  isConnected: boolean;
 
   /**
-   * @generated from field: optional string other_data = 2;
+   * @generated from field: bool other_not_created = 2;
    */
-  otherData?: string;
+  otherNotCreated: boolean;
+
+  /**
+   * @generated from field: string other_data = 3;
+   */
+  otherData: string;
 
   constructor(data?: PartialMessage<ConnectionStatusUpdatesResponse>);
 

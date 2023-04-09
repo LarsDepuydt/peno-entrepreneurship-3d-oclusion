@@ -62,8 +62,6 @@ func Server(database *sql.DB) {
 }
 
 // PUSH
-
-
 func (s *ServerStruct) SendMenuOption(
 	ctx context.Context,
 	req *connect.Request[threedoclusionv1.SendMenuOptionRequest],
@@ -73,9 +71,9 @@ func (s *ServerStruct) SendMenuOption(
 
 func (s *ServerStruct) ConnectionStatusUpdates(
 	ctx context.Context,
-	stream *connect.BidiStream[threedoclusionv1.ConnectionStatusUpdatesRequest, threedoclusionv1.ConnectionStatusUpdatesResponse],
+	req *connect.Request[threedoclusionv1.ConnectionStatusUpdatesRequest], stream *connect.ServerStream[threedoclusionv1.ConnectionStatusUpdatesResponse],
 ) error {
-	return push.ConnectionStatusUpdates(stream, s.connectionsClient, s.connectionsVR)
+	return push.ConnectionStatusUpdates(req, stream, s.connectionsClient, s.connectionsVR)
 }
 
 

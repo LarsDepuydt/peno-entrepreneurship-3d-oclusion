@@ -1,7 +1,6 @@
 package help_datastructures
 
 import (
-	"fmt"
 	"sync"
 
 	threedoclusionv1 "github.com/LarsDepuydt/peno-entrepreneurship-3d-oclusion/gen/proto/threedoclusion/v1"
@@ -58,18 +57,18 @@ func (map_instance *MapChannels) ReleaseChannel(clientID int32) {
 }
 
 type MapConnections struct {
-	dict       map[int32]*connect.BidiStream[threedoclusionv1.ConnectionStatusUpdatesRequest, threedoclusionv1.ConnectionStatusUpdatesResponse] // map of client ID to bidistream
+	dict       map[int32]*connect.ServerStream[threedoclusionv1.ConnectionStatusUpdatesResponse] // map of client ID to serverstream
 	mutex_lock sync.Mutex                            // mutex for thread-safe access to map
 }
 
 func NewConnections() *MapConnections {
 	return &MapConnections{
-		dict: make(map[int32]*connect.BidiStream[threedoclusionv1.ConnectionStatusUpdatesRequest, threedoclusionv1.ConnectionStatusUpdatesResponse]),
+		dict: make(map[int32]*connect.ServerStream[threedoclusionv1.ConnectionStatusUpdatesResponse]),
 	}
 }
 
 
-func (map_instance *MapConnections) AddConnection(scanID int32, stream *connect.BidiStream[threedoclusionv1.ConnectionStatusUpdatesRequest, threedoclusionv1.ConnectionStatusUpdatesResponse]) {
+func (map_instance *MapConnections) AddConnection(scanID int32, stream *connect.ServerStream[threedoclusionv1.ConnectionStatusUpdatesResponse]) {
 	map_instance.mutex_lock.Lock()
 	defer map_instance.mutex_lock.Unlock()
 
@@ -94,13 +93,13 @@ func (map_instance *MapConnections) DeleteConnection(scanID int32) {
 	delete(map_instance.dict, scanID)
 }
 
-func (map_instance *MapConnections) GetConnection(scanID int32) (*connect.BidiStream[threedoclusionv1.ConnectionStatusUpdatesRequest, threedoclusionv1.ConnectionStatusUpdatesResponse], error) {
+func (map_instance *MapConnections) GetConnection(scanID int32) *connect.ServerStream[threedoclusionv1.ConnectionStatusUpdatesResponse] {
 	map_instance.mutex_lock.Lock()
 	defer map_instance.mutex_lock.Unlock()
 
 	connection, ok := map_instance.dict[scanID]
 	if ok {
-		return connection, nil
+		return connection
 	}
-	return nil, fmt.Errorf("no connection for this ID")
+	return nil
 }

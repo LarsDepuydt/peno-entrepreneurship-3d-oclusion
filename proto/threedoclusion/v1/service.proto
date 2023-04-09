@@ -7,7 +7,7 @@ option go_package = "github.com/LarsDepuydt/peno-entrepreneurship-3d-oclusion";
 
 service ScanService {
   rpc SendMenuOption(SendMenuOptionRequest) returns (SendMenuOptionResponse) {}
-  rpc ConnectionStatusUpdates(stream ConnectionStatusUpdatesRequest) returns (stream ConnectionStatusUpdatesResponse) {}
+  rpc ConnectionStatusUpdates(ConnectionStatusUpdatesRequest) returns (stream ConnectionStatusUpdatesResponse) {}
 
   rpc SendVR(SendVRRequest) returns (SendVRResponse) {}
   rpc Waiting(WaitingRequest) returns (stream WaitingResponse) {}
@@ -201,12 +201,15 @@ message SendMenuOptionRequest {
   Option option = 1;
 
   oneof option_data {
-    Scan save_data = 2; // Save or save and quit
-    int32 scan_id = 4; // If load or quit
+    Scan save_data = 2; 
+    int32 scan_id = 4; 
   }
 }
+// save_data: Save or save and quit
+// scan_id: If load or quit
 
-message SendMenuOptionResponse { // oneof isn't supported with repeated
+// oneof isn't supported with repeated
+message SendMenuOptionResponse { 
   optional Wrapper wrap = 1;
   optional string other_data = 2;
 
@@ -215,20 +218,16 @@ message SendMenuOptionResponse { // oneof isn't supported with repeated
   }
 }
 
-
-message ConnectionStatus {
-  bool is_connected = 1;
-}
-
 message ConnectionStatusUpdatesRequest {
-  ConnectionStatus connection_status = 1;
+  bool is_connected = 1;
   int32 scan_id = 2;
   bool from_vr = 3;
 }
 
 message ConnectionStatusUpdatesResponse {
-  ConnectionStatus connection_status = 1;
-  optional string other_data = 2;
+  bool is_connected = 1;
+  bool other_not_created = 2;
+  string other_data = 3;
 }
 
 

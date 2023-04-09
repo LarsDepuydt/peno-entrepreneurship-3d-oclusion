@@ -108,7 +108,7 @@ const (
 // ScanServiceClient is a client for the threedoclusion.v1.ScanService service.
 type ScanServiceClient interface {
 	SendMenuOption(context.Context, *connect_go.Request[v1.SendMenuOptionRequest]) (*connect_go.Response[v1.SendMenuOptionResponse], error)
-	ConnectionStatusUpdates(context.Context) *connect_go.BidiStreamForClient[v1.ConnectionStatusUpdatesRequest, v1.ConnectionStatusUpdatesResponse]
+	ConnectionStatusUpdates(context.Context, *connect_go.Request[v1.ConnectionStatusUpdatesRequest]) (*connect_go.ServerStreamForClient[v1.ConnectionStatusUpdatesResponse], error)
 	SendVR(context.Context, *connect_go.Request[v1.SendVRRequest]) (*connect_go.Response[v1.SendVRResponse], error)
 	Waiting(context.Context, *connect_go.Request[v1.WaitingRequest]) (*connect_go.ServerStreamForClient[v1.WaitingResponse], error)
 	AddScan(context.Context, *connect_go.Request[v1.AddScanRequest]) (*connect_go.Response[v1.AddScanResponse], error)
@@ -328,8 +328,8 @@ func (c *scanServiceClient) SendMenuOption(ctx context.Context, req *connect_go.
 }
 
 // ConnectionStatusUpdates calls threedoclusion.v1.ScanService.ConnectionStatusUpdates.
-func (c *scanServiceClient) ConnectionStatusUpdates(ctx context.Context) *connect_go.BidiStreamForClient[v1.ConnectionStatusUpdatesRequest, v1.ConnectionStatusUpdatesResponse] {
-	return c.connectionStatusUpdates.CallBidiStream(ctx)
+func (c *scanServiceClient) ConnectionStatusUpdates(ctx context.Context, req *connect_go.Request[v1.ConnectionStatusUpdatesRequest]) (*connect_go.ServerStreamForClient[v1.ConnectionStatusUpdatesResponse], error) {
+	return c.connectionStatusUpdates.CallServerStream(ctx, req)
 }
 
 // SendVR calls threedoclusion.v1.ScanService.SendVR.
@@ -465,7 +465,7 @@ func (c *scanServiceClient) Register(ctx context.Context, req *connect_go.Reques
 // ScanServiceHandler is an implementation of the threedoclusion.v1.ScanService service.
 type ScanServiceHandler interface {
 	SendMenuOption(context.Context, *connect_go.Request[v1.SendMenuOptionRequest]) (*connect_go.Response[v1.SendMenuOptionResponse], error)
-	ConnectionStatusUpdates(context.Context, *connect_go.BidiStream[v1.ConnectionStatusUpdatesRequest, v1.ConnectionStatusUpdatesResponse]) error
+	ConnectionStatusUpdates(context.Context, *connect_go.Request[v1.ConnectionStatusUpdatesRequest], *connect_go.ServerStream[v1.ConnectionStatusUpdatesResponse]) error
 	SendVR(context.Context, *connect_go.Request[v1.SendVRRequest]) (*connect_go.Response[v1.SendVRResponse], error)
 	Waiting(context.Context, *connect_go.Request[v1.WaitingRequest], *connect_go.ServerStream[v1.WaitingResponse]) error
 	AddScan(context.Context, *connect_go.Request[v1.AddScanRequest]) (*connect_go.Response[v1.AddScanResponse], error)
@@ -506,7 +506,7 @@ func NewScanServiceHandler(svc ScanServiceHandler, opts ...connect_go.HandlerOpt
 		svc.SendMenuOption,
 		opts...,
 	))
-	mux.Handle(ScanServiceConnectionStatusUpdatesProcedure, connect_go.NewBidiStreamHandler(
+	mux.Handle(ScanServiceConnectionStatusUpdatesProcedure, connect_go.NewServerStreamHandler(
 		ScanServiceConnectionStatusUpdatesProcedure,
 		svc.ConnectionStatusUpdates,
 		opts...,
@@ -651,7 +651,7 @@ func (UnimplementedScanServiceHandler) SendMenuOption(context.Context, *connect_
 	return nil, connect_go.NewError(connect_go.CodeUnimplemented, errors.New("threedoclusion.v1.ScanService.SendMenuOption is not implemented"))
 }
 
-func (UnimplementedScanServiceHandler) ConnectionStatusUpdates(context.Context, *connect_go.BidiStream[v1.ConnectionStatusUpdatesRequest, v1.ConnectionStatusUpdatesResponse]) error {
+func (UnimplementedScanServiceHandler) ConnectionStatusUpdates(context.Context, *connect_go.Request[v1.ConnectionStatusUpdatesRequest], *connect_go.ServerStream[v1.ConnectionStatusUpdatesResponse]) error {
 	return connect_go.NewError(connect_go.CodeUnimplemented, errors.New("threedoclusion.v1.ScanService.ConnectionStatusUpdates is not implemented"))
 }
 

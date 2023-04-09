@@ -380,22 +380,12 @@ export const SendMenuOptionResponse_Wrapper = proto3.makeMessageType(
 );
 
 /**
- * @generated from message threedoclusion.v1.ConnectionStatus
- */
-export const ConnectionStatus = proto3.makeMessageType(
-  "threedoclusion.v1.ConnectionStatus",
-  () => [
-    { no: 1, name: "is_connected", kind: "scalar", T: 8 /* ScalarType.BOOL */ },
-  ],
-);
-
-/**
  * @generated from message threedoclusion.v1.ConnectionStatusUpdatesRequest
  */
 export const ConnectionStatusUpdatesRequest = proto3.makeMessageType(
   "threedoclusion.v1.ConnectionStatusUpdatesRequest",
   () => [
-    { no: 1, name: "connection_status", kind: "message", T: ConnectionStatus },
+    { no: 1, name: "is_connected", kind: "scalar", T: 8 /* ScalarType.BOOL */ },
     { no: 2, name: "scan_id", kind: "scalar", T: 5 /* ScalarType.INT32 */ },
     { no: 3, name: "from_vr", kind: "scalar", T: 8 /* ScalarType.BOOL */ },
   ],
@@ -407,8 +397,9 @@ export const ConnectionStatusUpdatesRequest = proto3.makeMessageType(
 export const ConnectionStatusUpdatesResponse = proto3.makeMessageType(
   "threedoclusion.v1.ConnectionStatusUpdatesResponse",
   () => [
-    { no: 1, name: "connection_status", kind: "message", T: ConnectionStatus },
-    { no: 2, name: "other_data", kind: "scalar", T: 9 /* ScalarType.STRING */, opt: true },
+    { no: 1, name: "is_connected", kind: "scalar", T: 8 /* ScalarType.BOOL */ },
+    { no: 2, name: "other_not_created", kind: "scalar", T: 8 /* ScalarType.BOOL */ },
+    { no: 3, name: "other_data", kind: "scalar", T: 9 /* ScalarType.STRING */ },
   ],
 );
 
