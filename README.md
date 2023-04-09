@@ -20,3 +20,7 @@ Send request atm
   --data '{"id": "Jane"}' \
   http://localhost:8080/threedoclusion.v1.ScanService/Scan
 ```
+
+## Migrate database schema
+Run `make migrate` to migrate the database schema to the latest version.
+Run `make migrate_info` to get migrations information.
