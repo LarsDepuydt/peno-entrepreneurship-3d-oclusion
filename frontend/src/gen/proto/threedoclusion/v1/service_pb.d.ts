@@ -865,7 +865,7 @@ export declare class SendMenuOptionRequest extends Message<SendMenuOptionRequest
     case: "saveData";
   } | {
     /**
-     * @generated from field: int32 scan_id = 4;
+     * @generated from field: int32 scan_id = 3;
      */
     value: number;
     case: "scanId";
@@ -1015,9 +1015,9 @@ export declare class ConnectionStatusUpdatesResponse extends Message<ConnectionS
   otherNotCreated: boolean;
 
   /**
-   * @generated from field: string other_data = 3;
+   * @generated from field: optional string other_data = 3;
    */
-  otherData: string;
+  otherData?: string;
 
   constructor(data?: PartialMessage<ConnectionStatusUpdatesResponse>);
 

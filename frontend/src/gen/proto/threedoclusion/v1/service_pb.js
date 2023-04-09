@@ -338,7 +338,7 @@ export const SendMenuOptionRequest = proto3.makeMessageType(
   () => [
     { no: 1, name: "option", kind: "enum", T: proto3.getEnumType(SendMenuOptionRequest_Option) },
     { no: 2, name: "save_data", kind: "message", T: Scan, oneof: "option_data" },
-    { no: 4, name: "scan_id", kind: "scalar", T: 5 /* ScalarType.INT32 */, oneof: "option_data" },
+    { no: 3, name: "scan_id", kind: "scalar", T: 5 /* ScalarType.INT32 */, oneof: "option_data" },
   ],
 );
 
@@ -399,7 +399,7 @@ export const ConnectionStatusUpdatesResponse = proto3.makeMessageType(
   () => [
     { no: 1, name: "is_connected", kind: "scalar", T: 8 /* ScalarType.BOOL */ },
     { no: 2, name: "other_not_created", kind: "scalar", T: 8 /* ScalarType.BOOL */ },
-    { no: 3, name: "other_data", kind: "scalar", T: 9 /* ScalarType.STRING */ },
+    { no: 3, name: "other_data", kind: "scalar", T: 9 /* ScalarType.STRING */, opt: true },
   ],
 );
 

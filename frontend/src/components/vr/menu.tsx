@@ -1,10 +1,38 @@
 import { useState } from "react";
+import { SendMenuOptionRequest } from "@/gen/proto/threedoclusion/v1/service_pb";
 
-const Menu = () => { // Add props with positions
+
+async function sendMenuOption(optionNumber: number, clnt: any){
+  const req = new SendMenuOptionRequest({option: optionNumber, optionData: {
+    case: "scanId",
+    value: 111
+    } 
+  });
+  const res = await clnt.sendMenuOption(req);
+  return res;
+}
+
+function Menu({ stream, client }: {stream: any, client: any}){ // Add props with positions, stream, client...
   const [isOpen, setIsOpen] = useState(true);
 
   const toggleMenu = () => {
     setIsOpen(!isOpen);
+  };
+
+  const load = () => {
+  };
+
+  const save = () => {
+  };
+
+  const saveAndQuit = () => {
+  };
+
+  const quit = () => {
+    const res = sendMenuOption(3, client);
+    // console.log(res.OtherData);
+    // Close stream
+    console.log("I quit!")
   };
 
   return (
@@ -23,10 +51,10 @@ const Menu = () => { // Add props with positions
             </div>
           </div>
           <ul className="menu-options">
-            <li className="menu-option">Load</li>
-            <li className="menu-option">Save manually</li>
-            <li className="menu-option">Save and quit</li>
-            <li className="menu-option">Quit</li>
+            <li className="menu-option" onClick={load}>Load</li>
+            <li className="menu-option" onClick={save}>Save manually</li>
+            <li className="menu-option" onClick={saveAndQuit}>Save and quit</li>
+            <li className="menu-option" onClick={quit}>Quit</li>
           </ul>
         </div>
       )}

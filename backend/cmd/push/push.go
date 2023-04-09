@@ -129,7 +129,11 @@ func SendMenuOption(req *connect.Request[threedoclusionv1.SendMenuOptionRequest]
 
 		connectionClient := connectionsClient.GetConnection(req.Msg.GetScanId())
 		if (connectionClient == nil) {
-			return nil, nil
+			msg := "Connection client has not yet been established"
+			res := connect.NewResponse(&threedoclusionv1.SendMenuOptionResponse{
+			OtherData: &msg,
+			})
+			return res, nil
 		}
 
 		msg := "The scan has been saved succesfully" // Trust VR to break connection, or send isConnected false?
@@ -138,7 +142,7 @@ func SendMenuOption(req *connect.Request[threedoclusionv1.SendMenuOptionRequest]
 			//ConnectionStatus: &threedoclusionv1.ConnectionStatus{IsConnected: false},
 			IsConnected: false,
 			OtherNotCreated: false,
-			OtherData: msg,
+			OtherData: &msg,
 		}
 		connectionClient.Send(responseConnect);
 		connectionsClient.DeleteConnection(req.Msg.GetScanId()) // Delete the connection from memory
@@ -148,7 +152,11 @@ func SendMenuOption(req *connect.Request[threedoclusionv1.SendMenuOptionRequest]
 
 		connectionClient := connectionsClient.GetConnection(req.Msg.GetScanId()) // Use scanId to get bidistream
 		if connectionClient == nil {
-			return nil, nil
+			msg := "Connection client has not yet been established"
+			res := connect.NewResponse(&threedoclusionv1.SendMenuOptionResponse{
+			OtherData: &msg,
+			})
+			return res, nil
 		}
 
 		msg := "VR has quit" // Trust VR to break connection
@@ -156,10 +164,16 @@ func SendMenuOption(req *connect.Request[threedoclusionv1.SendMenuOptionRequest]
 			//OptionData: &threedoclusionv1.SendMenuOptionResponse_OtherData{"Unknown option"},
 			IsConnected: false,
 			OtherNotCreated: false,
-			OtherData: msg,
+			OtherData: &msg,
 		}
 		connectionClient.Send(responseConnect);
 		connectionsClient.DeleteConnection(req.Msg.GetScanId()) // Delete the connection from memory
+
+		msg = "Deleted connection from server"
+		res := connect.NewResponse(&threedoclusionv1.SendMenuOptionResponse{
+			OtherData: &msg,
+		})
+		return res, nil
 	
 	default:
 		msg := "Unknown option"
@@ -169,14 +183,19 @@ func SendMenuOption(req *connect.Request[threedoclusionv1.SendMenuOptionRequest]
 		})
 		return res, nil
 	}
-
 	return nil, nil
 }
 
 func ConnectionStatusUpdates(req *connect.Request[threedoclusionv1.ConnectionStatusUpdatesRequest], stream *connect.ServerStream[threedoclusionv1.ConnectionStatusUpdatesResponse], connectionsClient *help_datastructures.MapConnections, connectionsVR *help_datastructures.MapConnections) error {
-	log.Println("Request headers: ", req.Header())
+	//log.Println("Request headers: ", req.Header())
 	stream.ResponseHeader().Set("Access-Control-Allow-Origin", "*")
-	//stream.ResponseHeader().Add("Access-Control-Allow-Origin", "*")
+
+	/*if (stream.ResponseHeader().Get("Access-Control-Allow-Origin") != ""){
+		stream.ResponseHeader().Set("Access-Control-Allow-Origin", "*")
+	} else {
+		stream.ResponseHeader().Add("Access-Control-Allow-Origin", "*")
+	}*/ // With this snippet headers screw up the content I think
+	
 	/*msg, error := stream.Receive()
 	if error == io.EOF {
 		// End of stream TO DO
@@ -186,31 +205,28 @@ func ConnectionStatusUpdates(req *connect.Request[threedoclusionv1.ConnectionSta
 	if error != nil {
 		return error
 	}*/
-	if (req.Msg.FromVr){ // Then VR stream	
+	if (req.Msg.FromVr){ // Get message from VR stream -> send to client stream
 		connectionVR := connectionsVR.GetConnection(req.Msg.ScanId)
-		if (connectionVR != nil) {
+		if (connectionVR == nil) {
 			connectionsVR.AddConnection(req.Msg.ScanId, stream)
 			//connectionVR = stream
 		}
 		connectionClient := connectionsClient.GetConnection(req.Msg.ScanId)
-		if (connectionClient != nil) {
-			// Other party's stream doesn't exist (yet)
+		if (connectionClient != nil) { // Exists
+			response := &threedoclusionv1.ConnectionStatusUpdatesResponse{ 
+				IsConnected: req.Msg.IsConnected, 
+				OtherNotCreated: false, 
+			}
+			if err := connectionClient.Send(response); err != nil {
+        		return err
+    		}
+		} else { // Other party's stream doesn't exist (yet), so send a message to self as response
 			// if no connection for this id...
 			// TO DO: What if disconnect before stream gets added?
 			//notCreated := true // isConnected: req.Msg.IsConnected
 			response := &threedoclusionv1.ConnectionStatusUpdatesResponse{ 
 				IsConnected: req.Msg.IsConnected, 
-				OtherNotCreated: false, 
-				OtherData: "", 
-			}
-			if err := connectionClient.Send(response); err != nil { // connectionVR
-        		return err
-    		}
-		} else { // Other party's stream doesn't exist (yet)
-			response := &threedoclusionv1.ConnectionStatusUpdatesResponse{ 
-				IsConnected: req.Msg.IsConnected, 
 				OtherNotCreated: true, 
-				OtherData: "",  
 			}
 			if err := stream.Send(response); err != nil { // connectionVR
         		return err
@@ -218,7 +234,7 @@ func ConnectionStatusUpdates(req *connect.Request[threedoclusionv1.ConnectionSta
 		}
 	} else {
 		connectionClient := connectionsClient.GetConnection(req.Msg.ScanId)
-		if (connectionClient != nil) { // Check if exists
+		if (connectionClient == nil) { // Check if exists
 			connectionsClient.AddConnection(req.Msg.ScanId, stream)
 			//connectionClient = stream
 		}
@@ -228,20 +244,19 @@ func ConnectionStatusUpdates(req *connect.Request[threedoclusionv1.ConnectionSta
 			response := &threedoclusionv1.ConnectionStatusUpdatesResponse{
 				IsConnected: req.Msg.IsConnected, 
 				OtherNotCreated: false, 
-				OtherData: "", 
 			}
 			if err := connectionVR.Send(response); err != nil {
         		return err
     		}
 			// TO DO: What if disconnect before stream gets added?
-			//return error
 		} else { // Other party's stream doesn't exist (yet)
+			msg := "Connection VR has not yet been established"
 			response := &threedoclusionv1.ConnectionStatusUpdatesResponse{ 
 				IsConnected: req.Msg.IsConnected, 
 				OtherNotCreated: true, 
-				OtherData: "", 
+				OtherData: &msg, 
 			}
-			if err := stream.Send(response); err != nil { // connectionClient
+			if err := stream.Send(response); err != nil { // Send to self
         		return err
     		}
 		}

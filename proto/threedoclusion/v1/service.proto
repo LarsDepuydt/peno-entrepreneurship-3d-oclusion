@@ -202,7 +202,7 @@ message SendMenuOptionRequest {
 
   oneof option_data {
     Scan save_data = 2; 
-    int32 scan_id = 4; 
+    int32 scan_id = 3; 
   }
 }
 // save_data: Save or save and quit
@@ -227,7 +227,7 @@ message ConnectionStatusUpdatesRequest {
 message ConnectionStatusUpdatesResponse {
   bool is_connected = 1;
   bool other_not_created = 2;
-  string other_data = 3;
+  optional string other_data = 3;
 }
 
 

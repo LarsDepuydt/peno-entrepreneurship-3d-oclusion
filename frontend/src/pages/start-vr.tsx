@@ -5,7 +5,7 @@ import RenderVideo from '@/components/vr/render-video';
 import { ScanService } from "@/gen/proto/threedoclusion/v1/service_connect";
 import { createPromiseClient } from "@bufbuild/connect";
 import { useTransport } from "@bufbuild/connect-query";
-import { ConnectionStatusUpdatesRequest, ConnectionStatusUpdatesResponse } from "@/gen/proto/threedoclusion/v1/service_pb";
+import { ConnectionStatusUpdatesRequest, ConnectionStatusUpdatesResponse, SendMenuOptionRequest } from "@/gen/proto/threedoclusion/v1/service_pb";
 
 
 import dynamic from 'next/dynamic';
@@ -17,6 +17,7 @@ const BeforeAfter = dynamic(() => import('@/components/vr/before-after'), { ssr:
 export default function StartVRPage(){ 
     const scanId = 111;
     const [isComponentMounted, setIsComponentMounted] = useState(false)
+    const [client, setClient] = useState<any>(null);
     const [stream, setStream] = useState<AsyncIterable<ConnectionStatusUpdatesResponse> | null>(null);
     const transport = useTransport();
   
@@ -29,34 +30,41 @@ export default function StartVRPage(){
 
     if (isNavigatorAvailable){
         if (stream == null){
-            setStream(makeStreamOnID(scanId, transport))
+            let promiseClient = createPromiseClient(ScanService, transport);
+            setClient(promiseClient)
+            setStream(makeStreamOnID(scanId, promiseClient))
         }
     }
-
+    
     if (stream != null){
         checkConnected(stream);
     }
 
+    const props = { stream, client };
+
     return ( // Only executed on the client side
         <div>
             {isNavigatorAvailable}
-            < Menu />
+            < Menu {...props} />
         </div>
     )
 }
 
-function makeStreamOnID(id: number, transport: any){
+function makeStreamOnID(id: number, clnt: any){
     // Make a new stream
-    const client = createPromiseClient(ScanService, transport);
-    const req = new ConnectionStatusUpdatesRequest({isConnected: true, scanId: id, fromVr: false});
-    return client.connectionStatusUpdates(req);
-  }
+    const req = new ConnectionStatusUpdatesRequest({isConnected: true, scanId: id, fromVr: true});
+    return clnt.connectionStatusUpdates(req);
+}
   
 async function checkConnected(serverStream: AsyncIterable<ConnectionStatusUpdatesResponse>) {
 for await (const res of serverStream){
 
     if (res.otherData){
         console.log(res.otherData)
+    }
+
+    if (res.otherNotCreated){
+        console.log("No sign of client yet!")
     }
 
     if (!res.isConnected){ // Client disconnected
