@@ -2,7 +2,7 @@
 const nextConfig = {
   reactStrictMode: true,
   transpilePackages: ["@bufbuild/connect-query"],
-  async headers() {
+  /*async headers() {
     return [
       {
         source: '/start-vr',
@@ -18,7 +18,7 @@ const nextConfig = {
         ],
       },
     ]
-  },
+  }, FOR FFMPEG */
 };
 
 module.exports = nextConfig;

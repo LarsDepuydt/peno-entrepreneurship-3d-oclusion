@@ -188,9 +188,10 @@ func SendMenuOption(req *connect.Request[threedoclusionv1.SendMenuOptionRequest]
 
 func ConnectionStatusUpdates(req *connect.Request[threedoclusionv1.ConnectionStatusUpdatesRequest], stream *connect.ServerStream[threedoclusionv1.ConnectionStatusUpdatesResponse], connectionsClient *help_datastructures.MapConnections, connectionsVR *help_datastructures.MapConnections) error {
 	//log.Println("Request headers: ", req.Header())
-	stream.ResponseHeader().Set("Access-Control-Allow-Origin", "*")
-
-	/*if (stream.ResponseHeader().Get("Access-Control-Allow-Origin") != ""){
+	//stream.ResponseHeader().Set("Access-Control-Allow-Origin", "*") // Should already be the case? See serve
+	
+	/*
+	if (stream.ResponseHeader().Get("Access-Control-Allow-Origin") != ""){
 		stream.ResponseHeader().Set("Access-Control-Allow-Origin", "*")
 	} else {
 		stream.ResponseHeader().Add("Access-Control-Allow-Origin", "*")
@@ -199,7 +200,7 @@ func ConnectionStatusUpdates(req *connect.Request[threedoclusionv1.ConnectionSta
 	/*msg, error := stream.Receive()
 	if error == io.EOF {
 		// End of stream TO DO
-		// TO DO: Inform other party, how to identify what stream they belong to??
+		// TO DO: Inform other party, how to identify what stream they belong to then?
 		break
 	}
 	if error != nil {
@@ -217,13 +218,13 @@ func ConnectionStatusUpdates(req *connect.Request[threedoclusionv1.ConnectionSta
 				IsConnected: req.Msg.IsConnected, 
 				OtherNotCreated: false, 
 			}
+			//connectionClient.ResponseHeader().Set("Access-Control-Allow-Origin", "*")
 			if err := connectionClient.Send(response); err != nil {
         		return err
     		}
 		} else { // Other party's stream doesn't exist (yet), so send a message to self as response
 			// if no connection for this id...
 			// TO DO: What if disconnect before stream gets added?
-			//notCreated := true // isConnected: req.Msg.IsConnected
 			response := &threedoclusionv1.ConnectionStatusUpdatesResponse{ 
 				IsConnected: req.Msg.IsConnected, 
 				OtherNotCreated: true, 
@@ -245,6 +246,7 @@ func ConnectionStatusUpdates(req *connect.Request[threedoclusionv1.ConnectionSta
 				IsConnected: req.Msg.IsConnected, 
 				OtherNotCreated: false, 
 			}
+			//connectionVR.ResponseHeader().Set("Access-Control-Allow-Origin", "*")
 			if err := connectionVR.Send(response); err != nil {
         		return err
     		}

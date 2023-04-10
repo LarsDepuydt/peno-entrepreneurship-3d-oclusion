@@ -24,6 +24,7 @@ async function checkConnected(serverStream: AsyncIterable<ConnectionStatusUpdate
     if (!res.isConnected){ 
       // Close stream... How?
       //serverStream.Close() ?
+      //serverStream.cancel()
       // Show some other component
       console.log("VR disconnected!")
     }
