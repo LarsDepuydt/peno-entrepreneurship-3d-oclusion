@@ -13,4 +13,4 @@ require github.com/rs/cors v1.8.3
 
 require github.com/lib/pq v1.10.7
 
-require github.com/dgrijalva/jwt-go v3.2.0+incompatible // indirect
+require github.com/golang-jwt/jwt/v5 v5.0.0-rc.2
