@@ -6,11 +6,8 @@ import { OBJLoader } from 'three/addons/loaders/OBJLoader.js';
 import * as CANNON from 'cannon-es';
 import { MeshBVH, acceleratedRaycast } from 'three-mesh-bvh';
 import { default as CannonUtils } from 'cannon-utils';
-<<<<<<< HEAD
 import { sendPositionScan, getPositionScan } from '../../../frontend/src/gen/proto/threedoclusion/v1/service-ScanService_connectquery'
-=======
 import { QuickHull } from './QuickHull.js';
->>>>>>> 67c0a5d7600c5620173c3949d4ffebee81c4026b
 
 
 let container;
@@ -38,13 +35,12 @@ let lj_sphere, uj_sphere;
 
 let lj_loaded = false, uj_loaded = false;
 
-<<<<<<< HEAD
+const teeth_material = new THREE.MeshBasicMaterial({color: 0x0000ff});
+
 let target = new THREE.Vector3();
 const clock = new THREE.Clock();
-=======
 let lj_target = new THREE.Vector3();
 let uj_target = new THREE.Vector3();
->>>>>>> 67c0a5d7600c5620173c3949d4ffebee81c4026b
 
 initCannon();
 initThree();
@@ -60,10 +56,12 @@ function initCannon() {
     world.broadphase.useBoundingBoxes = true;
     world.solver.iterations = 4;     //10
 
-    lj_body = new CANNON.Body({mass: 1});
-    uj_body = new CANNON.Body({mass: 1});
+    const slipperyMaterial = new CANNON.Material('slippery');   // disabling friction leads to slightly better performance
+
+    lj_body = new CANNON.Body({mass: 1, material: slipperyMaterial});
+    uj_body = new CANNON.Body({mass: 1, material: slipperyMaterial});
     lj_body.position.set(0,2,0);
-    uj_body.position.set(0,4,0);
+    uj_body.position.set(0,3,0);
     let xaxis = new CANNON.Vec3(1,0,0);
     lj_body.quaternion.setFromAxisAngle(xaxis, -Math.PI/2);
     uj_body.quaternion.setFromAxisAngle(xaxis, -Math.PI/2);
@@ -111,8 +109,8 @@ function initThree() {
     scene.add( floor );
 
     // add spheres
-    const lj_sphere_geo = new THREE.SphereGeometry(0.1,10,5);
-    const uj_sphere_geo = new THREE.SphereGeometry(0.1,10,5);
+    const lj_sphere_geo = new THREE.SphereGeometry(0.02,10,5);
+    const uj_sphere_geo = new THREE.SphereGeometry(0.02,10,5);
     const sphereMaterial = new THREE.MeshStandardMaterial( {
         color: 0x0000ff,
         roughness: 1.0,
@@ -187,20 +185,22 @@ function loadObjects() {
     // load lower jaw
     const loader = new OBJLoader();
     loader.load(
-        '../../assets/random_objects/cube.obj',
-        // path to actual teeth: '../../assets/lower_ios_6.obj'
+        // '../../assets/random_objects/cube.obj',
+        //'../../assets/lower_ios_6.obj',
+        '../../assets/simplified/oversimplified_lower.obj',
         
         // called when resource is loaded
         function (object) {         // object is a 'Group', which is a subclass of 'Object3D'
-            lj_mesh = getFirstMesh(object);
+            let lj_buffergeo = getFirstBufferGeometry(object);
+            lj_mesh = new THREE.Mesh(lj_buffergeo, teeth_material);
             
-            // lj_mesh.geometry.scale(0.01, 0.01, 0.01);
+            lj_mesh.geometry.scale(0.01, 0.01, 0.01);
             lj_mesh.position.x = 0;
             lj_mesh.position.y = 0;
             lj_mesh.position.z = 0;
             lj_mesh.rotation.x = 1.5 * Math.PI;
 
-            console.log(lj_mesh);
+            console.log("lj_mesh: ", lj_mesh);
             scene.add(lj_mesh);
             
             lj_shape = threeMeshToConvexCannonMesh(lj_mesh);
@@ -222,14 +222,16 @@ function loadObjects() {
  
     // load upper jaw
     loader.load(
-        '../../assets/random_objects/gourd.obj',
-        // path to actual teeth: '../../assets/lower_ios_6.obj'
+        // '../../assets/random_objects/gourd.obj',
+        //'../../assets/upper_ios_6.obj',
+        '../../assets/manually_simplified/oversimplified_lower.obj',
 
         // called when resource is loaded
         function (object) {
-            uj_mesh = getFirstMesh(object);
+            let uj_buffergeo = getFirstBufferGeometry(object);
+            uj_mesh = new THREE.Mesh(uj_buffergeo, teeth_material);
             
-            // uj_mesh.geometry.scale(0.01, 0.01, 0.01);
+            uj_mesh.geometry.scale(0.01, 0.01, 0.01);
             uj_mesh.position.x = 0;
             uj_mesh.position.y = 0;
             uj_mesh.position.z = 0;
@@ -277,7 +279,11 @@ function printTree(object, depth=0) {
     }
 }
 
-
+/**
+ * Traverse the object hierarchy and return the first mesh found
+ * @param {*} object 
+ * @returns 
+ */
 function getFirstMesh(object) {
     if (object.isMesh) {
         return object;
@@ -287,6 +293,27 @@ function getFirstMesh(object) {
             mesh = getFirstMesh(o);
             if (mesh !== null) {
                 return mesh;
+            }
+        }
+        return null;
+    }
+}
+
+
+/**
+ * Traverse the object hierarchy and return the first buffergeometry found
+ * @param {*} object 
+ * @returns 
+ */
+function getFirstBufferGeometry(object) {
+    if (object.geometry !== undefined && object.geometry.isBufferGeometry) {
+        return object.geometry;
+    } else {
+        let geo;
+        for (const o of object.children) {
+            geo = getFirstBufferGeometry(o);
+            if (geo != null) {
+                return geo;
             }
         }
         return null;
@@ -363,22 +390,13 @@ function updatePhysics() {
     uj_mesh.position.copy(uj_body.position);
     uj_mesh.quaternion.copy(uj_body.quaternion);
     uj_sphere.position.copy(uj_body.position);
-<<<<<<< HEAD
-=======
-
-    lj_target = lj_mesh.position;
-    uj_target = uj_mesh.position;
->>>>>>> 67c0a5d7600c5620173c3949d4ffebee81c4026b
 }
 
 function animate() {
-<<<<<<< HEAD
     checkTime();
-=======
 
-    console.log("frame", frameNum);
+    // console.log("frame", frameNum);
     frameNum += 1;
->>>>>>> 67c0a5d7600c5620173c3949d4ffebee81c4026b
     updatePhysics();
     render();
 }
