@@ -967,9 +967,9 @@ export declare class SendMenuOptionResponse_Wrapper extends Message<SendMenuOpti
 }
 
 /**
- * @generated from message threedoclusion.v1.ConnectionStatusUpdatesRequest
+ * @generated from message threedoclusion.v1.UpdateConnectionStatusRequest
  */
-export declare class ConnectionStatusUpdatesRequest extends Message<ConnectionStatusUpdatesRequest> {
+export declare class UpdateConnectionStatusRequest extends Message<UpdateConnectionStatusRequest> {
   /**
    * @generated from field: bool is_connected = 1;
    */
@@ -981,29 +981,81 @@ export declare class ConnectionStatusUpdatesRequest extends Message<ConnectionSt
   scanId: number;
 
   /**
-   * @generated from field: bool from_vr = 3;
+   * @generated from field: int32 device_id = 3;
    */
-  fromVr: boolean;
+  deviceId: number;
 
-  constructor(data?: PartialMessage<ConnectionStatusUpdatesRequest>);
+  constructor(data?: PartialMessage<UpdateConnectionStatusRequest>);
 
   static readonly runtime: typeof proto3;
-  static readonly typeName = "threedoclusion.v1.ConnectionStatusUpdatesRequest";
+  static readonly typeName = "threedoclusion.v1.UpdateConnectionStatusRequest";
   static readonly fields: FieldList;
 
-  static fromBinary(bytes: Uint8Array, options?: Partial<BinaryReadOptions>): ConnectionStatusUpdatesRequest;
+  static fromBinary(bytes: Uint8Array, options?: Partial<BinaryReadOptions>): UpdateConnectionStatusRequest;
 
-  static fromJson(jsonValue: JsonValue, options?: Partial<JsonReadOptions>): ConnectionStatusUpdatesRequest;
+  static fromJson(jsonValue: JsonValue, options?: Partial<JsonReadOptions>): UpdateConnectionStatusRequest;
 
-  static fromJsonString(jsonString: string, options?: Partial<JsonReadOptions>): ConnectionStatusUpdatesRequest;
+  static fromJsonString(jsonString: string, options?: Partial<JsonReadOptions>): UpdateConnectionStatusRequest;
 
-  static equals(a: ConnectionStatusUpdatesRequest | PlainMessage<ConnectionStatusUpdatesRequest> | undefined, b: ConnectionStatusUpdatesRequest | PlainMessage<ConnectionStatusUpdatesRequest> | undefined): boolean;
+  static equals(a: UpdateConnectionStatusRequest | PlainMessage<UpdateConnectionStatusRequest> | undefined, b: UpdateConnectionStatusRequest | PlainMessage<UpdateConnectionStatusRequest> | undefined): boolean;
 }
 
 /**
- * @generated from message threedoclusion.v1.ConnectionStatusUpdatesResponse
+ * @generated from message threedoclusion.v1.UpdateConnectionStatusResponse
  */
-export declare class ConnectionStatusUpdatesResponse extends Message<ConnectionStatusUpdatesResponse> {
+export declare class UpdateConnectionStatusResponse extends Message<UpdateConnectionStatusResponse> {
+  constructor(data?: PartialMessage<UpdateConnectionStatusResponse>);
+
+  static readonly runtime: typeof proto3;
+  static readonly typeName = "threedoclusion.v1.UpdateConnectionStatusResponse";
+  static readonly fields: FieldList;
+
+  static fromBinary(bytes: Uint8Array, options?: Partial<BinaryReadOptions>): UpdateConnectionStatusResponse;
+
+  static fromJson(jsonValue: JsonValue, options?: Partial<JsonReadOptions>): UpdateConnectionStatusResponse;
+
+  static fromJsonString(jsonString: string, options?: Partial<JsonReadOptions>): UpdateConnectionStatusResponse;
+
+  static equals(a: UpdateConnectionStatusResponse | PlainMessage<UpdateConnectionStatusResponse> | undefined, b: UpdateConnectionStatusResponse | PlainMessage<UpdateConnectionStatusResponse> | undefined): boolean;
+}
+
+/**
+ * Info passed to subscribeStatus; use only one VR stream per client? Made scan-specific for now
+ *
+ * @generated from message threedoclusion.v1.SubscribeConnectionRequest
+ */
+export declare class SubscribeConnectionRequest extends Message<SubscribeConnectionRequest> {
+  /**
+   * @generated from field: int32 scan_id = 1;
+   */
+  scanId: number;
+
+  /**
+   * To identify device with: VR/Client...
+   *
+   * @generated from field: int32 device_id = 2;
+   */
+  deviceId: number;
+
+  constructor(data?: PartialMessage<SubscribeConnectionRequest>);
+
+  static readonly runtime: typeof proto3;
+  static readonly typeName = "threedoclusion.v1.SubscribeConnectionRequest";
+  static readonly fields: FieldList;
+
+  static fromBinary(bytes: Uint8Array, options?: Partial<BinaryReadOptions>): SubscribeConnectionRequest;
+
+  static fromJson(jsonValue: JsonValue, options?: Partial<JsonReadOptions>): SubscribeConnectionRequest;
+
+  static fromJsonString(jsonString: string, options?: Partial<JsonReadOptions>): SubscribeConnectionRequest;
+
+  static equals(a: SubscribeConnectionRequest | PlainMessage<SubscribeConnectionRequest> | undefined, b: SubscribeConnectionRequest | PlainMessage<SubscribeConnectionRequest> | undefined): boolean;
+}
+
+/**
+ * @generated from message threedoclusion.v1.SubscribeConnectionResponse
+ */
+export declare class SubscribeConnectionResponse extends Message<SubscribeConnectionResponse> {
   /**
    * @generated from field: bool is_connected = 1;
    */
@@ -1019,19 +1071,19 @@ export declare class ConnectionStatusUpdatesResponse extends Message<ConnectionS
    */
   otherData?: string;
 
-  constructor(data?: PartialMessage<ConnectionStatusUpdatesResponse>);
+  constructor(data?: PartialMessage<SubscribeConnectionResponse>);
 
   static readonly runtime: typeof proto3;
-  static readonly typeName = "threedoclusion.v1.ConnectionStatusUpdatesResponse";
+  static readonly typeName = "threedoclusion.v1.SubscribeConnectionResponse";
   static readonly fields: FieldList;
 
-  static fromBinary(bytes: Uint8Array, options?: Partial<BinaryReadOptions>): ConnectionStatusUpdatesResponse;
+  static fromBinary(bytes: Uint8Array, options?: Partial<BinaryReadOptions>): SubscribeConnectionResponse;
 
-  static fromJson(jsonValue: JsonValue, options?: Partial<JsonReadOptions>): ConnectionStatusUpdatesResponse;
+  static fromJson(jsonValue: JsonValue, options?: Partial<JsonReadOptions>): SubscribeConnectionResponse;
 
-  static fromJsonString(jsonString: string, options?: Partial<JsonReadOptions>): ConnectionStatusUpdatesResponse;
+  static fromJsonString(jsonString: string, options?: Partial<JsonReadOptions>): SubscribeConnectionResponse;
 
-  static equals(a: ConnectionStatusUpdatesResponse | PlainMessage<ConnectionStatusUpdatesResponse> | undefined, b: ConnectionStatusUpdatesResponse | PlainMessage<ConnectionStatusUpdatesResponse> | undefined): boolean;
+  static equals(a: SubscribeConnectionResponse | PlainMessage<SubscribeConnectionResponse> | undefined, b: SubscribeConnectionResponse | PlainMessage<SubscribeConnectionResponse> | undefined): boolean;
 }
 
 /**

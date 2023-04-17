@@ -380,22 +380,43 @@ export const SendMenuOptionResponse_Wrapper = proto3.makeMessageType(
 );
 
 /**
- * @generated from message threedoclusion.v1.ConnectionStatusUpdatesRequest
+ * @generated from message threedoclusion.v1.UpdateConnectionStatusRequest
  */
-export const ConnectionStatusUpdatesRequest = proto3.makeMessageType(
-  "threedoclusion.v1.ConnectionStatusUpdatesRequest",
+export const UpdateConnectionStatusRequest = proto3.makeMessageType(
+  "threedoclusion.v1.UpdateConnectionStatusRequest",
   () => [
     { no: 1, name: "is_connected", kind: "scalar", T: 8 /* ScalarType.BOOL */ },
     { no: 2, name: "scan_id", kind: "scalar", T: 5 /* ScalarType.INT32 */ },
-    { no: 3, name: "from_vr", kind: "scalar", T: 8 /* ScalarType.BOOL */ },
+    { no: 3, name: "device_id", kind: "scalar", T: 5 /* ScalarType.INT32 */ },
   ],
 );
 
 /**
- * @generated from message threedoclusion.v1.ConnectionStatusUpdatesResponse
+ * @generated from message threedoclusion.v1.UpdateConnectionStatusResponse
  */
-export const ConnectionStatusUpdatesResponse = proto3.makeMessageType(
-  "threedoclusion.v1.ConnectionStatusUpdatesResponse",
+export const UpdateConnectionStatusResponse = proto3.makeMessageType(
+  "threedoclusion.v1.UpdateConnectionStatusResponse",
+  [],
+);
+
+/**
+ * Info passed to subscribeStatus; use only one VR stream per client? Made scan-specific for now
+ *
+ * @generated from message threedoclusion.v1.SubscribeConnectionRequest
+ */
+export const SubscribeConnectionRequest = proto3.makeMessageType(
+  "threedoclusion.v1.SubscribeConnectionRequest",
+  () => [
+    { no: 1, name: "scan_id", kind: "scalar", T: 5 /* ScalarType.INT32 */ },
+    { no: 2, name: "device_id", kind: "scalar", T: 5 /* ScalarType.INT32 */ },
+  ],
+);
+
+/**
+ * @generated from message threedoclusion.v1.SubscribeConnectionResponse
+ */
+export const SubscribeConnectionResponse = proto3.makeMessageType(
+  "threedoclusion.v1.SubscribeConnectionResponse",
   () => [
     { no: 1, name: "is_connected", kind: "scalar", T: 8 /* ScalarType.BOOL */ },
     { no: 2, name: "other_not_created", kind: "scalar", T: 8 /* ScalarType.BOOL */ },

@@ -3,7 +3,7 @@
 /* eslint-disable */
 // @ts-nocheck
 
-import { AddDentistRequest, AddDentistResponse, AddPatientRequest, AddPatientResponse, AddScanRequest, AddScanResponse, AddTagRequest, AddTagResponse, ConnectionStatusUpdatesRequest, ConnectionStatusUpdatesResponse, DeleteDentistByIdRequest, DeleteDentistByIdResponse, DeletePatientRequest, DeletePatientResponse, DeleteScanRequest, DeleteScanResponse, DeleteTagRequest, DeleteTagResponse, GetAllDentistsRequest, GetAllDentistsResponse, GetAllPatientsRequest, GetAllPatientsResponse, GetAllScansRequest, GetAllScansResponse, GetAllTagsByTypeRequest, GetAllTagsByTypeResponse, GetAllTagsRequest, GetAllTagsResponse, GetDentistByIdRequest, GetDentistByIdResponse, GetPatientByIDRequest, GetPatientByIDResponse, GetPatientByNameRequest, GetPatientByNameResponse, GetPositionScanRequest, GetPositionScanResponse, GetScanByDateRequest, GetScanByDateResponse, GetScanByIDRequest, GetScanByIDResponse, GetTagByIDRequest, GetTagByIDResponse, LoginRequest, LoginResponse, RegisterRequest, RegisterResponse, SendMenuOptionRequest, SendMenuOptionResponse, SendPositionScanRequest, SendPositionScanResponse, SendVRRequest, SendVRResponse, UpdateDentistByIdRequest, UpdateDentistByIdResponse, WaitingRequest, WaitingResponse } from "./service_pb.js";
+import { AddDentistRequest, AddDentistResponse, AddPatientRequest, AddPatientResponse, AddScanRequest, AddScanResponse, AddTagRequest, AddTagResponse, DeleteDentistByIdRequest, DeleteDentistByIdResponse, DeletePatientRequest, DeletePatientResponse, DeleteScanRequest, DeleteScanResponse, DeleteTagRequest, DeleteTagResponse, GetAllDentistsRequest, GetAllDentistsResponse, GetAllPatientsRequest, GetAllPatientsResponse, GetAllScansRequest, GetAllScansResponse, GetAllTagsByTypeRequest, GetAllTagsByTypeResponse, GetAllTagsRequest, GetAllTagsResponse, GetDentistByIdRequest, GetDentistByIdResponse, GetPatientByIDRequest, GetPatientByIDResponse, GetPatientByNameRequest, GetPatientByNameResponse, GetPositionScanRequest, GetPositionScanResponse, GetScanByDateRequest, GetScanByDateResponse, GetScanByIDRequest, GetScanByIDResponse, GetTagByIDRequest, GetTagByIDResponse, LoginRequest, LoginResponse, RegisterRequest, RegisterResponse, SendMenuOptionRequest, SendMenuOptionResponse, SendPositionScanRequest, SendPositionScanResponse, SendVRRequest, SendVRResponse, SubscribeConnectionRequest, SubscribeConnectionResponse, UpdateConnectionStatusRequest, UpdateConnectionStatusResponse, UpdateDentistByIdRequest, UpdateDentistByIdResponse, WaitingRequest, WaitingResponse } from "./service_pb.js";
 import { MethodKind } from "@bufbuild/protobuf";
 
 /**
@@ -22,13 +22,22 @@ export const ScanService = {
       kind: MethodKind.Unary,
     },
     /**
-     * @generated from rpc threedoclusion.v1.ScanService.ConnectionStatusUpdates
+     * @generated from rpc threedoclusion.v1.ScanService.SubscribeConnection
      */
-    connectionStatusUpdates: {
-      name: "ConnectionStatusUpdates",
-      I: ConnectionStatusUpdatesRequest,
-      O: ConnectionStatusUpdatesResponse,
+    subscribeConnection: {
+      name: "SubscribeConnection",
+      I: SubscribeConnectionRequest,
+      O: SubscribeConnectionResponse,
       kind: MethodKind.ServerStreaming,
+    },
+    /**
+     * @generated from rpc threedoclusion.v1.ScanService.UpdateConnectionStatus
+     */
+    updateConnectionStatus: {
+      name: "UpdateConnectionStatus",
+      I: UpdateConnectionStatusRequest,
+      O: UpdateConnectionStatusResponse,
+      kind: MethodKind.Unary,
     },
     /**
      * @generated from rpc threedoclusion.v1.ScanService.SendVR

@@ -5,7 +5,7 @@ import RenderVideo from '@/components/vr/render-video';
 import { ScanService } from "@/gen/proto/threedoclusion/v1/service_connect";
 import { createPromiseClient } from "@bufbuild/connect";
 import { useTransport } from "@bufbuild/connect-query";
-import { ConnectionStatusUpdatesRequest, ConnectionStatusUpdatesResponse, SendMenuOptionRequest } from "@/gen/proto/threedoclusion/v1/service_pb";
+import { SubscribeConnectionRequest, SubscribeConnectionResponse, SendMenuOptionRequest } from "@/gen/proto/threedoclusion/v1/service_pb";
 
 
 import dynamic from 'next/dynamic';
@@ -18,7 +18,7 @@ export default function StartVRPage(){
     const scanId = 111;
     const [isComponentMounted, setIsComponentMounted] = useState(false)
     const [client, setClient] = useState<any>(null);
-    const [stream, setStream] = useState<AsyncIterable<ConnectionStatusUpdatesResponse> | null>(null);
+    const [stream, setStream] = useState<AsyncIterable<SubscribeConnectionResponse> | null>(null);
     const transport = useTransport();
   
     useEffect(() => setIsComponentMounted(true), [])
@@ -52,11 +52,11 @@ export default function StartVRPage(){
 
 function makeStreamOnID(id: number, clnt: any){
     // Make a new stream
-    const req = new ConnectionStatusUpdatesRequest({isConnected: true, scanId: id, fromVr: true});
-    return clnt.connectionStatusUpdates(req);
+    const req = new SubscribeConnectionRequest({scanId: id, deviceId: 1}); // VR: 1
+    return clnt.subscribeConnection(req);
 }
   
-async function checkConnected(serverStream: AsyncIterable<ConnectionStatusUpdatesResponse>) {
+async function checkConnected(serverStream: AsyncIterable<SubscribeConnectionResponse>) {
 for await (const res of serverStream){
 
     if (res.otherData){

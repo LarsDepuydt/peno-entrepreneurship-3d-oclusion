@@ -23,8 +23,7 @@ import (
 type ServerStruct struct {
 	database *sql.DB
 	redirectVRChannels *help_datastructures.MapChannels
-	connectionsClient *help_datastructures.MapConnections
-	connectionsVR *help_datastructures.MapConnections
+	connections *help_datastructures.MapConnections
 }
 
 func setCors(mux http.Handler) http.Handler {
@@ -43,10 +42,9 @@ func setCors(mux http.Handler) http.Handler {
 func Server(database *sql.DB) {
 	redirectVRChannels := help_datastructures.NewMap()
 
-	connectionsClient := help_datastructures.NewConnections()
-	connectionsVR := help_datastructures.NewConnections()
+	connections := help_datastructures.NewConnections()
 
-	server := &ServerStruct{database, redirectVRChannels, connectionsClient, connectionsVR}
+	server := &ServerStruct{database, redirectVRChannels, connections}
 
 	mux := http.NewServeMux()
 	path, handler := threedoclusionv1connect.NewScanServiceHandler(server)
@@ -66,14 +64,21 @@ func (s *ServerStruct) SendMenuOption(
 	ctx context.Context,
 	req *connect.Request[threedoclusionv1.SendMenuOptionRequest],
 ) (*connect.Response[threedoclusionv1.SendMenuOptionResponse], error) {
-	return push.SendMenuOption(req, s.connectionsClient, s.database)
+	return push.SendMenuOption(req, s.connections, s.database)
 }
 
-func (s *ServerStruct) ConnectionStatusUpdates(
+func (s *ServerStruct) SubscribeConnection(
 	ctx context.Context,
-	req *connect.Request[threedoclusionv1.ConnectionStatusUpdatesRequest], stream *connect.ServerStream[threedoclusionv1.ConnectionStatusUpdatesResponse],
+	req *connect.Request[threedoclusionv1.SubscribeConnectionRequest], stream *connect.ServerStream[threedoclusionv1.SubscribeConnectionResponse],
 ) error {
-	return push.ConnectionStatusUpdates(req, stream, s.connectionsClient, s.connectionsVR)
+	return push.SubscribeConnection(req, stream, s.connections)
+}
+
+func (s *ServerStruct) UpdateConnectionStatus(
+	ctx context.Context,
+	req *connect.Request[threedoclusionv1.UpdateConnectionStatusRequest],
+) (*connect.Response[threedoclusionv1.UpdateConnectionStatusResponse], error) {
+	return push.UpdateConnectionStatus(req, s.connections, s.database)
 }
 
 

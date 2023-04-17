@@ -57,8 +57,10 @@ func GetWaitingResponse(req *connect.Request[threedoclusionv1.WaitingRequest], s
 }
 
 
-func SendMenuOption(req *connect.Request[threedoclusionv1.SendMenuOptionRequest], connectionsClient *help_datastructures.MapConnections, database *sql.DB) (*connect.Response[threedoclusionv1.SendMenuOptionResponse], error) {
+func SendMenuOption(req *connect.Request[threedoclusionv1.SendMenuOptionRequest], connections *help_datastructures.MapConnections, database *sql.DB) (*connect.Response[threedoclusionv1.SendMenuOptionResponse], error) {
 	log.Println("Request headers: ", req.Header())
+	var deviceID int32
+	deviceID = 0; // deviceID of client; to send to: testing
 
 	switch *req.Msg.Option.Enum() {
 	case 0:
@@ -127,49 +129,30 @@ func SendMenuOption(req *connect.Request[threedoclusionv1.SendMenuOptionRequest]
 			return nil, error
 		}
 
-		connectionClient := connectionsClient.GetConnection(req.Msg.GetScanId())
-		if (connectionClient == nil) {
-			msg := "Connection client has not yet been established"
-			res := connect.NewResponse(&threedoclusionv1.SendMenuOptionResponse{
-			OtherData: &msg,
-			})
-			return res, nil
-		}
-
-		msg := "The scan has been saved succesfully" // Trust VR to break connection, or send isConnected false?
-		responseConnect := &threedoclusionv1.ConnectionStatusUpdatesResponse{
-			//OptionData: &threedoclusionv1.SendMenuOptionResponse_OtherData{"Unknown option"},
-			//ConnectionStatus: &threedoclusionv1.ConnectionStatus{IsConnected: false},
+		connectionChan := connections.GetChannel(req.Msg.GetScanId(), deviceID)
+		connectionChan <- threedoclusionv1.SubscribeConnectionResponse{
 			IsConnected: false,
-			OtherNotCreated: false,
-			OtherData: &msg,
 		}
-		connectionClient.Send(responseConnect);
-		connectionsClient.DeleteConnection(req.Msg.GetScanId()) // Delete the connection from memory
+		// DO something with connection
+
+
+		//connection.Send(responseConnect);
+		//connectionsClient.DeleteConnection(req.Msg.GetScanId()) // Delete the connection from memory
 
 	case 3:
 		log.Println("Menu option Quit was chosen");
 
-		connectionClient := connectionsClient.GetConnection(req.Msg.GetScanId()) // Use scanId to get bidistream
-		if connectionClient == nil {
-			msg := "Connection client has not yet been established"
-			res := connect.NewResponse(&threedoclusionv1.SendMenuOptionResponse{
-			OtherData: &msg,
-			})
-			return res, nil
-		}
-
-		msg := "VR has quit" // Trust VR to break connection
-		responseConnect := &threedoclusionv1.ConnectionStatusUpdatesResponse{
-			//OptionData: &threedoclusionv1.SendMenuOptionResponse_OtherData{"Unknown option"},
+		connectionChan := connections.GetChannel(req.Msg.GetScanId(), deviceID)
+		connectionChan <- threedoclusionv1.SubscribeConnectionResponse{
 			IsConnected: false,
-			OtherNotCreated: false,
-			OtherData: &msg,
 		}
-		connectionClient.Send(responseConnect);
-		connectionsClient.DeleteConnection(req.Msg.GetScanId()) // Delete the connection from memory
+		// DO something with connection
 
-		msg = "Deleted connection from server"
+
+		//connectionClient.Send(responseConnect);
+		//connectionsClient.DeleteConnection(req.Msg.GetScanId()) // Delete the connection from memory
+
+		msg := "Deleted connection from server"
 		res := connect.NewResponse(&threedoclusionv1.SendMenuOptionResponse{
 			OtherData: &msg,
 		})
@@ -186,85 +169,38 @@ func SendMenuOption(req *connect.Request[threedoclusionv1.SendMenuOptionRequest]
 	return nil, nil
 }
 
-func ConnectionStatusUpdates(req *connect.Request[threedoclusionv1.ConnectionStatusUpdatesRequest], stream *connect.ServerStream[threedoclusionv1.ConnectionStatusUpdatesResponse], connectionsClient *help_datastructures.MapConnections, connectionsVR *help_datastructures.MapConnections) error {
-	//log.Println("Request headers: ", req.Header())
-	//stream.ResponseHeader().Set("Access-Control-Allow-Origin", "*") // Should already be the case? See serve
-	
-	/*
-	if (stream.ResponseHeader().Get("Access-Control-Allow-Origin") != ""){
-		stream.ResponseHeader().Set("Access-Control-Allow-Origin", "*")
-	} else {
-		stream.ResponseHeader().Add("Access-Control-Allow-Origin", "*")
-	}*/ // With this snippet headers screw up the content I think
-	
-	/*msg, error := stream.Receive()
-	if error == io.EOF {
-		// End of stream TO DO
-		// TO DO: Inform other party, how to identify what stream they belong to then?
-		break
+func SubscribeConnection(req *connect.Request[threedoclusionv1.SubscribeConnectionRequest], stream *connect.ServerStream[threedoclusionv1.SubscribeConnectionResponse], connections *help_datastructures.MapConnections) error  {
+    scanID := req.Msg.ScanId
+    deviceID := req.Msg.DeviceId
+
+	connectionChan := connections.GetChannel(scanID, deviceID)
+
+    for {
+        select {
+        case res := <-connectionChan:
+            if err := stream.Send(&res); err != nil {
+                return err
+            }
+        /*case <-stream.Context().Done():
+            return nil FIX THIS */
+        }
 	}
-	if error != nil {
-		return error
-	}*/
-	if (req.Msg.FromVr){ // Get message from VR stream -> send to client stream
-		connectionVR := connectionsVR.GetConnection(req.Msg.ScanId)
-		if (connectionVR == nil) {
-			connectionsVR.AddConnection(req.Msg.ScanId, stream)
-			//connectionVR = stream
-		}
-		connectionClient := connectionsClient.GetConnection(req.Msg.ScanId)
-		if (connectionClient != nil) { // Exists
-			response := &threedoclusionv1.ConnectionStatusUpdatesResponse{ 
-				IsConnected: req.Msg.IsConnected, 
-				OtherNotCreated: false, 
-			}
-			//connectionClient.ResponseHeader().Set("Access-Control-Allow-Origin", "*")
-			if err := connectionClient.Send(response); err != nil {
-        		return err
-    		}
-		} else { // Other party's stream doesn't exist (yet), so send a message to self as response
-			// if no connection for this id...
-			// TO DO: What if disconnect before stream gets added?
-			response := &threedoclusionv1.ConnectionStatusUpdatesResponse{ 
-				IsConnected: req.Msg.IsConnected, 
-				OtherNotCreated: true, 
-			}
-			if err := stream.Send(response); err != nil { // connectionVR
-        		return err
-    		}
-		}
-	} else {
-		connectionClient := connectionsClient.GetConnection(req.Msg.ScanId)
-		if (connectionClient == nil) { // Check if exists
-			connectionsClient.AddConnection(req.Msg.ScanId, stream)
-			//connectionClient = stream
-		}
-		connectionVR := connectionsVR.GetConnection(req.Msg.ScanId)
-		if (connectionVR != nil) {
-			
-			response := &threedoclusionv1.ConnectionStatusUpdatesResponse{
-				IsConnected: req.Msg.IsConnected, 
-				OtherNotCreated: false, 
-			}
-			//connectionVR.ResponseHeader().Set("Access-Control-Allow-Origin", "*")
-			if err := connectionVR.Send(response); err != nil {
-        		return err
-    		}
-			// TO DO: What if disconnect before stream gets added?
-		} else { // Other party's stream doesn't exist (yet)
-			msg := "Connection VR has not yet been established"
-			response := &threedoclusionv1.ConnectionStatusUpdatesResponse{ 
-				IsConnected: req.Msg.IsConnected, 
-				OtherNotCreated: true, 
-				OtherData: &msg, 
-			}
-			if err := stream.Send(response); err != nil { // Send to self
-        		return err
-    		}
-		}
-	}
-	// Send connection message from one stream to the other, IF the connection exists -> need to know scanID
-	// On client decide to terminate stream and handle it
-	
-	return nil;
+}
+
+func UpdateConnectionStatus(req *connect.Request[threedoclusionv1.UpdateConnectionStatusRequest], connections *help_datastructures.MapConnections, database *sql.DB) (*connect.Response[threedoclusionv1.UpdateConnectionStatusResponse], error){
+    scanID := req.Msg.ScanId
+    deviceID := req.Msg.DeviceId
+    isConnected := req.Msg.IsConnected
+
+    mapDeviceChan := connections.GetMapDeviceChannel(scanID)
+
+    for otherDeviceID, connectionChan := range mapDeviceChan {
+        if otherDeviceID != deviceID {
+            connectionChan <- threedoclusionv1.SubscribeConnectionResponse{
+                IsConnected: isConnected,
+            }
+        }
+    }
+
+    return connect.NewResponse(&threedoclusionv1.UpdateConnectionStatusResponse{}), nil
 }

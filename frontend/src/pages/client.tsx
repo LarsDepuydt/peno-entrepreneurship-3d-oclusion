@@ -6,21 +6,18 @@ import { useState, useEffect } from 'react';
 import { ScanService } from "@/gen/proto/threedoclusion/v1/service_connect";
 import { createPromiseClient } from "@bufbuild/connect";
 import { useTransport } from "@bufbuild/connect-query";
-import { ConnectionStatusUpdatesRequest, ConnectionStatusUpdatesResponse } from "@/gen/proto/threedoclusion/v1/service_pb";
+import { SubscribeConnectionRequest, SubscribeConnectionResponse, UpdateConnectionStatusRequest, UpdateConnectionStatusResponse } from "@/gen/proto/threedoclusion/v1/service_pb";
 
 
 function makeStreamOnID(id: number, transport: any){
   // Make a new stream
   const client = createPromiseClient(ScanService, transport);
-  //const conn_status = new ConnectionStatus({isConnected: true});
-  //const req = new ConnectionStatusUpdatesRequest({connectionStatus: conn_status, scanId: id, fromVr: false});
-  const req = new ConnectionStatusUpdatesRequest({isConnected: true, scanId: id, fromVr: false});
-  return client.connectionStatusUpdates(req);
+  const req = new SubscribeConnectionRequest({scanId: id, deviceId: 0}); // 0 for client
+  return client.subscribeConnection(req);
 }
 
-async function checkConnected(serverStream: AsyncIterable<ConnectionStatusUpdatesResponse>) {
+async function checkConnected(serverStream: AsyncIterable<SubscribeConnectionResponse>) {
   for await (const res of serverStream){
-    //if (!res.connectionStatus?.isConnected){ // VR disconnected
     if (!res.isConnected){ 
       // Close stream... How?
       //serverStream.Close() ?
@@ -37,7 +34,7 @@ export default function ClientPage() {
     const [clientId, setClientId] = useState<number | undefined>(undefined);
     const [submitOK, setSubmitOK] = useState(false);
     const [sendOK, setSendOK] = useState(false);
-    const [stream, setStream] = useState<AsyncIterable<ConnectionStatusUpdatesResponse> | null>(null);
+    const [stream, setStream] = useState<AsyncIterable<SubscribeConnectionResponse> | null>(null);
     const transport = useTransport();
     
     const query = sendVR.useQuery({ clientId, scanId });
