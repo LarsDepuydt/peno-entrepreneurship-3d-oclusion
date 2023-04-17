@@ -12,6 +12,7 @@ import { default as CannonUtils } from 'cannon-utils';
 //var constrained;
 //
 
+const SCALE_MODEL = 0.01;
 const intersected = [];
 let container;
 let camera, scene, renderer;
@@ -244,6 +245,37 @@ function initThree() {
 
     window.addEventListener( 'resize', onWindowResize );
 
+}
+
+
+
+function changeControlledCoordinates( controller, coordinate ){ // 0, 1, 2: x, y, z
+    if (controller.userData.selected === undefined) return;
+    switch (coordinate) {
+        case 0: {
+            controller.userData.selected.position.setX(controller.position.x / SCALE_MODEL)
+            break;
+        }
+        case 1: {
+            controller.userData.selected.position.setY(controller.position.y / SCALE_MODEL);
+            break;
+        }
+        case 2: {
+            controller.userData.selected.position.setZ(controller.position.z / SCALE_MODEL);
+            break;
+        }
+        case 3: {
+            controller.userData.selected.position.setX(controller.position.x / SCALE_MODEL);
+            controller.userData.selected.position.setZ(controller.position.y / SCALE_MODEL);
+            controller.userData.selected.position.setY(-controller.position.z / SCALE_MODEL);
+            break;
+        }
+
+    }
+}
+
+function beforeRender( controller ){
+    changeControlledCoordinates(controller, 3);
 }
 
 /*//added
@@ -741,6 +773,11 @@ function render() {
 
     intersectObjects( controller1 );
     intersectObjects( controller2 );
+
+    // Voor axis locking, work in progress
+    //beforeRender(controller1);
+    //beforeRender(controller2);
+
     renderer.render( scene, camera );
 }
 
