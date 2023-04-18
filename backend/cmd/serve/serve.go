@@ -3,6 +3,7 @@ package serve
 import (
 	"context"
 	"database/sql"
+	"fmt"
 	"net/http"
 
 	"github.com/LarsDepuydt/peno-entrepreneurship-3d-oclusion/cmd/dentists"
@@ -75,6 +76,7 @@ func (s *ServerStruct) AddScan(
 	ctx context.Context,
 	req *connect.Request[threedoclusionv1.AddScanRequest],
 ) (*connect.Response[threedoclusionv1.AddScanResponse], error) {
+	fmt.Println("test")
 	return scans.AddScan(req, s.database)
 }
 
