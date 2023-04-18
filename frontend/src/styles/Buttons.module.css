@@ -50,35 +50,49 @@
   margin: auto;
 }
 
+#fixedWidth {
+  width: 15vw;
+  margin-left: 15px;
+}
+
 #dropDownButton {
   width: 100%;
   margin: 0px;
 }
 
+.absoluteWrapper{
+  padding-left: 15px;
+  padding-bottom: 15px;
+}
+
 #homeIcon {
   width: 48px;
   height: 48px;
-  margin: 8px;
+  margin: 20px 30px;
   background-image: url(../../public/home-icon.png);
   background-repeat: no-repeat;
   background-position: center;
+  /*
   position: absolute;
   bottom: 25px;
   right: 10px;
   z-index: 10;
+  */
 }
 
 #LinkIcon {
   width: 48px;
   height: 48px;
-  margin: 8px;
+  margin: 20px 30px;
   background-image: url(../../public/mail-icon.png);
   background-repeat: no-repeat;
   background-position: center;
+  /*
   position: absolute;
   bottom: 25px;
   left: 25px;
   z-index: 10;
+  */
 }
 
 #menuIcon {
