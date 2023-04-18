@@ -35,7 +35,7 @@ export const Scan = proto3.makeMessageType(
     { no: 11, name: "upper_r_y", kind: "scalar", T: 2 /* ScalarType.FLOAT */ },
     { no: 12, name: "upper_r_z", kind: "scalar", T: 2 /* ScalarType.FLOAT */ },
     { no: 13, name: "id", kind: "scalar", T: 5 /* ScalarType.INT32 */ },
-    { no: 14, name: "date", kind: "scalar", T: 9 /* ScalarType.STRING */ },
+    { no: 14, name: "timestamp", kind: "scalar", T: 9 /* ScalarType.STRING */ },
   ],
 );
 

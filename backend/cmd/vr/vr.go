@@ -57,7 +57,7 @@ func GetPositionScan(req *connect.Request[threedoclusionv1.GetPositionScanReques
 				UpperRY: 1,
 				UpperRZ: 1,
 				Id: 12,
-				Date: "2022",
+				Timestamp: "2022-04-18 15:30:45",
 			},
 		})
 		return res, nil

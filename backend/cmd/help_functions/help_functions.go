@@ -22,22 +22,25 @@ func ConnectToDataBase() (*sql.DB, error) {
 func GetResponseMakerScan(rows *sql.Rows) ([]*threedoclusionv1.Scan, error) {
 	var rowArray []*threedoclusionv1.Scan
 	for rows.Next() {
-		var rowData *threedoclusionv1.Scan
-		error := rows.Scan(&rowData.Id, &rowData.LowerX, &rowData.LowerY, &rowData.LowerZ, &rowData.LowerRX, &rowData.LowerRY, &rowData.LowerRZ,
-			&rowData.UpperX, &rowData.UpperY, &rowData.UpperZ, &rowData.UpperRX, &rowData.UpperRY, &rowData.UpperRZ, &rowData.Date)
-		if error != nil {
-			panic(error)
+		//var rowData *threedoclusionv1.Scan
+		rowData := &threedoclusionv1.Scan{}
+		error := rows.Scan(&rowData.Id, &rowData.Timestamp,
+			&rowData.LowerX, &rowData.LowerY, &rowData.LowerZ, &rowData.LowerRX, &rowData.LowerRY, &rowData.LowerRZ, 
+			&rowData.UpperX, &rowData.UpperY, &rowData.UpperZ, &rowData.UpperRX, &rowData.UpperRY, &rowData.UpperRZ)
+		if error != nil { // id
+			return nil, error
 		}
 		
+		/*
 		rowArray = append(rowArray, &threedoclusionv1.Scan{Id: rowData.Id, Date: rowData.Date, 
 			LowerX: rowData.LowerX,  LowerY: rowData.LowerY,  LowerZ: rowData.LowerZ,
 			LowerRX: rowData.LowerRX,  LowerRY: rowData.LowerRY,  LowerRZ: rowData.LowerRZ,
 			UpperX: rowData.UpperX,  UpperY: rowData.UpperY,  UpperZ: rowData.UpperZ,
-			UpperRX: rowData.UpperRX,  UpperRY: rowData.UpperRY,  UpperRZ: rowData.UpperRZ})
+			UpperRX: rowData.UpperRX,  UpperRY: rowData.UpperRY,  UpperRZ: rowData.UpperRZ})*/
+		rowArray = append(rowArray, rowData)
 	}
 
 	return rowArray, nil;
-
 }
 
 func GetResponseMakerTag(rows *sql.Rows) ([]*threedoclusionv1.RowDataTag, error) {

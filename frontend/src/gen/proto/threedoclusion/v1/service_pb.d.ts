@@ -105,9 +105,9 @@ export declare class Scan extends Message<Scan> {
   id: number;
 
   /**
-   * @generated from field: string date = 14;
+   * @generated from field: string timestamp = 14;
    */
-  date: string;
+  timestamp: string;
 
   constructor(data?: PartialMessage<Scan>);
 

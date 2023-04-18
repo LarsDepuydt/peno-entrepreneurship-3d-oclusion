@@ -62,7 +62,7 @@ message Scan {
   float upper_r_y = 11;
   float upper_r_z = 12;
   int32 id = 13;
-  string date = 14;
+  string timestamp = 14;
 }
 
 message Patient{

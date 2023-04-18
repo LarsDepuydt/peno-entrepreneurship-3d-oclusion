@@ -67,17 +67,17 @@ func SendMenuOption(req *connect.Request[threedoclusionv1.SendMenuOptionRequest]
 		log.Println("Menu option Save was chosen");
 		// req.Msg.GetSaveData() Pass this to the method -> make abstraction
 
-		statement, error := database.Prepare("INSERT INTO scan_save (scan_id, lowerX, lowerY, lowerZ, lowerRX, lowerRY, lowerRZ, upperX, upperY, upperZ, upperRX, upperRY, upperRZ, date_scan) VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12, $13, $14)")
+		statement, error := database.Prepare("INSERT INTO scan_save (scan_id, lowerX, lowerY, lowerZ, lowerRX, lowerRY, lowerRZ, upperX, upperY, upperZ, upperRX, upperRY, upperRZ, timestamp_save) VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12, $13, $14)")
 		if error != nil {
 			return nil, error
 		}
 
 		t := time.Now()
 		//formattedDate := t.Format("2006-01-02") // Format in yyyy-mm-dd
-		formattedDate := t.Format("2006-01-02T15:04:05")
+		formattedTimestamp := t.Format("2006-01-02T15:04:05")
 
 		save := req.Msg.GetSaveData()
-		_, error = statement.Exec(save.Id, save.LowerX, save.LowerY, save.LowerZ, save.LowerRX, save.LowerRY, save.LowerRZ, save.UpperX, save.UpperY, save.UpperZ, save.UpperRX, save.UpperRY, save.UpperRZ, formattedDate)
+		_, error = statement.Exec(save.Id, save.LowerX, save.LowerY, save.LowerZ, save.LowerRX, save.LowerRY, save.LowerRZ, save.UpperX, save.UpperY, save.UpperZ, save.UpperRX, save.UpperRY, save.UpperRZ, formattedTimestamp)
 		if error != nil {
 			return nil, error
 		}
@@ -100,7 +100,8 @@ func SendMenuOption(req *connect.Request[threedoclusionv1.SendMenuOptionRequest]
 
 		result, error := help_functions.GetResponseMakerScan(rows)
 		if error != nil {
-			panic(error)
+			//panic(error)
+			return nil, error
 		}
 
 		// Get list of all scans for this ID and return
@@ -115,17 +116,17 @@ func SendMenuOption(req *connect.Request[threedoclusionv1.SendMenuOptionRequest]
 		log.Println("Menu option Save and Quit was chosen");
 		// Save And Quit data -> Scan save
 		// req.Msg.GetSaveAndQuitData() Pass this to the method -> make abstraction
-		statement, error := database.Prepare("INSERT INTO scan_save (scan_id, lowerX, lowerY, lowerZ, lowerRX, lowerRY, lowerRZ, upperX, upperY, upperZ, upperRX, upperRY, upperRZ , date_scan) VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12, $13, $14)")
+		statement, error := database.Prepare("INSERT INTO scan_save (scan_id, lowerX, lowerY, lowerZ, lowerRX, lowerRY, lowerRZ, upperX, upperY, upperZ, upperRX, upperRY, upperRZ , timestamp_save) VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12, $13, $14)")
 		if error != nil {
 			return nil, error
 		}
 
 		t := time.Now()
 		//formattedDate := t.Format("2006-01-02") // Format in yyyy-mm-dd
-		formattedDate := t.Format("2006-01-02T15:04:05")
+		formattedTimestamp := t.Format("2006-01-02T15:04:05")
 
 		save := req.Msg.GetSaveData()
-		_, error = statement.Exec(save.Id, save.LowerX, save.LowerY, save.LowerZ, save.LowerRX, save.LowerRY, save.LowerRZ, save.UpperX, save.UpperY, save.UpperZ, save.UpperRX, save.UpperRY, save.UpperRZ, formattedDate)
+		_, error = statement.Exec(save.Id, save.LowerX, save.LowerY, save.LowerZ, save.LowerRX, save.LowerRY, save.LowerRZ, save.UpperX, save.UpperY, save.UpperZ, save.UpperRX, save.UpperRY, save.UpperRZ, formattedTimestamp)
 		if error != nil {
 			return nil, error
 		}
