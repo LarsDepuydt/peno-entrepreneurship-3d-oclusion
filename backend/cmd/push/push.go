@@ -73,7 +73,8 @@ func SendMenuOption(req *connect.Request[threedoclusionv1.SendMenuOptionRequest]
 		}
 
 		t := time.Now()
-		formattedDate := t.Format("2006-01-02") // Format in yyyy-mm-dd
+		//formattedDate := t.Format("2006-01-02") // Format in yyyy-mm-dd
+		formattedDate := t.Format("2006-01-02T15:04:05")
 
 		save := req.Msg.GetSaveData()
 		_, error = statement.Exec(save.Id, save.LowerX, save.LowerY, save.LowerZ, save.LowerRX, save.LowerRY, save.LowerRZ, save.UpperX, save.UpperY, save.UpperZ, save.UpperRX, save.UpperRY, save.UpperRZ, formattedDate)
@@ -120,7 +121,8 @@ func SendMenuOption(req *connect.Request[threedoclusionv1.SendMenuOptionRequest]
 		}
 
 		t := time.Now()
-		formattedDate := t.Format("2006-01-02") // Format in yyyy-mm-dd
+		//formattedDate := t.Format("2006-01-02") // Format in yyyy-mm-dd
+		formattedDate := t.Format("2006-01-02T15:04:05")
 
 		save := req.Msg.GetSaveData()
 		_, error = statement.Exec(save.Id, save.LowerX, save.LowerY, save.LowerZ, save.LowerRX, save.LowerRY, save.LowerRZ, save.UpperX, save.UpperY, save.UpperZ, save.UpperRX, save.UpperRY, save.UpperRZ, formattedDate)
