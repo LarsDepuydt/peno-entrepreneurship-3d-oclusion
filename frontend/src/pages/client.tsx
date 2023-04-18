@@ -62,7 +62,7 @@ export default function ClientPage() {
         console.log('your code already is:', cookieCode);
       }
 
-      setClientId(parseInt(displayCode, 10));
+      setClientId(parseInt(cookieCode as string, 10));
       setSubmitOK(true);
 
     }, []);
