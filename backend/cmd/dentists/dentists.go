@@ -12,7 +12,7 @@ import (
 func AddDentist(req *connect.Request[threedoclusionv1.AddDentistRequest], database *sql.DB) (*connect.Response[threedoclusionv1.AddDentistResponse], error) {
 	// Perform the database modification
 	_, error := database.Exec(
-		"INSERT INTO dentist (email, pass_word, first_name, last_name) VALUES ($1, $2, $3, $4);", 
+		"INSERT INTO dentist (email, password, firstname, lastname) VALUES ($1, $2, $3, $4);", 
 		req.Msg.Email, req.Msg.Password, req.Msg.FirstName, req.Msg.LastName,
 	)
 	if error != nil {
