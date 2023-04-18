@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { SendMenuOptionRequest, Scan } from "@/gen/proto/threedoclusion/v1/service_pb";
-
+import ListView from "./list-view";
 
 async function sendMenuOption(optionNumber: number, clnt: any, oData: any){
   const req = new SendMenuOptionRequest({option: optionNumber, optionData: oData
@@ -11,40 +11,56 @@ async function sendMenuOption(optionNumber: number, clnt: any, oData: any){
 
 function Menu({ current_scan, stream, client }: {current_scan: Scan, stream: any, client: any}){ // Add props with positions, client...
   const [isOpen, setIsOpen] = useState(true);
+  const [showListView, setShowListView] = useState(false);
+  const [listData, setListData] = useState([]);
 
   const toggleMenu = () => {
     setIsOpen(!isOpen);
   };
 
 
-  const save = () => {
+  const save = async () => {
     const optionData = {case: "saveData", value: current_scan,}
-    const res = sendMenuOption(0, client, optionData);
+    const res = await sendMenuOption(0, client, optionData);
     console.log("Save!")
   };
 
-  const load = () => {
-    const optionData = {case: "scanId", value: 111,} 
-    const res = sendMenuOption(1, client, optionData);
-    console.log("Load!")
-
-    // Do something with received data
+  const load = async () => {
+    const optionData = { case: "scanId", value: 111 };
+    sendMenuOption(1, client, optionData)
+      .then((res) => {
+        if (res) {
+          console.log("Load!");
+          const extractedTimestamps = (res.wrap.loadData).map((dict: any) => dict.timestamp);
+          setListData(extractedTimestamps);
+          setShowListView(true);
+        }
+      })
+      .catch((error) => {
+        console.error("Error fetching data:", error);
+      });
   };
 
-  const saveAndQuit = () => {
+  const handleBackClick = () => {
+    setShowListView(false); // Set showListView to false when Back arrow is clicked
+  };
+  
+
+  const saveAndQuit = async () => {
     const optionData = {case: "saveData", value: current_scan,}
-    const res = sendMenuOption(2, client, optionData);
+    const res = await sendMenuOption(2, client, optionData);
     console.log("Save and quit!")
   };
 
-  const quit = () => {
+  const quit = async () => {
     const optionData = {case: "scanId", value: 111,} 
-    const res = sendMenuOption(3, client, optionData);
+    const res = await sendMenuOption(3, client, optionData);
     console.log("I quit!")
     //console.log((res as any).OtherData);
     // Close stream here?
     // Redirect...
   };
+  
 
   return (
     <div className="menu-container">
@@ -53,7 +69,7 @@ function Menu({ current_scan, stream, client }: {current_scan: Scan, stream: any
         <div className="menu-button-bar" />
         <div className="menu-button-bar" />
       </div>
-      {isOpen && (
+      {isOpen && !showListView && (
         <div className="menu-content">
           <div className="menu-header">
             <div className="menu-title">Menu</div>
@@ -69,9 +85,48 @@ function Menu({ current_scan, stream, client }: {current_scan: Scan, stream: any
           </ul>
         </div>
       )}
+      {showListView && (
+        <div className="list-view-container">
+          <span className="back-arrow" onClick={handleBackClick}>
+          <span className="arrow-left"></span>
+          </span>
+          <ListView data={listData} itemsPerPage={4} />
+        </div>
+      )}
       <style jsx>{`
+        .list-view-container {
+          position: relative;
+          top: 0;
+          left: 0;
+          right: 0;
+          bottom: 0;
+          z-index: 999;
+          display: flex;
+          justify-content: center;
+          align-items: center;
+        }
+        .back-arrow {
+          position: absolute;
+          top: 10px;
+          left: 10px;
+          width: 24px;
+          height: 24px;
+          cursor: pointer;
+          z-index: 999;
+          display: flex;
+          justify-content: center;
+          align-items: center;
+        }
+        .arrow-left {
+          width: 0;
+          height: 0;
+          border-top: 6px solid transparent;
+          border-bottom: 6px solid transparent;
+          border-right: 12px solid #fff;
+        }
         .menu-container {
           position: fixed;
+          border: 1px solid #000; // Add border around the menu
           top: 0;
           left: 0;
           right: 0;
