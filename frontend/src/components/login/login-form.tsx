@@ -52,7 +52,7 @@ export default function LoginForm() {
               className="form-control"
               id="email"
               name="email"
-              placeholder="email"
+              placeholder="Email"
               aria-describedby="usernameHelp"
             />
           </div>
