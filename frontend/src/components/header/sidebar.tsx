@@ -1,8 +1,13 @@
 import React from 'react';
+import { useRouter } from 'next/router';
 import stylesButton from '@/styles/Buttons.module.css';
 import styleSidebar from '@/styles/Sidebar.module.css';
 import New_Patient from '../popups/new-patient';
 import New_Scan from '../popups/new-scan';
+import Filter_Tags from '../search/filter-tags';
+import Search_ID from '../search/search-id';
+import Search_Name from '../search/search-name';
+import ReluLink from '../header/reluLink';
 import { WelcomingDoctor, WelcomingPatient } from './welcoming';
 
 interface HeaderPatientProps {
@@ -22,6 +27,9 @@ export function SidebarDoctor() {
         <WelcomingDoctor doctorfirstname={'Anna'} doctorlastname={'Proost'} />
         <div className={stylesButton.sidebarButton}>
           <New_Patient />
+          <Search_ID />
+          <Search_Name />
+          <ReluLink />
         </div>
       </div>
     </>
@@ -29,12 +37,17 @@ export function SidebarDoctor() {
 }
 
 export function SidebarPatient({ patientfirstname, patientlastname }: HeaderPatientProps) {
+  const router = useRouter();
+  const home = () => router.push('/patient');
   return (
     <>
       <div className={styleSidebar.sidebar}>
         <WelcomingPatient patientfirstname={patientfirstname} patientlastname={patientlastname} />
         <div className={stylesButton.sidebarButton}>
+          <button type="button" className={stylesButton.relu_btn} id={stylesButton.homeIcon} onClick={home}></button>
           <New_Scan />
+          <Filter_Tags />
+          <ReluLink />
         </div>
       </div>
     </>

@@ -34,7 +34,6 @@ func GetWaitingResponse(req *connect.Request[threedoclusionv1.WaitingRequest], s
 	// TO DO: Check if uniqueCode is valid with database
 
 	// TO DO: Use uniqueCode to get clientID from database
-	// Also need to make it single use, so maybe send back clientID after first call so can be used in the future without entering code
 	// For now just use unique_code = client_id
 	redirectVRChannel := redirectVRChannels.GetChannel(req.Msg.UniqueCode) // Use clientId to get channel
 
@@ -42,8 +41,8 @@ func GetWaitingResponse(req *connect.Request[threedoclusionv1.WaitingRequest], s
 	case response := <-redirectVRChannel:
 		res := &threedoclusionv1.WaitingResponse{
 			Redirect: response.Redirect,
-			Url:      fmt.Sprintf("/VR/%d", response.ScanId),
-		}
+			Url:      "test-vr",
+		} // fmt.Sprintf("/VR/%d", response.ScanId),
 		redirectVRChannels.ReleaseChannel(req.Msg.UniqueCode) // Redirect instruction has been sent, delete channel
 		if err := stream.Send(res); err != nil {
 			return err

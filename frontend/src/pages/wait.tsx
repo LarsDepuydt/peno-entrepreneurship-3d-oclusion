@@ -1,13 +1,26 @@
+
 import { WaitingRequest } from "@/gen/proto/threedoclusion/v1/service_pb";
 import { ScanService } from "@/gen/proto/threedoclusion/v1/service_connect";
 
 import { createPromiseClient } from "@bufbuild/connect";
 import { createConnectTransport } from "@bufbuild/connect-web";
 import { useRouter } from 'next/router';
+import { useState } from "react";
+
+import styleL from '@/styles/LandingPage.module.css';
+
+import Image from 'next/image';
+import reluLogo from '../../public/relu-logo-small.png';
+
+import styles2 from '@/styles/LoginForm.module.css';
+import styleB from '@/styles/Buttons.module.css';
 
 import styles from "@/styles/WaitPage.module.css"
 
 export default function WaitPage() {
+  const [submitted, setSubmitted] = useState(false);
+  const [formVisible, setFormVisible] = useState(true); // Add formVisible state
+
   const transport = createConnectTransport({
     baseUrl: "http://0.0.0.0:8080",
   });
@@ -35,6 +48,8 @@ export default function WaitPage() {
 
     if (submitOK) { // Trigger waiting procedure
       waitForResponse(codeValue);
+      setSubmitted(true); // Set submitted state to true
+      setFormVisible(false); // Set formVisible to false
     }
   }
   // See _app, can't use queryClient for streams so I made a new client here -> implement in _app as well to support other streams?
@@ -54,18 +69,54 @@ export default function WaitPage() {
 
   return (
     <div>
-    <div>
-    <h1>Waiting Page</h1>
+      {formVisible && (
+      <div className={styleL.all_landing}>
+
+        <div className={styleL.loginbox}>
+    <div className={styles.container}>
+    <Image className={styles2.small_logo_log} src={reluLogo} alt="relu logo" />
     <form onSubmit={afterSubmit}>
-      Code: <input type="number" id="code" size={20} name="code"/><br/>
-      <input type="submit" value="Submit"/> 
+      Code: <input type="number" id="code" size={20} name="code" className={styles.inputstyle}/><br/>
+      <div>
+      <input type="submit" value="Submit" className={styles.relu_btn}/> 
+      </div>
     </form>
     </div>
-    <div className={styles.spinner}>
-    <div className={styles.bounce1}></div>
-    <div className={styles.bounce2}></div>
-    <div className={styles.bounce3}></div>
     </div>
+      </div>
+    )}
+
+    {submitted && ( // Display the following divs only if submitted is true
+    <div className={styles.bodah}>
+          <Image className={styles.small_logo_log} src={reluLogo} alt="relu logo" />
+    <div className={styles.loading}>
+      <div className={styles.dot}></div>
+      <div className={styles.dot}></div>
+      <div className={styles.dot}></div>
+      <div className={styles.dot}></div>
+      <div className={styles.dot}></div>
+    </div>
+    </div>
+    )}
     </div>
   )
 }
+
+
+
+
+/*<div className="mb-3">
+            <Field
+              className="form-control"
+              id="username"
+              name="username"
+              placeholder="User token"
+              aria-describedby="usernameHelp"
+            />
+          </div>
+
+          <div className={styles.spacingbtn}>
+            <button type="submit" className={styleB.relu_btn}>
+              Submit
+            </button>
+          </div>  */

@@ -10,16 +10,17 @@ import styleB from '@/styles/Buttons.module.css';
 import reluLogo from '../../../public/relu-logo-small.png';
 //import bcrypt from 'bcryptjs';
 
-import { useQuery } from '@tanstack/react-query';
+import { useQuery, useMutation } from '@tanstack/react-query';
 import { register } from '@/gen/proto/threedoclusion/v1/service-ScanService_connectquery';
+import { SetStateAction, useEffect, useState } from 'react';
 
 const FormSchema = yup.object().shape({
   reppassword: yup.string().oneOf([yup.ref('password')], 'this does not match your password'),
 });
 
-interface Values {
-  doctorFirstName: string;
-  doctorLastName: string;
+interface RUser {
+  firstName: string;
+  lastName: string;
 
   email: string;
   password: string;
@@ -27,7 +28,21 @@ interface Values {
 }
 
 export default function LoginForm() {
+  const [credentials, setData] = useState({ email: '', password: '', firstName: '', lastName: '' });
+
+  const { data } = useQuery(register.useQuery(credentials));
+
   const router = useRouter();
+
+  const submitFunction = (values: RUser) => {
+    console.log(values);
+
+    setData(values);
+  };
+
+  useEffect(() => {
+    data?.token && credentials.email && router.push('/patient');
+  }, [data, credentials]);
 
   const toLogin = () => router.push('/login-page');
 
@@ -37,26 +52,15 @@ export default function LoginForm() {
 
       <Formik
         initialValues={{
-          doctorFirstName: '',
-          doctorLastName: '',
+          firstName: '',
+          lastName: '',
 
           email: '',
           password: '',
           reppassword: '',
         }}
         validationSchema={FormSchema}
-        onSubmit={(values) => {
-          const { data } = useQuery(
-            register.useQuery({
-              email: values.email,
-              password: values.password,
-              firstName: values.doctorFirstName,
-              lastName: values.doctorLastName,
-            })
-          );
-          console.log(data && data.message);
-          router.push('/patient');
-        }}
+        onSubmit={submitFunction}
       >
         {({ errors }) => (
           <Form className={styles.center}>
@@ -64,8 +68,8 @@ export default function LoginForm() {
               <div className="mb-3">
                 <Field
                   className="form-control"
-                  id="doctorFirstName"
-                  name="doctorFirstName"
+                  id="firstName"
+                  name="firstName"
                   placeholder="First Name"
                   aria-describedby="doctorFirstNameHelp"
                 />
@@ -74,8 +78,8 @@ export default function LoginForm() {
               <div className="mb-3">
                 <Field
                   className="form-control"
-                  id="doctorLastName"
-                  name="doctorLastName"
+                  id="lastName"
+                  name="lastName"
                   placeholder="Last Name"
                   aria-describedby="doctorLastNameHelp"
                 />

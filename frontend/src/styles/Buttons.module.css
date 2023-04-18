@@ -13,32 +13,156 @@
 } */
 
 .relu_btn {
-    
-    background-color: transparent;
-    text-align: center;
-    padding: 5px 10px;
-    
+  background-color: transparent;
+  text-align: center;
+  padding: 5px 10px;
 
-    color: #fe7d00;
-    font-size: 1rem;
-    font-weight: 400;
-    line-height: 1.5;
-    
-    border-color: #fe7d00;
-    border-width: 1px;
-    border-style: solid;
-    border-radius: 0.375rem;
+  color: #fe7d00;
+  font-size: 1rem;
+  font-weight: 400;
+  line-height: 1.5;
+
+  border-color: #fe7d00;
+  border-width: 1px;
+  border-style: solid;
+  border-radius: 0.375rem;
 }
 
 .relu_btn:hover {
-    background-color: rgba(254, 125, 0, .25);
+  background-color: rgba(254, 125, 0, 0.25);
+}
 
+.search_btn {
+  float: center;
+
+  padding: 20px;
+
+  display: flex;
+  column-gap: 20px;
+  justify-content: space-between;
 }
 
 #logOut {
-    margin-right: 20px;
+  margin-right: 20px;
 }
 
 .sidebarButton {
-    margin: auto;
-  }
+  margin: auto;
+}
+
+#dropDownButton {
+  width: 100%;
+  margin: 0px;
+}
+
+#homeIcon {
+  width: 48px;
+  height: 48px;
+  margin: 8px;
+  background-image: url(../../public/home-icon.png);
+  background-repeat: no-repeat;
+  background-position: center;
+  position: absolute;
+  bottom: 25px;
+  right: 10px;
+  z-index: 10;
+  /* mag weg ^? */
+  border: none;
+}
+
+#LinkIcon {
+  width: 48px;
+  height: 48px;
+  margin: 8px;
+  background-image: url(../../public/info-icon.png);
+  background-repeat: no-repeat;
+  background-position: center;
+  position: absolute;
+  bottom: 25px;
+  left: 25px;
+  z-index: 10;
+
+  border: none;
+}
+
+#menuIcon {
+  width: 48px;
+  height: 48px;
+  margin: 8px;
+  background-image: url(../../public/menu-icon.png);
+  background-repeat: no-repeat;
+  background-position: center;
+  position: absolute;
+  top: -55px;
+  right: 0px;
+  border: none;
+}
+
+#exitIcon {
+  width: 48px;
+  height: 48px;
+  margin: 8px;
+  background-image: url(../../public/menu-icon.png); /* add propper ICON */
+  background-repeat: no-repeat;
+  background-position: center;
+  float: right;
+  border: none;
+}
+
+#deleteIcon {
+  width: 48px;
+  height: 48px;
+  margin: 8px;
+  background-image: url(../../public/delete-icon.png);
+  background-repeat: no-repeat;
+  background-position: center;
+  border: none;
+}
+
+#exportIcon {
+  width: 48px;
+  height: 48px;
+  margin: 8px;
+  background-image: url(../../public/export-icon.png);
+  background-repeat: no-repeat;
+  background-position: center;
+  border: none;
+}
+
+#InspectScansIcon {
+  width: 48px;
+  height: 48px;
+  margin: 8px;
+  background-image: url(../../public/open-browser-icon.png);
+  background-repeat: no-repeat;
+  background-position: center;
+  border: none;
+}
+
+#InspectVR {
+  width: 48px;
+  height: 48px;
+  margin: 8px;
+  background-image: url(../../public/open-VR-icon.png);
+  background-repeat: no-repeat;
+  background-position: center;
+}
+
+#editIcon {
+  width: 48px;
+  height: 48px;
+  margin: 8px;
+  background-image: url(../../public/edit-icon.png);
+  background-repeat: no-repeat;
+  background-position: center;
+  border: none;
+}
+
+#loadingIcon {
+  width: 48px;
+  height: 48px;
+  margin: 8px;
+  background-image: url(../../public/menu-icon.png);
+  background-repeat: no-repeat;
+  background-position: center;
+}

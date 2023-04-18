@@ -7,14 +7,31 @@ import styles from '@/styles/LoginForm.module.css';
 import styleB from '@/styles/Buttons.module.css';
 
 import reluLogo from '../../../public/relu-logo-small.png';
+import { useQuery } from '@tanstack/react-query';
+import { login } from '@/gen/proto/threedoclusion/v1/service-ScanService_connectquery';
+import { useEffect, useState } from 'react';
 
-interface Values {
-  username: string;
+interface LUser {
+  email: string;
   password: string;
 }
 
 export default function LoginForm() {
+  const [credentials, setData] = useState({ email: '', password: '' });
+
+  const { data } = useQuery(login.useQuery(credentials));
+
   const router = useRouter();
+
+  const submitFunction = (values: LUser) => {
+    console.log(values);
+
+    setData(values);
+  };
+
+  useEffect(() => {
+    data?.token && credentials.email && router.push('/patient');
+  }, [data, credentials]);
 
   const toRegister = () => router.push('/register-page');
 
@@ -24,20 +41,18 @@ export default function LoginForm() {
 
       <Formik
         initialValues={{
-          username: '',
+          email: '',
           password: '',
         }}
-        onSubmit={() => {
-          router.push('/patient');
-        }}
+        onSubmit={submitFunction}
       >
         <Form>
           <div className="mb-3">
             <Field
               className="form-control"
-              id="username"
-              name="username"
-              placeholder="Username"
+              id="email"
+              name="email"
+              placeholder="Email"
               aria-describedby="usernameHelp"
             />
           </div>

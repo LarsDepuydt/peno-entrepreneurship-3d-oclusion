@@ -11,6 +11,7 @@ import (
 	"github.com/LarsDepuydt/peno-entrepreneurship-3d-oclusion/cmd/push"
 	"github.com/LarsDepuydt/peno-entrepreneurship-3d-oclusion/cmd/scans"
 	"github.com/LarsDepuydt/peno-entrepreneurship-3d-oclusion/cmd/tags"
+	"github.com/LarsDepuydt/peno-entrepreneurship-3d-oclusion/cmd/vr"
 	threedoclusionv1 "github.com/LarsDepuydt/peno-entrepreneurship-3d-oclusion/gen/proto/threedoclusion/v1"
 	"github.com/LarsDepuydt/peno-entrepreneurship-3d-oclusion/gen/proto/threedoclusion/v1/threedoclusionv1connect"
 	"github.com/bufbuild/connect-go"
@@ -141,6 +142,19 @@ func (s *ServerStruct) GetAllTagsByType(
 	return tags.GetAllTagsByType(req, s.database)
 }
 
+func (s *ServerStruct) GetPositionScan(
+	ctx context.Context,
+	req *connect.Request[threedoclusionv1.GetPositionScanRequest],
+) (*connect.Response[threedoclusionv1.GetPositionScanResponse], error) {
+	return vr.GetPositionScan(req)
+}
+
+func (s *ServerStruct) SendPositionScan(
+	ctx context.Context,
+	req *connect.Request[threedoclusionv1.SendPositionScanRequest],
+) (*connect.Response[threedoclusionv1.SendPositionScanResponse], error) {
+	return vr.SendPositionScan(req)
+}
 // PATIENTS
 func (s *ServerStruct) AddPatient(
 	ctx context.Context,
