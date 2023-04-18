@@ -72,49 +72,42 @@
   background-image: url(../../public/home-icon.png);
   background-repeat: no-repeat;
   background-position: center;
-  /*
-  position: absolute;
-  bottom: 25px;
-  right: 10px;
-  z-index: 10;
-  */
+  border: none;
 }
 
 #LinkIcon {
   width: 48px;
   height: 48px;
   margin: 20px 30px;
-  background-image: url(../../public/mail-icon.png);
+  background-image: url(../../public/info-icon.png);
+
   background-repeat: no-repeat;
   background-position: center;
-  /*
-  position: absolute;
-  bottom: 25px;
-  left: 25px;
-  z-index: 10;
-  */
+  border: none;
 }
 
 #menuIcon {
   width: 48px;
-  height: 24px;
+  height: 48px;
   margin: 8px;
   background-image: url(../../public/menu-icon.png);
   background-repeat: no-repeat;
   background-position: center;
   position: absolute;
-  top: -50px;
+  top: -55px;
   right: 0px;
+  border: none;
 }
 
 #exitIcon {
   width: 48px;
   height: 48px;
   margin: 8px;
-  background-image: url(../../public/profile-icon.png); /* add propper ICON */
+  background-image: url(../../public/menu-icon.png); /* add propper ICON */
   background-repeat: no-repeat;
   background-position: center;
-  float: left;
+  float: right;
+  border: none;
 }
 
 #deleteIcon {
@@ -124,6 +117,7 @@
   background-image: url(../../public/delete-icon.png);
   background-repeat: no-repeat;
   background-position: center;
+  border: none;
 }
 
 #exportIcon {
@@ -133,6 +127,7 @@
   background-image: url(../../public/export-icon.png);
   background-repeat: no-repeat;
   background-position: center;
+  border: none;
 }
 
 #InspectScansIcon {
@@ -142,6 +137,7 @@
   background-image: url(../../public/open-browser-icon.png);
   background-repeat: no-repeat;
   background-position: center;
+  border: none;
 }
 
 #InspectVR {
@@ -160,6 +156,7 @@
   background-image: url(../../public/edit-icon.png);
   background-repeat: no-repeat;
   background-position: center;
+  border: none;
 }
 
 #loadingIcon {
