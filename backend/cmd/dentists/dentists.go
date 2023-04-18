@@ -140,7 +140,7 @@ func Register(req *connect.Request[threedoclusionv1.RegisterRequest], database *
 func UpdateDentistById(req *connect.Request[threedoclusionv1.UpdateDentistByIdRequest], database *sql.DB) (*connect.Response[threedoclusionv1.UpdateDentistByIdResponse], error) {
 	// Perform the database modification
 	_, error := database.Exec(
-		"UPDATE dentist SET email = $2, pass_word = $3, first_name = 4, last_name = 5 WHERE id = $1 ;", 
+		"UPDATE dentist SET email=$2, password=$3, firstname=$4, lastname=$5 WHERE id = $1 ;", 
 		req.Msg.Id, req.Msg.Email, req.Msg.Password, req.Msg.FirstName, req.Msg.LastName,
 	)
 	if error != nil {
