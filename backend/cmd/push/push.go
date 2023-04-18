@@ -133,11 +133,20 @@ func SendMenuOption(req *connect.Request[threedoclusionv1.SendMenuOptionRequest]
 		connectionChan <- threedoclusionv1.SubscribeConnectionResponse{
 			IsConnected: false,
 		}
-		// DO something with connection
-
 
 		//connection.Send(responseConnect);
 		//connectionsClient.DeleteConnection(req.Msg.GetScanId()) // Delete the connection from memory
+
+		// DO something with connection
+		msg := "Saved successfully"
+		res := connect.NewResponse(&threedoclusionv1.SendMenuOptionResponse{
+			//OptionData: &threedoclusionv1.SendMenuOptionResponse_LoadData{result},
+			OtherData: &msg,
+		})
+
+		connections.ReleaseChannel(req.Msg.GetSaveData().GetId(), 1) // VR deviceID 1
+
+		return res, nil
 
 	case 3:
 		log.Println("Menu option Quit was chosen");
@@ -151,6 +160,8 @@ func SendMenuOption(req *connect.Request[threedoclusionv1.SendMenuOptionRequest]
 
 		//connectionClient.Send(responseConnect);
 		//connectionsClient.DeleteConnection(req.Msg.GetScanId()) // Delete the connection from memory
+
+		connections.ReleaseChannel(req.Msg.GetScanId(), 1)
 
 		msg := "Deleted connection from server"
 		res := connect.NewResponse(&threedoclusionv1.SendMenuOptionResponse{
@@ -166,7 +177,6 @@ func SendMenuOption(req *connect.Request[threedoclusionv1.SendMenuOptionRequest]
 		})
 		return res, nil
 	}
-	return nil, nil
 }
 
 func SubscribeConnection(req *connect.Request[threedoclusionv1.SubscribeConnectionRequest], stream *connect.ServerStream[threedoclusionv1.SubscribeConnectionResponse], connections *help_datastructures.MapConnections) error  {

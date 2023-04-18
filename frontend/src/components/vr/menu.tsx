@@ -1,38 +1,49 @@
 import { useState } from "react";
-import { SendMenuOptionRequest } from "@/gen/proto/threedoclusion/v1/service_pb";
+import { SendMenuOptionRequest, Scan } from "@/gen/proto/threedoclusion/v1/service_pb";
 
 
-async function sendMenuOption(optionNumber: number, clnt: any){
-  const req = new SendMenuOptionRequest({option: optionNumber, optionData: {
-    case: "scanId",
-    value: 111
-    } 
+async function sendMenuOption(optionNumber: number, clnt: any, oData: any){
+  const req = new SendMenuOptionRequest({option: optionNumber, optionData: oData
   });
   const res = await clnt.sendMenuOption(req);
   return res;
 }
 
-function Menu({ stream, client }: {stream: any, client: any}){ // Add props with positions, stream, client...
+function Menu({ current_scan, stream, client }: {current_scan: Scan, stream: any, client: any}){ // Add props with positions, client...
   const [isOpen, setIsOpen] = useState(true);
 
   const toggleMenu = () => {
     setIsOpen(!isOpen);
   };
 
-  const load = () => {
-  };
 
   const save = () => {
+    const optionData = {case: "saveData", value: current_scan,}
+    const res = sendMenuOption(0, client, optionData);
+    console.log("Save!")
+  };
+
+  const load = () => {
+    const optionData = {case: "scanId", value: 111,} 
+    const res = sendMenuOption(1, client, optionData);
+    console.log("Load!")
+
+    // Do something with received data
   };
 
   const saveAndQuit = () => {
+    const optionData = {case: "saveData", value: current_scan,}
+    const res = sendMenuOption(2, client, optionData);
+    console.log("Save and quit!")
   };
 
   const quit = () => {
-    const res = sendMenuOption(3, client);
-    // console.log(res.OtherData);
-    // Close stream
+    const optionData = {case: "scanId", value: 111,} 
+    const res = sendMenuOption(3, client, optionData);
     console.log("I quit!")
+    //console.log((res as any).OtherData);
+    // Close stream here?
+    // Redirect...
   };
 
   return (
