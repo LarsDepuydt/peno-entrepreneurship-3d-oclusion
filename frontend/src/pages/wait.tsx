@@ -140,7 +140,7 @@ export default function WaitPage() {
       <div className={styles.dot}></div>
       <div className={styles.dot}></div>
     </div>
-    </div>
+      </div>
     )}
     </div>
   )

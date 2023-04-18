@@ -50,7 +50,120 @@
   margin: auto;
 }
 
-#appearOnHoverButton {
-    margin: 8px auto;
-    width: 230px;
+#fixedWidth {
+  width: 15vw;
+  margin-left: 15px;
+}
+
+#dropDownButton {
+  width: 100%;
+  margin: 0px;
+}
+
+.absoluteWrapper{
+  padding-left: 15px;
+  padding-bottom: 15px;
+}
+
+#homeIcon {
+  width: 48px;
+  height: 48px;
+  margin: 20px 30px;
+  background-image: url(../../public/home-icon.png);
+  background-repeat: no-repeat;
+  background-position: center;
+  border: none;
+}
+
+#LinkIcon {
+  width: 48px;
+  height: 48px;
+  margin: 20px 30px;
+  background-image: url(../../public/info-icon.png);
+
+  background-repeat: no-repeat;
+  background-position: center;
+  border: none;
+}
+
+#menuIcon {
+  width: 48px;
+  height: 48px;
+  margin: 8px;
+  background-image: url(../../public/menu-icon.png);
+  background-repeat: no-repeat;
+  background-position: center;
+  position: absolute;
+  top: -55px;
+  right: 0px;
+  border: none;
+}
+
+#exitIcon {
+  width: 48px;
+  height: 48px;
+  margin: 8px;
+  background-image: url(../../public/menu-icon.png); /* add propper ICON */
+  background-repeat: no-repeat;
+  background-position: center;
+  float: right;
+  border: none;
+}
+
+#deleteIcon {
+  width: 48px;
+  height: 48px;
+  margin: 8px;
+  background-image: url(../../public/delete-icon.png);
+  background-repeat: no-repeat;
+  background-position: center;
+  border: none;
+}
+
+#exportIcon {
+  width: 48px;
+  height: 48px;
+  margin: 8px;
+  background-image: url(../../public/export-icon.png);
+  background-repeat: no-repeat;
+  background-position: center;
+  border: none;
+}
+
+#InspectScansIcon {
+  width: 48px;
+  height: 48px;
+  margin: 8px;
+  background-image: url(../../public/open-browser-icon.png);
+  background-repeat: no-repeat;
+  background-position: center;
+  border: none;
+}
+
+#InspectVR {
+  width: 48px;
+  height: 48px;
+  margin: 8px;
+  background-image: url(../../public/open-VR-icon.png);
+  background-repeat: no-repeat;
+  background-position: center;
+}
+
+#editIcon {
+  width: 48px;
+  height: 48px;
+  margin: 8px;
+  background-image: url(../../public/edit-icon.png);
+  background-repeat: no-repeat;
+  background-position: center;
+  border: none;
+}
+
+#loadingIcon {
+  width: 48px;
+  height: 48px;
+  margin: 8px;
+  background-image: url(../../public/menu-icon.png);
+  background-repeat: no-repeat;
+  background-position: center;
 }

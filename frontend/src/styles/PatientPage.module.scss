@@ -1,63 +1,88 @@
 $patientWidth: 270px;
+$patientHeight: 205px;
+$pictureWidth: 250px;
+$pictureHeight: 150px;
 $patientMargin: 20px;
-$borderradius: 10px;
-$patientscanNameWrapperHeight: 30px;
+$borderradius: 10px; /* also change patientscanNameWrapperInvisible and patientScan_normal:hover*/
+$patientscanNameWrapperHeight: 30px; /* also change patientscanNameWrapperInvisible */
 $patientBorder-width: 1.5px;
 
-.patient_picture {
-  /* size of picture is fixed, margin will scale with screen-width */
-  width: 250px;
-  height: auto;
-  text-align: center;
-  margin: 10px 10px 10px 10px;
-  border-radius: $borderradius;
-}
-
-.invisible_patient_picture {
-  width: 250px;
-  height: auto;
-  text-align: center;
-  margin: 10px 10px 10px 10px;
-  border-radius: $borderradius;
-  opacity: 0.35;
-}
-
-.patient_button {
-  /* size of button is fixed to size of picture */
-  margin: $patientMargin;
-  width: $patientWidth;
-  text-align: center;
-  background-color: #f8f8f8;
-  border-radius: $borderradius;
-  border-width: $patientBorder-width;
-  border-style: solid;
-  border-color: #fe7d00;
-  flex-basis: auto;
-}
-
-.patient_button:hover { 
-  background-color: #f8f8f8;
-  margin: $patientMargin;
-  width: $patientWidth;
-  text-align: center;
-  border-radius: $borderradius; 
-  box-shadow: 0px 0px 0px 4px #fe7d00 inset; /* on hover make border wider */
-  border-width: $patientBorder-width; 
-  border-style: solid;
-  border-color: #fe7d00;
-  flex-basis: auto;
-
+.scansWrapper {
+  margin-top: 8vh;
+  width: 80vw;
+  float: right;
   display: flex;
-  flex-direction: column;
-  flex-wrap: nowrap;
+  flex-direction: row;
+  flex-wrap: wrap;
   justify-content: space-evenly;
   align-items: center;
 }
 
-.projects {
+.patientScan_container {
+  height: $patientHeight;
+  width: $patientWidth;
+  margin: $patientMargin;
+
+  background-color: #f8f8f8;
+  text-align: center;
+  border-radius: $borderradius;
+
+  border-width: $patientBorder-width;
+  border-style: solid;
+  border-color: #fe7d00;
+}
+
+.picture_wrapper {
+  width: $pictureWidth;
+  height: $pictureHeight;
+  border-radius: $borderradius;
+  overflow: hidden;
+  margin: 10px 0px;
+}
+
+.picture {
+  /* fixed picture height with overflow hidden */
+  width: 100%;
+  height: auto;
+}
+
+.picture_hover {
+  /* fixed picture height with overflow hidden */
+  width: 100%;
+  height: auto;
+
+  opacity: 0.35; /* on hover make picture less visible */
+}
+
+.patientScan_normal {
+  height: 100%;
+  background-color: #f8f8f8;
+  text-align: center;
+  border-radius: $borderradius;
+
   display: flex;
-  column-gap: 20px;
+  flex-direction: column;
+  flex-wrap: nowrap;
   justify-content: space-between;
+  align-items: center;
+  position: relative;
+}
+
+.patientScan_normal:hover {
+  height: 100%;
+  background-color: #f8f8f8;
+  text-align: center;
+  box-shadow: 0px 0px 0px 4px #fe7d00 inset; /* on hover make border wider */
+  border-radius: 8px;
+  position: relative;
+}
+
+.patientScan_dropDown {
+  /* overlay of dropdown on top of patient-button */
+  height: 100%;
+  background-color: white;
+  text-align: center;
+  border-radius: $borderradius;
 }
 
 .patientscanName {
@@ -74,19 +99,47 @@ $patientBorder-width: 1.5px;
   border-radius: 0px 0px $borderradius $borderradius;
 }
 
-.scansWrapper {
-  margin-top: 8vh;
-  width: 80vw;
-  float: right;
-  display: flex;
-  flex-direction: row;
-  flex-wrap: wrap;
-  justify-content: space-evenly;
-  align-items: center;
+.patientscanNameWrapperInvisible {
+  width: 97%;
+  height: 26px;
+  margin-bottom: 4px;
+  background-color: #ebebeb;
+  border-radius: 0px 0px 4px 4px;
 }
 
 .subButtons {
-  /* wrapper around the sub buttons in the patient button */
+  /* wrapper around the sub buttons in the patient */
   margin-bottom: $patientscanNameWrapperHeight;
+  width: $patientWidth;
   position: absolute;
+  top: 55px;
+
+  display: flex;
+  flex-direction: row;
+  flex-wrap: nowrap;
+  justify-content: space-evenly;
+  align-items: center;
+  height: auto;
+}
+
+.dropDownButtonWrapper {
+  /* wrapper around the sub buttons in the dropdown */
+  padding: 8px 0px; /* make the buttons level with the exit dropdown button */
+  padding-left: 8px;
+  float: left;
+  width: 190px;
+
+  display: flex;
+  flex-direction: column;
+  flex-wrap: nowrap;
+  justify-content: space-between;
+  align-items: center;
+  height: 100%;
+}
+
+.projects {
+  /* <----- wat is dit? */
+  display: flex;
+  column-gap: 20px;
+  justify-content: space-between;
 }
