@@ -10,7 +10,6 @@ import { FC } from 'react';
 import { SidebarDoctor } from '../components/header/sidebar';
 import Head from 'next/head';
 
-
 // hard coded patients - 12 scans for 10 patients. Kaatje and Jozef have each 2 scans.
 const patients = [
   {
@@ -153,8 +152,6 @@ const App: FC = () => {
       </Head>
 
       <div>
-        <SidebarDoctor />
-        <HeaderDoctor />
         <div className={styles.scansWrapper}>
           {filteredPatients.map((patient, index) => (
             <div key={`patient${index + 1}`}>
@@ -178,6 +175,8 @@ const App: FC = () => {
           <div className={styles.patient_filler}></div>
           <div className={styles.patient_filler}></div>
         </div>
+        <SidebarDoctor />
+        <HeaderDoctor />
       </div>
     </>
   );

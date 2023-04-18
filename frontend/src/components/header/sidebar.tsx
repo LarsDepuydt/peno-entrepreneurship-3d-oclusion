@@ -44,10 +44,10 @@ export function SidebarPatient({ patientfirstname, patientlastname }: HeaderPati
       <div className={styleSidebar.sidebar}>
         <WelcomingPatient patientfirstname={patientfirstname} patientlastname={patientlastname} />
         <div className={stylesButton.sidebarButton}>
+          <button type="button" className={stylesButton.relu_btn} id={stylesButton.homeIcon} onClick={home}></button>
           <New_Scan />
           <Filter_Tags />
           <ReluLink />
-          <button type="button" className={stylesButton.relu_btn} id={stylesButton.homeIcon} onClick={home}></button>
         </div>
       </div>
     </>

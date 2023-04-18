@@ -65,6 +65,7 @@
   position: absolute;
   bottom: 25px;
   right: 10px;
+  z-index: 10;
 }
 
 #LinkIcon {
@@ -77,6 +78,7 @@
   position: absolute;
   bottom: 25px;
   left: 25px;
+  z-index: 10;
 }
 
 #menuIcon {
