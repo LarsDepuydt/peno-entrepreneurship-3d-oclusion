@@ -67,7 +67,7 @@ func SendMenuOption(req *connect.Request[threedoclusionv1.SendMenuOptionRequest]
 		log.Println("Menu option Save was chosen");
 		// req.Msg.GetSaveData() Pass this to the method -> make abstraction
 
-		statement, error := database.Prepare("INSERT INTO scan (id, lowerX, lowerY, lowerZ, lowerRX, lowerRY, lowerRZ, upperX, upperY, upperZ, upperRX, upperRY, upperRZ, date) VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12, $13, $14)")
+		statement, error := database.Prepare("INSERT INTO scan_save (scan_id, lowerX, lowerY, lowerZ, lowerRX, lowerRY, lowerRZ, upperX, upperY, upperZ, upperRX, upperRY, upperRZ, date_scan) VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12, $13, $14)")
 		if error != nil {
 			return nil, error
 		}
@@ -83,7 +83,6 @@ func SendMenuOption(req *connect.Request[threedoclusionv1.SendMenuOptionRequest]
 
 		msg := "Saved successfully"
 		res := connect.NewResponse(&threedoclusionv1.SendMenuOptionResponse{
-			//OptionData: &threedoclusionv1.SendMenuOptionResponse_OtherData{"Saved successfully"},
 			OtherData: &msg,
 			
 		})
@@ -92,7 +91,7 @@ func SendMenuOption(req *connect.Request[threedoclusionv1.SendMenuOptionRequest]
 	case 1:
 		log.Println("Menu option Load was chosen");
 
-		statement := "SELECT * FROM scan WHERE id = $1;"
+		statement := "SELECT * FROM scan_save WHERE scan_id = $1;"
 		rows, error := database.Query(statement, req.Msg.GetScanId())
 		if error != nil {
 			return nil, error
@@ -115,7 +114,7 @@ func SendMenuOption(req *connect.Request[threedoclusionv1.SendMenuOptionRequest]
 		log.Println("Menu option Save and Quit was chosen");
 		// Save And Quit data -> Scan save
 		// req.Msg.GetSaveAndQuitData() Pass this to the method -> make abstraction
-		statement, error := database.Prepare("INSERT INTO scan (id, lowerX, lowerY, lowerZ, lowerRX, lowerRY, lowerRZ, upperX, upperY, upperZ, upperRX, upperRY, upperRZ , date) VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12, $13, $14)")
+		statement, error := database.Prepare("INSERT INTO scan_save (scan_id, lowerX, lowerY, lowerZ, lowerRX, lowerRY, lowerRZ, upperX, upperY, upperZ, upperRX, upperRY, upperRZ , date_scan) VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12, $13, $14)")
 		if error != nil {
 			return nil, error
 		}

@@ -34,6 +34,3 @@ CREATE TABLE scan_tag (
     tag_id INTEGER REFERENCES tag(id),
     UNIQUE (scan_id, tag_id)
 );
-
-
-
