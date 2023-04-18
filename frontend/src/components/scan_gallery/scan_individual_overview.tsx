@@ -64,10 +64,10 @@ export function SingleScan({ scanid, patientid, picture, date }: scanProfile) {
           <button type="button" className={styleB.relu_btn} id={styleB.exitIcon} onClick={handleDropGone}></button>
           <div className={styles.dropDownButtonWrapper}>
             <button className={styleB.relu_btn} id={styleB.dropDownButton}>
-              test
+              view scan
             </button>
             <button className={styleB.relu_btn} id={styleB.dropDownButton}>
-              test
+              view transformation
             </button>
             <button className={styleB.relu_btn} id={styleB.dropDownButton}>
               test

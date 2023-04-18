@@ -65,6 +65,16 @@
   padding-bottom: 15px;
 }
 
+#waitIcon {
+  width: 48px;
+  height: 48px;
+  margin: 20px 30px;
+  background-image: url(../../public/settings_icon.png);
+  background-repeat: no-repeat;
+  background-position: center;
+  border: none;
+}
+
 #homeIcon {
   width: 48px;
   height: 48px;
@@ -144,9 +154,10 @@
   width: 48px;
   height: 48px;
   margin: 8px;
-  background-image: url(../../public/open-VR-icon.png);
+  background-image: url(../../public/VR_icon.png);
   background-repeat: no-repeat;
   background-position: center;
+  border: none;
 }
 
 #editIcon {
@@ -163,7 +174,8 @@
   width: 48px;
   height: 48px;
   margin: 8px;
-  background-image: url(../../public/menu-icon.png);
+  background-image: url(../../public/loading_icon.png);
   background-repeat: no-repeat;
   background-position: center;
+  border: none;
 }
