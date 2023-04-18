@@ -1,7 +1,10 @@
 import Image, { StaticImageData } from 'next/image';
 import { useRouter } from 'next/router';
+import { InspectScans } from '../../components/patient/inspect_scans';
 
-import styles from '@/styles/PatientPage.module.css';
+import styles from '@/styles/PatientPage.module.scss';
+import DeleteButton from '../patient/delete_patient';
+import React, { useState } from 'react';
 
 interface patientProfile {
   id: number;
@@ -10,34 +13,42 @@ interface patientProfile {
   patientlastname: string;
 }
 
-export function SinglePatient({ picture, patientfirstname, patientlastname }: patientProfile) {
-  const router = useRouter();
+export function SinglePatient({ id, picture, patientfirstname, patientlastname }: patientProfile) {
+  const [showButtons, setShowButtons] = useState(false);
 
-  const clickPatient = () => {
-    router.push({
-      pathname: '/scans-page',
-      query: {
-        patientfirstname,
-        patientlastname,
-      },
-    });
+  const handleMouseEnter = () => {
+    setShowButtons(true);
   };
 
+  const handleMouseLeave = () => {
+    setShowButtons(false);
+  };
+
+  const router = useRouter();
+
   return (
-    <div className={styles.patient_button}>
-      <div onClick={clickPatient}>
-        <Image
-          id={patientfirstname.concat(' ', patientlastname)}
-          className={styles.patient_picture}
-          src={picture}
-          alt="3d picture of teeth"
-          width={100}
-        />
-        <div className={styles.patientscanNameWrapper}>
-          <p className={styles.patientscanName}>{patientfirstname.concat(' ', patientlastname)}</p>
+    <div className={styles.patient_button} onMouseEnter={handleMouseEnter} onMouseLeave={handleMouseLeave}>
+      <Image
+        id={patientfirstname.concat(' ', patientlastname)}
+        className={showButtons ? styles.invisible_patient_picture : styles.patient_picture}
+        src={picture}
+        alt="3d picture of teeth"
+      />
+      {showButtons && (
+        <div className={styles.subButtons}>
+          {' '}
+          {/* Patient: delete-patient, inspect-scans, edit-patient( also edits notes )*/}
+          {/* Scan: delete-scan, inspect-scans-VR, edit-patient( also edits notes ), export-scan | show notes of the patient in the sidebar*/}
+          <DeleteButton />
+          <DeleteButton />
+          <DeleteButton />
         </div>
-        {/* <button onClick={handleDelete}>Delete</button> */}
+      )}
+
+      <div className={styles.patientscanNameWrapper}>
+        <p className={styles.patientscanName}>{patientfirstname.concat(' ', patientlastname)}</p>
       </div>
+      <InspectScans patientID={id} />
     </div>
   );
 }

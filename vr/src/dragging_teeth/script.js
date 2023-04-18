@@ -3,7 +3,7 @@ import { OrbitControls } from 'three/addons/controls/OrbitControls.js';
 import { VRButton } from 'three/addons/webxr/VRButton.js';
 import { XRControllerModelFactory } from 'three/addons/webxr/XRControllerModelFactory.js';
 import { OBJLoader } from 'three/addons/loaders/OBJLoader.js';
-import * as dat from 'dat';
+//import * as dat from 'dat';
 //import * as fs from '../../node_modules/fs';
 import { OBJExporter } from 'three/addons/exporters/OBJExporter.js';
 
@@ -21,7 +21,6 @@ let controls, group;
 
 init();
 animate();
-
 
 function init() {
     // create container
@@ -90,6 +89,7 @@ function init() {
             lowerjaw.rotation.x = 1.5 * Math.PI
             //lowerjaw.rotation.y = Math.PI
             lowerjaw.scale.setScalar(0.01);
+
             group.add(lowerjaw);
 
             console.log("Object3D? " + lowerjaw.isObject3D);
@@ -120,8 +120,10 @@ function init() {
             upperjaw.rotation.x = 1.5 * Math.PI
             //upperjaw.rotation.y = Math.PI
             upperjaw.scale.setScalar(0.01);
-            group.add(upperjaw);
+            upperjaw.name = "upperjaw";
 
+
+            group.add(upperjaw);
             console.log("Object3D? " + upperjaw.isObject3D);
             console.log("Mesh?")
         },
@@ -136,7 +138,6 @@ function init() {
         }
     );
  
-
     // add renderer and enable VR
 
     renderer = new THREE.WebGLRenderer( { antialias: true } );
@@ -155,26 +156,13 @@ function init() {
 
         var controls = new function () {
             this.saveScene = function () {
-                const exporter = new OBJExporter();
+                //const exporter = new OBJExporter();
                 // Parse the input and generate the OBJ output
-                const data = exporter.parse( scene );
-                downloadFile( data );
-                // upperjaw.position.x =  upperX
-                // upperjaw.position.y = new upperY
-                // upperjaw.position.z = new upperZ
-
-                // lowerjaw.position.x = new lowerX
-                // lowerjaw.position.y = new lowerY
-                // lowerjaw.position.Z = new lowerZ
-                //const fs = require("fs");
-                //var fs = require("fs");
-                // const stringToWrite = "HELLO I AM WRITTEN TO THE FILE";
-
-                // fs.writeFile("./scan_meta.txt", stringToWrite, (err) => {if (err) {console.error(err);return;
-                // }
-                //     });
-                // console.log("Data has been Written");
-            };
+                //const data = exporter.parse( scene );
+                //var target = new THREE.Vector3();
+                //upperjaw.getWorldPosition(target);
+                //console.log("X:",target.x,"Y:",target.y,"Z:",target.z);
+            }
 
             this.importScene = function () {
                 // var json = (localStorage.getItem('scene'));
@@ -194,11 +182,9 @@ function init() {
             }
         };
 
-        var gui = new dat.GUI();
-        gui.add(controls, "saveScene");
-        gui.add(controls, "importScene");
-
-
+        //var gui = new dat.GUI();
+        //gui.add(controls, "saveScene");
+        //gui.add(controls, "importScene");
 
     // controllers
 
@@ -354,10 +340,11 @@ function cleanIntersected() {
 
 }
 
-//
-
 function animate() {
+<<<<<<< HEAD
 
+=======
+>>>>>>> 67c0a5d7600c5620173c3949d4ffebee81c4026b
     renderer.setAnimationLoop( render );
 }
 
@@ -398,7 +385,7 @@ const zoomInFunction = (e) => {
   camera.updateProjectionMatrix();
 };
 
-zoomInButton.addEventListener("click", zoomInFunction);
+//zoomInButton.addEventListener("click", zoomInFunction);
 
 const zoomOutFunction = (e) => {
   const fov = getFov();
@@ -406,7 +393,7 @@ const zoomOutFunction = (e) => {
   camera.updateProjectionMatrix();
 };
 
-zoomOutButton.addEventListener("click", zoomOutFunction);
+//zoomOutButton.addEventListener("click", zoomOutFunction);
 
 const clickZoom = (value, zoomType) => {
   if (value >= 20 && zoomType === "zoomIn") {
