@@ -1,4 +1,3 @@
-import React, { useState } from 'react';
 import { Formik, Field, Form, ErrorMessage } from 'formik';
 
 import styles from '@/styles/Modal.module.css';
@@ -6,12 +5,17 @@ import styleB from '@/styles/Buttons.module.css';
 
 import 'bootstrap/dist/css/bootstrap.css';
 
+import { useQuery } from '@tanstack/react-query';
+import { addPatient } from '@/gen/proto/threedoclusion/v1/service-ScanService_connectquery';
+import { useEffect, useState } from 'react';
+
 interface patientValues {
-  patientID: string;
+  //patientID: string;
   patientFirstName: string;
   patientLastName: string;
 
   pinned: boolean;
+  // kunnen we van pinned een boolean maken?
   notes: string;
 }
 
@@ -19,9 +23,30 @@ export default function ModalForm() {
   const [modal, setModal] = useState(false);
   // modal is not toggled at first
 
+  const [patientinfo, setData] = useState({
+    //patientID: '',
+    patientFirstName: '',
+    patientLastName: '',
+    pinned: false,
+    notes: '',
+  });
+
+  const { data } = useQuery(addPatient.useQuery(patientinfo));
+  // kunnen we van pinned een boolean maken?
+
   const toggleModal = () => {
     setModal(!modal); // change state f -> t and t -> f
   };
+
+  const submitFunction = (values: patientValues) => {
+    console.log(values);
+    //setData(values);
+    setModal(!modal);
+  };
+
+  // useEffect(() => {
+  // }, [data, patientinfo]);
+  // heeft geen effect ?
 
   return (
     <>
@@ -47,10 +72,7 @@ export default function ModalForm() {
                   notes: '',
                 }}
                 // on Submit we console the values + close the popup tab
-                onSubmit={(values) => {
-                  console.log(values);
-                  setModal(!modal);
-                }}
+                onSubmit={submitFunction}
               >
                 {({ errors, status, touched }) => (
                   <Form>

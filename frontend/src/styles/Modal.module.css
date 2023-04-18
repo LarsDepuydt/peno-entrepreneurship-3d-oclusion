@@ -2,7 +2,8 @@ module body.active_modal {
   overflow-y: hidden;
 }
 
-.btn_modal { /* add patient and scan */
+.btn_modal {
+  /* add patient and scan */
   text-align: center;
   margin: 20px 0px;
 }
