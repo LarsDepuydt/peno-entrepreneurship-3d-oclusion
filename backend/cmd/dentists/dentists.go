@@ -86,7 +86,7 @@ func GetAllDentists(req *connect.Request[threedoclusionv1.GetAllDentistsRequest]
 
 func GetDentistById(req *connect.Request[threedoclusionv1.GetDentistByIdRequest], database *sql.DB) (*connect.Response[threedoclusionv1.GetDentistByIdResponse], error) {
 	sqlStatement := `
-		SELECT id, email, first_name, last_name
+		SELECT id, email, firstname, lastname
 		FROM dentist
 		WHERE id = $1;
 	`
@@ -116,7 +116,7 @@ func GetDentistById(req *connect.Request[threedoclusionv1.GetDentistByIdRequest]
 
 func Login(req *connect.Request[threedoclusionv1.LoginRequest], database *sql.DB) (*connect.Response[threedoclusionv1.LoginResponse], error) {
 	sqlStatement := `
-		SELECT id, email, first_name, last_name
+		SELECT id, email, firstname, lastname
 		FROM dentist
 		WHERE email = $1;
 	`
@@ -177,16 +177,54 @@ func Register(req *connect.Request[threedoclusionv1.RegisterRequest], database *
 }
 
 func UpdateDentistById(req *connect.Request[threedoclusionv1.UpdateDentistByIdRequest], database *sql.DB) (*connect.Response[threedoclusionv1.UpdateDentistByIdResponse], error) {
+	// Get original data
+	sqlStatement := `
+		SELECT email, firstname, lastname, password
+		FROM dentist
+		WHERE id = $1;
+	`
+	var old_email string
+	var old_firstName string
+	var old_lastName string
+	var old_password string
+	
+	// Perform the database query
+	error := database.QueryRow(sqlStatement, req.Msg.Id).Scan(&old_email, &old_firstName, &old_lastName, &old_password)
+	if error != nil {
+		return nil, error
+	}
+
+	// Set fallback values
+	var email = req.Msg.Email
+	if email == nil {
+		email = &old_email
+	}
+
+	var firstName = req.Msg.FirstName
+	if firstName == nil {
+		firstName = &old_email
+	}
+
+	var lastName = req.Msg.LastName
+	if lastName == nil {
+		lastName = &old_lastName
+	}
+
+	var password = req.Msg.Password
+	if password == nil {
+		password = &old_password
+	}
+	
 	// Perform the database modification
-	_, error := database.Exec(
+	_, error = database.Exec(
 		"UPDATE dentist SET email=$2, password=$3, firstname=$4, lastname=$5 WHERE id = $1 ;", 
-		req.Msg.Id, req.Msg.Email, req.Msg.Password, req.Msg.FirstName, req.Msg.LastName,
+		req.Msg.Id, email, password, firstName, lastName,
 	)
 	if error != nil {
 		return nil, error
 	}
 
-	responseMessage := fmt.Sprintf("Dentist with email: %d updated with succes", req.Msg.Email)
+	responseMessage := fmt.Sprintf("Dentist with email: %s updated with succes", old_email)
 	fmt.Println(responseMessage)
 
 	// TODO: fix token
