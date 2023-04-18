@@ -21,8 +21,7 @@ type InspectVRProps = {
   
       return (
           <div>
-              <button type="button" className={styleB.relu_btn} onClick={clickPatient}>
-              Inspect VR
+              <button type="button" className={styleB.relu_btn} id={styleB.InspectVR} onClick={clickPatient}>
               </button>
           </div>
         );
