@@ -67,7 +67,7 @@ func SendMenuOption(req *connect.Request[threedoclusionv1.SendMenuOptionRequest]
 		log.Println("Menu option Save was chosen");
 		// req.Msg.GetSaveData() Pass this to the method -> make abstraction
 
-		statement, error := database.Prepare("INSERT INTO scan (id, x, y, z, r_x, r_y, r_z, date) VALUES ($1, $2, $3, $4, $5, $6, $7, $8)")
+		statement, error := database.Prepare("INSERT INTO scan (id, lowerX, lowerY, lowerZ, lowerRX, lowerRY, lowerRZ, upperX, upperY, upperZ, upperRX, upperRY, upperRZ, date) VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12, $13, $14)")
 		if error != nil {
 			return nil, error
 		}
@@ -115,7 +115,7 @@ func SendMenuOption(req *connect.Request[threedoclusionv1.SendMenuOptionRequest]
 		log.Println("Menu option Save and Quit was chosen");
 		// Save And Quit data -> Scan save
 		// req.Msg.GetSaveAndQuitData() Pass this to the method -> make abstraction
-		statement, error := database.Prepare("INSERT INTO scan (id, x, y, z, r_x, r_y, r_z, date) VALUES ($1, $2, $3, $4, $5, $6, $7, $8)")
+		statement, error := database.Prepare("INSERT INTO scan (id, lowerX, lowerY, lowerZ, lowerRX, lowerRY, lowerRZ, upperX, upperY, upperZ, upperRX, upperRY, upperRZ , date) VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12, $13, $14)")
 		if error != nil {
 			return nil, error
 		}
