@@ -12,15 +12,15 @@ import reluLogo from '../../../public/relu-logo-small.png';
 
 import { useQuery, useMutation } from '@tanstack/react-query';
 import { register } from '@/gen/proto/threedoclusion/v1/service-ScanService_connectquery';
-import { SetStateAction, useState } from 'react';
+import { SetStateAction, useEffect, useState } from 'react';
 
 const FormSchema = yup.object().shape({
   reppassword: yup.string().oneOf([yup.ref('password')], 'this does not match your password'),
 });
 
 interface RUser {
-  doctorFirstName: string;
-  doctorLastName: string;
+  firstName: string;
+  lastName: string;
 
   email: string;
   password: string;
@@ -28,23 +28,21 @@ interface RUser {
 }
 
 export default function LoginForm() {
-  const [email, setEmail] = useState('');
-  const [firstName, setFirstName] = useState('');
-  const [LastName, setLastName] = useState('');
-  const [password, setPassword] = useState('');
+  const [credentials, setData] = useState({ email: '', password: '', firstName: '', lastName: '' });
 
-  const reg_call = (values: RUser) => {
-    const { data } = useQuery(
-      register.useQuery({
-        email: values.email,
-        password: values.password,
-        firstName: values.doctorFirstName,
-        lastName: values.doctorLastName,
-      })
-    );
-    return data;
-  };
+  const { data } = useQuery(register.useQuery(credentials));
+
   const router = useRouter();
+
+  const submitFunction = (values: RUser) => {
+    console.log(values);
+
+    setData(values);
+  };
+
+  useEffect(() => {
+    data?.token && credentials.email && router.push('/patient');
+  }, [data, credentials]);
 
   const toLogin = () => router.push('/login-page');
 
@@ -54,21 +52,15 @@ export default function LoginForm() {
 
       <Formik
         initialValues={{
-          doctorFirstName: '',
-          doctorLastName: '',
+          firstName: '',
+          lastName: '',
 
           email: '',
           password: '',
           reppassword: '',
         }}
         validationSchema={FormSchema}
-        onSubmit={(values) => {
-          console.log('button was clicked');
-          // const data = reg_call(values);
-
-          //console.log(data && data.message);
-          router.push('/patient');
-        }}
+        onSubmit={submitFunction}
       >
         {({ errors }) => (
           <Form className={styles.center}>
@@ -76,8 +68,8 @@ export default function LoginForm() {
               <div className="mb-3">
                 <Field
                   className="form-control"
-                  id="doctorFirstName"
-                  name="doctorFirstName"
+                  id="firstName"
+                  name="firstName"
                   placeholder="First Name"
                   aria-describedby="doctorFirstNameHelp"
                 />
@@ -86,8 +78,8 @@ export default function LoginForm() {
               <div className="mb-3">
                 <Field
                   className="form-control"
-                  id="doctorLastName"
-                  name="doctorLastName"
+                  id="lastName"
+                  name="lastName"
                   placeholder="Last Name"
                   aria-describedby="doctorLastNameHelp"
                 />
