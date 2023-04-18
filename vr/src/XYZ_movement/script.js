@@ -2,15 +2,20 @@ import * as THREE from 'three';
 import { OrbitControls } from 'three/addons/controls/OrbitControls.js';
 import { VRButton } from 'three/addons/webxr/VRButton.js';
 import { XRControllerModelFactory } from 'three/addons/webxr/XRControllerModelFactory.js';
+import { CSS2DRenderer, CSS2DObject } from 'three/addons/renderers/CSS2DRenderer.js';
 import { OBJLoader } from 'three/addons/loaders/OBJLoader.js';
 import * as CANNON from 'cannon-es';
 import { MeshBVH, acceleratedRaycast } from 'three-mesh-bvh';
 import { default as CannonUtils } from 'cannon-utils';
 
 //added
-//let meshtest;
+//let meshtest; ²
 //var constrained;
 //
+
+var fireText = "";
+var session;
+const prevGamePads = new Map();
 
 const SCALE_MODEL = 0.01;
 const intersected = [];
@@ -202,6 +207,8 @@ function initThree() {
     scene.add( controller2 );
 
 
+    session = renderer.xr.getSession();
+
     // add controller models
 
     const controllerModelFactory = new XRControllerModelFactory();
@@ -242,8 +249,30 @@ function initThree() {
     
 
     // resize
+    const moonMassDiv = document.createElement( 'div' );
+    moonMassDiv.className = 'label';
+    moonMassDiv.textContent = '7.342e22 kg';
+    moonMassDiv.style.backgroundColor = 'transparent';
+    const moonMassLabel = new CSS2DObject( moonMassDiv );
+    moonMassLabel.position.set( 1.5 * 5, 0, 0 );
+    moonMassLabel.center.set( 0, 0 );
+    moon.add( moonMassLabel );
+    moonMassLabel.layers.set( 1 );
 
-    window.addEventListener( 'resize', onWindowResize );
+				//
+
+				/*renderer = new THREE.WebGLRenderer();
+				renderer.setPixelRatio( window.devicePixelRatio );
+				renderer.setSize( window.innerWidth, window.innerHeight );
+				document.body.appendChild( renderer.domElement );*/
+
+				labelRenderer = new CSS2DRenderer();
+				labelRenderer.setSize( window.innerWidth, window.innerHeight );
+				labelRenderer.domElement.style.position = 'absolute';
+				labelRenderer.domElement.style.top = '0px';
+				document.body.appendChild( labelRenderer.domElement );
+
+  window.addEventListener( 'resize', onWindowResize );
 
 }
 
@@ -257,11 +286,11 @@ function changeControlledCoordinates( controller, coordinate ){ // 0, 1, 2: x, y
             break;
         }
         case 1: {
-            controller.userData.selected.position.setY(controller.position.y / SCALE_MODEL);
+            controller.userData.selected.position.setZ(controller.position.y / SCALE_MODEL);
             break;
         }
         case 2: {
-            controller.userData.selected.position.setZ(controller.position.z / SCALE_MODEL);
+            controller.userData.selected.position.setY(-controller.position.z / SCALE_MODEL);
             break;
         }
         case 3: {
@@ -273,9 +302,54 @@ function changeControlledCoordinates( controller, coordinate ){ // 0, 1, 2: x, y
 
     }
 }
+var lockstatus = 0;
+function beforeRender( controller ) {
+    session = renderer.xr.getSession();
+    let ii = 0;
+    //console.log(session);
+    if (session) {
+        for (const source of session.inputSources) {
+            if (source && source.handedness) {
+                var handedness = source.handedness; //left or right controllers
+            }
+            if (!source.gamepad) continue;
+            const controller = renderer.xr.getController(ii++);
+            const old = prevGamePads.get(source);
+            const data = {
+                handedness: handedness,
+                buttons: source.gamepad.buttons.map((b) => b.value),
+                axes: source.gamepad.axes.slice(0)
+            };
+            //console.log(data.buttons);
+            if (data.buttons[0] == 1 && lockstatus == 0) {
+                //lockstatus += 1;
+                window.fireText = "X-axis locked";
+                changeControlledCoordinates(controller, 0);
+            }
 
-function beforeRender( controller ){
-    changeControlledCoordinates(controller, 3);
+            /*else if (data.buttons[0] == 1 && lockstatus == 1) {
+                lockstatus += 1;
+                fireText = "Y-axis locked";
+                changeControlledCoordinates(controller, 1);
+            }
+            else if (data.buttons[0] == 1 && lockstatus == 2) {
+                lockstatus = 0;
+                fireText = "Z-axis locked";
+                changeControlledCoordinates(controller, 2);
+            }*/
+            else {
+                fireText = "";
+                changeControlledCoordinates(controller, 3);
+            }
+
+    //console.log(data);
+    //console.log(value);
+    
+
+    }}
+
+    
+    //changeControlledCoordinates(controller, 3);
 }
 
 /*//added
@@ -305,7 +379,7 @@ function onSelectStart( event ) {
     const controller = event.target;
 
     const intersections = getIntersections( controller );
-    console.log(intersections);
+    //console.log(intersections);
     if ( intersections.length > 0 ) {
         var object_group;
         const intersection = intersections[ 0 ];
@@ -318,7 +392,7 @@ function onSelectStart( event ) {
 
         //console.log(object);
         //object = uj_group;
-        controller.attach( object_group );
+        //controller.attach( object_group );
         //console.log(object);
         //console.log(uj_body);
 
@@ -775,8 +849,8 @@ function render() {
     intersectObjects( controller2 );
 
     // Voor axis locking, work in progress
-    //beforeRender(controller1);
-    //beforeRender(controller2);
+    beforeRender(controller1);
+    beforeRender(controller2);
 
     renderer.render( scene, camera );
 }

@@ -4,7 +4,26 @@
 		<meta charset="utf-8">
 		<title>Grab in VR</title>
 		<style>
-			body { margin: 0; }
+			body {
+				overflow: hidden;
+				margin: 0;
+			}
+
+			.ui {
+				position: absolute;
+			}
+
+			p {
+				margin: 20px;
+			}
+			#overlayText {
+				position: absolute;
+				top: 50%;
+				left: 50%;
+				transform: translate(-50%, -50%);
+				font-size: 24px;
+				color: rgb(50, 12, 202);
+			}
 		</style>
 
 		<script type="importmap">
@@ -20,9 +39,17 @@
 				}
 			}
 		</script>
-		
 	</head>
 	<body>
+		<p style="top:0;" id="fire" class="ui"></p>
+
 		<script src="script.js" type="module"></script>
+		<script>
+			window.onload = function() {
+				document.getElementById("fire").innerHTML = window.fireText;
+			}
+		</script>
+		<div id="overlayText"></div>
+
 	</body>
 </html>
