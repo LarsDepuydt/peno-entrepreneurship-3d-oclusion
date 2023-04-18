@@ -95,6 +95,8 @@ func GetDentistById(req *connect.Request[threedoclusionv1.GetDentistByIdRequest]
 }
 
 func Login(req *connect.Request[threedoclusionv1.LoginRequest], database *sql.DB) (*connect.Response[threedoclusionv1.LoginResponse], error) {
+	fmt.Println("test")
+	
 	// Perform the database modification
 	_, error := database.Query("SELECT * FROM dentist WHERE email = $1;", req.Msg.Email)
 	if error != nil {
