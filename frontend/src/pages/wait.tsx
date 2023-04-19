@@ -94,7 +94,7 @@ export default function WaitPage() {
       }
     }
   }
-
+  
   useEffect(() => {
     const cookieCode = Cookies.get('cookie');
 
@@ -109,7 +109,7 @@ export default function WaitPage() {
     else {
       let cookieActive = false;
     }
-  }, []);
+  }, [router.pathname]);
 
   return (
     <div>
