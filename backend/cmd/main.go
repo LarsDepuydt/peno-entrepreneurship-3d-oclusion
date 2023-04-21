@@ -3,19 +3,16 @@ package main
 import (
 	"database/sql"
 	"fmt"
-	"log"
-	"net/http"
-	"os"
 
 	"github.com/LarsDepuydt/peno-entrepreneurship-3d-oclusion/cmd/serve"
 )
 
 const (
-  host     = "db"
+  host     = "34.78.71.210"
   port     = 5432
-  user     = "docker"
-  password = "docker1"
-  dbname   = "patient_server"
+  user     = "postgres"
+  password = "relu-sql-db"
+  dbname   = "relu-backend:europe-west1:relu-sql-db"
 )
 
 
@@ -39,21 +36,6 @@ func main() {
 
   	fmt.Println("Successfully connected!")
 
-	port := os.Getenv("PORT")
-	if port == "" {
-		port = "8080" // Set a default port if not provided
-		fmt.Println(port)
-	}
-  
-	http.HandleFunc("/", func(w http.ResponseWriter, r *http.Request) {
-		fmt.Fprint(w, "Hello, World!")
-	})
-		
-	log.Printf("Starting server on :%s", port)
-	fmt.Printf("Starting server on :%s", port)
-	if err := http.ListenAndServe(":"+port, nil); err != nil {
-		log.Fatalf("Server failed to start: %v", err)
-	}
 	
 	serve.Server(database)
 }

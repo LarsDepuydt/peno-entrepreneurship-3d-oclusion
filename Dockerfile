@@ -51,5 +51,5 @@ RUN --mount=type=cache,mode=0777,target=/go/pkg/mod \
 FROM scratch AS backend
 WORKDIR /
 COPY --from=backend-builder /usr/src/app/backend/serve ./
-ENV PORT 8080
+#ENV PORT 8080
 ENTRYPOINT ["/serve"]

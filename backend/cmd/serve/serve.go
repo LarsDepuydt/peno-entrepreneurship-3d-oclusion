@@ -3,7 +3,9 @@ package serve
 import (
 	"context"
 	"database/sql"
+	"fmt"
 	"net/http"
+	"os"
 
 	"github.com/LarsDepuydt/peno-entrepreneurship-3d-oclusion/cmd/dentists"
 	"github.com/LarsDepuydt/peno-entrepreneurship-3d-oclusion/cmd/help_datastructures"
@@ -39,17 +41,25 @@ func setCors(mux http.Handler) http.Handler {
 }
 
 func Server(database *sql.DB) {
+	port := os.Getenv("PORT")
+	if port == "" {
+		port = "8080" // Set a default port if not provided
+		fmt.Println(port)
+	}
+		
+	
 	redirectVRChannels := help_datastructures.NewMap()
 	server := &ServerStruct{database, redirectVRChannels}
-
 	mux := http.NewServeMux()
 	path, handler := threedoclusionv1connect.NewScanServiceHandler(server)
 	mux.Handle(path, handler)
+	mux.HandleFunc("/", func(w http.ResponseWriter, r *http.Request) {
+		fmt.Fprint(w, "Hello, World!")
+	})
 
 	muxHandler := setCors(mux)
-
 	http.ListenAndServe(
-		"0.0.0.0:8080",
+		"0.0.0.0:"+port,
 		// Use h2c so we can serve HTTP/2 without TLS.
 		h2c.NewHandler(muxHandler, &http2.Server{}),
 	)
