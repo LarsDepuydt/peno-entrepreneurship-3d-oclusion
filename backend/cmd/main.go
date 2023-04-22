@@ -8,7 +8,7 @@ import (
 )
 
 const (
-  host     = "db"
+  host     = "cloud-sql-proxy"
   port     = 5432
   user     = "docker"
   password = "docker1"
