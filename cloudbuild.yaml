@@ -1,12 +1,16 @@
 steps:
 - name: 'gcr.io/cloud-builders/docker'
-  entrypoint: 'bash'
   args:
-  - '-c'
-  - |
-    export DOCKER_BUILDKIT=1 &&
-    export TAG_NAME=gcr.io/$PROJECT_ID/backend:$COMMIT_SHA &&
-    docker build -t $TAG_NAME --build-arg DOCKERFILE_PATH=./Dockerfile --push .
+  - 'build'
+  - '--build-arg'
+  - 'DOCKERFILE_PATH=./backend/Dockerfile'
+  - '-f'
+  - './backend/Dockerfile'
+  - '-t'
+  - 'gcr.io/$PROJECT_ID/backend:$COMMIT_SHA'
+  - '.'
+- name: 'gcr.io/cloud-builders/docker'
+  args: ['push', 'gcr.io/$PROJECT_ID/backend:$COMMIT_SHA']
 - name: 'gcr.io/google.com/cloudsdktool/cloud-sdk'
   entrypoint: 'gcloud'
   args:
