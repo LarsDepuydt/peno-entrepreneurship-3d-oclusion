@@ -85,7 +85,7 @@ func GetAllPatients(req *connect.Request[threedoclusionv1.GetAllPatientsRequest]
 
 	fmt.Println("Got all patients successfully")
 
-	patientsApi := MapDentistsToApi(patients)
+	patientsApi := MapPatientsToApi(patients)
 
 	res := connect.NewResponse(&threedoclusionv1.GetAllPatientsResponse{
 		Patients: patientsApi,
@@ -156,7 +156,7 @@ func GetPatientByName(req *connect.Request[threedoclusionv1.GetPatientByNameRequ
 	responseMessage := fmt.Sprintf("patient with first name: %s returned with succes;", req.Msg.FirstName)
 	fmt.Println(responseMessage)
 
-	patientsApi := MapDentistsToApi(patients)
+	patientsApi := MapPatientsToApi(patients)
 
 	res := connect.NewResponse(&threedoclusionv1.GetPatientByNameResponse{
 		Patients: patientsApi,
@@ -195,12 +195,12 @@ func UpdatePatientById(req *connect.Request[threedoclusionv1.UpdatePatientByIdRe
 		lastName = &old_lastName
 	}
 
-	var pinned bool = false
-	if req.Msg.Pinned != nil {
-    pinned = req.Msg.Pinned
-	} else  if old_pinned != nil{
-		pinned = &old_pinned
-	}
+	var pinned = false
+	// if req.Msg.Pinned != nil {
+  //   pinned = req.Msg.Pinned
+	// } else  if old_pinned != nil{
+	// 	pinned = *old_pinned
+	// }
 
 	pinnedDatabase := 0
 	if pinned == true {
@@ -229,7 +229,6 @@ func UpdatePatientById(req *connect.Request[threedoclusionv1.UpdatePatientByIdRe
 	responseMessage := fmt.Sprintf("Patient with id: %d updated with succes", req.Msg.Id)
 	fmt.Println(responseMessage)
 
-	// TODO: fix token
 	res := connect.NewResponse(&threedoclusionv1.UpdatePatientByIdResponse{
 		Message: responseMessage,
 	})

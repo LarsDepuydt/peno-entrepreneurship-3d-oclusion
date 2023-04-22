@@ -5,7 +5,7 @@
 
 import { createQueryService } from "@bufbuild/connect-query";
 import { MethodKind } from "@bufbuild/protobuf";
-import { AddDentistRequest, AddDentistResponse, AddPatientRequest, AddPatientResponse, AddScanRequest, AddScanResponse, AddTagRequest, AddTagResponse, DeleteDentistByIdRequest, DeleteDentistByIdResponse, DeletePatientByIdRequest, DeletePatientByIdResponse, DeleteScanRequest, DeleteScanResponse, DeleteTagRequest, DeleteTagResponse, GetAllDentistsRequest, GetAllDentistsResponse, GetAllPatientsRequest, GetAllPatientsResponse, GetAllScansRequest, GetAllScansResponse, GetAllTagsByTypeRequest, GetAllTagsByTypeResponse, GetAllTagsRequest, GetAllTagsResponse, GetDentistByIdRequest, GetDentistByIdResponse, GetPatientByIdRequest, GetPatientByIdResponse, GetPatientByNameRequest, GetPatientByNameResponse, GetPositionScanRequest, GetPositionScanResponse, GetScanByDateRequest, GetScanByDateResponse, GetScanByIDRequest, GetScanByIDResponse, GetTagByIDRequest, GetTagByIDResponse, LoginRequest, LoginResponse, RegisterRequest, RegisterResponse, SendPositionScanRequest, SendPositionScanResponse, SendVRRequest, SendVRResponse, UpdateDentistByIdRequest, UpdateDentistByIdResponse, UpdatePatientByIdRequest, UpdatePatientByIdResponse } from "./service_pb.js";
+import { AddDentistRequest, AddDentistResponse, AddPatientRequest, AddPatientResponse, AddScanRequest, AddScanResponse, AddTagRequest, AddTagResponse, DeleteDentistByIdRequest, DeleteDentistByIdResponse, DeletePatientByIdRequest, DeletePatientByIdResponse, DeleteScanByIdRequest, DeleteScanByIdResponse, DeleteTagByIdRequest, DeleteTagByIdResponse, GetAllDentistsRequest, GetAllDentistsResponse, GetAllPatientsRequest, GetAllPatientsResponse, GetAllScansRequest, GetAllScansResponse, GetAllTagsRequest, GetAllTagsResponse, GetDentistByIdRequest, GetDentistByIdResponse, GetPatientByIdRequest, GetPatientByIdResponse, GetPatientByNameRequest, GetPatientByNameResponse, GetPositionScanRequest, GetPositionScanResponse, GetScanByIdRequest, GetScanByIdResponse, GetTagByIdRequest, GetTagByIdResponse, LoginRequest, LoginResponse, RegisterRequest, RegisterResponse, SendPositionScanRequest, SendPositionScanResponse, SendVRRequest, SendVRResponse, UpdateDentistByIdRequest, UpdateDentistByIdResponse, UpdatePatientByIdRequest, UpdatePatientByIdResponse } from "./service_pb.js";
 
 export const typeName = "threedoclusion.v1.ScanService";
 
@@ -44,21 +44,21 @@ export const addScan = createQueryService({
 }).addScan;
 
 /**
- * @generated from rpc threedoclusion.v1.ScanService.DeleteScan
+ * @generated from rpc threedoclusion.v1.ScanService.DeleteScanById
  */
-export const deleteScan = createQueryService({
+export const deleteScanById = createQueryService({
   service: {
     methods: {
-      deleteScan: {
-        name: "DeleteScan",
+      deleteScanById: {
+        name: "DeleteScanById",
         kind: MethodKind.Unary,
-        I: DeleteScanRequest,
-        O: DeleteScanResponse,
+        I: DeleteScanByIdRequest,
+        O: DeleteScanByIdResponse,
       },
     },
     typeName: "threedoclusion.v1.ScanService",
   },
-}).deleteScan;
+}).deleteScanById;
 
 /**
  * @generated from rpc threedoclusion.v1.ScanService.GetAllScans
@@ -78,38 +78,21 @@ export const getAllScans = createQueryService({
 }).getAllScans;
 
 /**
- * @generated from rpc threedoclusion.v1.ScanService.GetScanByID
+ * @generated from rpc threedoclusion.v1.ScanService.GetScanById
  */
-export const getScanByID = createQueryService({
+export const getScanById = createQueryService({
   service: {
     methods: {
-      getScanByID: {
-        name: "GetScanByID",
+      getScanById: {
+        name: "GetScanById",
         kind: MethodKind.Unary,
-        I: GetScanByIDRequest,
-        O: GetScanByIDResponse,
+        I: GetScanByIdRequest,
+        O: GetScanByIdResponse,
       },
     },
     typeName: "threedoclusion.v1.ScanService",
   },
-}).getScanByID;
-
-/**
- * @generated from rpc threedoclusion.v1.ScanService.GetScanByDate
- */
-export const getScanByDate = createQueryService({
-  service: {
-    methods: {
-      getScanByDate: {
-        name: "GetScanByDate",
-        kind: MethodKind.Unary,
-        I: GetScanByDateRequest,
-        O: GetScanByDateResponse,
-      },
-    },
-    typeName: "threedoclusion.v1.ScanService",
-  },
-}).getScanByDate;
+}).getScanById;
 
 /**
  * @generated from rpc threedoclusion.v1.ScanService.AddTag
@@ -129,21 +112,21 @@ export const addTag = createQueryService({
 }).addTag;
 
 /**
- * @generated from rpc threedoclusion.v1.ScanService.DeleteTag
+ * @generated from rpc threedoclusion.v1.ScanService.DeleteTagById
  */
-export const deleteTag = createQueryService({
+export const deleteTagById = createQueryService({
   service: {
     methods: {
-      deleteTag: {
-        name: "DeleteTag",
+      deleteTagById: {
+        name: "DeleteTagById",
         kind: MethodKind.Unary,
-        I: DeleteTagRequest,
-        O: DeleteTagResponse,
+        I: DeleteTagByIdRequest,
+        O: DeleteTagByIdResponse,
       },
     },
     typeName: "threedoclusion.v1.ScanService",
   },
-}).deleteTag;
+}).deleteTagById;
 
 /**
  * @generated from rpc threedoclusion.v1.ScanService.GetAllTags
@@ -163,38 +146,21 @@ export const getAllTags = createQueryService({
 }).getAllTags;
 
 /**
- * @generated from rpc threedoclusion.v1.ScanService.GetTagByID
+ * @generated from rpc threedoclusion.v1.ScanService.GetTagById
  */
-export const getTagByID = createQueryService({
+export const getTagById = createQueryService({
   service: {
     methods: {
-      getTagByID: {
-        name: "GetTagByID",
+      getTagById: {
+        name: "GetTagById",
         kind: MethodKind.Unary,
-        I: GetTagByIDRequest,
-        O: GetTagByIDResponse,
+        I: GetTagByIdRequest,
+        O: GetTagByIdResponse,
       },
     },
     typeName: "threedoclusion.v1.ScanService",
   },
-}).getTagByID;
-
-/**
- * @generated from rpc threedoclusion.v1.ScanService.GetAllTagsByType
- */
-export const getAllTagsByType = createQueryService({
-  service: {
-    methods: {
-      getAllTagsByType: {
-        name: "GetAllTagsByType",
-        kind: MethodKind.Unary,
-        I: GetAllTagsByTypeRequest,
-        O: GetAllTagsByTypeResponse,
-      },
-    },
-    typeName: "threedoclusion.v1.ScanService",
-  },
-}).getAllTagsByType;
+}).getTagById;
 
 /**
  * @generated from rpc threedoclusion.v1.ScanService.SendPositionScan

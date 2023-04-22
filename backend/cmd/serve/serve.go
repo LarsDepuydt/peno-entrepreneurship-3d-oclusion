@@ -78,11 +78,11 @@ func (s *ServerStruct) AddScan(
 	return scans.AddScan(req, s.database)
 }
 
-func (s *ServerStruct) DeleteScan(
+func (s *ServerStruct) DeleteScanById(
 	ctx context.Context,
-	req *connect.Request[threedoclusionv1.DeleteScanRequest],
-) (*connect.Response[threedoclusionv1.DeleteScanResponse], error) {
-	return scans.DeleteScan(req, s.database)
+	req *connect.Request[threedoclusionv1.DeleteScanByIdRequest],
+) (*connect.Response[threedoclusionv1.DeleteScanByIdResponse], error) {
+	return scans.DeleteScanById(req, s.database)
 }
 
 func (s *ServerStruct) GetAllScans(
@@ -92,18 +92,11 @@ func (s *ServerStruct) GetAllScans(
 	return scans.GetAllScans(req, s.database)
 }
 
-func (s *ServerStruct) GetScanByID(
+func (s *ServerStruct) GetScanById(
 	ctx context.Context,
-	req *connect.Request[threedoclusionv1.GetScanByIDRequest],
-) (*connect.Response[threedoclusionv1.GetScanByIDResponse], error) {
-	return scans.GetScanByID(req, s.database)
-}
-
-func (s *ServerStruct) GetScanByDate(
-	ctx context.Context,
-	req *connect.Request[threedoclusionv1.GetScanByDateRequest],
-) (*connect.Response[threedoclusionv1.GetScanByDateResponse], error) {
-	return scans.GetScanByDate(req, s.database)
+	req *connect.Request[threedoclusionv1.GetScanByIdRequest],
+) (*connect.Response[threedoclusionv1.GetScanByIdResponse], error) {
+	return scans.GetScanById(req, s.database)
 }
 
 // TAGS
@@ -114,11 +107,11 @@ func (s *ServerStruct) AddTag(
 	return tags.AddTag(req, s.database)
 }
 
-func (s *ServerStruct) DeleteTag(
+func (s *ServerStruct) DeleteTagById(
 	ctx context.Context,
-	req *connect.Request[threedoclusionv1.DeleteTagRequest],
-) (*connect.Response[threedoclusionv1.DeleteTagResponse], error) {
-	return tags.DeleteTag(req, s.database)
+	req *connect.Request[threedoclusionv1.DeleteTagByIdRequest],
+) (*connect.Response[threedoclusionv1.DeleteTagByIdResponse], error) {
+	return tags.DeleteTagById(req, s.database)
 }
 
 func (s *ServerStruct) GetAllTags(
@@ -128,18 +121,11 @@ func (s *ServerStruct) GetAllTags(
 	return tags.GetAllTags(req, s.database)
 }
 
-func (s *ServerStruct) GetTagByID(
+func (s *ServerStruct) GetTagById(
 	ctx context.Context,
-	req *connect.Request[threedoclusionv1.GetTagByIDRequest],
-) (*connect.Response[threedoclusionv1.GetTagByIDResponse], error) {
-	return tags.GetTagByID(req, s.database)
-}
-
-func (s *ServerStruct) GetAllTagsByType(
-	ctx context.Context,
-	req *connect.Request[threedoclusionv1.GetAllTagsByTypeRequest],
-) (*connect.Response[threedoclusionv1.GetAllTagsByTypeResponse], error) {
-	return tags.GetAllTagsByType(req, s.database)
+	req *connect.Request[threedoclusionv1.GetTagByIdRequest],
+) (*connect.Response[threedoclusionv1.GetTagByIdResponse], error) {
+	return tags.GetTagById(req, s.database)
 }
 
 func (s *ServerStruct) GetPositionScan(

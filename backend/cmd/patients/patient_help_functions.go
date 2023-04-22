@@ -41,7 +41,7 @@ func MapPatientToApi(patient *Patient) *threedoclusionv1.Patient {
   }
 }
 
-func MapDentistsToApi(patients []*Patient) []*threedoclusionv1.Patient {
+func MapPatientsToApi(patients []*Patient) []*threedoclusionv1.Patient {
 	var patientsApi []*threedoclusionv1.Patient
 
 	for _, patient := range patients {
