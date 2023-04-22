@@ -40,17 +40,3 @@ func GetResponseMakerTag(rows *sql.Rows) ([]*threedoclusionv1.RowDataTag, error)
 	}
 	return rowArray, nil
 }
-
-func GetResponseMakerPatient(rows *sql.Rows) ([]*threedoclusionv1.Patient, error) {
-	var rowArray []*threedoclusionv1.Patient
-	for rows.Next() {
-		var rowData *threedoclusionv1.Patient
-		error := rows.Scan(&rowData.Id, &rowData.FirstName, &rowData.LastName, &rowData.Pinned, &rowData.Notes)
-		if error != nil {
-			panic(error)
-		}
-		rowArray = append(rowArray, &threedoclusionv1.Patient{Id: rowData.Id, FirstName: rowData.FirstName, LastName: rowData.LastName, Pinned: rowData.Pinned, Notes: rowData.Notes})
-	}
-	return rowArray, nil
-
-}

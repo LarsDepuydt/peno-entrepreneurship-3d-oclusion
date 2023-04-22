@@ -66,9 +66,9 @@ message Patient{
   int32 id = 1;
   string first_name = 2;
   string last_name = 3;
-  int32 pinned = 4;
+  bool pinned = 4;
   string notes = 5;
-  
+  int32 dentist_id =6;
 }
 
 // TAGS
@@ -231,8 +231,9 @@ message GetPatientByIdResponse{
   int32 id = 1;
   string first_name = 2;
   string last_name = 3;
-  int32 pinned = 4;
+  bool pinned = 4;
   string notes = 5;
+  int32 dentist_id = 6;
 }
 
 message GetPatientByNameRequest{

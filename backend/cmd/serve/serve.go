@@ -181,7 +181,7 @@ func (s *ServerStruct) GetPatientById(
 	ctx context.Context,
 	req *connect.Request[threedoclusionv1.GetPatientByIdRequest],
 ) (*connect.Response[threedoclusionv1.GetPatientByIdResponse], error) {
-	return patients.GetPatientByID(req, s.database)
+	return patients.GetPatientById(req, s.database)
 }
 
 func (s *ServerStruct) GetPatientByName(

@@ -7,7 +7,6 @@ import (
 	"github.com/bufbuild/connect-go"
 	_ "github.com/lib/pq"
 
-	"github.com/LarsDepuydt/peno-entrepreneurship-3d-oclusion/cmd/help_functions"
 	threedoclusionv1 "github.com/LarsDepuydt/peno-entrepreneurship-3d-oclusion/gen/proto/threedoclusion/v1"
 )
 
@@ -74,47 +73,55 @@ func DeletePatientById(req *connect.Request[threedoclusionv1.DeletePatientByIdRe
 }
 
 func GetAllPatients(req *connect.Request[threedoclusionv1.GetAllPatientsRequest], database *sql.DB) (*connect.Response[threedoclusionv1.GetAllPatientsResponse], error) {
-	statement := "SELECT * FROM patient;"
-	rows, error := database.Query(statement)
+	rows, error := database.Query("SELECT id, firstname, lastname, pinned, notes, dentist_id FROM patient;")
 	if error != nil {
 		return nil, error
 	}
 
-	result, error := help_functions.GetResponseMakerPatient(rows)
+	patients, error := GetResponseMakerPatient(rows)
 	if error != nil {
-		panic(error)
+		return nil, error
 	}
 
-	fmt.Println("Got all patients succesfully")
+	fmt.Println("Got all patients successfully")
+
+	patientsApi := MapDentistsToApi(patients)
 
 	res := connect.NewResponse(&threedoclusionv1.GetAllPatientsResponse{
-		Patients: result,
+		Patients: patientsApi,
 	})
 
 	return res, nil
 }
 
-func GetPatientByID(req *connect.Request[threedoclusionv1.GetPatientByIdRequest], database *sql.DB) (*connect.Response[threedoclusionv1.GetPatientByIdResponse], error) {
-	statement := "SELECT * FROM patient WHERE id = $1;"
-	rows, error := database.Query(statement, req.Msg.Id)
+func GetPatientById(req *connect.Request[threedoclusionv1.GetPatientByIdRequest], database *sql.DB) (*connect.Response[threedoclusionv1.GetPatientByIdResponse], error) {
+	const sqlStatement = `
+		SELECT id, firstname, lastname, pinned, notes, dentist_id
+		FROM patient
+		WHERE id = $1;`
+	var id int32
+	var firstName string
+	var lastName string
+	var pinned bool
+	var notes string
+	var dentistId int32
+
+	// Perform the database query
+	error := database.QueryRow(sqlStatement, req.Msg.Id).Scan(&id, &firstName, &lastName, &pinned, &notes, &dentistId)
 	if error != nil {
 		return nil, error
-	}
-
-	result, error := help_functions.GetResponseMakerPatient(rows)
-	if error != nil {
-		panic(error)
 	}
 
 	responseMessage := fmt.Sprintf("patient with id: %d returned with succes;", req.Msg.Id)
 	fmt.Println(responseMessage)
 
 	res := connect.NewResponse(&threedoclusionv1.GetPatientByIdResponse{
-		Id:        result[0].Id,
-		FirstName: result[0].FirstName,
-		LastName:  result[0].LastName,
-		Pinned:    result[0].Pinned,
-		Notes:     result[0].Notes,
+		Id:        id,
+		FirstName: firstName,
+		LastName:  lastName,
+		Pinned:    pinned,
+		Notes:     notes,
+		DentistId: dentistId,
 	})
 
 	return res, nil
@@ -128,15 +135,12 @@ func GetPatientByName(req *connect.Request[threedoclusionv1.GetPatientByNameRequ
 	var rows *sql.Rows
 	 
 	if (firstName != nil && lastName != nil ) {
-		statement := "SELECT * FROM patient WHERE firstname = $1 AND last_name = $2;"
-		rows, error = database.Query(statement, req.Msg.FirstName, req.Msg.LastName)
+		rows, error = database.Query("SELECT id, firstname, lastname, pinned, notes, dentist_id FROM patient WHERE firstname = $1 AND last_name = $2;", req.Msg.FirstName, req.Msg.LastName)
 	}else{
 		if firstName != nil {
-			statement := "SELECT * FROM patient WHERE firstname = $1;"
-			rows, error = database.Query(statement, req.Msg.FirstName)
+			rows, error = database.Query("SELECT id, firstname, lastname, pinned, notes, dentist_id FROM patient WHERE firstname = $1;", req.Msg.FirstName)
 		}else if lastName != nil {
-			statement := "SELECT * FROM patient WHERE lastname = $1;"
-			rows, error = database.Query(statement, req.Msg.LastName)
+			rows, error = database.Query("SELECT id, firstname, lastname, pinned, notes, dentist_id FROM patient WHERE lastname = $1;", req.Msg.LastName)
 		}
 		
 	}
@@ -144,16 +148,18 @@ func GetPatientByName(req *connect.Request[threedoclusionv1.GetPatientByNameRequ
 		return nil, error
 	}
 
-	result, error := help_functions.GetResponseMakerPatient(rows)
+	patients, error := GetResponseMakerPatient(rows)
 	if error != nil {
-		panic(error)
+		return nil, error
 	}
 
-	responseMessage := fmt.Sprintf("patient with id: %d returned with succes;", req.Msg.FirstName)
+	responseMessage := fmt.Sprintf("patient with first name: %s returned with succes;", req.Msg.FirstName)
 	fmt.Println(responseMessage)
 
+	patientsApi := MapDentistsToApi(patients)
+
 	res := connect.NewResponse(&threedoclusionv1.GetPatientByNameResponse{
-		Patients: result,
+		Patients: patientsApi,
 	})
 
 	return res, nil

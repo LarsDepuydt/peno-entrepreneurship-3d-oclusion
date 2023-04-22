@@ -144,14 +144,19 @@ export declare class Patient extends Message<Patient> {
   lastName: string;
 
   /**
-   * @generated from field: int32 pinned = 4;
+   * @generated from field: bool pinned = 4;
    */
-  pinned: number;
+  pinned: boolean;
 
   /**
    * @generated from field: string notes = 5;
    */
   notes: string;
+
+  /**
+   * @generated from field: int32 dentist_id = 6;
+   */
+  dentistId: number;
 
   constructor(data?: PartialMessage<Patient>);
 
@@ -1113,14 +1118,19 @@ export declare class GetPatientByIdResponse extends Message<GetPatientByIdRespon
   lastName: string;
 
   /**
-   * @generated from field: int32 pinned = 4;
+   * @generated from field: bool pinned = 4;
    */
-  pinned: number;
+  pinned: boolean;
 
   /**
    * @generated from field: string notes = 5;
    */
   notes: string;
+
+  /**
+   * @generated from field: int32 dentist_id = 6;
+   */
+  dentistId: number;
 
   constructor(data?: PartialMessage<GetPatientByIdResponse>);
 

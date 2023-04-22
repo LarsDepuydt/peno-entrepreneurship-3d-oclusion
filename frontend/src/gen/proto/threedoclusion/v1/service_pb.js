@@ -48,8 +48,9 @@ export const Patient = proto3.makeMessageType(
     { no: 1, name: "id", kind: "scalar", T: 5 /* ScalarType.INT32 */ },
     { no: 2, name: "first_name", kind: "scalar", T: 9 /* ScalarType.STRING */ },
     { no: 3, name: "last_name", kind: "scalar", T: 9 /* ScalarType.STRING */ },
-    { no: 4, name: "pinned", kind: "scalar", T: 5 /* ScalarType.INT32 */ },
+    { no: 4, name: "pinned", kind: "scalar", T: 8 /* ScalarType.BOOL */ },
     { no: 5, name: "notes", kind: "scalar", T: 9 /* ScalarType.STRING */ },
+    { no: 6, name: "dentist_id", kind: "scalar", T: 5 /* ScalarType.INT32 */ },
   ],
 );
 
@@ -436,8 +437,9 @@ export const GetPatientByIdResponse = proto3.makeMessageType(
     { no: 1, name: "id", kind: "scalar", T: 5 /* ScalarType.INT32 */ },
     { no: 2, name: "first_name", kind: "scalar", T: 9 /* ScalarType.STRING */ },
     { no: 3, name: "last_name", kind: "scalar", T: 9 /* ScalarType.STRING */ },
-    { no: 4, name: "pinned", kind: "scalar", T: 5 /* ScalarType.INT32 */ },
+    { no: 4, name: "pinned", kind: "scalar", T: 8 /* ScalarType.BOOL */ },
     { no: 5, name: "notes", kind: "scalar", T: 9 /* ScalarType.STRING */ },
+    { no: 6, name: "dentist_id", kind: "scalar", T: 5 /* ScalarType.INT32 */ },
   ],
 );
 
