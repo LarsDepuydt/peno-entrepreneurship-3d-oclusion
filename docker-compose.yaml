@@ -13,15 +13,14 @@ services:
       - ./database:/usr/src/app/database
       - "dbdata:/var/lib/postgresql/data"
   flyway:
-    image: flyway/flyway:9.16.1
+    image: flyway/flyway
     command: -configFiles=/flyway/conf/flyway.conf info
     volumes:
       - ./flyway.conf:/flyway/conf/flyway.conf
       - ./database/migrations:/flyway/sql
     depends_on:
       - db
-  app:
-    &app
+  app: &app
     build:
       context: .
       dockerfile: Dockerfile
