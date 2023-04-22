@@ -3,27 +3,25 @@ package main
 import (
 	"database/sql"
 	"fmt"
+	"log"
+	"os"
 
 	"github.com/LarsDepuydt/peno-entrepreneurship-3d-oclusion/cmd/serve"
 )
 
-const (
-  host     = "cloud-sql-proxy"
-  port     = 5432
-  user     = "docker"
-  password = "docker1"
-  dbname   = "patient_server"
-)
 
 func main() {
-	psqlInfo := fmt.Sprintf("host=%s port=%d user=%s "+
-	"password=%s dbname=%s sslmode=disable",
-	host, port, user, password, dbname)
+	connectionName := os.Getenv("CLOUD_SQL_CONNECTION_NAME")
+    dbUser := os.Getenv("postgres_user")
+    dbPassword := os.Getenv("postgres_password")
+    dbName := os.Getenv("db_name")
 
-	database, err := sql.Open("postgres", psqlInfo)
-	if err != nil {
-		panic(err)
-	}
+    connectionString := fmt.Sprintf("user=%s password=%s dbname=%s host=/cloudsql/%s", dbUser, dbPassword, dbName, connectionName)
+
+    database, err := sql.Open("postgres", connectionString)
+    if err != nil {
+        log.Fatalf("Failed to open database connection: %v", err)
+    }
 	defer database.Close()
 
 	// Check if the database connection works
