@@ -2,7 +2,7 @@ import Link from 'next/link'
 
 export default function EndVRPage(){ 
 
-    // Redirected to when session has ended on VR side
+    // Redirected to on VR side when session has ended 
     return (
         <div>
           <div className="container">

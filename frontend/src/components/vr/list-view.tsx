@@ -1,6 +1,7 @@
+import { Any } from "@bufbuild/protobuf";
 import { useState } from "react";
 
-export default function ListView({ data, itemsPerPage }: { data: any[], itemsPerPage: number }) {
+export default function ListView({ data, dictData, itemsPerPage, onItemClicked }: { data: any, dictData: any, itemsPerPage: number, onItemClicked: (inputData: any) => void }) {
     const [currentPage, setCurrentPage] = useState(0);
   
     const totalPages = Math.ceil(data.length / itemsPerPage);
@@ -12,6 +13,13 @@ export default function ListView({ data, itemsPerPage }: { data: any[], itemsPer
     const handleNext = () => {
       setCurrentPage(currentPage < totalPages - 1 ? currentPage + 1 : totalPages - 1);
     };
+
+    const handleItemClick = (inputData: any ) => {
+      //console.log(inputData)
+      // SET POSITION
+      // LET LIST HOLD MORE (HIDDEN) DATA
+      onItemClicked(inputData);
+    }
   
     const startIndex = currentPage * itemsPerPage;
     const endIndex = Math.min(startIndex + itemsPerPage, data.length);
@@ -21,7 +29,7 @@ export default function ListView({ data, itemsPerPage }: { data: any[], itemsPer
       <div className="list-view">
         <div className="list-view-content">
           {data.slice(startIndex, endIndex).map((item, index) => (
-            <div key={index} className="list-item">
+            <div key={index} className="list-item" onClick={() => handleItemClick(dictData[item])}>
               {item}
             </div>
           ))}

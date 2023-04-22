@@ -4,6 +4,9 @@ import { VRButton } from 'three/examples/jsm/webxr/VRButton.js';
 import { XRControllerModelFactory } from 'three/examples/jsm/webxr/XRControllerModelFactory.js';
 import { OBJLoader } from 'three/examples/jsm/loaders/OBJLoader.js';
 import { useState, useEffect } from 'react';
+import { SendMenuOptionRequest, Scan } from "@/gen/proto/threedoclusion/v1/service_pb";
+import Menu from './menu';
+
 
 let container: HTMLDivElement;
 let camera: THREE.PerspectiveCamera, scene: THREE.Scene, renderer: THREE.WebGLRenderer;
@@ -340,7 +343,7 @@ function render() {
     renderer.render( scene, camera );
 }
 
-export default function DraggingView(){
+export default function DraggingView({ stream, client }: {stream: any, client: any}){
     useEffect(() => { // https://github.com/facebook/react/issues/24502
         if (second_call){
             init();
@@ -353,28 +356,33 @@ export default function DraggingView(){
         }
     }, []);
 
+    // ASK FOR SCAN DATA OR STH INITIALLY
+
+    const onLoadItemClicked = (inputData: Scan) => {
+        console.log(inputData)
+      }
+
+
+    let current_scan = new Scan({
+        lowerX: 1,
+        lowerY: 2,
+        lowerZ: 3,
+        lowerRX: 4,
+        lowerRY: 5,
+        lowerRZ: 6,
+        upperX: 7,
+        upperY: 8,
+        upperZ: 9,
+        upperRX: 10,
+        upperRY: 11,
+        upperRZ: 12,
+        id: 111,
+    }); // Don't hardcode
+    const props = { current_scan, stream, client, onLoadItemClicked };
+
     // resize
 
     window.addEventListener( 'resize', onWindowResize );
-    // create zoom buttons
-
-    // import "./styles.css";
-
-    // export const ZoomBar = () => {
-    //   return (
-    //     <div className="zoom-wrapper">
-    //       <div className="zoom-bar">
-    //         <div className="button" id="zoom-out">
-    //           -
-    //         </div>
-    //         <div className="button" id="zoom-in">
-    //           +
-    //         </div>
-    //       </div>
-    //     </div>
-    //   );
-    // };
-
     const zoomInButton = document.getElementById("zoom-in");
     const zoomOutButton = document.getElementById("zoom-out");
 
@@ -405,13 +413,21 @@ export default function DraggingView(){
     };
 
     const getFov = () => {
-    return Math.floor(
-        (2 *
-        Math.atan(camera.getFilmHeight() / 2 / camera.getFocalLength()) *
-        180) /
-        Math.PI
-    );
+        return Math.floor(
+            (2 *
+            Math.atan(camera.getFilmHeight() / 2 / camera.getFocalLength()) *
+            180) /
+            Math.PI
+        );
     };
     
-    return null;
+    // Use state variable to toggle visibility of menu IN here
+    // Use onItemClicked or whatever to move item data up the tree to load scan here
+
+    return (
+        <div>
+          {/* Your Three.js/WebXR canvas here */}
+          <Menu {...props}/>
+        </div>
+      );
 }

@@ -40,29 +40,12 @@ export default function StartVRPage(){
         checkConnected(stream);
     }
 
-    let current_scan = new Scan({
-        lowerX: 1,
-        lowerY: 2,
-        lowerZ: 3,
-        lowerRX: 4,
-        lowerRY: 5,
-        lowerRZ: 6,
-        upperX: 7,
-        upperY: 8,
-        upperZ: 9,
-        upperRX: 10,
-        upperRY: 11,
-        upperRZ: 12,
-        id: 111,
-        date: "13/01/2022",
-    }); // Don't hardcode, get from VR segment
-
-    const props = { current_scan, stream, client };
+    const props = { stream, client };
 
     return ( // Only executed on the client side
         <div>
             {isNavigatorAvailable}
-            < Menu {...props} />
+            < DraggingView {...props} />
         </div>
     )
 }
@@ -85,9 +68,10 @@ async function checkConnected(serverStream: AsyncIterable<SubscribeConnectionRes
         }
 
         if (!res.isConnected){ // Client disconnected
-        // Close stream... How?
-        //serverStream.Close() ?
-        // Show some other component
+            // Close stream... How?
+            //serverStream.Close() ?
+            // Show some other component
+            // Redirect?
             console.log("Client disconnected!")
         }
     }

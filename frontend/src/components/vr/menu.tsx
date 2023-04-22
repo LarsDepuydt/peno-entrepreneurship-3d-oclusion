@@ -9,14 +9,20 @@ async function sendMenuOption(optionNumber: number, clnt: any, oData: any){
   return res;
 }
 
-function Menu({ current_scan, stream, client }: {current_scan: Scan, stream: any, client: any}){ // Add props with positions, client...
+function Menu({ current_scan, stream, client, onLoadItemClicked }: {current_scan: Scan, stream: any, client: any, onLoadItemClicked: (inputData: Scan) => void}){ // Add props with positions, client...
   const [isOpen, setIsOpen] = useState(true);
   const [showListView, setShowListView] = useState(false);
-  const [listData, setListData] = useState([]);
+  const [listData, setListData] = useState<string[]>([]);
+  const [listDictData, setListDictData] = useState({});
 
   const toggleMenu = () => {
     setIsOpen(!isOpen);
   };
+
+  const handleLoadItemClicked = (inputData: Scan) => {
+    onLoadItemClicked(inputData);
+    toggleMenu();
+  }
 
 
   const save = async () => {
@@ -31,8 +37,15 @@ function Menu({ current_scan, stream, client }: {current_scan: Scan, stream: any
       .then((res) => {
         if (res) {
           console.log("Load!");
-          const extractedTimestamps = (res.wrap.loadData).map((dict: any) => dict.timestamp);
-          setListData(extractedTimestamps);
+          //const extractedTimestamps = (res.wrap.loadData).map((dict: any) => dict.timestamp);
+          const extractedTimestamps: string[] = [];
+          const dictTimeStamps: { [timestamp: string]: Scan } = {};
+          for (const scan of res.wrap.loadData) {
+            dictTimeStamps[scan.timestamp] = scan; // Maybe omit id and timestamp values since unnecessary
+            extractedTimestamps.push(scan.timestamp);
+          }
+          setListData(extractedTimestamps.reverse()); // From most recent to oldest
+          setListDictData(dictTimeStamps);
           setShowListView(true);
         }
       })
@@ -56,20 +69,24 @@ function Menu({ current_scan, stream, client }: {current_scan: Scan, stream: any
     const optionData = {case: "scanId", value: 111,} 
     const res = await sendMenuOption(3, client, optionData);
     console.log("I quit!")
+    // Redirect to /end-vr -> should end streaming connection as well?
+
     //console.log((res as any).OtherData);
     // Close stream here?
     // Redirect...
+    // DO IN LEVEL ABOVE?
   };
-  
 
+  // onItemClicked move another level up so you can edit position in VR
   return (
+    isOpen ? (
     <div className="menu-container">
-      <div className={`menu-button ${isOpen ? "open" : ""}`} onClick={toggleMenu}>
+      <div className={`menu-button \${isOpen ? "open" : ""}`} onClick={toggleMenu}>
         <div className="menu-button-bar" />
         <div className="menu-button-bar" />
         <div className="menu-button-bar" />
       </div>
-      {isOpen && !showListView && (
+      {!showListView ? (
         <div className="menu-content">
           <div className="menu-header">
             <div className="menu-title">Menu</div>
@@ -84,16 +101,15 @@ function Menu({ current_scan, stream, client }: {current_scan: Scan, stream: any
             <li className="menu-option" onClick={quit}>Quit</li>
           </ul>
         </div>
-      )}
-      {showListView && (
+      ):(
         <div className="list-view-container">
           <span className="back-arrow" onClick={handleBackClick}>
-          <span className="arrow-left"></span>
+            <span className="arrow-left"></span>
           </span>
-          <ListView data={listData} itemsPerPage={4} />
+          <ListView data={listData} dictData={listDictData}  itemsPerPage={4} onItemClicked={handleLoadItemClicked}/>
         </div>
       )}
-      <style jsx>{`
+    <style jsx>{`
         .list-view-container {
           position: relative;
           top: 0;
@@ -183,7 +199,9 @@ function Menu({ current_scan, stream, client }: {current_scan: Scan, stream: any
         }
       `}</style>
     </div>
+    ) : null  
   );
+  
 };
 
 export default Menu;
