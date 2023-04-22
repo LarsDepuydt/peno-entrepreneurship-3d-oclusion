@@ -5,7 +5,7 @@ steps:
   - '--build-arg'
   - 'DOCKERFILE_PATH=./Dockerfile'
   - '-f'
-  - './backend/Dockerfile'
+  - './Dockerfile'
   - '-t'
   - 'gcr.io/$PROJECT_ID/backend:$COMMIT_SHA'
   - '.'
