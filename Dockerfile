@@ -39,12 +39,15 @@ WORKDIR /usr/src/app/backend
 COPY ./backend/go.mod ./backend/go.sum ./
 RUN --mount=type=cache,mode=0777,target=/go/pkg/mod go mod download
 
-COPY backend backend
+WORKDIR /usr/src/app
+COPY . .
+
 
 # Use native go packages (CGO_ENABLED)
+WORKDIR /usr/src/app/backend
 RUN --mount=type=cache,mode=0777,target=/go/pkg/mod \
     --mount=type=cache,mode=0777,target=/.cache/go-build \
-    CGO_ENABLED=0 GOOS=linux go build -o serve ./backend/cmd/main.go
+    CGO_ENABLED=0 GOOS=linux go build -o serve ./cmd/main.go
 
 ################################
 # Run backend
