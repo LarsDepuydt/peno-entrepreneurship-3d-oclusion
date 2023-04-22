@@ -256,6 +256,8 @@ export const GetScanByDateResponse = proto3.makeMessageType(
 );
 
 /**
+ * PATIENT
+ *
  * @generated from message threedoclusion.v1.AddPatientRequest
  */
 export const AddPatientRequest = proto3.makeMessageType(
@@ -265,6 +267,7 @@ export const AddPatientRequest = proto3.makeMessageType(
     { no: 2, name: "last_name", kind: "scalar", T: 9 /* ScalarType.STRING */ },
     { no: 3, name: "pinned", kind: "scalar", T: 8 /* ScalarType.BOOL */ },
     { no: 4, name: "notes", kind: "scalar", T: 9 /* ScalarType.STRING */ },
+    { no: 5, name: "dentist_id", kind: "scalar", T: 5 /* ScalarType.INT32 */ },
   ],
 );
 
@@ -275,6 +278,7 @@ export const AddPatientResponse = proto3.makeMessageType(
   "threedoclusion.v1.AddPatientResponse",
   () => [
     { no: 1, name: "message", kind: "scalar", T: 9 /* ScalarType.STRING */ },
+    { no: 2, name: "id", kind: "scalar", T: 5 /* ScalarType.INT32 */ },
   ],
 );
 

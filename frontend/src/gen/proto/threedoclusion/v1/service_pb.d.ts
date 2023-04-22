@@ -653,6 +653,8 @@ export declare class GetScanByDateResponse extends Message<GetScanByDateResponse
 }
 
 /**
+ * PATIENT
+ *
  * @generated from message threedoclusion.v1.AddPatientRequest
  */
 export declare class AddPatientRequest extends Message<AddPatientRequest> {
@@ -675,6 +677,11 @@ export declare class AddPatientRequest extends Message<AddPatientRequest> {
    * @generated from field: string notes = 4;
    */
   notes: string;
+
+  /**
+   * @generated from field: int32 dentist_id = 5;
+   */
+  dentistId: number;
 
   constructor(data?: PartialMessage<AddPatientRequest>);
 
@@ -699,6 +706,11 @@ export declare class AddPatientResponse extends Message<AddPatientResponse> {
    * @generated from field: string message = 1;
    */
   message: string;
+
+  /**
+   * @generated from field: int32 id = 2;
+   */
+  id: number;
 
   constructor(data?: PartialMessage<AddPatientResponse>);
 

@@ -23,6 +23,7 @@ service ScanService {
 
   rpc SendPositionScan (SendPositionScanRequest) returns (SendPositionScanResponse) {}
   rpc GetPositionScan (GetPositionScanRequest) returns (GetPositionScanResponse) {}
+
   rpc AddPatient(AddPatientRequest) returns (AddPatientResponse) {}
   rpc DeletePatient(DeletePatientRequest) returns (DeletePatientResponse) {}
   rpc GetAllPatients(GetAllPatientsRequest) returns (GetAllPatientsResponse) {}
@@ -152,16 +153,17 @@ message GetScanByDateResponse {
 }
 
 //PATIENT
-
 message AddPatientRequest{
   string first_name = 1;
   string last_name = 2;
   bool pinned = 3;
   string notes = 4;
+  int32 dentist_id = 5;
 }
 
 message AddPatientResponse{
   string message = 1;
+  int32 id = 2;
 }
 
 message TagResponse {

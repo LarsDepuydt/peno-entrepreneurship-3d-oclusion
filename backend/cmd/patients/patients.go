@@ -14,13 +14,22 @@ import (
 
 
 func AddPatient(req *connect.Request[threedoclusionv1.AddPatientRequest], database *sql.DB) (*connect.Response[threedoclusionv1.AddPatientResponse], error) {
-	statement, error := database.Prepare("INSERT INTO patient (firstname, lastname, pinned, notes) VALUES ($1, $2, $3, $4)")
-	if error != nil {
-		return nil, error
-	}
-	defer statement.Close()
+	const sqlStatement = `
+	INSERT INTO patient (dentist_id, firstname, lastname, pinned, notes) 
+	VALUES ($1, $2, $3, $4, $5) 
+	RETURNING id;`
+	var id int32
 
-	_, error = statement.Exec(req.Msg.FirstName, req.Msg.LastName, req.Msg.Pinned, req.Msg.Notes)
+	pinnedDatabase := 0
+	if req.Msg.Pinned == true {
+		pinnedDatabase = 1
+	}
+
+	// Perform the database modification
+	error := database.QueryRow(
+		sqlStatement, 
+		req.Msg.DentistId, req.Msg.FirstName, req.Msg.LastName, pinnedDatabase, req.Msg.Notes,
+	).Scan(&id)
 	if error != nil {
 		return nil, error
 	}
@@ -29,7 +38,8 @@ func AddPatient(req *connect.Request[threedoclusionv1.AddPatientRequest], databa
 	fmt.Println(responseMessage)
 
 	res := connect.NewResponse(&threedoclusionv1.AddPatientResponse{
-		Message: "responseMessage",
+		Message: responseMessage,
+		Id: id,
 	})
 
 	fmt.Println(responseMessage)
