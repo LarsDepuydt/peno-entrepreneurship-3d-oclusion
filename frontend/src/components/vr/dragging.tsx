@@ -22,11 +22,11 @@ let controls, group: THREE.Group;
 let second_call = false;
 
 const path_upper_jaw = '/upper_ios_6.obj'; // URLs for fetch, temporarily in public folder so Nextjs can access
-const path_lower_jaw = '/lower_ios_6.obj';
+const path_lower_jaw = '/lower_ios_6.obj'; // TO DO: get with cloud
 
 const SCALE_MODEL = 0.01;
 
-function init() {
+function init(initialScan: Scan) {
     // create container
     container = document.createElement( 'div' );
     document.body.appendChild( container );
@@ -87,13 +87,15 @@ function init() {
         // called when resource is loaded y=green, x=red, z=blue
         function (object) {
             lowerjaw = object;
-            lowerjaw.position.x = 0
+            /*lowerjaw.position.x = 0
             lowerjaw.position.y = 2
             lowerjaw.position.z = 0.12
-            lowerjaw.rotation.x = 1.5 * Math.PI
+            lowerjaw.rotation.x = 1.5 * Math.PI*/
+            lowerjaw.position.set(initialScan.lowerX, initialScan.lowerY, initialScan.lowerZ);
+            lowerjaw.rotation.set(initialScan.lowerRX, initialScan.lowerRY, initialScan.lowerRZ);
             //lowerjaw.rotation.y = Math.PI
             lowerjaw.scale.setScalar(SCALE_MODEL);
-
+            lowerjaw.name = "lowerjaw";
             group.add(lowerjaw);
 
             console.log("Object3D? " + lowerjaw.isObject3D);
@@ -118,10 +120,12 @@ function init() {
         // called when resource is loaded y=green, x=red, z=blue
         function (object) {
             upperjaw = object;
-            upperjaw.position.x = 0
+            /*upperjaw.position.x = 0
             upperjaw.position.y = 2
             upperjaw.position.z = 0.12
-            upperjaw.rotation.x = 1.5 * Math.PI
+            upperjaw.rotation.x = 1.5 * Math.PI*/
+            upperjaw.position.set(initialScan.upperX, initialScan.upperY, initialScan.upperZ);
+            upperjaw.rotation.set(initialScan.upperRX, initialScan.upperRY, initialScan.upperRZ);
             //upperjaw.rotation.y = Math.PI
             upperjaw.scale.setScalar(SCALE_MODEL);
             upperjaw.name = "upperjaw";
@@ -141,9 +145,9 @@ function init() {
             console.log('An error happened while loading');
         }
     );
-}
+} // Insert get_position function to retrieve pos from server
 
-function initThree(){
+function initThree(setOpenMenu: any){
 
 
     // add renderer and enable VR
@@ -161,6 +165,12 @@ function initThree(){
     controller1 = renderer.xr.getController( 0 );
     controller1.addEventListener( 'selectstart', onSelectStart );
     controller1.addEventListener( 'selectend', onSelectEnd );
+
+    controller1.addEventListener( 'squeezestart', function foo() { // End and restart WEBXR session when triggering menu?
+        const session = renderer.xr.getSession();
+        session?.end().then(setOpenMenu(true))
+    }); // Added to test menu
+    
     scene.add( controller1 );
 
     controller2 = renderer.xr.getController( 1 );
@@ -210,6 +220,19 @@ function vibrateTrigger() { // Vibrate TRIGGER button
 
 }
 
+function loadPosition(positionData: any) {
+    for (let i = 0; i < group.children.length; i++) {
+        if (group.children[i].name == "lowerjaw"){
+            group.children[i].position.set(positionData.lowerX, positionData.lowerY, positionData.lowerZ)
+            group.children[i].rotation.set(positionData.lowerRX, positionData.lowerRY, positionData.lowerRZ)
+        }
+        else if (group.children[i].name == "upperjaw"){
+            group.children[i].position.set(positionData.upperX, positionData.upperY, positionData.upperZ)
+            group.children[i].rotation.set(positionData.upperRX, positionData.upperRY, positionData.upperRZ)
+        }
+    }
+}
+
 // when controller pushes select button, select the object it is pointing to
 function onSelectStart( event: any ) {
 
@@ -230,7 +253,6 @@ function onSelectStart( event: any ) {
     }
 
 }
-
 
 function beforeRender( controller: any ){
     changeControlledCoordinates(controller, 1);
@@ -325,12 +347,14 @@ function cleanIntersected() {
 
 }
 
-function animate() {
+function animate(setCurrentScan: any) {
 
-    renderer.setAnimationLoop( render );
+    renderer.setAnimationLoop( function renderWithSetter(){
+        render(setCurrentScan)
+    } );
 }
 
-function render() {
+function render(setCurrentScan: any) {
 
     cleanIntersected();
 
@@ -339,16 +363,58 @@ function render() {
 
     beforeRender(controller1);
     beforeRender(controller2);
+    updateScanData(setCurrentScan);
 
     renderer.render( scene, camera );
 }
 
+function updateScanData(setCurrentScan: any) {
+    let newScan = new Scan({id: 111});
+    for (let i = 0; i < group.children.length; i++) {
+        if (group.children[i].name == "lowerjaw"){
+            newScan.lowerX = group.children[i].position.x;
+            newScan.lowerY = group.children[i].position.y;
+            newScan.lowerZ = group.children[i].position.z;
+            newScan.lowerRX = group.children[i].rotation.x;
+            newScan.lowerRY = group.children[i].rotation.y;
+            newScan.lowerRZ = group.children[i].rotation.z;
+        }
+        else if (group.children[i].name == "upperjaw"){
+            newScan.upperX = group.children[i].position.x;
+            newScan.upperY = group.children[i].position.y;
+            newScan.upperZ = group.children[i].position.z;
+            newScan.upperRX = group.children[i].rotation.x;
+            newScan.upperRY = group.children[i].rotation.y;
+            newScan.upperRZ = group.children[i].rotation.z;
+        }
+    }
+    setCurrentScan({newScan});
+}
+
 export default function DraggingView({ stream, client }: {stream: any, client: any}){
+    const initialScan = new Scan({
+        lowerX: 0,
+        lowerY: 2,
+        lowerZ: 0.12,
+        lowerRX: 1.5 * Math.PI,
+        lowerRY: 0,
+        lowerRZ: 0,
+        upperX: 0,
+        upperY: 2,
+        upperZ: 0.12,
+        upperRX: 1.5 * Math.PI,
+        upperRY: 0,
+        upperRZ: 0,
+        id: 111,
+    });
+    const [current_scan, setCurrentScan] = useState<Scan>(initialScan);
+    const [openMenu, setOpenMenu] = useState(false);
+
     useEffect(() => { // https://github.com/facebook/react/issues/24502
         if (second_call){
-            init();
-            initThree();
-            animate(); // Sets 
+            init(initialScan);
+            initThree(setOpenMenu);
+            animate(setCurrentScan); // Sets 
             console.log('Init executed!');
         }
         else {
@@ -360,25 +426,10 @@ export default function DraggingView({ stream, client }: {stream: any, client: a
 
     const onLoadItemClicked = (inputData: Scan) => {
         console.log(inputData)
-      }
-
-
-    let current_scan = new Scan({
-        lowerX: 1,
-        lowerY: 2,
-        lowerZ: 3,
-        lowerRX: 4,
-        lowerRY: 5,
-        lowerRZ: 6,
-        upperX: 7,
-        upperY: 8,
-        upperZ: 9,
-        upperRX: 10,
-        upperRY: 11,
-        upperRZ: 12,
-        id: 111,
-    }); // Don't hardcode
-    const props = { current_scan, stream, client, onLoadItemClicked };
+        const {id, timestamp, ...positionData } = inputData
+        loadPosition(positionData);
+    }
+    const props = {isOpen: openMenu, setIsOpen: setOpenMenu, current_scan, stream, client, onLoadItemClicked };
 
     // resize
 

@@ -9,8 +9,8 @@ async function sendMenuOption(optionNumber: number, clnt: any, oData: any){
   return res;
 }
 
-function Menu({ current_scan, stream, client, onLoadItemClicked }: {current_scan: Scan, stream: any, client: any, onLoadItemClicked: (inputData: Scan) => void}){ // Add props with positions, client...
-  const [isOpen, setIsOpen] = useState(true);
+function Menu({isOpen, setIsOpen, current_scan, stream, client, onLoadItemClicked }: {isOpen: boolean, setIsOpen: any, current_scan: Scan, stream: any, client: any, onLoadItemClicked: (inputData: Scan) => void}){ // Add props with positions, client...
+  //const [isOpen, setIsOpen] = useState(true);
   const [showListView, setShowListView] = useState(false);
   const [listData, setListData] = useState<string[]>([]);
   const [listDictData, setListDictData] = useState({});
@@ -21,6 +21,7 @@ function Menu({ current_scan, stream, client, onLoadItemClicked }: {current_scan
 
   const handleLoadItemClicked = (inputData: Scan) => {
     onLoadItemClicked(inputData);
+    setShowListView(false);
     toggleMenu();
   }
 
@@ -37,7 +38,6 @@ function Menu({ current_scan, stream, client, onLoadItemClicked }: {current_scan
       .then((res) => {
         if (res) {
           console.log("Load!");
-          //const extractedTimestamps = (res.wrap.loadData).map((dict: any) => dict.timestamp);
           const extractedTimestamps: string[] = [];
           const dictTimeStamps: { [timestamp: string]: Scan } = {};
           for (const scan of res.wrap.loadData) {
