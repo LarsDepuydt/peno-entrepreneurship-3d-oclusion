@@ -191,6 +191,13 @@ func (s *ServerStruct) GetPatientByName(
 	return patients.GetPatientByName(req, s.database)
 }
 
+func (s *ServerStruct) UpdatePatientById(
+	ctx context.Context,
+	req *connect.Request[threedoclusionv1.UpdatePatientByIdRequest],
+) (*connect.Response[threedoclusionv1.UpdatePatientByIdResponse], error) {
+	return patients.UpdatePatientById(req, s.database)
+}
+
 // DENTISTS
 func (s *ServerStruct) AddDentist(
 	ctx context.Context,

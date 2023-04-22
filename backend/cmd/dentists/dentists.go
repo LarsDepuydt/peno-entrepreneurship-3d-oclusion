@@ -202,7 +202,7 @@ func UpdateDentistById(req *connect.Request[threedoclusionv1.UpdateDentistByIdRe
 
 	var firstName = req.Msg.FirstName
 	if firstName == nil {
-		firstName = &old_email
+		firstName = &old_firstName
 	}
 
 	var lastName = req.Msg.LastName
@@ -217,14 +217,14 @@ func UpdateDentistById(req *connect.Request[threedoclusionv1.UpdateDentistByIdRe
 	
 	// Perform the database modification
 	_, error = database.Exec(
-		"UPDATE dentist SET email=$2, password=$3, firstname=$4, lastname=$5 WHERE id = $1 ;", 
+		"UPDATE dentist SET email=$2, password=$3, firstname=$4, lastname=$5 WHERE id = $1;", 
 		req.Msg.Id, email, password, firstName, lastName,
 	)
 	if error != nil {
 		return nil, error
 	}
 
-	responseMessage := fmt.Sprintf("Dentist with email: %s updated with succes", old_email)
+	responseMessage := fmt.Sprintf("Dentist with email: %d updated with succes", req.Msg.Id)
 	fmt.Println(responseMessage)
 
 	// TODO: fix token

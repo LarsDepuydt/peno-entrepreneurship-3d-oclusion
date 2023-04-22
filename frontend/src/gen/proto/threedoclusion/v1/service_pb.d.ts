@@ -1201,6 +1201,79 @@ export declare class GetPatientByNameResponse extends Message<GetPatientByNameRe
 }
 
 /**
+ * @generated from message threedoclusion.v1.UpdatePatientByIdRequest
+ */
+export declare class UpdatePatientByIdRequest extends Message<UpdatePatientByIdRequest> {
+  /**
+   * @generated from field: int32 id = 1;
+   */
+  id: number;
+
+  /**
+   * @generated from field: optional string first_name = 2;
+   */
+  firstName?: string;
+
+  /**
+   * @generated from field: optional string last_name = 3;
+   */
+  lastName?: string;
+
+  /**
+   * @generated from field: optional bool pinned = 4;
+   */
+  pinned?: boolean;
+
+  /**
+   * @generated from field: optional string notes = 5;
+   */
+  notes?: string;
+
+  /**
+   * @generated from field: optional int32 dentist_id = 6;
+   */
+  dentistId?: number;
+
+  constructor(data?: PartialMessage<UpdatePatientByIdRequest>);
+
+  static readonly runtime: typeof proto3;
+  static readonly typeName = "threedoclusion.v1.UpdatePatientByIdRequest";
+  static readonly fields: FieldList;
+
+  static fromBinary(bytes: Uint8Array, options?: Partial<BinaryReadOptions>): UpdatePatientByIdRequest;
+
+  static fromJson(jsonValue: JsonValue, options?: Partial<JsonReadOptions>): UpdatePatientByIdRequest;
+
+  static fromJsonString(jsonString: string, options?: Partial<JsonReadOptions>): UpdatePatientByIdRequest;
+
+  static equals(a: UpdatePatientByIdRequest | PlainMessage<UpdatePatientByIdRequest> | undefined, b: UpdatePatientByIdRequest | PlainMessage<UpdatePatientByIdRequest> | undefined): boolean;
+}
+
+/**
+ * @generated from message threedoclusion.v1.UpdatePatientByIdResponse
+ */
+export declare class UpdatePatientByIdResponse extends Message<UpdatePatientByIdResponse> {
+  /**
+   * @generated from field: string message = 1;
+   */
+  message: string;
+
+  constructor(data?: PartialMessage<UpdatePatientByIdResponse>);
+
+  static readonly runtime: typeof proto3;
+  static readonly typeName = "threedoclusion.v1.UpdatePatientByIdResponse";
+  static readonly fields: FieldList;
+
+  static fromBinary(bytes: Uint8Array, options?: Partial<BinaryReadOptions>): UpdatePatientByIdResponse;
+
+  static fromJson(jsonValue: JsonValue, options?: Partial<JsonReadOptions>): UpdatePatientByIdResponse;
+
+  static fromJsonString(jsonString: string, options?: Partial<JsonReadOptions>): UpdatePatientByIdResponse;
+
+  static equals(a: UpdatePatientByIdResponse | PlainMessage<UpdatePatientByIdResponse> | undefined, b: UpdatePatientByIdResponse | PlainMessage<UpdatePatientByIdResponse> | undefined): boolean;
+}
+
+/**
  * DENTIST
  *
  * @generated from message threedoclusion.v1.Dentist

@@ -465,6 +465,31 @@ export const GetPatientByNameResponse = proto3.makeMessageType(
 );
 
 /**
+ * @generated from message threedoclusion.v1.UpdatePatientByIdRequest
+ */
+export const UpdatePatientByIdRequest = proto3.makeMessageType(
+  "threedoclusion.v1.UpdatePatientByIdRequest",
+  () => [
+    { no: 1, name: "id", kind: "scalar", T: 5 /* ScalarType.INT32 */ },
+    { no: 2, name: "first_name", kind: "scalar", T: 9 /* ScalarType.STRING */, opt: true },
+    { no: 3, name: "last_name", kind: "scalar", T: 9 /* ScalarType.STRING */, opt: true },
+    { no: 4, name: "pinned", kind: "scalar", T: 8 /* ScalarType.BOOL */, opt: true },
+    { no: 5, name: "notes", kind: "scalar", T: 9 /* ScalarType.STRING */, opt: true },
+    { no: 6, name: "dentist_id", kind: "scalar", T: 5 /* ScalarType.INT32 */, opt: true },
+  ],
+);
+
+/**
+ * @generated from message threedoclusion.v1.UpdatePatientByIdResponse
+ */
+export const UpdatePatientByIdResponse = proto3.makeMessageType(
+  "threedoclusion.v1.UpdatePatientByIdResponse",
+  () => [
+    { no: 1, name: "message", kind: "scalar", T: 9 /* ScalarType.STRING */ },
+  ],
+);
+
+/**
  * DENTIST
  *
  * @generated from message threedoclusion.v1.Dentist

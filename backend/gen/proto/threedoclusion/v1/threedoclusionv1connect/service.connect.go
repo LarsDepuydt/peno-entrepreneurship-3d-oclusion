@@ -79,6 +79,9 @@ const (
 	// ScanServiceGetPatientByNameProcedure is the fully-qualified name of the ScanService's
 	// GetPatientByName RPC.
 	ScanServiceGetPatientByNameProcedure = "/threedoclusion.v1.ScanService/GetPatientByName"
+	// ScanServiceUpdatePatientByIdProcedure is the fully-qualified name of the ScanService's
+	// UpdatePatientById RPC.
+	ScanServiceUpdatePatientByIdProcedure = "/threedoclusion.v1.ScanService/UpdatePatientById"
 	// ScanServiceAddDentistProcedure is the fully-qualified name of the ScanService's AddDentist RPC.
 	ScanServiceAddDentistProcedure = "/threedoclusion.v1.ScanService/AddDentist"
 	// ScanServiceDeleteDentistByIdProcedure is the fully-qualified name of the ScanService's
@@ -120,6 +123,7 @@ type ScanServiceClient interface {
 	GetAllPatients(context.Context, *connect_go.Request[v1.GetAllPatientsRequest]) (*connect_go.Response[v1.GetAllPatientsResponse], error)
 	GetPatientById(context.Context, *connect_go.Request[v1.GetPatientByIdRequest]) (*connect_go.Response[v1.GetPatientByIdResponse], error)
 	GetPatientByName(context.Context, *connect_go.Request[v1.GetPatientByNameRequest]) (*connect_go.Response[v1.GetPatientByNameResponse], error)
+	UpdatePatientById(context.Context, *connect_go.Request[v1.UpdatePatientByIdRequest]) (*connect_go.Response[v1.UpdatePatientByIdResponse], error)
 	AddDentist(context.Context, *connect_go.Request[v1.AddDentistRequest]) (*connect_go.Response[v1.AddDentistResponse], error)
 	DeleteDentistById(context.Context, *connect_go.Request[v1.DeleteDentistByIdRequest]) (*connect_go.Response[v1.DeleteDentistByIdResponse], error)
 	GetAllDentists(context.Context, *connect_go.Request[v1.GetAllDentistsRequest]) (*connect_go.Response[v1.GetAllDentistsResponse], error)
@@ -234,6 +238,11 @@ func NewScanServiceClient(httpClient connect_go.HTTPClient, baseURL string, opts
 			baseURL+ScanServiceGetPatientByNameProcedure,
 			opts...,
 		),
+		updatePatientById: connect_go.NewClient[v1.UpdatePatientByIdRequest, v1.UpdatePatientByIdResponse](
+			httpClient,
+			baseURL+ScanServiceUpdatePatientByIdProcedure,
+			opts...,
+		),
 		addDentist: connect_go.NewClient[v1.AddDentistRequest, v1.AddDentistResponse](
 			httpClient,
 			baseURL+ScanServiceAddDentistProcedure,
@@ -293,6 +302,7 @@ type scanServiceClient struct {
 	getAllPatients    *connect_go.Client[v1.GetAllPatientsRequest, v1.GetAllPatientsResponse]
 	getPatientById    *connect_go.Client[v1.GetPatientByIdRequest, v1.GetPatientByIdResponse]
 	getPatientByName  *connect_go.Client[v1.GetPatientByNameRequest, v1.GetPatientByNameResponse]
+	updatePatientById *connect_go.Client[v1.UpdatePatientByIdRequest, v1.UpdatePatientByIdResponse]
 	addDentist        *connect_go.Client[v1.AddDentistRequest, v1.AddDentistResponse]
 	deleteDentistById *connect_go.Client[v1.DeleteDentistByIdRequest, v1.DeleteDentistByIdResponse]
 	getAllDentists    *connect_go.Client[v1.GetAllDentistsRequest, v1.GetAllDentistsResponse]
@@ -397,6 +407,11 @@ func (c *scanServiceClient) GetPatientByName(ctx context.Context, req *connect_g
 	return c.getPatientByName.CallUnary(ctx, req)
 }
 
+// UpdatePatientById calls threedoclusion.v1.ScanService.UpdatePatientById.
+func (c *scanServiceClient) UpdatePatientById(ctx context.Context, req *connect_go.Request[v1.UpdatePatientByIdRequest]) (*connect_go.Response[v1.UpdatePatientByIdResponse], error) {
+	return c.updatePatientById.CallUnary(ctx, req)
+}
+
 // AddDentist calls threedoclusion.v1.ScanService.AddDentist.
 func (c *scanServiceClient) AddDentist(ctx context.Context, req *connect_go.Request[v1.AddDentistRequest]) (*connect_go.Response[v1.AddDentistResponse], error) {
 	return c.addDentist.CallUnary(ctx, req)
@@ -453,6 +468,7 @@ type ScanServiceHandler interface {
 	GetAllPatients(context.Context, *connect_go.Request[v1.GetAllPatientsRequest]) (*connect_go.Response[v1.GetAllPatientsResponse], error)
 	GetPatientById(context.Context, *connect_go.Request[v1.GetPatientByIdRequest]) (*connect_go.Response[v1.GetPatientByIdResponse], error)
 	GetPatientByName(context.Context, *connect_go.Request[v1.GetPatientByNameRequest]) (*connect_go.Response[v1.GetPatientByNameResponse], error)
+	UpdatePatientById(context.Context, *connect_go.Request[v1.UpdatePatientByIdRequest]) (*connect_go.Response[v1.UpdatePatientByIdResponse], error)
 	AddDentist(context.Context, *connect_go.Request[v1.AddDentistRequest]) (*connect_go.Response[v1.AddDentistResponse], error)
 	DeleteDentistById(context.Context, *connect_go.Request[v1.DeleteDentistByIdRequest]) (*connect_go.Response[v1.DeleteDentistByIdResponse], error)
 	GetAllDentists(context.Context, *connect_go.Request[v1.GetAllDentistsRequest]) (*connect_go.Response[v1.GetAllDentistsResponse], error)
@@ -562,6 +578,11 @@ func NewScanServiceHandler(svc ScanServiceHandler, opts ...connect_go.HandlerOpt
 	mux.Handle(ScanServiceGetPatientByNameProcedure, connect_go.NewUnaryHandler(
 		ScanServiceGetPatientByNameProcedure,
 		svc.GetPatientByName,
+		opts...,
+	))
+	mux.Handle(ScanServiceUpdatePatientByIdProcedure, connect_go.NewUnaryHandler(
+		ScanServiceUpdatePatientByIdProcedure,
+		svc.UpdatePatientById,
 		opts...,
 	))
 	mux.Handle(ScanServiceAddDentistProcedure, connect_go.NewUnaryHandler(
@@ -679,6 +700,10 @@ func (UnimplementedScanServiceHandler) GetPatientById(context.Context, *connect_
 
 func (UnimplementedScanServiceHandler) GetPatientByName(context.Context, *connect_go.Request[v1.GetPatientByNameRequest]) (*connect_go.Response[v1.GetPatientByNameResponse], error) {
 	return nil, connect_go.NewError(connect_go.CodeUnimplemented, errors.New("threedoclusion.v1.ScanService.GetPatientByName is not implemented"))
+}
+
+func (UnimplementedScanServiceHandler) UpdatePatientById(context.Context, *connect_go.Request[v1.UpdatePatientByIdRequest]) (*connect_go.Response[v1.UpdatePatientByIdResponse], error) {
+	return nil, connect_go.NewError(connect_go.CodeUnimplemented, errors.New("threedoclusion.v1.ScanService.UpdatePatientById is not implemented"))
 }
 
 func (UnimplementedScanServiceHandler) AddDentist(context.Context, *connect_go.Request[v1.AddDentistRequest]) (*connect_go.Response[v1.AddDentistResponse], error) {

@@ -29,6 +29,7 @@ service ScanService {
   rpc GetAllPatients(GetAllPatientsRequest) returns (GetAllPatientsResponse) {}
   rpc GetPatientById(GetPatientByIdRequest) returns (GetPatientByIdResponse) {}
   rpc GetPatientByName(GetPatientByNameRequest) returns (GetPatientByNameResponse) {}
+  rpc UpdatePatientById(UpdatePatientByIdRequest) returns (UpdatePatientByIdResponse) {}
 
   rpc AddDentist(AddDentistRequest) returns (AddDentistResponse) {}
   rpc DeleteDentistById(DeleteDentistByIdRequest) returns (DeleteDentistByIdResponse) {}
@@ -217,17 +218,17 @@ message DeletePatientByIdResponse{
   string last_name = 4;
 }
 
-message GetAllPatientsRequest{}
+message GetAllPatientsRequest {}
 
-message GetAllPatientsResponse{
+message GetAllPatientsResponse {
   repeated Patient patients = 1;
 }
 
-message GetPatientByIdRequest{
+message GetPatientByIdRequest {
   int32 id = 1;
 }
 
-message GetPatientByIdResponse{
+message GetPatientByIdResponse {
   int32 id = 1;
   string first_name = 2;
   string last_name = 3;
@@ -236,14 +237,27 @@ message GetPatientByIdResponse{
   int32 dentist_id = 6;
 }
 
-message GetPatientByNameRequest{
+message GetPatientByNameRequest {
   optional string first_name = 1;
   optional string last_name = 2;
 
 }
 
-message GetPatientByNameResponse{
+message GetPatientByNameResponse {
   repeated Patient patients = 1;
+}
+
+message UpdatePatientByIdRequest {
+  int32 id = 1;
+  optional string first_name = 2;
+  optional string last_name = 3;
+  optional bool pinned = 4;
+  optional string notes = 5;
+  optional int32 dentist_id = 6;
+}
+
+message UpdatePatientByIdResponse {
+  string message = 1;
 }
 
 // DENTIST
