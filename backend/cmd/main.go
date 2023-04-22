@@ -28,11 +28,11 @@ func main() {
 
 	// Check if the database connection works
 	err = database.Ping()
-  if err != nil {
-    panic(err)
-  }
+	if err != nil {
+		panic(err)
+	}
 
-  fmt.Println("Successfully connected!")
+  	fmt.Println("Successfully connected!")
 
 	serve.Server(database)
 }
