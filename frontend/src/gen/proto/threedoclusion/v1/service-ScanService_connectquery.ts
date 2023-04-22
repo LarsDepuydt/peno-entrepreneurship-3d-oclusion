@@ -5,7 +5,7 @@
 
 import { createQueryService } from "@bufbuild/connect-query";
 import { MethodKind } from "@bufbuild/protobuf";
-import { AddDentistRequest, AddDentistResponse, AddPatientRequest, AddPatientResponse, AddScanRequest, AddScanResponse, AddTagRequest, AddTagResponse, DeleteDentistByIdRequest, DeleteDentistByIdResponse, DeletePatientRequest, DeletePatientResponse, DeleteScanRequest, DeleteScanResponse, DeleteTagRequest, DeleteTagResponse, GetAllDentistsRequest, GetAllDentistsResponse, GetAllPatientsRequest, GetAllPatientsResponse, GetAllScansRequest, GetAllScansResponse, GetAllTagsByTypeRequest, GetAllTagsByTypeResponse, GetAllTagsRequest, GetAllTagsResponse, GetDentistByIdRequest, GetDentistByIdResponse, GetPatientByIDRequest, GetPatientByIDResponse, GetPatientByNameRequest, GetPatientByNameResponse, GetPositionScanRequest, GetPositionScanResponse, GetScanByDateRequest, GetScanByDateResponse, GetScanByIDRequest, GetScanByIDResponse, GetTagByIDRequest, GetTagByIDResponse, LoginRequest, LoginResponse, RegisterRequest, RegisterResponse, SendPositionScanRequest, SendPositionScanResponse, SendVRRequest, SendVRResponse, UpdateDentistByIdRequest, UpdateDentistByIdResponse } from "./service_pb.js";
+import { AddDentistRequest, AddDentistResponse, AddPatientRequest, AddPatientResponse, AddScanRequest, AddScanResponse, AddTagRequest, AddTagResponse, DeleteDentistByIdRequest, DeleteDentistByIdResponse, DeletePatientByIdRequest, DeletePatientByIdResponse, DeleteScanRequest, DeleteScanResponse, DeleteTagRequest, DeleteTagResponse, GetAllDentistsRequest, GetAllDentistsResponse, GetAllPatientsRequest, GetAllPatientsResponse, GetAllScansRequest, GetAllScansResponse, GetAllTagsByTypeRequest, GetAllTagsByTypeResponse, GetAllTagsRequest, GetAllTagsResponse, GetDentistByIdRequest, GetDentistByIdResponse, GetPatientByIdRequest, GetPatientByIdResponse, GetPatientByNameRequest, GetPatientByNameResponse, GetPositionScanRequest, GetPositionScanResponse, GetScanByDateRequest, GetScanByDateResponse, GetScanByIDRequest, GetScanByIDResponse, GetTagByIDRequest, GetTagByIDResponse, LoginRequest, LoginResponse, RegisterRequest, RegisterResponse, SendPositionScanRequest, SendPositionScanResponse, SendVRRequest, SendVRResponse, UpdateDentistByIdRequest, UpdateDentistByIdResponse } from "./service_pb.js";
 
 export const typeName = "threedoclusion.v1.ScanService";
 
@@ -248,21 +248,21 @@ export const addPatient = createQueryService({
 }).addPatient;
 
 /**
- * @generated from rpc threedoclusion.v1.ScanService.DeletePatient
+ * @generated from rpc threedoclusion.v1.ScanService.DeletePatientById
  */
-export const deletePatient = createQueryService({
+export const deletePatientById = createQueryService({
   service: {
     methods: {
-      deletePatient: {
-        name: "DeletePatient",
+      deletePatientById: {
+        name: "DeletePatientById",
         kind: MethodKind.Unary,
-        I: DeletePatientRequest,
-        O: DeletePatientResponse,
+        I: DeletePatientByIdRequest,
+        O: DeletePatientByIdResponse,
       },
     },
     typeName: "threedoclusion.v1.ScanService",
   },
-}).deletePatient;
+}).deletePatientById;
 
 /**
  * @generated from rpc threedoclusion.v1.ScanService.GetAllPatients
@@ -282,21 +282,21 @@ export const getAllPatients = createQueryService({
 }).getAllPatients;
 
 /**
- * @generated from rpc threedoclusion.v1.ScanService.GetPatientByID
+ * @generated from rpc threedoclusion.v1.ScanService.GetPatientById
  */
-export const getPatientByID = createQueryService({
+export const getPatientById = createQueryService({
   service: {
     methods: {
-      getPatientByID: {
-        name: "GetPatientByID",
+      getPatientById: {
+        name: "GetPatientById",
         kind: MethodKind.Unary,
-        I: GetPatientByIDRequest,
-        O: GetPatientByIDResponse,
+        I: GetPatientByIdRequest,
+        O: GetPatientByIdResponse,
       },
     },
     typeName: "threedoclusion.v1.ScanService",
   },
-}).getPatientByID;
+}).getPatientById;
 
 /**
  * @generated from rpc threedoclusion.v1.ScanService.GetPatientByName

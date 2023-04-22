@@ -377,22 +377,25 @@ export const WaitingResponse = proto3.makeMessageType(
 );
 
 /**
- * @generated from message threedoclusion.v1.DeletePatientRequest
+ * @generated from message threedoclusion.v1.DeletePatientByIdRequest
  */
-export const DeletePatientRequest = proto3.makeMessageType(
-  "threedoclusion.v1.DeletePatientRequest",
+export const DeletePatientByIdRequest = proto3.makeMessageType(
+  "threedoclusion.v1.DeletePatientByIdRequest",
   () => [
     { no: 1, name: "id", kind: "scalar", T: 5 /* ScalarType.INT32 */ },
   ],
 );
 
 /**
- * @generated from message threedoclusion.v1.DeletePatientResponse
+ * @generated from message threedoclusion.v1.DeletePatientByIdResponse
  */
-export const DeletePatientResponse = proto3.makeMessageType(
-  "threedoclusion.v1.DeletePatientResponse",
+export const DeletePatientByIdResponse = proto3.makeMessageType(
+  "threedoclusion.v1.DeletePatientByIdResponse",
   () => [
     { no: 1, name: "message", kind: "scalar", T: 9 /* ScalarType.STRING */ },
+    { no: 2, name: "id", kind: "scalar", T: 5 /* ScalarType.INT32 */ },
+    { no: 3, name: "first_name", kind: "scalar", T: 9 /* ScalarType.STRING */ },
+    { no: 4, name: "last_name", kind: "scalar", T: 9 /* ScalarType.STRING */ },
   ],
 );
 
@@ -415,20 +418,20 @@ export const GetAllPatientsResponse = proto3.makeMessageType(
 );
 
 /**
- * @generated from message threedoclusion.v1.GetPatientByIDRequest
+ * @generated from message threedoclusion.v1.GetPatientByIdRequest
  */
-export const GetPatientByIDRequest = proto3.makeMessageType(
-  "threedoclusion.v1.GetPatientByIDRequest",
+export const GetPatientByIdRequest = proto3.makeMessageType(
+  "threedoclusion.v1.GetPatientByIdRequest",
   () => [
     { no: 1, name: "id", kind: "scalar", T: 5 /* ScalarType.INT32 */ },
   ],
 );
 
 /**
- * @generated from message threedoclusion.v1.GetPatientByIDResponse
+ * @generated from message threedoclusion.v1.GetPatientByIdResponse
  */
-export const GetPatientByIDResponse = proto3.makeMessageType(
-  "threedoclusion.v1.GetPatientByIDResponse",
+export const GetPatientByIdResponse = proto3.makeMessageType(
+  "threedoclusion.v1.GetPatientByIdResponse",
   () => [
     { no: 1, name: "id", kind: "scalar", T: 5 /* ScalarType.INT32 */ },
     { no: 2, name: "first_name", kind: "scalar", T: 9 /* ScalarType.STRING */ },

@@ -964,51 +964,66 @@ export declare class WaitingResponse extends Message<WaitingResponse> {
 }
 
 /**
- * @generated from message threedoclusion.v1.DeletePatientRequest
+ * @generated from message threedoclusion.v1.DeletePatientByIdRequest
  */
-export declare class DeletePatientRequest extends Message<DeletePatientRequest> {
+export declare class DeletePatientByIdRequest extends Message<DeletePatientByIdRequest> {
   /**
    * @generated from field: int32 id = 1;
    */
   id: number;
 
-  constructor(data?: PartialMessage<DeletePatientRequest>);
+  constructor(data?: PartialMessage<DeletePatientByIdRequest>);
 
   static readonly runtime: typeof proto3;
-  static readonly typeName = "threedoclusion.v1.DeletePatientRequest";
+  static readonly typeName = "threedoclusion.v1.DeletePatientByIdRequest";
   static readonly fields: FieldList;
 
-  static fromBinary(bytes: Uint8Array, options?: Partial<BinaryReadOptions>): DeletePatientRequest;
+  static fromBinary(bytes: Uint8Array, options?: Partial<BinaryReadOptions>): DeletePatientByIdRequest;
 
-  static fromJson(jsonValue: JsonValue, options?: Partial<JsonReadOptions>): DeletePatientRequest;
+  static fromJson(jsonValue: JsonValue, options?: Partial<JsonReadOptions>): DeletePatientByIdRequest;
 
-  static fromJsonString(jsonString: string, options?: Partial<JsonReadOptions>): DeletePatientRequest;
+  static fromJsonString(jsonString: string, options?: Partial<JsonReadOptions>): DeletePatientByIdRequest;
 
-  static equals(a: DeletePatientRequest | PlainMessage<DeletePatientRequest> | undefined, b: DeletePatientRequest | PlainMessage<DeletePatientRequest> | undefined): boolean;
+  static equals(a: DeletePatientByIdRequest | PlainMessage<DeletePatientByIdRequest> | undefined, b: DeletePatientByIdRequest | PlainMessage<DeletePatientByIdRequest> | undefined): boolean;
 }
 
 /**
- * @generated from message threedoclusion.v1.DeletePatientResponse
+ * @generated from message threedoclusion.v1.DeletePatientByIdResponse
  */
-export declare class DeletePatientResponse extends Message<DeletePatientResponse> {
+export declare class DeletePatientByIdResponse extends Message<DeletePatientByIdResponse> {
   /**
    * @generated from field: string message = 1;
    */
   message: string;
 
-  constructor(data?: PartialMessage<DeletePatientResponse>);
+  /**
+   * @generated from field: int32 id = 2;
+   */
+  id: number;
+
+  /**
+   * @generated from field: string first_name = 3;
+   */
+  firstName: string;
+
+  /**
+   * @generated from field: string last_name = 4;
+   */
+  lastName: string;
+
+  constructor(data?: PartialMessage<DeletePatientByIdResponse>);
 
   static readonly runtime: typeof proto3;
-  static readonly typeName = "threedoclusion.v1.DeletePatientResponse";
+  static readonly typeName = "threedoclusion.v1.DeletePatientByIdResponse";
   static readonly fields: FieldList;
 
-  static fromBinary(bytes: Uint8Array, options?: Partial<BinaryReadOptions>): DeletePatientResponse;
+  static fromBinary(bytes: Uint8Array, options?: Partial<BinaryReadOptions>): DeletePatientByIdResponse;
 
-  static fromJson(jsonValue: JsonValue, options?: Partial<JsonReadOptions>): DeletePatientResponse;
+  static fromJson(jsonValue: JsonValue, options?: Partial<JsonReadOptions>): DeletePatientByIdResponse;
 
-  static fromJsonString(jsonString: string, options?: Partial<JsonReadOptions>): DeletePatientResponse;
+  static fromJsonString(jsonString: string, options?: Partial<JsonReadOptions>): DeletePatientByIdResponse;
 
-  static equals(a: DeletePatientResponse | PlainMessage<DeletePatientResponse> | undefined, b: DeletePatientResponse | PlainMessage<DeletePatientResponse> | undefined): boolean;
+  static equals(a: DeletePatientByIdResponse | PlainMessage<DeletePatientByIdResponse> | undefined, b: DeletePatientByIdResponse | PlainMessage<DeletePatientByIdResponse> | undefined): boolean;
 }
 
 /**
@@ -1055,33 +1070,33 @@ export declare class GetAllPatientsResponse extends Message<GetAllPatientsRespon
 }
 
 /**
- * @generated from message threedoclusion.v1.GetPatientByIDRequest
+ * @generated from message threedoclusion.v1.GetPatientByIdRequest
  */
-export declare class GetPatientByIDRequest extends Message<GetPatientByIDRequest> {
+export declare class GetPatientByIdRequest extends Message<GetPatientByIdRequest> {
   /**
    * @generated from field: int32 id = 1;
    */
   id: number;
 
-  constructor(data?: PartialMessage<GetPatientByIDRequest>);
+  constructor(data?: PartialMessage<GetPatientByIdRequest>);
 
   static readonly runtime: typeof proto3;
-  static readonly typeName = "threedoclusion.v1.GetPatientByIDRequest";
+  static readonly typeName = "threedoclusion.v1.GetPatientByIdRequest";
   static readonly fields: FieldList;
 
-  static fromBinary(bytes: Uint8Array, options?: Partial<BinaryReadOptions>): GetPatientByIDRequest;
+  static fromBinary(bytes: Uint8Array, options?: Partial<BinaryReadOptions>): GetPatientByIdRequest;
 
-  static fromJson(jsonValue: JsonValue, options?: Partial<JsonReadOptions>): GetPatientByIDRequest;
+  static fromJson(jsonValue: JsonValue, options?: Partial<JsonReadOptions>): GetPatientByIdRequest;
 
-  static fromJsonString(jsonString: string, options?: Partial<JsonReadOptions>): GetPatientByIDRequest;
+  static fromJsonString(jsonString: string, options?: Partial<JsonReadOptions>): GetPatientByIdRequest;
 
-  static equals(a: GetPatientByIDRequest | PlainMessage<GetPatientByIDRequest> | undefined, b: GetPatientByIDRequest | PlainMessage<GetPatientByIDRequest> | undefined): boolean;
+  static equals(a: GetPatientByIdRequest | PlainMessage<GetPatientByIdRequest> | undefined, b: GetPatientByIdRequest | PlainMessage<GetPatientByIdRequest> | undefined): boolean;
 }
 
 /**
- * @generated from message threedoclusion.v1.GetPatientByIDResponse
+ * @generated from message threedoclusion.v1.GetPatientByIdResponse
  */
-export declare class GetPatientByIDResponse extends Message<GetPatientByIDResponse> {
+export declare class GetPatientByIdResponse extends Message<GetPatientByIdResponse> {
   /**
    * @generated from field: int32 id = 1;
    */
@@ -1107,19 +1122,19 @@ export declare class GetPatientByIDResponse extends Message<GetPatientByIDRespon
    */
   notes: string;
 
-  constructor(data?: PartialMessage<GetPatientByIDResponse>);
+  constructor(data?: PartialMessage<GetPatientByIdResponse>);
 
   static readonly runtime: typeof proto3;
-  static readonly typeName = "threedoclusion.v1.GetPatientByIDResponse";
+  static readonly typeName = "threedoclusion.v1.GetPatientByIdResponse";
   static readonly fields: FieldList;
 
-  static fromBinary(bytes: Uint8Array, options?: Partial<BinaryReadOptions>): GetPatientByIDResponse;
+  static fromBinary(bytes: Uint8Array, options?: Partial<BinaryReadOptions>): GetPatientByIdResponse;
 
-  static fromJson(jsonValue: JsonValue, options?: Partial<JsonReadOptions>): GetPatientByIDResponse;
+  static fromJson(jsonValue: JsonValue, options?: Partial<JsonReadOptions>): GetPatientByIdResponse;
 
-  static fromJsonString(jsonString: string, options?: Partial<JsonReadOptions>): GetPatientByIDResponse;
+  static fromJsonString(jsonString: string, options?: Partial<JsonReadOptions>): GetPatientByIdResponse;
 
-  static equals(a: GetPatientByIDResponse | PlainMessage<GetPatientByIDResponse> | undefined, b: GetPatientByIDResponse | PlainMessage<GetPatientByIDResponse> | undefined): boolean;
+  static equals(a: GetPatientByIdResponse | PlainMessage<GetPatientByIdResponse> | undefined, b: GetPatientByIdResponse | PlainMessage<GetPatientByIdResponse> | undefined): boolean;
 }
 
 /**

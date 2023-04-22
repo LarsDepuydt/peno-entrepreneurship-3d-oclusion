@@ -46,9 +46,16 @@ func AddPatient(req *connect.Request[threedoclusionv1.AddPatientRequest], databa
 	return res, nil
 }
 
-func DeletePatient(req *connect.Request[threedoclusionv1.DeletePatientRequest], database *sql.DB) (*connect.Response[threedoclusionv1.DeletePatientResponse], error) {
-	statement := "DELETE FROM patient WHERE id = $1"
-	_, error := database.Exec(statement, req.Msg.Id)
+func DeletePatientById(req *connect.Request[threedoclusionv1.DeletePatientByIdRequest], database *sql.DB) (*connect.Response[threedoclusionv1.DeletePatientByIdResponse], error) {
+	const sqlStatement = `
+		DELETE FROM patient 
+		WHERE id = $1
+		RETURNING id, firstname, lastname;`
+	var id int32
+	var firstName string
+	var lastName string
+	
+	error := database.QueryRow(sqlStatement, req.Msg.Id).Scan(&id, &firstName, &lastName)
 	if error != nil {
 		return nil, error
 	}
@@ -56,8 +63,11 @@ func DeletePatient(req *connect.Request[threedoclusionv1.DeletePatientRequest], 
 	responseMessage := fmt.Sprintf("patient with id: %d deleted with succes;", req.Msg.Id)
 	fmt.Println(responseMessage)
 
-	res := connect.NewResponse(&threedoclusionv1.DeletePatientResponse{
+	res := connect.NewResponse(&threedoclusionv1.DeletePatientByIdResponse{
 		Message: responseMessage,
+		Id: id,
+		FirstName: firstName,
+    LastName: lastName,
 	})
 
 	return res, nil
@@ -84,7 +94,7 @@ func GetAllPatients(req *connect.Request[threedoclusionv1.GetAllPatientsRequest]
 	return res, nil
 }
 
-func GetPatientByID(req *connect.Request[threedoclusionv1.GetPatientByIDRequest], database *sql.DB) (*connect.Response[threedoclusionv1.GetPatientByIDResponse], error) {
+func GetPatientByID(req *connect.Request[threedoclusionv1.GetPatientByIdRequest], database *sql.DB) (*connect.Response[threedoclusionv1.GetPatientByIdResponse], error) {
 	statement := "SELECT * FROM patient WHERE id = $1;"
 	rows, error := database.Query(statement, req.Msg.Id)
 	if error != nil {
@@ -99,7 +109,7 @@ func GetPatientByID(req *connect.Request[threedoclusionv1.GetPatientByIDRequest]
 	responseMessage := fmt.Sprintf("patient with id: %d returned with succes;", req.Msg.Id)
 	fmt.Println(responseMessage)
 
-	res := connect.NewResponse(&threedoclusionv1.GetPatientByIDResponse{
+	res := connect.NewResponse(&threedoclusionv1.GetPatientByIdResponse{
 		Id:        result[0].Id,
 		FirstName: result[0].FirstName,
 		LastName:  result[0].LastName,

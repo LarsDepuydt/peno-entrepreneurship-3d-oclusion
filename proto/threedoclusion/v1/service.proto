@@ -25,9 +25,9 @@ service ScanService {
   rpc GetPositionScan (GetPositionScanRequest) returns (GetPositionScanResponse) {}
 
   rpc AddPatient(AddPatientRequest) returns (AddPatientResponse) {}
-  rpc DeletePatient(DeletePatientRequest) returns (DeletePatientResponse) {}
+  rpc DeletePatientById(DeletePatientByIdRequest) returns (DeletePatientByIdResponse) {}
   rpc GetAllPatients(GetAllPatientsRequest) returns (GetAllPatientsResponse) {}
-  rpc GetPatientByID(GetPatientByIDRequest) returns (GetPatientByIDResponse) {}
+  rpc GetPatientById(GetPatientByIdRequest) returns (GetPatientByIdResponse) {}
   rpc GetPatientByName(GetPatientByNameRequest) returns (GetPatientByNameResponse) {}
 
   rpc AddDentist(AddDentistRequest) returns (AddDentistResponse) {}
@@ -206,12 +206,15 @@ message WaitingResponse {
   string url = 2;
 }
 
-message DeletePatientRequest{
+message DeletePatientByIdRequest{
   int32 id = 1;
 }
 
-message DeletePatientResponse{
+message DeletePatientByIdResponse{
   string message = 1;
+  int32 id = 2;
+  string first_name = 3;
+  string last_name = 4;
 }
 
 message GetAllPatientsRequest{}
@@ -220,11 +223,11 @@ message GetAllPatientsResponse{
   repeated Patient patients = 1;
 }
 
-message GetPatientByIDRequest{
+message GetPatientByIdRequest{
   int32 id = 1;
 }
 
-message GetPatientByIDResponse{
+message GetPatientByIdResponse{
   int32 id = 1;
   string first_name = 2;
   string last_name = 3;

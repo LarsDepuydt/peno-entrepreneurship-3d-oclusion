@@ -163,11 +163,11 @@ func (s *ServerStruct) AddPatient(
 	return patients.AddPatient(req, s.database)
 }
 
-func (s *ServerStruct) DeletePatient(
+func (s *ServerStruct) DeletePatientById(
 	ctx context.Context,
-	req *connect.Request[threedoclusionv1.DeletePatientRequest],
-) (*connect.Response[threedoclusionv1.DeletePatientResponse], error) {
-	return patients.DeletePatient(req, s.database)
+	req *connect.Request[threedoclusionv1.DeletePatientByIdRequest],
+) (*connect.Response[threedoclusionv1.DeletePatientByIdResponse], error) {
+	return patients.DeletePatientById(req, s.database)
 }
 
 func (s *ServerStruct) GetAllPatients(
@@ -177,10 +177,10 @@ func (s *ServerStruct) GetAllPatients(
 	return patients.GetAllPatients(req, s.database)
 }
 
-func (s *ServerStruct) GetPatientByID(
+func (s *ServerStruct) GetPatientById(
 	ctx context.Context,
-	req *connect.Request[threedoclusionv1.GetPatientByIDRequest],
-) (*connect.Response[threedoclusionv1.GetPatientByIDResponse], error) {
+	req *connect.Request[threedoclusionv1.GetPatientByIdRequest],
+) (*connect.Response[threedoclusionv1.GetPatientByIdResponse], error) {
 	return patients.GetPatientByID(req, s.database)
 }
 
