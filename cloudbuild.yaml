@@ -3,7 +3,7 @@ steps:
   args:
   - 'build'
   - '--build-arg'
-  - 'DOCKERFILE_PATH=./backend/Dockerfile'
+  - 'DOCKERFILE_PATH=./Dockerfile'
   - '-f'
   - './backend/Dockerfile'
   - '-t'
