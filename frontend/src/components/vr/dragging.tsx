@@ -147,7 +147,7 @@ function init(initialScan: Scan) {
     );
 } // Insert get_position function to retrieve pos from server
 
-function initThree(setOpenMenu: any){
+function initThree(setOpenMenu: any, setCurrentScan: any){
 
 
     // add renderer and enable VR
@@ -168,7 +168,8 @@ function initThree(setOpenMenu: any){
 
     controller1.addEventListener( 'squeezestart', function foo() { // End and restart WEBXR session when triggering menu?
         const session = renderer.xr.getSession();
-        session?.end().then(setOpenMenu(true))
+        session?.end().then(setOpenMenu(true));
+        updateScanData(setCurrentScan);
     }); // Added to test menu
     
     scene.add( controller1 );
@@ -349,12 +350,10 @@ function cleanIntersected() {
 
 function animate(setCurrentScan: any) {
 
-    renderer.setAnimationLoop( function renderWithSetter(){
-        render(setCurrentScan)
-    } );
+    renderer.setAnimationLoop( render );
 }
 
-function render(setCurrentScan: any) {
+function render() {
 
     cleanIntersected();
 
@@ -363,7 +362,6 @@ function render(setCurrentScan: any) {
 
     beforeRender(controller1);
     beforeRender(controller2);
-    updateScanData(setCurrentScan);
 
     renderer.render( scene, camera );
 }
@@ -413,7 +411,7 @@ export default function DraggingView({ stream, client }: {stream: any, client: a
     useEffect(() => { // https://github.com/facebook/react/issues/24502
         if (second_call){
             init(initialScan);
-            initThree(setOpenMenu);
+            initThree(setOpenMenu, setCurrentScan);
             animate(setCurrentScan); // Sets 
             console.log('Init executed!');
         }
@@ -471,13 +469,9 @@ export default function DraggingView({ stream, client }: {stream: any, client: a
             Math.PI
         );
     };
-    
-    // Use state variable to toggle visibility of menu IN here
-    // Use onItemClicked or whatever to move item data up the tree to load scan here
 
     return (
         <div>
-          {/* Your Three.js/WebXR canvas here */}
           <Menu {...props}/>
         </div>
       );
