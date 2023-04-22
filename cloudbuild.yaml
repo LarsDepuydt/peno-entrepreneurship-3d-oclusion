@@ -6,7 +6,7 @@ steps:
   - |
     export DOCKER_BUILDKIT=1 &&
     export TAG_NAME=gcr.io/$PROJECT_ID/backend:$COMMIT_SHA &&
-    export DOCKERFILE_PATH=./backend/Dockerfile &&
+    export DOCKERFILE_PATH=./Dockerfile &&
     docker buildx build --platform linux/amd64 -t $TAG_NAME -f $DOCKERFILE_PATH --push .
 - name: 'gcr.io/google.com/cloudsdktool/cloud-sdk'
   entrypoint: 'gcloud'
