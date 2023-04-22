@@ -1,8 +1,13 @@
 steps:
-- name: 'gcr.io/cloud-builders/docker'
-  args: ['build', '-t', 'gcr.io/$PROJECT_ID/backend:$COMMIT_SHA', '.']
-- name: 'gcr.io/cloud-builders/docker'
-  args: ['push', 'gcr.io/$PROJECT_ID/backend:$COMMIT_SHA']
+- name: 'docker/build-push-action:1.0'
+  entrypoint: 'bash'
+  args:
+  - '-c'
+  - |
+    export DOCKER_BUILDKIT=1 &&
+    export TAG_NAME=gcr.io/$PROJECT_ID/backend:$COMMIT_SHA &&
+    export DOCKERFILE_PATH=./backend/Dockerfile &&
+    docker buildx build --platform linux/amd64 -t $TAG_NAME -f $DOCKERFILE_PATH --push .
 - name: 'gcr.io/google.com/cloudsdktool/cloud-sdk'
   entrypoint: 'gcloud'
   args:
@@ -20,3 +25,4 @@ steps:
     - 'CLOUD_SQL_CONNECTION_NAME=relu-backend:europe-west1:relu-sql-db'
 images:
 - 'gcr.io/$PROJECT_ID/backend:$COMMIT_SHA'
+
