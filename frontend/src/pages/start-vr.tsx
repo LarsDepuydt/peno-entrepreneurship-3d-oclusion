@@ -9,6 +9,7 @@ import { SubscribeConnectionRequest, SubscribeConnectionResponse, SendMenuOption
 
 
 import dynamic from 'next/dynamic';
+import { useRouter } from 'next/router';
 
 const VRView = dynamic(() => import('@/components/vr/vr-view'), { ssr: false });
 const DraggingView = dynamic(() => import('@/components/vr/dragging'), { ssr: false });
@@ -20,6 +21,7 @@ export default function StartVRPage(){
     const [client, setClient] = useState<any>(null);
     const [stream, setStream] = useState<AsyncIterable<SubscribeConnectionResponse> | null>(null);
     const transport = useTransport();
+    const router = useRouter();
   
     useEffect(() => setIsComponentMounted(true), [])
   
@@ -40,7 +42,11 @@ export default function StartVRPage(){
         checkConnected(stream);
     }
 
-    const props = { stream, client };
+    const onQuit = () => {
+        router.push("/end-vr")
+    }
+
+    const props = { stream, client, onQuit };
 
     return ( // Only executed on the client side
         <div>

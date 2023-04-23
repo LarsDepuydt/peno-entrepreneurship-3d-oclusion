@@ -133,8 +133,11 @@ func SendMenuOption(req *connect.Request[threedoclusionv1.SendMenuOptionRequest]
 		}
 
 		connectionChan := connections.GetChannel(req.Msg.GetScanId(), deviceID)
-		connectionChan <- threedoclusionv1.SubscribeConnectionResponse{
-			IsConnected: false,
+		select {
+		case connectionChan <- threedoclusionv1.SubscribeConnectionResponse{IsConnected: false}:
+			log.Println("Sent notification")
+		default:
+			// Pass
 		}
 
 		//connection.Send(responseConnect);
@@ -155,9 +158,13 @@ func SendMenuOption(req *connect.Request[threedoclusionv1.SendMenuOptionRequest]
 		log.Println("Menu option Quit was chosen");
 
 		connectionChan := connections.GetChannel(req.Msg.GetScanId(), deviceID)
-		connectionChan <- threedoclusionv1.SubscribeConnectionResponse{
-			IsConnected: false,
+		select {
+		case connectionChan <- threedoclusionv1.SubscribeConnectionResponse{IsConnected: false}:
+			log.Println("Sent notification")
+		default:
+			// Pass
 		}
+
 		// DO something with connection
 
 

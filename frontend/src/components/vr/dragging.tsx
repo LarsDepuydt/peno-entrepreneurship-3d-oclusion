@@ -348,7 +348,7 @@ function cleanIntersected() {
 
 }
 
-function animate(setCurrentScan: any) {
+function animate() {
 
     renderer.setAnimationLoop( render );
 }
@@ -367,7 +367,7 @@ function render() {
 }
 
 function updateScanData(setCurrentScan: any) {
-    let newScan = new Scan({id: 111});
+    let newScan = new Scan({id: 111, timestamp: "2006-01-02T15:04:05"});
     for (let i = 0; i < group.children.length; i++) {
         if (group.children[i].name == "lowerjaw"){
             newScan.lowerX = group.children[i].position.x;
@@ -386,10 +386,10 @@ function updateScanData(setCurrentScan: any) {
             newScan.upperRZ = group.children[i].rotation.z;
         }
     }
-    setCurrentScan({newScan});
+    setCurrentScan(newScan);
 }
 
-export default function DraggingView({ stream, client }: {stream: any, client: any}){
+export default function DraggingView({ stream, client, onQuit }: {stream: any, client: any, onQuit: () => void}){
     const initialScan = new Scan({
         lowerX: 0,
         lowerY: 2,
@@ -404,6 +404,7 @@ export default function DraggingView({ stream, client }: {stream: any, client: a
         upperRY: 0,
         upperRZ: 0,
         id: 111,
+        timestamp: "2006-01-02T15:04:05"
     });
     const [current_scan, setCurrentScan] = useState<Scan>(initialScan);
     const [openMenu, setOpenMenu] = useState(false);
@@ -412,7 +413,7 @@ export default function DraggingView({ stream, client }: {stream: any, client: a
         if (second_call){
             init(initialScan);
             initThree(setOpenMenu, setCurrentScan);
-            animate(setCurrentScan); // Sets 
+            animate(); // Sets 
             console.log('Init executed!');
         }
         else {
@@ -427,7 +428,7 @@ export default function DraggingView({ stream, client }: {stream: any, client: a
         const {id, timestamp, ...positionData } = inputData
         loadPosition(positionData);
     }
-    const props = {isOpen: openMenu, setIsOpen: setOpenMenu, current_scan, stream, client, onLoadItemClicked };
+    const props = {isOpen: openMenu, setIsOpen: setOpenMenu, current_scan, stream, client, onLoadItemClicked, onQuit };
 
     // resize
 
