@@ -15,7 +15,7 @@ async function sendMenuOption(optionNumber: number, clnt: any, oData: any){
   return res;
 }
 
-function Menu({isOpen, setIsOpen, current_scan, stream, client, onLoadItemClicked }: {isOpen: boolean, setIsOpen: any, current_scan: Scan, stream: any, client: any, onLoadItemClicked: (inputData: Scan) => void}){ // Add props with positions, client...
+function Menu({isOpen, setIsOpen, current_scan, stream, client, onLoadItemClicked, onQuit}: {isOpen: boolean, setIsOpen: any, current_scan: Scan, stream: any, client: any, onLoadItemClicked: (inputData: Scan) => void, onQuit: () => void}){ // Add props with positions, client...
   //const [isOpen, setIsOpen] = useState(true);
   const [showListView, setShowListView] = useState(false);
   const [listData, setListData] = useState<string[]>([]);
@@ -72,15 +72,16 @@ function Menu({isOpen, setIsOpen, current_scan, stream, client, onLoadItemClicke
   };
 
   const quit = async () => {
-    const optionData = {case: "scanId", value: 111,} 
-    const res = await sendMenuOption(3, client, optionData);
     console.log("I quit!")
-    // Redirect to /end-vr -> should end streaming connection as well?
-
-    //console.log((res as any).OtherData);
-    // Close stream here?
-    // Redirect...
-    // DO IN LEVEL ABOVE?
+    const optionData = {case: "scanId", value: 111,} 
+    sendMenuOption(3, client, optionData)
+      .then((res) => {
+        console.log(res);
+        onQuit();
+      })
+      .catch((error) => {
+        console.error("Error fetching data:", error);
+      });
   };
 
   // onItemClicked move another level up so you can edit position in VR

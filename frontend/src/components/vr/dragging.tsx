@@ -6,6 +6,7 @@ import { OBJLoader } from 'three/examples/jsm/loaders/OBJLoader.js';
 import { useState, useEffect } from 'react';
 import { SendMenuOptionRequest, Scan } from "@/gen/proto/threedoclusion/v1/service_pb";
 import Menu from './menu';
+import { useRouter } from 'next/router';
 
 
 let container: HTMLDivElement;
@@ -389,7 +390,7 @@ function updateScanData(setCurrentScan: any) {
     setCurrentScan({newScan});
 }
 
-export default function DraggingView({ stream, client }: {stream: any, client: any}){
+export default function DraggingView({ stream, client, onQuit }: {stream: any, client: any, onQuit: () => void}){
     const initialScan = new Scan({
         lowerX: 0,
         lowerY: 2,
@@ -427,7 +428,8 @@ export default function DraggingView({ stream, client }: {stream: any, client: a
         const {id, timestamp, ...positionData } = inputData
         loadPosition(positionData);
     }
-    const props = {isOpen: openMenu, setIsOpen: setOpenMenu, current_scan, stream, client, onLoadItemClicked };
+
+    const props = {isOpen: openMenu, setIsOpen: setOpenMenu, current_scan, stream, client, onLoadItemClicked, onQuit };
 
     // resize
 

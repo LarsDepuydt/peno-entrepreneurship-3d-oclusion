@@ -18,12 +18,16 @@ function makeStreamOnID(id: number, transport: any){
 
 async function checkConnected(serverStream: AsyncIterable<SubscribeConnectionResponse>) {
   for await (const res of serverStream){
-    if (!res.isConnected){ 
-      // Close stream... How?
+    if (res.isConnected){
+      console.log("VR has connected!")
+    }
+
+    else { 
+      // Close stream...
       //serverStream.Close() ?
       //serverStream.cancel()
       // Show some other component
-      console.log("VR disconnected!")
+      console.log("VR has disconnected!")
     }
   }
   

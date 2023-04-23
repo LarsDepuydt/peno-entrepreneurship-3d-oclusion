@@ -133,8 +133,11 @@ func SendMenuOption(req *connect.Request[threedoclusionv1.SendMenuOptionRequest]
 		}
 
 		connectionChan := connections.GetChannel(req.Msg.GetScanId(), deviceID)
-		connectionChan <- threedoclusionv1.SubscribeConnectionResponse{
-			IsConnected: false,
+		select {
+		case connectionChan <- threedoclusionv1.SubscribeConnectionResponse{IsConnected: false}:
+			// pass
+		default:
+			// pass
 		}
 
 		//connection.Send(responseConnect);
@@ -147,16 +150,22 @@ func SendMenuOption(req *connect.Request[threedoclusionv1.SendMenuOptionRequest]
 			OtherData: &msg,
 		})
 
-		connections.ReleaseChannel(req.Msg.GetSaveData().GetId(), 1) // VR deviceID 1
+		connections.ReleaseChannel(req.Msg.GetSaveData().GetId(), 1); // VR deviceID 1
 
 		return res, nil
 
 	case 3:
 		log.Println("Menu option Quit was chosen");
 
-		connectionChan := connections.GetChannel(req.Msg.GetScanId(), deviceID)
-		connectionChan <- threedoclusionv1.SubscribeConnectionResponse{
-			IsConnected: false,
+		connectionChan := connections.GetChannel(req.Msg.GetScanId(), deviceID);
+
+		log.Println("Test");
+
+		select {
+		case connectionChan <- threedoclusionv1.SubscribeConnectionResponse{IsConnected: false}:
+			// pass
+		default:
+			// pass
 		}
 		// DO something with connection
 
@@ -164,8 +173,7 @@ func SendMenuOption(req *connect.Request[threedoclusionv1.SendMenuOptionRequest]
 		//connectionClient.Send(responseConnect);
 		//connectionsClient.DeleteConnection(req.Msg.GetScanId()) // Delete the connection from memory
 
-		connections.ReleaseChannel(req.Msg.GetScanId(), 1) // Delete client connection from memory, then let client redirect itself
-		// Delete VR channel connection as well
+		connections.ReleaseChannel(req.Msg.GetScanId(), 1) // Delete client connection from memory, then let client handle itself based on received response
 
 		msg := "Deleted connection from server"
 		res := connect.NewResponse(&threedoclusionv1.SendMenuOptionResponse{
@@ -188,6 +196,26 @@ func SubscribeConnection(ctx context.Context, req *connect.Request[threedoclusio
     deviceID := req.Msg.DeviceId
 
 	connectionChan := connections.GetChannel(scanID, deviceID)
+
+	/*
+	// IF first time
+	var receiverDeviceID int32;
+	if (deviceID == 0){
+		receiverDeviceID = 1;
+	} else if (deviceID == 1) {
+		receiverDeviceID = 0;
+	}
+	otherConnectionChan := connections.GetChannel(scanID, receiverDeviceID)
+	select {
+	case otherConnectionChan <- threedoclusionv1.SubscribeConnectionResponse{IsConnected: true}:
+		// Message sent successfully
+	default:
+		// No receiver on the other end, do not block and continue executing
+	}
+	// TO DO: Send response on this stream if no messages yet with the notCreated attribute
+	*/
+
+	// END section first time
 
     for {
         select {
