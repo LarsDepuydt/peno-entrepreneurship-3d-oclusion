@@ -1,6 +1,6 @@
 FROM debian:bookworm-slim AS dev
 RUN apt-get update && \
-    apt-get install -y protobuf-compiler curl nodejs npm
+    apt-get install -y protobuf-compiler curl nodejs npm wget
   
 RUN npm install -g corepack nodemon && \
     corepack enable
