@@ -15,9 +15,6 @@ export default function ListView({ data, dictData, itemsPerPage, onItemClicked }
     };
 
     const handleItemClick = (inputData: any ) => {
-      //console.log(inputData)
-      // SET POSITION
-      // LET LIST HOLD MORE (HIDDEN) DATA
       onItemClicked(inputData);
     }
   
