@@ -60,12 +60,11 @@ RUN --mount=type=cache,mode=0777,target=/go/pkg/mod \
 FROM alpine AS backend
 WORKDIR /
 COPY --from=backend-builder /usr/src/app/backend/serve /serve
-COPY --from=dev /usr/local/bin/cloud_sql_proxy /cloud_sql_proxy
+COPY --from=dev /usr/local/bin/cloud_sql_proxy /usr/local/bin/cloud_sql_proxy
 COPY --from=backend-builder /usr/src/app/entrypoint.sh /entrypoint.sh
-
 
 RUN chmod +x /entrypoint.sh
 
-
 EXPOSE 8080
 ENTRYPOINT ["/entrypoint.sh"]
+
