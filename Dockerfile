@@ -24,6 +24,10 @@ RUN go install google.golang.org/protobuf/cmd/protoc-gen-go@latest && \
     go install google.golang.org/grpc/cmd/protoc-gen-go-grpc@v1.2.0 && \
     go install github.com/bufbuild/connect-go/cmd/protoc-gen-connect-go@latest
 
+# Download the Cloud SQL proxy and make executable
+RUN wget https://dl.google.com/cloudsql/cloud_sql_proxy.linux.amd64 -O /usr/local/bin/cloud_sql_proxy
+RUN chmod +x /usr/local/bin/cloud_sql_proxy
+
 WORKDIR /usr/src/app
 
 ################################
@@ -54,6 +58,10 @@ RUN --mount=type=cache,mode=0777,target=/go/pkg/mod \
 ################################
 
 FROM scratch AS backend
-WORKDIR / 
-COPY --from=backend-builder /usr/src/app/backend ./
-ENTRYPOINT ["/serve"]
+WORKDIR /
+COPY --from=backend-builder /usr/src/app/backend/serve /serve
+COPY --from=dev /usr/local/bin/cloud_sql_proxy /cloud_sql_proxy
+COPY ./entrypoint.sh /entrypoint.sh
+
+EXPOSE 8080
+ENTRYPOINT ["/entrypoint.sh"]
