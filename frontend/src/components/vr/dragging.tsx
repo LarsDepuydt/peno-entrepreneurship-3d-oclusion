@@ -349,7 +349,6 @@ function cleanIntersected() {
 }
 
 function animate() {
-
     renderer.setAnimationLoop( render );
 }
 
@@ -419,6 +418,20 @@ export default function DraggingView({ stream, client, onQuit }: {stream: any, c
         else {
             second_call = true;
         }
+
+        return () => { // Clean up when unmounted
+            if (renderer) {
+                renderer.dispose();
+                renderer.setAnimationLoop(null); // Cancels animation
+                document.body.removeChild(container);
+            }
+            if (scene){
+                while (scene.children.length > 0) {
+                    scene.remove(scene.children[0]);
+                }
+            }
+
+        };
     }, []);
 
     // ASK FOR SCAN DATA OR STH INITIALLY
