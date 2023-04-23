@@ -27,7 +27,7 @@ steps:
     - 'managed'
     - '--allow-unauthenticated'
     - '--set-env-vars'
-    - 'CLOUD_SQL_CONNECTION_NAME=relu-backend:europe-west1:relu-sql-db'
+    - 'CLOUD_SQL_CONNECTION_NAME=relu-backend:europe-west1:relu-sql-db,postgres_user=docker,postgres_password=docker1,db_name=patient_server'
 images:
 - 'gcr.io/$PROJECT_ID/backend:$COMMIT_SHA'
 
