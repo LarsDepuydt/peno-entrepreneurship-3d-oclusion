@@ -4,11 +4,13 @@ import ListView from "./list-view";
 
 async function sendMenuOption(optionNumber: number, clnt: any, oData: any){
   console.log(oData);
-  //const req = new SendMenuOptionRequest({option: optionNumber, optionData: oData});
-  const req = new SendMenuOptionRequest({});
+  //let req = new SendMenuOptionRequest({option: optionNumber, optionData: oData});
+  let req = new SendMenuOptionRequest({});
   req.option = optionNumber;
   req.optionData = {value: oData.value, case: oData.case};
+
   console.log(req);
+  console.log('req before sending:', JSON.stringify(req, null, 2)); // Can't serialise Scan??? Then just parse attributes in request definition proto?
   const res = await clnt.sendMenuOption(req);
   return res;
 }

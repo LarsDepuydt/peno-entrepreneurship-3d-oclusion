@@ -1,6 +1,7 @@
 package push
 
 import (
+	"context"
 	"database/sql"
 	"fmt"
 	"log"
@@ -163,7 +164,8 @@ func SendMenuOption(req *connect.Request[threedoclusionv1.SendMenuOptionRequest]
 		//connectionClient.Send(responseConnect);
 		//connectionsClient.DeleteConnection(req.Msg.GetScanId()) // Delete the connection from memory
 
-		connections.ReleaseChannel(req.Msg.GetScanId(), 1)
+		connections.ReleaseChannel(req.Msg.GetScanId(), 1) // Delete client connection from memory, then let client redirect itself
+		// Delete VR channel connection as well
 
 		msg := "Deleted connection from server"
 		res := connect.NewResponse(&threedoclusionv1.SendMenuOptionResponse{
@@ -181,7 +183,7 @@ func SendMenuOption(req *connect.Request[threedoclusionv1.SendMenuOptionRequest]
 	}
 }
 
-func SubscribeConnection(req *connect.Request[threedoclusionv1.SubscribeConnectionRequest], stream *connect.ServerStream[threedoclusionv1.SubscribeConnectionResponse], connections *help_datastructures.MapConnections) error  {
+func SubscribeConnection(ctx context.Context, req *connect.Request[threedoclusionv1.SubscribeConnectionRequest], stream *connect.ServerStream[threedoclusionv1.SubscribeConnectionResponse], connections *help_datastructures.MapConnections) error  {
     scanID := req.Msg.ScanId
     deviceID := req.Msg.DeviceId
 
@@ -189,12 +191,32 @@ func SubscribeConnection(req *connect.Request[threedoclusionv1.SubscribeConnecti
 
     for {
         select {
-        case res := <-connectionChan:
+        case res := <-connectionChan: // When a message gets received on the intended channel, send it over
             if err := stream.Send(&res); err != nil {
                 return err
             }
-        /*case <-stream.Context().Done():
-            return nil FIX THIS */
+			if !res.IsConnected { // Don't keep track of channel anymore and return so no more checking
+				connections.ReleaseChannel(scanID, deviceID)
+                return nil
+			}
+		case <-ctx.Done(): // Check if premature exit, update the other linked device's channel
+			// Maybe just use boolean if only going to update two devices
+			msg := "Connection was broken off prematurely"
+			var receiverDeviceID int32;
+			if (deviceID == 0){
+				msg = "Client has disconnected prematurely!";
+				receiverDeviceID = 1;
+			} else if (deviceID == 1) {
+				msg = "VR has disconnected prematurely!"; // Map keys
+				receiverDeviceID = 0;
+			}
+
+			otherConnectionChan := connections.GetChannel(scanID, receiverDeviceID)
+			otherConnectionChan <- threedoclusionv1.SubscribeConnectionResponse{
+				IsConnected: false,
+				OtherData: &msg,
+			}
+            return ctx.Err()
         }
 	}
 }

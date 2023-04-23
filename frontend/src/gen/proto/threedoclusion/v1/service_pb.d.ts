@@ -1031,7 +1031,7 @@ export declare class SubscribeConnectionRequest extends Message<SubscribeConnect
   scanId: number;
 
   /**
-   * To identify device with: VR/Client...
+   * To identify device with: Client: 0, VR: 1, ... for more devices that need update of status
    *
    * @generated from field: int32 device_id = 2;
    */

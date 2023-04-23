@@ -1918,7 +1918,7 @@ type SubscribeConnectionRequest struct {
 	unknownFields protoimpl.UnknownFields
 
 	ScanId   int32 `protobuf:"varint,1,opt,name=scan_id,json=scanId,proto3" json:"scan_id,omitempty"`
-	DeviceId int32 `protobuf:"varint,2,opt,name=device_id,json=deviceId,proto3" json:"device_id,omitempty"` // To identify device with: VR/Client...
+	DeviceId int32 `protobuf:"varint,2,opt,name=device_id,json=deviceId,proto3" json:"device_id,omitempty"` // To identify device with: Client: 0, VR: 1, ... for more devices that need update of status
 }
 
 func (x *SubscribeConnectionRequest) Reset() {

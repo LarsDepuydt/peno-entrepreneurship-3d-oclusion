@@ -71,7 +71,7 @@ func (s *ServerStruct) SubscribeConnection(
 	ctx context.Context,
 	req *connect.Request[threedoclusionv1.SubscribeConnectionRequest], stream *connect.ServerStream[threedoclusionv1.SubscribeConnectionResponse],
 ) error {
-	return push.SubscribeConnection(req, stream, s.connections)
+	return push.SubscribeConnection(ctx, req, stream, s.connections)
 }
 
 func (s *ServerStruct) UpdateConnectionStatus(

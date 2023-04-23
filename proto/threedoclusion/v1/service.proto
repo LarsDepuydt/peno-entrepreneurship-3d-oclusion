@@ -229,7 +229,7 @@ message UpdateConnectionStatusResponse {
 
 message SubscribeConnectionRequest { // Info passed to subscribeStatus; use only one VR stream per client? Made scan-specific for now
   int32 scan_id = 1;
-  int32 device_id = 2; // To identify device with: VR/Client...
+  int32 device_id = 2; // To identify device with: Client: 0, VR: 1, ... for more devices that need update of status
 }
 
 message SubscribeConnectionResponse {
