@@ -61,7 +61,8 @@ FROM scratch AS backend
 WORKDIR /
 COPY --from=backend-builder /usr/src/app/backend/serve /serve
 COPY --from=dev /usr/local/bin/cloud_sql_proxy /cloud_sql_proxy
-COPY ./entrypoint.sh /entrypoint.sh
+COPY --from=backend-builder /usr/src/app/entrypoint.sh /entrypoint.sh
+
 
 EXPOSE 8080
 ENTRYPOINT ["/entrypoint.sh"]
