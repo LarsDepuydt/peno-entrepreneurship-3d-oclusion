@@ -32,6 +32,7 @@ func GetResponseMakerScan(rows *sql.Rows) ([]*Scan, error) {
 func MapScanToApi(scan *Scan) *threedoclusionv1.Scan {
 	return &threedoclusionv1.Scan{
     Id:        scan.Id,
+		Scan:      scan.Scan,
     Notes:     scan.Notes,
 		PatientId: scan.PatientId,
 		CreatedAt: scan.CreatedAt,
