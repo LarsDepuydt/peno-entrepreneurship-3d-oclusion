@@ -25,7 +25,7 @@ export default function WaitPage() {
   const [formVisible, setFormVisible] = useState(true); // Add formVisible state
 
   const transport = createConnectTransport({
-    baseUrl: "http://0.0.0.0:8080",
+    baseUrl: "https://backend-service-2ybjkij5qq-uc.a.run.app",
   });
 
   const router = useRouter();
