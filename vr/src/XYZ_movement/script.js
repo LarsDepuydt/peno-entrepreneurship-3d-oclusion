@@ -255,8 +255,8 @@ function initThree() {
     moonMassDiv.style.backgroundColor = 'transparent';
     const moonMassLabel = new CSS2DObject( moonMassDiv );
     moonMassLabel.position.set( 1.5 * 5, 0, 0 );
-    moonMassLabel.center.set( 0, 0 );
-    moon.add( moonMassLabel );
+    //moonMassLabel.center.set( 0, 0 );
+    //moon.add( moonMassLabel );
     moonMassLabel.layers.set( 1 );
 
 				//
@@ -266,15 +266,50 @@ function initThree() {
 				renderer.setSize( window.innerWidth, window.innerHeight );
 				document.body.appendChild( renderer.domElement );*/
 
-				labelRenderer = new CSS2DRenderer();
+				/*labelRenderer = new CSS2DRenderer();
 				labelRenderer.setSize( window.innerWidth, window.innerHeight );
 				labelRenderer.domElement.style.position = 'absolute';
 				labelRenderer.domElement.style.top = '0px';
-				document.body.appendChild( labelRenderer.domElement );
+				document.body.appendChild( labelRenderer.domElement );*/
 
   window.addEventListener( 'resize', onWindowResize );
 
 }
+
+function changeControlledCoordinates1( controller, coordinate ){ // 0, 1, 2: x, y, z
+    if (controller.userData.selected === undefined) return;
+
+    // save the initial position of the selected object
+    let initialPosition = controller.userData.selected.position.clone();
+    console.log(initialPosition);
+
+    switch (coordinate) {
+        case 0: {
+            controller.userData.selected.position.setX(controller.position.x / SCALE_MODEL)
+            break;
+        }
+        case 1: {
+            controller.userData.selected.position.setZ(controller.position.y / SCALE_MODEL);
+            break;
+        }
+        case 2: {
+            controller.userData.selected.position.setY(-controller.position.z / SCALE_MODEL);
+            break;
+        }
+        case 3: {
+            // calculate the position difference between the controller and the locked position,
+            // and multiply by 1/SCALE_MODEL to incorporate the scale factor
+            let positionDifference = controller.position.clone().sub(initialPosition);
+            console.log("diff",positionDifference);
+
+
+            // update the position of the selected object based on the position difference
+            controller.userData.selected.position.copy(initialPosition).add(positionDifference);
+            break;
+        }
+    }
+}
+
 
 
 
