@@ -6,8 +6,14 @@ import { OBJLoader } from 'three/addons/loaders/OBJLoader.js';
 import * as CANNON from 'cannon-es';
 import { MeshBVH, acceleratedRaycast } from 'three-mesh-bvh';
 import { default as CannonUtils } from 'cannon-utils';
-import { sendPositionScan, getPositionScan } from '../../../frontend/src/gen/proto/threedoclusion/v1/service-ScanService_connectquery'
+//import { sendPositionScan, getPositionScan } from '../../../frontend/src/gen/proto/threedoclusion/v1/service-ScanService_connectquery.ts'
+
 import { QuickHull } from './QuickHull.js';
+import { findSepAxis } from './findSepAxis.js'
+
+
+// overload cannon.js function findSeparatingAxis by an equivalent that uses web workers
+CANNON.ConvexPolyhedron.prototype.findSeparatingAxis = findSepAxis;
 
 
 let container;
@@ -55,6 +61,7 @@ function initCannon() {
     world.broadphase = new CANNON.NaiveBroadphase();
     world.broadphase.useBoundingBoxes = true;
     world.solver.iterations = 4;     //10
+    console.log(world);
 
     const slipperyMaterial = new CANNON.Material('slippery');   // disabling friction leads to slightly better performance
 
@@ -187,7 +194,7 @@ function loadObjects() {
     loader.load(
         // '../../assets/random_objects/cube.obj',
         //'../../assets/lower_ios_6.obj',
-        '../../assets/simplified/oversimplified_lower.obj',
+        '../../assets/simplified/lower_180.obj',
         
         // called when resource is loaded
         function (object) {         // object is a 'Group', which is a subclass of 'Object3D'
@@ -224,7 +231,7 @@ function loadObjects() {
     loader.load(
         // '../../assets/random_objects/gourd.obj',
         //'../../assets/upper_ios_6.obj',
-        '../../assets/manually_simplified/oversimplified_lower.obj',
+        '../../assets/simplified/upper_218.obj',
 
         // called when resource is loaded
         function (object) {
@@ -333,7 +340,6 @@ function threeMeshToCannonMesh(mesh) {
 
 function threeMeshToConvexCannonMesh(mesh) {
     let points = ToVertices(mesh.geometry);
-    console.log(points);
     const faces = QuickHull.createHull(points);
     return new CANNON.ConvexPolyhedron({vertices:points, faces});
 }
