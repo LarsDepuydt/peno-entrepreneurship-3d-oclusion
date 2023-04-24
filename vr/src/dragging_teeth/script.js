@@ -7,22 +7,74 @@ import { OBJLoader } from 'three/addons/loaders/OBJLoader.js';
 //import * as fs from '../../node_modules/fs';
 import { OBJExporter } from 'three/addons/exporters/OBJExporter.js';
 
+import * as CANNON from 'cannon-es';
+import { getFirstMesh, getFirstBufferGeometry, threeMeshToConvexCannonMesh, threeMeshToCannonMesh, checkTime } from './util.js'
+
+
 let container;
 let camera, scene, renderer;
 let controller1, controller2;
 let controllerGrip1, controllerGrip2;
-
+let controls;
+let group
 let raycaster;
 
 const intersected = [];     // global list that holds the first objects the controllers are pointing at
 const tempMatrix = new THREE.Matrix4();
 
-let controls, group;
 
-init();
-animate();
+let world, timeStep=1/10;
+let frameNum = 0;
 
-function init() {
+let floor_shape, floor_body;
+
+// lj_mesh is een THREE.Mesh
+// lj_shape is een CANNON.Trimesh
+// lj_body is een CANNON.Body
+let lj_mesh, lj_shape, lj_body;
+let uj_mesh, uj_shape, uj_body;
+let lj_loaded = false, uj_loaded = false;
+
+const teeth_material = new THREE.MeshStandardMaterial({color: 0x0000ff});
+
+
+initCannon();
+initThree();
+loadObjects();  // animation is started after both objects are loaded
+
+
+// for both cannon.js and three.js: x=red, y=green, z=blue
+
+
+function initCannon() {
+    world = new CANNON.World();
+    world.gravity.set(0,-0.01,0);
+    world.broadphase = new CANNON.NaiveBroadphase();
+    world.broadphase.useBoundingBoxes = true;
+    world.solver.iterations = 4;     //10
+    console.log(world);
+
+    const slipperyMaterial = new CANNON.Material('slippery');   // disabling friction leads to slightly better performance
+
+    lj_body = new CANNON.Body({mass: 1, material: slipperyMaterial});
+    uj_body = new CANNON.Body({mass: 1, material: slipperyMaterial});
+    lj_body.position.set(0,2,0);
+    uj_body.position.set(0,3,0);
+    let xaxis = new CANNON.Vec3(1,0,0);
+    lj_body.quaternion.setFromAxisAngle(xaxis, -Math.PI/2);
+    uj_body.quaternion.setFromAxisAngle(xaxis, -Math.PI/2);
+    world.addBody(lj_body);
+    world.addBody(uj_body);
+
+    floor_body = new CANNON.Body({ mass: 0 });
+    floor_shape = new CANNON.Plane();
+    floor_body.addShape(floor_shape);
+    floor_body.quaternion.setFromAxisAngle(new CANNON.Vec3(1,0,0),-Math.PI/2);  // rotate floor with normal along positive y axis
+    world.addBody(floor_body);
+}
+
+
+function initThree() {
     // create container
     container = document.createElement( 'div' );
     document.body.appendChild( container );
@@ -74,69 +126,6 @@ function init() {
     group = new THREE.Group();
     scene.add( group );
 
-
-    // load lower jaw
-    const loader = new OBJLoader();
-    var lowerjaw;
-    loader.load(
-        '../../assets/lower_ios_6.obj',
-        // called when resource is loaded y=green, x=red, z=blue
-        function (object) {
-            lowerjaw = object;
-            lowerjaw.position.x = 0
-            lowerjaw.position.y = 2
-            lowerjaw.position.z = 0.12
-            lowerjaw.rotation.x = 1.5 * Math.PI
-            //lowerjaw.rotation.y = Math.PI
-            lowerjaw.scale.setScalar(0.01);
-
-            group.add(lowerjaw);
-
-            console.log("Object3D? " + lowerjaw.isObject3D);
-            console.log("Mesh?")
-        },
-        
-        // called when loading in progress
-        function (xhr) {
-            console.log( (xhr.loaded / xhr.total * 100 ) + '% loaded');
-        },
-        // called when loading has errors
-        function (error) {
-            console.log('An error happened while loading');
-        }
-    );
- 
-    // load upper jaw
-    //const loader2 = new OBJLoader();
-    var upperjaw;
-    loader.load(
-        '../../assets/upper_ios_6.obj',
-        // called when resource is loaded y=green, x=red, z=blue
-        function (object) {
-            upperjaw = object;
-            upperjaw.position.x = 0
-            upperjaw.position.y = 2
-            upperjaw.position.z = 0.12
-            upperjaw.rotation.x = 1.5 * Math.PI
-            //upperjaw.rotation.y = Math.PI
-            upperjaw.scale.setScalar(0.01);
-            upperjaw.name = "upperjaw";
-
-
-            group.add(upperjaw);
-            console.log("Object3D? " + upperjaw.isObject3D);
-            console.log("Mesh?")
-        },
-        
-        // called when loading in progress
-        function (xhr) {
-            console.log( (xhr.loaded / xhr.total * 100 ) + '% loaded');
-        },
-        // called when loading has errors
-        function (error) {
-            console.log('An error happened while loading');
-        }
-    );
  
     // add renderer and enable VR
 
@@ -160,7 +149,7 @@ function init() {
                 // Parse the input and generate the OBJ output
                 //const data = exporter.parse( scene );
                 //var target = new THREE.Vector3();
-                //upperjaw.getWorldPosition(target);
+                //uj_mesh.getWorldPosition(target);
                 //console.log("X:",target.x,"Y:",target.y,"Z:",target.z);
             }
 
@@ -171,13 +160,13 @@ function init() {
                 // sceneLoader.parse(JSON.parse(json), function (e) {
                 //     scene = e.scene;
                 // }, '.');
-                upperjaw.position.x = upperX
-                upperjaw.position.y = upperY
-                upperjaw.position.Z = upperZ
+                uj_mesh.position.x = upperX
+                uj_mesh.position.y = upperY
+                uj_mesh.position.Z = upperZ
 
-                lowerjaw.position.x = lowerX
-                lowerjaw.position.y = lowerY
-                lowerjaw.position.z = lowerZ
+                lj_mesh.position.x = lowerX
+                lj_mesh.position.y = lowerY
+                lj_mesh.position.z = lowerZ
                 
             }
         };
@@ -230,6 +219,117 @@ function init() {
 
     window.addEventListener( 'resize', onWindowResize );
 
+}
+
+
+function loadObjects() {
+    // load lower jaw
+    const loader = new OBJLoader();
+    loader.load(
+        '../../assets/simplified/lower_180.obj',
+        
+        // called when resource is loaded
+        function (object) {         // object is a 'Group', which is a subclass of 'Object3D'
+            let lj_buffergeo = getFirstBufferGeometry(object);
+            lj_mesh = new THREE.Mesh(lj_buffergeo, teeth_material);
+            
+            lj_mesh.geometry.scale(0.01, 0.01, 0.01);
+            lj_mesh.position.x = 0;
+            lj_mesh.position.y = 0;
+            lj_mesh.position.z = 0;
+            lj_mesh.rotation.x = 1.5 * Math.PI;
+
+            console.log("lj_mesh: ", lj_mesh);
+            group.add(lj_mesh);
+            
+            lj_shape = threeMeshToConvexCannonMesh(lj_mesh);
+            console.log("loading lj_mesh succeeded");
+            lj_body.addShape(lj_shape);
+            lj_loaded = true;
+            startAnimation();
+        },
+        
+        // called when loading in progress
+        function (xhr) {
+            // pass
+        },
+        // called when loading has errors
+        function (error) {
+            console.log('An error happened while loading lj_mesh: ' + error);
+        }
+    );
+ 
+    // load upper jaw
+    loader.load(
+        '../../assets/simplified/upper_218.obj',
+
+        // called when resource is loaded
+        function (object) {
+            let uj_buffergeo = getFirstBufferGeometry(object);
+            uj_mesh = new THREE.Mesh(uj_buffergeo, teeth_material);
+            
+            uj_mesh.geometry.scale(0.01, 0.01, 0.01);
+            uj_mesh.position.x = 0;
+            uj_mesh.position.y = 0;
+            uj_mesh.position.z = 0;
+            uj_mesh.rotation.x = 1.5 * Math.PI;
+
+            console.log(uj_mesh);
+            group.add(uj_mesh);
+            
+            uj_shape = threeMeshToConvexCannonMesh(uj_mesh);
+            console.log("loading uj_mesh succeeded");
+            uj_body.addShape(uj_shape);
+            uj_loaded = true;
+            startAnimation();
+        },
+        
+        // called when loading in progress
+        function (xhr) {
+            // pass
+        },
+        // called when loading has errors
+        function (error) {
+            console.log('An error happened while loading uj_mesh: ' + error);
+        }
+    );
+}
+
+
+function startAnimation() {
+    if (lj_loaded && uj_loaded) {
+        console.log("starting animation");
+        renderer.setAnimationLoop( animate );
+    }
+}
+
+function animate() {
+    //checkTime(lj_mesh);
+
+    frameNum += 1;
+    updatePhysics();
+    render();
+}
+
+function render() {
+
+    cleanIntersected();
+
+    intersectObjects( controller1 );
+    intersectObjects( controller2 );
+
+    renderer.render( scene, camera );
+}
+
+function updatePhysics() {
+    // Step the physics world
+    world.step(timeStep);
+
+    // Copy coordinates from Cannon.js to Three.js
+    lj_mesh.position.copy(lj_body.position);
+    lj_mesh.quaternion.copy(lj_body.quaternion);
+    uj_mesh.position.copy(uj_body.position);
+    uj_mesh.quaternion.copy(uj_body.quaternion);
 }
 
 
@@ -286,7 +386,7 @@ function onSelectEnd( event ) {
 }
 
 
-// find objects the controller is pointing at
+// find objects the controller is pointing at and return as an Array sorted by distance
 
 function getIntersections( controller ) {
 
@@ -319,7 +419,7 @@ function intersectObjects( controller ) {
         object.material.emissive.r = 1;
         intersected.push( object );
 
-        line.scale.z = intersection.distance;
+        line.scale.z = intersection.distance;   // make line not pass through the object
 
     } else {
 
@@ -340,23 +440,9 @@ function cleanIntersected() {
 
 }
 
-function animate() {
-<<<<<<< HEAD
 
-=======
->>>>>>> 67c0a5d7600c5620173c3949d4ffebee81c4026b
-    renderer.setAnimationLoop( render );
-}
 
-function render() {
 
-    cleanIntersected();
-
-    intersectObjects( controller1 );
-    intersectObjects( controller2 );
-
-    renderer.render( scene, camera );
-}
 // create zoom buttons
 
 // import "./styles.css";
