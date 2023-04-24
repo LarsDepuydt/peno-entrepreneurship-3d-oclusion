@@ -60,7 +60,7 @@
   margin: 0px;
 }
 
-.absoluteWrapper{
+.absoluteWrapper {
   padding-left: 15px;
   padding-bottom: 15px;
 }
@@ -130,6 +130,16 @@
   border: none;
 }
 
+#objIcon {
+  width: 48px;
+  height: 48px;
+  margin: 8px;
+  background-image: url(../../public/obj-icon.png);
+  background-repeat: no-repeat;
+  background-position: center;
+  border: none;
+}
+
 #InspectScansIcon {
   width: 48px;
   height: 48px;
@@ -147,6 +157,7 @@
   background-image: url(../../public/open-VR-icon.png);
   background-repeat: no-repeat;
   background-position: center;
+  border: none;
 }
 
 #editIcon {

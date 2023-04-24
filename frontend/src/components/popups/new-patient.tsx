@@ -24,7 +24,6 @@ export default function ModalForm() {
   // modal is not toggled at first
 
   const [patientinfo, setData] = useState({
-    //patientID: '',
     patientFirstName: '',
     patientLastName: '',
     pinned: false,
@@ -64,7 +63,6 @@ export default function ModalForm() {
             <div className={styles.login_box + ' p-3'}>
               <Formik
                 initialValues={{
-                  patientID: '',
                   patientFirstName: '',
                   patientLastName: '',
 

@@ -25,8 +25,8 @@ export default function LoginForm() {
 
   const submitFunction = (values: LUser) => {
     console.log(values);
-
-    setData(values);
+    router.push('/patient');
+    //setData(values);
   };
 
   useEffect(() => {

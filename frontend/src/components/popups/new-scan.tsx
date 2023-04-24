@@ -3,13 +3,9 @@ import { Formik, Field, Form, ErrorMessage, useFormik } from 'formik';
 
 import styles from '@/styles/Modal.module.css';
 import styleB from '@/styles/Buttons.module.css';
-import styleU from '@/styles/Modal.module.css';
-
 // TODO add files + tags
 
 interface scanValues {
-  scanName: string;
-
   type_overbite: boolean;
   type_underbite: boolean;
   type_crossbite: boolean;
@@ -53,8 +49,6 @@ export default function ModalForm() {
             <div className={styles.login_box + ' p-3'}>
               <Formik
                 initialValues={{
-                  scanName: '',
-
                   type_overbite: false,
                   type_underbite: false,
                   type_crossbite: false,
@@ -74,9 +68,13 @@ export default function ModalForm() {
               >
                 {({ errors, status, touched }) => (
                   <Form>
-                    <div className="mb-3">
-                      <Field className="form-control" id="scanName" name="scanName" placeholder="Scan Name" />
-                    </div>
+                    <form className="w-full p-3" action="" onSubmit={(e) => e.preventDefault()}>
+                      <div>
+                        <label>
+                          <input className="block w-0 h-0" name="file" type="file" onChange={onFileUploadChange} />
+                        </label>
+                      </div>
+                    </form>
 
                     <div className={styles.type_bite}>
                       <div className="form-group form-check">
@@ -154,17 +152,9 @@ export default function ModalForm() {
                       </div>
                     </div>
 
-                    <form className="w-full p-3" action="" onSubmit={(e) => e.preventDefault()}>
-                      <div>
-                        <label>
-                          <input className="block w-0 h-0" name="file" type="file" onChange={onFileUploadChange} />
-                        </label>
-                      </div>
-                    </form>
-
                     <div className={styles.spacingbtn}>
                       <button type="submit" className={styleB.relu_btn}>
-                        Save scans
+                        Save scan
                       </button>
                       <button type="button" className={styleB.relu_btn} onClick={toggleModal}>
                         Exit

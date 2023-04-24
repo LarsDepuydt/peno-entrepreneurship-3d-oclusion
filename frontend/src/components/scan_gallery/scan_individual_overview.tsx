@@ -7,6 +7,7 @@ import styleB from '@/styles/Buttons.module.css';
 import { InspectVR } from '../../components/scan_gallery/inspect_VR';
 import DeleteButton from '../../components/scan_gallery/delete_scan';
 import EditButton from '../../components/scan_gallery/edit_scan';
+import OpenObjButton from '../../components/scan_gallery/open_obj';
 import ExportButton from '../../components/scan_gallery/export_scan';
 import DropdownButton from '../../components/scan_gallery/scan_dropdown';
 import dropdownPatientButton from '../patient/patient_dropdown';
@@ -64,10 +65,10 @@ export function SingleScan({ scanid, patientid, picture, date }: scanProfile) {
           <button type="button" className={styleB.relu_btn} id={styleB.exitIcon} onClick={handleDropGone}></button>
           <div className={styles.dropDownButtonWrapper}>
             <button className={styleB.relu_btn} id={styleB.dropDownButton}>
-              test
+              export scan
             </button>
             <button className={styleB.relu_btn} id={styleB.dropDownButton}>
-              test
+              show video
             </button>
             <button className={styleB.relu_btn} id={styleB.dropDownButton}>
               test
@@ -100,7 +101,7 @@ export function SingleScan({ scanid, patientid, picture, date }: scanProfile) {
                   onClick={handleDropDown}
                 ></button>
               </div>
-              <ExportButton />
+              <OpenObjButton />
               <InspectVR patientID={patientid} scanID={scanid} />
               <EditButton />
               <DeleteButton />

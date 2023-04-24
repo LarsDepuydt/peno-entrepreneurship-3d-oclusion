@@ -102,3 +102,11 @@ module .login_box {
 .right {
   float: right;
 }
+
+.exp_text {
+  font-weight: 600;
+  color: #737e85;
+  margin-left: 2%;
+  margin-bottom: 5%;
+  text-align: left;
+}
