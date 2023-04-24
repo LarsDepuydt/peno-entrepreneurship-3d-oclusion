@@ -36,3 +36,9 @@ https://people.sc.fsu.edu/~jburkardt/data/obj/obj.html
 
 optimizing collision detection:
 https://github.com/schteppe/cannon.js/issues/80
+
+package voor cannon web workers:
+https://github.com/pmndrs/use-cannon
+
+web workers uitleg:
+https://web.dev/workers-basics/
