@@ -36,12 +36,12 @@ export default function LoginForm() {
 
   const submitFunction = (values: RUser) => {
     console.log(values);
-
     setData(values);
+    console.log(data);
   };
 
   useEffect(() => {
-    data?.token && credentials.email && router.push('/patient');
+    data?.token && credentials.email && router.push('/login-page');
   }, [data, credentials]);
 
   const toLogin = () => router.push('/login-page');

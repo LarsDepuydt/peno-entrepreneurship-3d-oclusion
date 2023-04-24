@@ -40,7 +40,7 @@ export default function ModalForm() {
 
   const submitFunction = (values: patientValues) => {
     console.log(values);
-    //setData(values);
+    setData(values);
     setModal(!modal);
   };
 

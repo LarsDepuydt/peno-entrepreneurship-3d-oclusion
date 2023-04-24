@@ -19,14 +19,13 @@ interface LUser {
 export default function LoginForm() {
   const [credentials, setData] = useState({ email: '', password: '' });
 
-  const { data } = useQuery(login.useQuery(credentials));
-
   const router = useRouter();
 
   const submitFunction = (values: LUser) => {
+    const { data } = useQuery(login.useQuery(credentials));
     console.log(values);
-
     setData(values);
+    console.log(data);
   };
 
   useEffect(() => {
