@@ -36,11 +36,12 @@ export function SingleScan({ scanid, patientid, picture, date }: scanProfile) {
     '31': 'st',
   };
 
-  const formattedDate = date.toLocaleDateString('en-US', options);
-  const dayOfMonth = date.getDate().toString();
-  const daySuffix = daySuffixes[dayOfMonth] || 'th';
+  //const formattedDate = date.toLocaleDateString('en-US', options);
+  //const dayOfMonth = date.getDate().toString();
+  //const daySuffix = daySuffixes[dayOfMonth] || 'th';
 
-  const dateString = `Scan of ${formattedDate.replace(dayOfMonth, `${dayOfMonth}${daySuffix}`)}`;
+  //const dateString = `Scan of ${formattedDate.replace(dayOfMonth, `${dayOfMonth}${daySuffix}`)}`;
+  const dateString = `Scan of 15 october`;
 
   const [showButtons, setShowButtons] = useState(false);
   const handleMouseEnter = () => {

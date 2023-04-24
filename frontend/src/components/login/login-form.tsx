@@ -25,8 +25,12 @@ export default function LoginForm() {
 
   const submitFunction = (values: LUser) => {
     console.log(values);
-    router.push('/patient');
-    //setData(values);
+    setData(values);
+    if (data?.message == 'unknown') {
+      console.log('ERROR : no dentist can be found in database. try registering instead.');
+    } else {
+      router.push('/patient');
+    }
   };
 
   useEffect(() => {
