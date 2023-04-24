@@ -73,12 +73,16 @@ async function checkConnected(serverStream: AsyncIterable<SubscribeConnectionRes
             console.log("No sign of client yet!")
         }
 
-        if (!res.isConnected){ // Client disconnected
+        if (res.isConnected){
+            console.log("Client has connected!")
+        }
+
+        else { // Client disconnected
             // Close stream... How?
             //serverStream.Close() ?
             // Show some other component
             // Redirect?
-            console.log("Client disconnected!")
+            console.log("Client has disconnected!")
         }
     }
 }

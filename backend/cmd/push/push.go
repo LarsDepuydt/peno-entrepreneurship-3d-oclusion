@@ -135,7 +135,7 @@ func SendMenuOption(req *connect.Request[threedoclusionv1.SendMenuOptionRequest]
 		connectionChan := connections.GetChannel(req.Msg.GetScanId(), deviceID)
 		select {
 		case connectionChan <- threedoclusionv1.SubscribeConnectionResponse{IsConnected: false}:
-			log.Println("Sent notification")
+			// Pass
 		default:
 			// Pass
 		}
@@ -160,7 +160,7 @@ func SendMenuOption(req *connect.Request[threedoclusionv1.SendMenuOptionRequest]
 		connectionChan := connections.GetChannel(req.Msg.GetScanId(), deviceID)
 		select {
 		case connectionChan <- threedoclusionv1.SubscribeConnectionResponse{IsConnected: false}:
-			log.Println("Sent notification")
+			// Pass
 		default:
 			// Pass
 		}
@@ -214,11 +214,15 @@ func SubscribeConnection(ctx context.Context, req *connect.Request[threedoclusio
 				msg = "Client has disconnected prematurely!";
 				receiverDeviceID = 1;
 			} else if (deviceID == 1) {
-				msg = "VR has disconnected prematurely!"; // Map keys
+				msg = "VR has disconnected prematurely!";
 				receiverDeviceID = 0;
 			}
+			// Release corresponding channel
+			connections.ReleaseChannel(scanID, deviceID)
 
-			otherConnectionChan := connections.GetChannel(scanID, receiverDeviceID)
+			otherConnectionChan := connections.GetChannel(scanID, receiverDeviceID) // Sent to all of them instead
+
+
 			otherConnectionChan <- threedoclusionv1.SubscribeConnectionResponse{
 				IsConnected: false,
 				OtherData: &msg,
