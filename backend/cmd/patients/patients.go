@@ -14,7 +14,7 @@ import (
 
 
 func AddPatient(req *connect.Request[threedoclusionv1.AddPatientRequest], database *sql.DB) (*connect.Response[threedoclusionv1.AddPatientResponse], error) {
-	statement, error := database.Prepare("INSERT INTO patient (first_name, last_name, pinned, notes) VALUES ($1, $2, $3, $4)")
+	statement, error := database.Prepare("INSERT INTO patient (firstname, lastname, pinned, notes) VALUES ($1, $2, $3, $4)")
 	if error != nil {
 		return nil, error
 	}
@@ -101,21 +101,21 @@ func GetPatientByID(req *connect.Request[threedoclusionv1.GetPatientByIDRequest]
 }
 
 func GetPatientByName(req *connect.Request[threedoclusionv1.GetPatientByNameRequest], database *sql.DB) (*connect.Response[threedoclusionv1.GetPatientByNameResponse], error) {
-	first_name := req.Msg.FirstName
-	last_name := req.Msg.LastName
+	firstName := req.Msg.FirstName
+	lastName := req.Msg.LastName
 
 	var error error
 	var rows *sql.Rows
 	 
-	if (first_name != nil && last_name != nil ) {
-		statement := "SELECT * FROM patient WHERE first_name = $1 AND last_name = $2;"
+	if (firstName != nil && lastName != nil ) {
+		statement := "SELECT * FROM patient WHERE firstname = $1 AND last_name = $2;"
 		rows, error = database.Query(statement, req.Msg.FirstName, req.Msg.LastName)
 	}else{
-		if first_name != nil {
-			statement := "SELECT * FROM patient WHERE first_name = $1;"
+		if firstName != nil {
+			statement := "SELECT * FROM patient WHERE firstname = $1;"
 			rows, error = database.Query(statement, req.Msg.FirstName)
-		}else if last_name != nil {
-			statement := "SELECT * FROM patient WHERE last_name = $1;"
+		}else if lastName != nil {
+			statement := "SELECT * FROM patient WHERE lastname = $1;"
 			rows, error = database.Query(statement, req.Msg.LastName)
 		}
 		

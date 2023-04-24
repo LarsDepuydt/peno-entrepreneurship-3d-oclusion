@@ -49,8 +49,6 @@ const App: FC = () => {
 
   return (
     <div>
-      <SidebarPatient patientfirstname={'TEST'} patientlastname={'TEST3'} />
-      <HeaderPatient />
       <div className={styles.scansWrapper}>
         {filteredPatients.map((patient, index) => (
           <div key={`patient${index + 1}`}>
@@ -63,6 +61,8 @@ const App: FC = () => {
           </div>
         ))}
       </div>
+      <SidebarPatient patientfirstname={'TEST'} patientlastname={'TEST3'} />
+      <HeaderPatient />
     </div>
   );
 };

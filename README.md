@@ -13,14 +13,14 @@ Run `make down` as sudo to stop the backend and database.
 ## Protobuf
 Run `make buf`to lint the schema and generate the code
 
-Send request atm
+Send request to cloud backend and database
 ``` 
   buf curl \
   --schema proto \
-  --data '{"id": "Jane"}' \
-  http://localhost:8080/threedoclusion.v1.ScanService/Scan
+  --data '{"email": "dag.malstaf@gmail.com","password": "test"}' \
+  https://backend-service-2ybjkij5qq-uc.a.run.app/threedoclusion.v1.ScanService/Login
 ```
 
-## Migrate database schema
+## Migrate database schema --> currently not supported on cloud backend
 Run `make migrate` to migrate the database schema to the latest version.
 Run `make migrate_info` to get migrations information.

@@ -16,8 +16,7 @@ export default function DeleteButton() {
 
   return (
     <div>
-      <button type="button" className={styleB.relu_btn} id={styleB.appearOnHoverButton} onClick={delete_patient}>
-        delete patient
+      <button type="button" className={styleB.relu_btn} id={styleB.deleteIcon} onClick={delete_patient}>
       </button>
     </div>
   );
