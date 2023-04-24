@@ -451,11 +451,11 @@ export const UpdatePatientByIdRequest = proto3.makeMessageType(
   "threedoclusion.v1.UpdatePatientByIdRequest",
   () => [
     { no: 1, name: "id", kind: "scalar", T: 5 /* ScalarType.INT32 */ },
-    { no: 2, name: "first_name", kind: "scalar", T: 9 /* ScalarType.STRING */, opt: true },
-    { no: 3, name: "last_name", kind: "scalar", T: 9 /* ScalarType.STRING */, opt: true },
-    { no: 4, name: "pinned", kind: "scalar", T: 8 /* ScalarType.BOOL */, opt: true },
-    { no: 5, name: "notes", kind: "scalar", T: 9 /* ScalarType.STRING */, opt: true },
-    { no: 6, name: "dentist_id", kind: "scalar", T: 5 /* ScalarType.INT32 */, opt: true },
+    { no: 2, name: "first_name", kind: "scalar", T: 9 /* ScalarType.STRING */ },
+    { no: 3, name: "last_name", kind: "scalar", T: 9 /* ScalarType.STRING */ },
+    { no: 4, name: "pinned", kind: "scalar", T: 8 /* ScalarType.BOOL */ },
+    { no: 5, name: "notes", kind: "scalar", T: 9 /* ScalarType.STRING */ },
+    { no: 6, name: "dentist_id", kind: "scalar", T: 5 /* ScalarType.INT32 */ },
   ],
 );
 
@@ -556,10 +556,9 @@ export const UpdateDentistByIdRequest = proto3.makeMessageType(
   "threedoclusion.v1.UpdateDentistByIdRequest",
   () => [
     { no: 1, name: "id", kind: "scalar", T: 5 /* ScalarType.INT32 */ },
-    { no: 2, name: "email", kind: "scalar", T: 9 /* ScalarType.STRING */, opt: true },
-    { no: 3, name: "first_name", kind: "scalar", T: 9 /* ScalarType.STRING */, opt: true },
-    { no: 4, name: "last_name", kind: "scalar", T: 9 /* ScalarType.STRING */, opt: true },
-    { no: 5, name: "password", kind: "scalar", T: 9 /* ScalarType.STRING */, opt: true },
+    { no: 2, name: "email", kind: "scalar", T: 9 /* ScalarType.STRING */ },
+    { no: 3, name: "first_name", kind: "scalar", T: 9 /* ScalarType.STRING */ },
+    { no: 4, name: "last_name", kind: "scalar", T: 9 /* ScalarType.STRING */ },
   ],
 );
 

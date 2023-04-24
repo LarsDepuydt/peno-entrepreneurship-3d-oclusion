@@ -166,62 +166,19 @@ func GetPatientByName(req *connect.Request[threedoclusionv1.GetPatientByNameRequ
 }
 
 func UpdatePatientById(req *connect.Request[threedoclusionv1.UpdatePatientByIdRequest], database *sql.DB) (*connect.Response[threedoclusionv1.UpdatePatientByIdResponse], error) {
-	// Get original data
 	const sqlStatement = `
-		SELECT firstname, lastname, pinned, notes, dentist_id
-		FROM patient
-		WHERE id = $1;
-	`
-	var old_firstName string
-	var old_lastName string
-	var old_pinned bool
-	var old_notes string
-	var old_dentistId int32
-	
-	// Perform the database query
-	error := database.QueryRow(sqlStatement, req.Msg.Id).Scan(&old_firstName, &old_lastName, &old_pinned, &old_notes, &old_dentistId)
-	if error != nil {
-		return nil, error
-	}
-
-	// Set fallback values
-	var firstName = req.Msg.FirstName
-	if firstName == nil {
-		firstName = &old_firstName
-	}
-
-	var lastName = req.Msg.LastName
-	if lastName == nil {
-		lastName = &old_lastName
-	}
-
-	var pinned = false
-	// if req.Msg.Pinned != nil {
-  //   pinned = req.Msg.Pinned
-	// } else  if old_pinned != nil{
-	// 	pinned = *old_pinned
-	// }
+		UPDATE patient
+		SET firstname=$2, lastname=$3, pinned=$4, notes=$5, dentist_id=$6
+		WHERE id = $1
+		RETURNING id;`
+	var id int32
 
 	pinnedDatabase := 0
-	if pinned == true {
+	if req.Msg.Pinned == true {
 		pinnedDatabase = 1
-  }
+	}
 
-	var notes = req.Msg.Notes
-	if notes == nil {
-		notes = &old_notes
-  }
-
-	var dentistId = req.Msg.DentistId
-	if dentistId == nil {
-    dentistId = &old_dentistId
-  }
-	
-	// Perform the database modification
-	_, error = database.Exec(
-		"UPDATE patient SET firstname=$2, lastname=$3, pinned=$4, notes=$5, dentist_id=$6 WHERE id = $1;", 
-		req.Msg.Id, firstName, lastName, pinnedDatabase, notes, dentistId,
-	)
+	error := database.QueryRow(sqlStatement, req.Msg.Id, req.Msg.FirstName, req.Msg.LastName, pinnedDatabase, req.Msg.Notes, req.Msg.DentistId).Scan(&id)
 	if error != nil {
 		return nil, error
 	}

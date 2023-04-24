@@ -1162,29 +1162,29 @@ export declare class UpdatePatientByIdRequest extends Message<UpdatePatientByIdR
   id: number;
 
   /**
-   * @generated from field: optional string first_name = 2;
+   * @generated from field: string first_name = 2;
    */
-  firstName?: string;
+  firstName: string;
 
   /**
-   * @generated from field: optional string last_name = 3;
+   * @generated from field: string last_name = 3;
    */
-  lastName?: string;
+  lastName: string;
 
   /**
-   * @generated from field: optional bool pinned = 4;
+   * @generated from field: bool pinned = 4;
    */
-  pinned?: boolean;
+  pinned: boolean;
 
   /**
-   * @generated from field: optional string notes = 5;
+   * @generated from field: string notes = 5;
    */
-  notes?: string;
+  notes: string;
 
   /**
-   * @generated from field: optional int32 dentist_id = 6;
+   * @generated from field: int32 dentist_id = 6;
    */
-  dentistId?: number;
+  dentistId: number;
 
   constructor(data?: PartialMessage<UpdatePatientByIdRequest>);
 
@@ -1450,24 +1450,19 @@ export declare class UpdateDentistByIdRequest extends Message<UpdateDentistByIdR
   id: number;
 
   /**
-   * @generated from field: optional string email = 2;
+   * @generated from field: string email = 2;
    */
-  email?: string;
+  email: string;
 
   /**
-   * @generated from field: optional string first_name = 3;
+   * @generated from field: string first_name = 3;
    */
-  firstName?: string;
+  firstName: string;
 
   /**
-   * @generated from field: optional string last_name = 4;
+   * @generated from field: string last_name = 4;
    */
-  lastName?: string;
-
-  /**
-   * @generated from field: optional string password = 5;
-   */
-  password?: string;
+  lastName: string;
 
   constructor(data?: PartialMessage<UpdateDentistByIdRequest>);
 

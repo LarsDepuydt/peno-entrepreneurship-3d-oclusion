@@ -240,11 +240,11 @@ message GetPatientByNameResponse {
 
 message UpdatePatientByIdRequest {
   int32 id = 1;
-  optional string first_name = 2;
-  optional string last_name = 3;
-  optional bool pinned = 4;
-  optional string notes = 5;
-  optional int32 dentist_id = 6;
+  string first_name = 2;
+  string last_name = 3;
+  bool pinned = 4;
+  string notes = 5;
+  int32 dentist_id = 6;
 }
 
 message UpdatePatientByIdResponse {
@@ -290,10 +290,9 @@ message GetAllDentistsResponse {
 
 message UpdateDentistByIdRequest {
   int32 id = 1;
-  optional string email = 2;
-  optional string first_name = 3;
-  optional string last_name = 4;
-  optional string password = 5;
+  string email = 2;
+  string first_name = 3;
+  string last_name = 4;
 }
 
 message UpdateDentistByIdResponse {
