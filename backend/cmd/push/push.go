@@ -171,7 +171,7 @@ func SendMenuOption(req *connect.Request[threedoclusionv1.SendMenuOptionRequest]
 		//connectionClient.Send(responseConnect);
 		//connectionsClient.DeleteConnection(req.Msg.GetScanId()) // Delete the connection from memory
 
-		connections.ReleaseChannel(req.Msg.GetScanId(), 1) // Delete client connection from memory, then let client redirect itself
+		connections.ReleaseChannel(req.Msg.GetScanId(), 1) // Delete VR connection from memory, then let VR redirect itself
 		// Delete VR channel connection as well
 
 		msg := "Deleted connection from server"
@@ -195,6 +195,23 @@ func SubscribeConnection(ctx context.Context, req *connect.Request[threedoclusio
     deviceID := req.Msg.DeviceId
 
 	connectionChan := connections.GetChannel(scanID, deviceID)
+
+	// Notify other channel that \deviceID/ has connected
+	var receiverDeviceID int32;
+	if (deviceID == 0){
+		receiverDeviceID = 1;
+	} else if (deviceID == 1) {
+		receiverDeviceID = 0;
+	}
+	otherConnectionChan := connections.GetChannel(scanID, receiverDeviceID)
+	select {
+	case otherConnectionChan <- threedoclusionv1.SubscribeConnectionResponse{IsConnected: true}:
+		// Pass
+	default:
+		// Pass
+	}
+	// End
+
 
     for {
         select {
@@ -228,7 +245,7 @@ func SubscribeConnection(ctx context.Context, req *connect.Request[threedoclusio
 				OtherData: &msg,
 			}
             return ctx.Err()
-        }
+        } // Maybe add a timeout with otherNotCreated response
 	}
 }
 

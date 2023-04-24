@@ -73,15 +73,11 @@ async function checkConnected(serverStream: AsyncIterable<SubscribeConnectionRes
             console.log("No sign of client yet!")
         }
 
-        if (res.isConnected){
+        if (res.isConnected){ // Does not appear?
             console.log("Client has connected!")
         }
 
-        else { // Client disconnected
-            // Close stream... How?
-            //serverStream.Close() ?
-            // Show some other component
-            // Redirect?
+        else { // TO FIX: Slight issue if just using /start-vr without /client, sends "Client has disconnected to himself" on Quit menu option
             console.log("Client has disconnected!")
         }
     }

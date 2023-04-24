@@ -18,6 +18,8 @@
     "@ffmpeg/ffmpeg": "^0.11.6",
     "@grpc/proto-loader": "^0.7.5",
     "@next/font": "13.1.6",
+    "@react-three/drei": "^9.65.5",
+    "@react-three/fiber": "^8.12.2",
     "@tanstack/react-query": "^4.24.10",
     "@types/downloadjs": "^1.4.3",
     "@types/three": "^0.149.0",

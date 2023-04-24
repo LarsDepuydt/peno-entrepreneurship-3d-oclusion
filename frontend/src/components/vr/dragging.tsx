@@ -167,8 +167,9 @@ function initThree(setOpenMenu: any, setCurrentScan: any){
     controller1.addEventListener( 'selectend', onSelectEnd );
 
     controller1.addEventListener( 'squeezestart', function foo() { // End and restart WEBXR session when triggering menu?
-        const session = renderer.xr.getSession();
-        session?.end().then(setOpenMenu(true));
+        //const session = renderer.xr.getSession();
+        //session?.end().then(setOpenMenu(true));
+        setOpenMenu(true);
         updateScanData(setCurrentScan);
     }); // Added to test menu
     
