@@ -67,7 +67,7 @@ const App: FC = () => {
           </div>
         ))}
       </div>
-      <SidebarPatient patientfirstname={'TEST'} patientlastname={'TEST3'} />
+      <SidebarPatient />
       <HeaderPatient />
     </div>
   );

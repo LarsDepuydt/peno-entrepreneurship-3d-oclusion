@@ -40,7 +40,7 @@ export function SidebarDoctor() {
   );
 }
 
-export function SidebarPatient({ patientfirstname, patientlastname }: HeaderPatientProps) {
+export function SidebarPatient() {
   const router = useRouter();
   const home = () => {
     process.env.REACT_APP_PATIENT_ID = undefined;
