@@ -18,14 +18,19 @@ interface patientValues {
 }
 
 export default function ModalForm() {
+  let DentistID = process.env.REACT_APP_DENTIST_ID!;
+
   const [modal, setModal] = useState(false);
   // modal is not toggled at first
 
   const [patientinfo, setData] = useState({
     patientFirstName: '',
     patientLastName: '',
+
     pinned: false,
     notes: '',
+
+    doctorID: parseInt(DentistID),
   });
 
   const { data } = useQuery(addPatient.useQuery(patientinfo));
@@ -35,28 +40,22 @@ export default function ModalForm() {
   };
 
   const ReworkValues = (values: patientValues) => {
-    if (values.pinned) {
-      return {
-        patientFirstName: values.patientFirstName,
-        patientLastName: values.patientLastName,
-        pinned: 1,
-        notes: '',
-      };
-    } else {
-      return {
-        patientFirstName: values.patientFirstName,
-        patientLastName: values.patientLastName,
-        pinned: 0,
-        notes: '',
-      };
-    }
+    return {
+      patientFirstName: values.patientFirstName,
+      patientLastName: values.patientLastName,
+      pinned: values.pinned,
+      notes: values.notes,
+
+      // doctorID: parseInt(DentistID),
+      doctorID: 64,
+    };
   };
 
   const submitFunction = (values: patientValues) => {
     console.log(values);
     //console.log(ReworkValues(values));
-    //setData(ReworkValues(values));
-    setData(values);
+    setData(ReworkValues(values));
+    //setData(values);
 
     // fout zit bij pinned : true / false
     console.log(data);

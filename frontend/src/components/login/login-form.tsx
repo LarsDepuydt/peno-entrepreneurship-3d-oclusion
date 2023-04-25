@@ -36,7 +36,7 @@ export default function LoginForm() {
     //   process.env.REACT_APP_NOT_SECRET_CODE = (data?.id).toString();
     // }
     if (data != undefined) {
-      process.env.REACT_APP_DENTIST_ID = '2';
+      process.env.REACT_APP_DENTIST_ID = data.id.toString();
     }
     console.log(' (2) REACT_APP_DENTIST_ID is ' + process.env.REACT_APP_DENTIST_ID);
   };

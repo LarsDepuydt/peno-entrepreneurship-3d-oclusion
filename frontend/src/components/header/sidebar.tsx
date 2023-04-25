@@ -22,7 +22,7 @@ interface HeaderDoctorProps {
   doctorlastname: string;
 }
 
-export function SidebarDoctor(id: number) {
+export function SidebarDoctor() {
   return (
     <>
       <div className={styleSidebar.sidebar}>

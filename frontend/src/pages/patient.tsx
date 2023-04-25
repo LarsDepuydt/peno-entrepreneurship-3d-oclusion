@@ -133,19 +133,22 @@ const patients = [
   },
 ];
 
-// const filteredPatients = patients
-//   .flatMap((obj) => Object.values(obj)) // flatten the array of objects into an array of patients
-//   .reduce((acc, patient) => {
-//     const foundPatient = acc.find((p) => p.props.id === patient.props.id);
-//     if (!foundPatient) {
-//       acc.push(patient);
-//     }
-//     return acc;
-//   }, []);
-
 const filteredPatients = patients
-  .flatMap((obj) => Object.values(obj)) // flatten the array of objects into an array of scans
-  .filter((patient) => patient.props.patientid === parseInt(process.env.REACT_APP_DENTIST_ID));
+  .flatMap((obj) => Object.values(obj)) // flatten the array of objects into an array of patients
+  .reduce((acc, patient) => {
+    const foundPatient = acc.find((p) => p.props.id === patient.props.id);
+    if (!foundPatient) {
+      acc.push(patient);
+    }
+    return acc;
+  }, []);
+
+//let DentistID = process.env.REACT_APP_DENTIST_ID!;
+//let DentistIDnum = parseInt(DentistIDstr);
+
+// const filteredPatients = patients
+//   .flatMap((obj) => Object.values(obj)) // flatten the array of objects into an array of scans
+//   .filter((patient) => patient.props.patientid === parseInt(DentistID));
 
 const App: FC = () => {
   const router = useRouter();

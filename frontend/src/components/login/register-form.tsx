@@ -30,19 +30,35 @@ interface RUser {
 export default function LoginForm() {
   const [credentials, setData] = useState({ email: '', password: '', firstName: '', lastName: '' });
 
-  const { data } = useQuery(register.useQuery(credentials));
+  const [submitOK, setSubmitOK] = useState(false);
+  const [sendOK, setSendOK] = useState(false);
+
+  const query = register.useQuery(credentials);
+  const { data, refetch } = useQuery(query.queryKey, query.queryFn, { enabled: false });
 
   const router = useRouter();
+
+  // const submitFunction = (values: RUser) => {
+  //   console.log(values);
+  //   setData(values);
+  //   console.log(data);
+  // };
 
   const submitFunction = (values: RUser) => {
     console.log(values);
     setData(values);
     console.log(data);
+    setSubmitOK(true);
   };
+
+  // useEffect(() => {
+  //   data?.token && credentials.email && router.push('/login-page');
+  // }, [data, credentials]);
 
   useEffect(() => {
     data?.token && credentials.email && router.push('/login-page');
-  }, [data, credentials]);
+    refetch();
+  }, [data, credentials, router]);
 
   const toLogin = () => router.push('/login-page');
 
