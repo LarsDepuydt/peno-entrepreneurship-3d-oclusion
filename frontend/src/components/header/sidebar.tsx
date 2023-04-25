@@ -81,3 +81,4 @@ export function SidebarObj({ patientfirstname, patientlastname }: HeaderPatientP
     </>
   );
 }
+
