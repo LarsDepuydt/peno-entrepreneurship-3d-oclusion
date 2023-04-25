@@ -10,43 +10,82 @@ import { addPatient } from '@/gen/proto/threedoclusion/v1/service-ScanService_co
 import { useEffect, useState } from 'react';
 
 interface patientValues {
-  //patientID: string;
   patientFirstName: string;
   patientLastName: string;
 
   pinned: boolean;
-  // kunnen we van pinned een boolean maken?
   notes: string;
 }
 
 export default function ModalForm() {
+  let DentistID = process.env.REACT_APP_DENTIST_ID!;
+
   const [modal, setModal] = useState(false);
   // modal is not toggled at first
 
+  const [submitOK, setSubmitOK] = useState(false);
+  const [sendOK, setSendOK] = useState(false);
+
   const [patientinfo, setData] = useState({
-    //patientID: '',
-    patientFirstName: '',
-    patientLastName: '',
+    first_name: '',
+    last_name: '',
+
     pinned: false,
     notes: '',
+
+    dentist_id: 0,
   });
 
-  const { data } = useQuery(addPatient.useQuery(patientinfo));
-  // kunnen we van pinned een boolean maken?
+  //const { data } = useQuery(addPatient.useQuery(patientinfo));
+
+  const query = addPatient.useQuery(patientinfo);
+  const { data, refetch } = useQuery(query.queryKey, query.queryFn, { enabled: false });
 
   const toggleModal = () => {
     setModal(!modal); // change state f -> t and t -> f
   };
 
-  const submitFunction = (values: patientValues) => {
-    console.log(values);
-    //setData(values);
-    setModal(!modal);
+  const ReworkValues = (values: patientValues) => {
+    return {
+      first_name: values.patientFirstName,
+      last_name: values.patientLastName,
+      pinned: values.pinned,
+      notes: values.notes,
+
+      dentist_id: parseInt(DentistID),
+    };
   };
 
-  // useEffect(() => {
-  // }, [data, patientinfo]);
-  // heeft geen effect ?
+  const submitFunction = (values: patientValues) => {
+    console.log(ReworkValues(values));
+    setData(ReworkValues(values));
+    console.log(data);
+    setSubmitOK(true);
+    //setModal(!modal);
+  };
+
+  const handleRedirect = () => {
+    if (submitOK) {
+      setSendOK(true);
+    }
+  };
+
+  //data?.message && patientinfo.patientFirstName &&
+
+  useEffect(() => {
+    if (submitOK) {
+      refetch();
+      console.log('in use effect function');
+      console.log(data);
+      setSendOK(false);
+      console.log('line 82');
+      if (data != undefined) {
+        setModal(!modal);
+      }
+    }
+  }, [data, modal, sendOK]);
+
+  //, patientinfo
 
   return (
     <>
@@ -64,7 +103,6 @@ export default function ModalForm() {
             <div className={styles.login_box + ' p-3'}>
               <Formik
                 initialValues={{
-                  patientID: '',
                   patientFirstName: '',
                   patientLastName: '',
 
@@ -77,16 +115,6 @@ export default function ModalForm() {
                 {({ errors, status, touched }) => (
                   <Form>
                     <div className={styles.rightfont}>
-                      <div className="mb-3">
-                        <Field
-                          className="form-control"
-                          id="patientID"
-                          name="patientID"
-                          placeholder="Patient ID"
-                          type="patientID"
-                        />
-                      </div>
-
                       <div className={styles.firstandlast}>
                         <div className="mb-3">
                           <Field
@@ -130,7 +158,7 @@ export default function ModalForm() {
                       </div>
 
                       <div className={styles.spacingbtn}>
-                        <button type="submit" className={styleB.relu_btn}>
+                        <button type="submit" className={styleB.relu_btn} onClick={handleRedirect}>
                           Save patient
                         </button>
                         <button type="button" className={styleB.relu_btn} onClick={toggleModal}>
