@@ -3,7 +3,7 @@
 /* eslint-disable */
 // @ts-nocheck
 
-import { AddDentistRequest, AddDentistResponse, AddPatientRequest, AddPatientResponse, AddScanRequest, AddScanResponse, AddTagRequest, AddTagResponse, DeleteDentistByIdRequest, DeleteDentistByIdResponse, DeletePatientRequest, DeletePatientResponse, DeleteScanRequest, DeleteScanResponse, DeleteTagRequest, DeleteTagResponse, GetAllDentistsRequest, GetAllDentistsResponse, GetAllPatientsRequest, GetAllPatientsResponse, GetAllScansRequest, GetAllScansResponse, GetAllTagsByTypeRequest, GetAllTagsByTypeResponse, GetAllTagsRequest, GetAllTagsResponse, GetDentistByIdRequest, GetDentistByIdResponse, GetPatientByIDRequest, GetPatientByIDResponse, GetPatientByNameRequest, GetPatientByNameResponse, GetPositionScanRequest, GetPositionScanResponse, GetScanByDateRequest, GetScanByDateResponse, GetScanByIDRequest, GetScanByIDResponse, GetTagByIDRequest, GetTagByIDResponse, LoginRequest, LoginResponse, RegisterRequest, RegisterResponse, SendPositionScanRequest, SendPositionScanResponse, SendVRRequest, SendVRResponse, UpdateDentistByIdRequest, UpdateDentistByIdResponse, WaitingRequest, WaitingResponse } from "./service_pb.js";
+import { AddDentistRequest, AddDentistResponse, AddPatientRequest, AddPatientResponse, AddScanRequest, AddScanResponse, AddTagRequest, AddTagResponse, DeleteDentistByIdRequest, DeleteDentistByIdResponse, DeletePatientByIdRequest, DeletePatientByIdResponse, DeleteScanByIdRequest, DeleteScanByIdResponse, DeleteTagByIdRequest, DeleteTagByIdResponse, GetAllDentistsRequest, GetAllDentistsResponse, GetAllPatientsRequest, GetAllPatientsResponse, GetAllScansRequest, GetAllScansResponse, GetAllTagsRequest, GetAllTagsResponse, GetDentistByIdRequest, GetDentistByIdResponse, GetPatientByIdRequest, GetPatientByIdResponse, GetPatientByNameRequest, GetPatientByNameResponse, GetPositionScanRequest, GetPositionScanResponse, GetScanByIdRequest, GetScanByIdResponse, GetTagByIdRequest, GetTagByIdResponse, LoginRequest, LoginResponse, RegisterRequest, RegisterResponse, SendPositionScanRequest, SendPositionScanResponse, SendVRRequest, SendVRResponse, UpdateDentistByIdRequest, UpdateDentistByIdResponse, UpdatePatientByIdRequest, UpdatePatientByIdResponse, WaitingRequest, WaitingResponse } from "./service_pb.js";
 import { MethodKind } from "@bufbuild/protobuf";
 
 /**
@@ -40,12 +40,12 @@ export const ScanService = {
       kind: MethodKind.Unary,
     },
     /**
-     * @generated from rpc threedoclusion.v1.ScanService.DeleteScan
+     * @generated from rpc threedoclusion.v1.ScanService.DeleteScanById
      */
-    deleteScan: {
-      name: "DeleteScan",
-      I: DeleteScanRequest,
-      O: DeleteScanResponse,
+    deleteScanById: {
+      name: "DeleteScanById",
+      I: DeleteScanByIdRequest,
+      O: DeleteScanByIdResponse,
       kind: MethodKind.Unary,
     },
     /**
@@ -58,21 +58,12 @@ export const ScanService = {
       kind: MethodKind.Unary,
     },
     /**
-     * @generated from rpc threedoclusion.v1.ScanService.GetScanByID
+     * @generated from rpc threedoclusion.v1.ScanService.GetScanById
      */
-    getScanByID: {
-      name: "GetScanByID",
-      I: GetScanByIDRequest,
-      O: GetScanByIDResponse,
-      kind: MethodKind.Unary,
-    },
-    /**
-     * @generated from rpc threedoclusion.v1.ScanService.GetScanByDate
-     */
-    getScanByDate: {
-      name: "GetScanByDate",
-      I: GetScanByDateRequest,
-      O: GetScanByDateResponse,
+    getScanById: {
+      name: "GetScanById",
+      I: GetScanByIdRequest,
+      O: GetScanByIdResponse,
       kind: MethodKind.Unary,
     },
     /**
@@ -85,12 +76,12 @@ export const ScanService = {
       kind: MethodKind.Unary,
     },
     /**
-     * @generated from rpc threedoclusion.v1.ScanService.DeleteTag
+     * @generated from rpc threedoclusion.v1.ScanService.DeleteTagById
      */
-    deleteTag: {
-      name: "DeleteTag",
-      I: DeleteTagRequest,
-      O: DeleteTagResponse,
+    deleteTagById: {
+      name: "DeleteTagById",
+      I: DeleteTagByIdRequest,
+      O: DeleteTagByIdResponse,
       kind: MethodKind.Unary,
     },
     /**
@@ -103,21 +94,12 @@ export const ScanService = {
       kind: MethodKind.Unary,
     },
     /**
-     * @generated from rpc threedoclusion.v1.ScanService.GetTagByID
+     * @generated from rpc threedoclusion.v1.ScanService.GetTagById
      */
-    getTagByID: {
-      name: "GetTagByID",
-      I: GetTagByIDRequest,
-      O: GetTagByIDResponse,
-      kind: MethodKind.Unary,
-    },
-    /**
-     * @generated from rpc threedoclusion.v1.ScanService.GetAllTagsByType
-     */
-    getAllTagsByType: {
-      name: "GetAllTagsByType",
-      I: GetAllTagsByTypeRequest,
-      O: GetAllTagsByTypeResponse,
+    getTagById: {
+      name: "GetTagById",
+      I: GetTagByIdRequest,
+      O: GetTagByIdResponse,
       kind: MethodKind.Unary,
     },
     /**
@@ -148,12 +130,12 @@ export const ScanService = {
       kind: MethodKind.Unary,
     },
     /**
-     * @generated from rpc threedoclusion.v1.ScanService.DeletePatient
+     * @generated from rpc threedoclusion.v1.ScanService.DeletePatientById
      */
-    deletePatient: {
-      name: "DeletePatient",
-      I: DeletePatientRequest,
-      O: DeletePatientResponse,
+    deletePatientById: {
+      name: "DeletePatientById",
+      I: DeletePatientByIdRequest,
+      O: DeletePatientByIdResponse,
       kind: MethodKind.Unary,
     },
     /**
@@ -166,12 +148,12 @@ export const ScanService = {
       kind: MethodKind.Unary,
     },
     /**
-     * @generated from rpc threedoclusion.v1.ScanService.GetPatientByID
+     * @generated from rpc threedoclusion.v1.ScanService.GetPatientById
      */
-    getPatientByID: {
-      name: "GetPatientByID",
-      I: GetPatientByIDRequest,
-      O: GetPatientByIDResponse,
+    getPatientById: {
+      name: "GetPatientById",
+      I: GetPatientByIdRequest,
+      O: GetPatientByIdResponse,
       kind: MethodKind.Unary,
     },
     /**
@@ -181,6 +163,15 @@ export const ScanService = {
       name: "GetPatientByName",
       I: GetPatientByNameRequest,
       O: GetPatientByNameResponse,
+      kind: MethodKind.Unary,
+    },
+    /**
+     * @generated from rpc threedoclusion.v1.ScanService.UpdatePatientById
+     */
+    updatePatientById: {
+      name: "UpdatePatientById",
+      I: UpdatePatientByIdRequest,
+      O: UpdatePatientByIdResponse,
       kind: MethodKind.Unary,
     },
     /**
