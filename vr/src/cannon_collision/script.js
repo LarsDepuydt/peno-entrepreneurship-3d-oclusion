@@ -399,7 +399,7 @@ function updatePhysics() {
 }
 
 function animate() {
-    checkTime();
+    //checkTime();
 
     // console.log("frame", frameNum);
     frameNum += 1;
