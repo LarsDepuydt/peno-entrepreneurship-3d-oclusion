@@ -108,8 +108,11 @@ function cannonMeshToCannonConvexPolyhedron(mesh) {
         ]);
     }
 
-    const convexpolyhedron = new CANNON.ConvexPolyhedron({vertices:vertices, faces:faces});
-    convexpolyhedron.computeNormals();
+    const normals = computeFaceNormals(vertices, faces);
+    orderFaceVerticesAroundFaceNormals(vertices, faces, normals);
+
+    const convexpolyhedron = new CANNON.ConvexPolyhedron({vertices:vertices, faces:faces, normals:normals});
+    // convexpolyhedron.computeNormals();
     return convexpolyhedron;
 }
 
@@ -140,6 +143,107 @@ function toCannonVertices(geometry) {
     }
     return vertices;
 }
+
+
+const tmp_vec_1 = new CANNON.Vec3();
+const tmp_vec_2 = new CANNON.Vec3();
+/**
+ * 
+ * @param {*} vertices Vec3[]
+ * @param {*} faces number[][]
+ * @returns 
+ */
+// https://github.com/tomo0613/offroadJS_v2/blob/355b6aabf0446deefffba6d60e24a257836916ea/src/mapModules/baseMapElementComponents.ts#L148
+function computeFaceNormals(vertices, faces) {
+    let centroid = calculateCentroid(vertices);
+
+    return faces.map((faceVertexIndices) => {
+        const A = vertices[faceVertexIndices[0]];
+        const A_to_B = tmp_vec_1.copy(vertices[faceVertexIndices[1]]);
+        const A_to_C = tmp_vec_2.copy(vertices[faceVertexIndices[2]]);
+        A_to_B.vsub(A, A_to_B);
+        A_to_C.vsub(A, A_to_C);
+
+        const faceNormal = new CANNON.Vec3().copy(A_to_B);
+        faceNormal.cross(A_to_C, faceNormal).normalize();
+
+        const centroid_to_A = tmp_vec_1.copy(A);
+        A.vsub(centroid, centroid_to_A);
+
+        if (faceNormal.dot(centroid_to_A) < 0) {
+            faceNormal.negate();
+        }
+
+        return faceNormal;
+    });
+}
+
+
+/**
+ * 
+ * @param {*} vertices Vec3[]
+ */
+// https://github.com/tomo0613/offroadJS_v2/blob/355b6aabf0446deefffba6d60e24a257836916ea/src/mapModules/baseMapElementComponents.ts#L172
+function calculateCentroid(vertices) {
+    const { length: vertexCount } = vertices;
+
+    let centroid = new CANNON.Vec3();
+    centroid.set(0, 0, 0);
+
+    for (let i = 0; i < vertexCount; i++) {
+        centroid.vadd(vertices[i], centroid);
+    }
+
+    centroid.scale(1 / vertexCount, centroid);
+    return centroid;
+}
+
+
+const tmp_vec_0 = new THREE.Vector3();
+const tmp_quat = new THREE.Quaternion();
+const zAxis = new THREE.Vector3(0, 0, 1);
+const vertexProjectionAngles = [];  //number[]
+/**
+ * 
+ * @param {*} vertices Vec3[]
+ * @param {*} faces number[][]
+ * @param {*} normals Vec3[]
+ */
+// https://github.com/tomo0613/offroadJS_v2/blob/355b6aabf0446deefffba6d60e24a257836916ea/src/mapModules/baseMapElementComponents.ts#L185
+function orderFaceVerticesAroundFaceNormals(vertices, faces, normals) {
+    faces.forEach((faceVertexIndices, faceIndex) => {
+        /* https://stackoverflow.com/questions/6264664/transform-3d-points-to-2d */
+        const faceNormal = normals[faceIndex];
+        const rotationAxis = tmp_vec_0.crossVectors(faceNormal, zAxis);
+        const faceAngle = Math.acos(zAxis.dot(faceNormal));
+        const rotation = tmp_quat.setFromAxisAngle(rotationAxis, faceAngle);
+
+        vertexProjectionAngles.length = 0;
+        for (let i = 0; i < faceVertexIndices.length; i++) {
+            const vertexIndex = faceVertexIndices[i];
+            const projection = tmp_vec_0.copy(vertices[vertexIndex]).applyQuaternion(rotation);
+
+            vertexProjectionAngles[vertexIndex] = Math.atan2(projection.y, projection.x);
+        }
+
+        faceVertexIndices.sort(compareVertexProjectionAngles);
+    });
+}
+
+
+function compareVertexProjectionAngles(vertexIndex_a, vertexIndex_b) {
+    const angle_a = vertexProjectionAngles[vertexIndex_a];
+    const angle_b = vertexProjectionAngles[vertexIndex_b];
+
+    if (angle_a < angle_b) {
+        return -1;
+    }
+    if (angle_a > angle_b) {
+        return 1;
+    }
+    return 0;
+}
+
 
 
 const clock = new THREE.Clock();

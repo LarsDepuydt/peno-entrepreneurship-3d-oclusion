@@ -73,7 +73,6 @@ class Jaw {
             function (object) {         // object is a 'Group', which is a subclass of 'Object3D'
                 const buffergeo = getFirstBufferGeometry(object);
                 jaw.mesh = new THREE.Mesh(buffergeo, teeth_material);
-                jaw.mesh = threeMeshToConvexThreeMesh(jaw.mesh);
                 
                 jaw.mesh.geometry.scale(0.01, 0.01, 0.01);
                 jaw.mesh.position.x = 0;
@@ -84,12 +83,12 @@ class Jaw {
                 group.add(jaw.mesh);
                 
                 // const convexmesh = threeMeshToConvexThreeMesh(jaw.mesh);
-                // const shape = threeMeshToCannonMesh(convexmesh);
-                // const convexshape = cannonMeshToCannonConvexPolyhedron(shape);
+                // const shapex = threeMeshToCannonMesh(convexmesh);
+                // const shape = cannonMeshToCannonConvexPolyhedron(shapex);
                 // console.log("mesh: ", jaw.mesh);
-                // console.log("convexmesh: ", convexmesh);
+                // console.log("convexmesh: ", shapex);
                 // console.log("shape: ", shape);
-                // console.log("convexshape: ", convexshape);
+                // console.log("convexshape: ", shape);
 
                 const shape = threeMeshToConvexCannonMesh(jaw.mesh);
 
@@ -131,7 +130,7 @@ function initCannon() {
     world.gravity.set(0,-0.01,0);
     world.broadphase = new CANNON.NaiveBroadphase();
     world.broadphase.useBoundingBoxes = true;
-    world.solver.iterations = 4;     //10
+    world.solver.iterations = 50;     //10
     console.log(world);
 
     floor_body = new CANNON.Body({ mass: 0 });
@@ -289,8 +288,8 @@ function initThree() {
 }
 
 function initObjects() {
-    lowerjaw = new Jaw('../../assets/simplified/lower_180_new.obj');
-    upperjaw = new Jaw('../../assets/simplified/upper_218_new.obj');
+    lowerjaw = new Jaw('../../assets/simplified/lower_180.obj');
+    upperjaw = new Jaw('../../assets/simplified/upper_218.obj');
     lowerjaw.body.position.set(0,2,0);
     upperjaw.body.position.set(0,3,0);
 }
