@@ -7,13 +7,14 @@ import { SidebarPatient } from '@/components/header/sidebar';
 import styles from '@/styles/PatientPage.module.scss';
 import { FC } from 'react';
 import Head from 'next/head';
+import { Patient } from '@/gen/proto/threedoclusion/v1/service_pb';
 
 // hard coded patients - 12 scans for 10 patients. Kaatje and Jozef (patientid 10 and 8) have each 2 scans. (scanid 1 and 2)
 const all_scans = [
   {
     scan11: <Scan scanid={1} patientid={1} picture={teeth3d} date={new Date(2023, 2, 21)} />,
     scan12: <Scan scanid={1} patientid={2} picture={teeth3d} date={new Date(2023, 2, 20)} />,
-    scan13: <Scan scanid={1} patientid={3} picture={teeth3d} date={new Date(2023, 1, 10)} />,
+    scan13: <Scan scanid={1} patientid={313} picture={teeth3d} date={new Date(2023, 1, 10)} />,
   },
 
   {
@@ -38,6 +39,11 @@ const all_scans = [
     scan43: <Scan scanid={2} patientid={8} picture={teeth3d} date={new Date(2023, 2, 21)} />,
   },
 ];
+
+let PatientID = process.env.REACT_APP_PATIENT_ID!;
+
+console.log('dentist id is ' + process.env.REACT_APP_DENTIST_ID);
+console.log('patient id is ' + process.env.REACT_APP_PATIENT_ID);
 
 const App: FC = () => {
   const router = useRouter();

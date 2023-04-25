@@ -34,7 +34,7 @@ const patients = [
     ),
     patient13: (
       <Patient
-        id={3}
+        id={313}
         picture={teeth3d}
         patientfirstname={'Josephine'}
         patientlastname={'De Goter'}
@@ -154,7 +154,8 @@ const filteredPatients = patients
 const App: FC = () => {
   const router = useRouter();
 
-  console.log(process.env.REACT_APP_DENTIST_ID);
+  console.log('dentist id is ' + process.env.REACT_APP_DENTIST_ID);
+  console.log('patient id is ' + process.env.REACT_APP_PATIENT_ID);
 
   return (
     <>

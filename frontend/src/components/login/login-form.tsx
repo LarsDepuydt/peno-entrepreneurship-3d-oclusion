@@ -16,10 +16,6 @@ interface LUser {
   password: string;
 }
 
-interface IDprop {
-  dentistID: any;
-}
-
 export default function LoginForm() {
   const [credentials, setData] = useState({ email: '', password: '' });
 

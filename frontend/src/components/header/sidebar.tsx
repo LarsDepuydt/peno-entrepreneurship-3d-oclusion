@@ -26,7 +26,7 @@ export function SidebarDoctor() {
   return (
     <>
       <div className={styleSidebar.sidebar}>
-        <WelcomingDoctor doctorfirstname={'Anna'} doctorlastname={'Proost'} />
+        <WelcomingDoctor />
         <div className={stylesButton.sidebarButton}>
           <New_Patient />
           <Search_ID />
@@ -42,7 +42,11 @@ export function SidebarDoctor() {
 
 export function SidebarPatient({ patientfirstname, patientlastname }: HeaderPatientProps) {
   const router = useRouter();
-  const home = () => router.push('/patient');
+  const home = () => {
+    process.env.REACT_APP_PATIENT_ID = undefined;
+    router.push('/patient');
+  };
+
   return (
     <>
       <div className={styleSidebar.sidebar}>

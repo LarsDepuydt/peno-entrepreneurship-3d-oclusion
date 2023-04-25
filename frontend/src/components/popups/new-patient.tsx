@@ -27,13 +27,13 @@ export default function ModalForm() {
   const [sendOK, setSendOK] = useState(false);
 
   const [patientinfo, setData] = useState({
-    patientFirstName: '',
-    patientLastName: '',
+    first_name: '',
+    last_name: '',
 
     pinned: false,
     notes: '',
 
-    doctorID: parseInt(DentistID),
+    dentist_id: 0,
   });
 
   //const { data } = useQuery(addPatient.useQuery(patientinfo));
@@ -47,12 +47,12 @@ export default function ModalForm() {
 
   const ReworkValues = (values: patientValues) => {
     return {
-      patientFirstName: values.patientFirstName,
-      patientLastName: values.patientLastName,
+      first_name: values.patientFirstName,
+      last_name: values.patientLastName,
       pinned: values.pinned,
       notes: values.notes,
 
-      doctorID: parseInt(DentistID),
+      dentist_id: parseInt(DentistID),
     };
   };
 
