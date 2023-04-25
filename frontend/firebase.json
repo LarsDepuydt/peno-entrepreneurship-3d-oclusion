@@ -32,7 +32,7 @@
       },
       {
         "source": "/:path*",
-        "destination": "/index.tsx"
+        "destination": "/index.html"
       },
       {
         "source": "**",
