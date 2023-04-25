@@ -31,3 +31,18 @@ export function HeaderPatient() {
     </>
   );
 }
+
+
+export function HeaderObj() {
+  return (
+    <>
+      <div className={styles.header_layout}>
+        <Image className={styles.small_logo} src={reluLogo} alt="relu logo" />
+        <h1 className={styles.bigText}>OBJ viewer</h1>
+        <div className={styles.logout_layout}>
+          <Logout_Button />
+        </div>
+      </div>
+    </>
+  );
+}

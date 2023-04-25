@@ -1,4 +1,3 @@
-import New_Scan from '../components/popups/new-scan';
 import { HeaderPatient } from '../components/header/header';
 import { useRouter } from 'next/router';
 import { SingleScan as Scan } from '../components/scan_gallery/scan_individual_overview';

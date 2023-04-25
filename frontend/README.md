@@ -1,5 +1,9 @@
 This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
 
+## Report of project
+
+For a comprehensive analysis of the project methodology and results, please refer to the report on Overleaf at https://www.overleaf.com/read/bnxjnmrygkrw.
+
 ## Getting Started
 
 First, run the development server:
