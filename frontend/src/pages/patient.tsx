@@ -133,15 +133,19 @@ const patients = [
   },
 ];
 
+
+
 const filteredPatients = patients
   .flatMap((obj) => Object.values(obj)) // flatten the array of objects into an array of patients
   .reduce((acc, patient) => {
-    const foundPatient = acc.find((p) => p.props.id === patient.props.id);
+    const foundPatient = acc.find((p: React.ReactElement) => p.props.id === patient.props.id);
     if (!foundPatient) {
       acc.push(patient);
     }
     return acc;
   }, []);
+
+
 
 const App: FC = () => {
   return (
@@ -153,15 +157,15 @@ const App: FC = () => {
 
       <div>
         <div className={styles.scansWrapper}>
-          {filteredPatients.map((patient, index) => (
-            <div key={`patient${index + 1}`}>
-              <Patient
-                id={patient.props.id}
-                picture={patient.props.picture}
-                patientfirstname={patient.props.patientfirstname}
-                patientlastname={patient.props.patientlastname}
-              />
-            </div>
+        {filteredPatients.map((patient: React.ReactElement, index: number) => (
+          <div key={`patient${index + 1}`}>
+            <Patient
+              id={patient.props.id}
+              picture={patient.props.picture}
+              patientfirstname={patient.props.patientfirstname}
+              patientlastname={patient.props.patientlastname}
+            />
+          </div>
           ))}
           <div className={styles.patient_filler}></div>
           <div className={styles.patient_filler}></div>

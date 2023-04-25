@@ -4,13 +4,12 @@ import (
 	"database/sql"
 	"fmt"
 
-	"github.com/LarsDepuydt/peno-entrepreneurship-3d-oclusion/cmd/help_functions"
 	threedoclusionv1 "github.com/LarsDepuydt/peno-entrepreneurship-3d-oclusion/gen/proto/threedoclusion/v1"
 	"github.com/bufbuild/connect-go"
 )
 
 func AddDentist(req *connect.Request[threedoclusionv1.AddDentistRequest], database *sql.DB) (*connect.Response[threedoclusionv1.AddDentistResponse], error) {
-	sqlStatement := `
+	const sqlStatement = `
 		INSERT INTO dentist (email, password, firstname, lastname)
 		VALUES ($1, $2, $3, $4)
 		RETURNING id;`
@@ -37,7 +36,7 @@ func AddDentist(req *connect.Request[threedoclusionv1.AddDentistRequest], databa
 }
 
 func DeleteDentistById(req *connect.Request[threedoclusionv1.DeleteDentistByIdRequest], database *sql.DB) (*connect.Response[threedoclusionv1.DeleteDentistByIdResponse], error) {
-	sqlStatement := `
+	const sqlStatement = `
 		DELETE FROM dentist 
 		WHERE id = $1
 		RETURNING id, email;`
@@ -64,29 +63,30 @@ func DeleteDentistById(req *connect.Request[threedoclusionv1.DeleteDentistByIdRe
 
 func GetAllDentists(req *connect.Request[threedoclusionv1.GetAllDentistsRequest], database *sql.DB) (*connect.Response[threedoclusionv1.GetAllDentistsResponse], error) {
 	// Perform the database query
-	rows, error := database.Query("SELECT * FROM dentist;")
+	rows, error := database.Query("SELECT id, email, firstname, lastname FROM dentist;")
 	if error != nil {
 		return nil, error
 	}
 
-	result, error := help_functions.GetResponseMakerDentist(rows)
+	dentists, error := GetResponseMakerDentist(rows)
 	if error != nil {
 		return nil, error
 	}
 	
 	fmt.Println("Got all dentists with succes")
 	
-	// TODO: Fix this rows issue
+	dentistsApi := MapDentistsToApi(dentists)
+
 	res := connect.NewResponse(&threedoclusionv1.GetAllDentistsResponse{
-		Dentists: result,
+		Dentists: dentistsApi,
 	})
 	
 	return res, nil
 }
 
 func GetDentistById(req *connect.Request[threedoclusionv1.GetDentistByIdRequest], database *sql.DB) (*connect.Response[threedoclusionv1.GetDentistByIdResponse], error) {
-	sqlStatement := `
-		SELECT id, email, first_name, last_name
+	const sqlStatement = `
+		SELECT id, email, firstname, lastname
 		FROM dentist
 		WHERE id = $1;
 	`
@@ -115,8 +115,8 @@ func GetDentistById(req *connect.Request[threedoclusionv1.GetDentistByIdRequest]
 }
 
 func Login(req *connect.Request[threedoclusionv1.LoginRequest], database *sql.DB) (*connect.Response[threedoclusionv1.LoginResponse], error) {
-	sqlStatement := `
-		SELECT id, email, first_name, last_name
+	const sqlStatement = `
+		SELECT id, email, firstname, lastname
 		FROM dentist
 		WHERE email = $1;
 	`
@@ -148,7 +148,7 @@ func Login(req *connect.Request[threedoclusionv1.LoginRequest], database *sql.DB
 }
 
 func Register(req *connect.Request[threedoclusionv1.RegisterRequest], database *sql.DB) (*connect.Response[threedoclusionv1.RegisterResponse], error) {
-	sqlStatement := `
+	const sqlStatement = `
 		INSERT INTO dentist (email, password, firstname, lastname)
 		VALUES ($1, $2, $3, $4)
 		RETURNING id;`
@@ -162,7 +162,7 @@ func Register(req *connect.Request[threedoclusionv1.RegisterRequest], database *
 	if error != nil {
 		return nil, error
 	}
-
+	
 	responseMessage := fmt.Sprintf("Dentist with email: %s added with succes", req.Msg.Email)
 	fmt.Println(responseMessage)
 
@@ -177,19 +177,21 @@ func Register(req *connect.Request[threedoclusionv1.RegisterRequest], database *
 }
 
 func UpdateDentistById(req *connect.Request[threedoclusionv1.UpdateDentistByIdRequest], database *sql.DB) (*connect.Response[threedoclusionv1.UpdateDentistByIdResponse], error) {
-	// Perform the database modification
-	_, error := database.Exec(
-		"UPDATE dentist SET email = $2, pass_word = $3, first_name = 4, last_name = 5 WHERE id = $1 ;", 
-		req.Msg.Id, req.Msg.Email, req.Msg.Password, req.Msg.FirstName, req.Msg.LastName,
-	)
+	const sqlStatement = `
+		UPDATE dentist
+		SET email=$2, firstname=$3, lastname=$4
+		WHERE id = $1
+		RETURNING id;`
+	var id int32
+
+	error := database.QueryRow(sqlStatement, req.Msg.Id, req.Msg.Email, req.Msg.FirstName, req.Msg.LastName).Scan(&id)
 	if error != nil {
 		return nil, error
 	}
 
-	responseMessage := fmt.Sprintf("Dentist with email: %d updated with succes", req.Msg.Email)
+	responseMessage := fmt.Sprintf("Dentist with id: %d updated with succes", req.Msg.Id)
 	fmt.Println(responseMessage)
 
-	// TODO: fix token
 	res := connect.NewResponse(&threedoclusionv1.UpdateDentistByIdResponse{
 		Message: responseMessage,
 	})
