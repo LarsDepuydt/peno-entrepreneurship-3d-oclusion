@@ -20,8 +20,7 @@ service ScanService {
   rpc GetAllTags(GetAllTagsRequest) returns (GetAllTagsResponse) {}
   rpc GetTagById(GetTagByIdRequest) returns (GetTagByIdResponse) {}
 
-  rpc SendPositionScan (SendPositionScanRequest) returns (SendPositionScanResponse) {}
-  rpc GetPositionScan (GetPositionScanRequest) returns (GetPositionScanResponse) {}
+  
 
   rpc AddPatient(AddPatientRequest) returns (AddPatientResponse) {}
   rpc DeletePatientById(DeletePatientByIdRequest) returns (DeletePatientByIdResponse) {}
@@ -187,21 +186,9 @@ message SendVRRequest {
   int32 scan_id = 2;
 }
 
-message SendPositionScanRequest {
-  ScanSave scan = 1;
-}
 
-message SendPositionScanResponse {
-  bool saved = 1;
-}
 
-message GetPositionScanRequest {
-  int32 scan_id = 1;
-}
 
-message GetPositionScanResponse {
-  ScanSave scan = 1;
-}
 message SendVRResponse {
   string feedback = 1;
 }

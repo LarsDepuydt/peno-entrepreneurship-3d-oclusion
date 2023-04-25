@@ -37,8 +37,6 @@ type ScanServiceClient interface {
 	DeleteTagById(context.Context, *connect_go.Request[v1.DeleteTagByIdRequest]) (*connect_go.Response[v1.DeleteTagByIdResponse], error)
 	GetAllTags(context.Context, *connect_go.Request[v1.GetAllTagsRequest]) (*connect_go.Response[v1.GetAllTagsResponse], error)
 	GetTagById(context.Context, *connect_go.Request[v1.GetTagByIdRequest]) (*connect_go.Response[v1.GetTagByIdResponse], error)
-	SendPositionScan(context.Context, *connect_go.Request[v1.SendPositionScanRequest]) (*connect_go.Response[v1.SendPositionScanResponse], error)
-	GetPositionScan(context.Context, *connect_go.Request[v1.GetPositionScanRequest]) (*connect_go.Response[v1.GetPositionScanResponse], error)
 	AddPatient(context.Context, *connect_go.Request[v1.AddPatientRequest]) (*connect_go.Response[v1.AddPatientResponse], error)
 	DeletePatientById(context.Context, *connect_go.Request[v1.DeletePatientByIdRequest]) (*connect_go.Response[v1.DeletePatientByIdResponse], error)
 	GetAllPatients(context.Context, *connect_go.Request[v1.GetAllPatientsRequest]) (*connect_go.Response[v1.GetAllPatientsResponse], error)
@@ -112,16 +110,6 @@ func NewScanServiceClient(httpClient connect_go.HTTPClient, baseURL string, opts
 		getTagById: connect_go.NewClient[v1.GetTagByIdRequest, v1.GetTagByIdResponse](
 			httpClient,
 			baseURL+"/threedoclusion.v1.ScanService/GetTagById",
-			opts...,
-		),
-		sendPositionScan: connect_go.NewClient[v1.SendPositionScanRequest, v1.SendPositionScanResponse](
-			httpClient,
-			baseURL+"/threedoclusion.v1.ScanService/SendPositionScan",
-			opts...,
-		),
-		getPositionScan: connect_go.NewClient[v1.GetPositionScanRequest, v1.GetPositionScanResponse](
-			httpClient,
-			baseURL+"/threedoclusion.v1.ScanService/GetPositionScan",
 			opts...,
 		),
 		addPatient: connect_go.NewClient[v1.AddPatientRequest, v1.AddPatientResponse](
@@ -204,8 +192,6 @@ type scanServiceClient struct {
 	deleteTagById     *connect_go.Client[v1.DeleteTagByIdRequest, v1.DeleteTagByIdResponse]
 	getAllTags        *connect_go.Client[v1.GetAllTagsRequest, v1.GetAllTagsResponse]
 	getTagById        *connect_go.Client[v1.GetTagByIdRequest, v1.GetTagByIdResponse]
-	sendPositionScan  *connect_go.Client[v1.SendPositionScanRequest, v1.SendPositionScanResponse]
-	getPositionScan   *connect_go.Client[v1.GetPositionScanRequest, v1.GetPositionScanResponse]
 	addPatient        *connect_go.Client[v1.AddPatientRequest, v1.AddPatientResponse]
 	deletePatientById *connect_go.Client[v1.DeletePatientByIdRequest, v1.DeletePatientByIdResponse]
 	getAllPatients    *connect_go.Client[v1.GetAllPatientsRequest, v1.GetAllPatientsResponse]
@@ -269,16 +255,6 @@ func (c *scanServiceClient) GetAllTags(ctx context.Context, req *connect_go.Requ
 // GetTagById calls threedoclusion.v1.ScanService.GetTagById.
 func (c *scanServiceClient) GetTagById(ctx context.Context, req *connect_go.Request[v1.GetTagByIdRequest]) (*connect_go.Response[v1.GetTagByIdResponse], error) {
 	return c.getTagById.CallUnary(ctx, req)
-}
-
-// SendPositionScan calls threedoclusion.v1.ScanService.SendPositionScan.
-func (c *scanServiceClient) SendPositionScan(ctx context.Context, req *connect_go.Request[v1.SendPositionScanRequest]) (*connect_go.Response[v1.SendPositionScanResponse], error) {
-	return c.sendPositionScan.CallUnary(ctx, req)
-}
-
-// GetPositionScan calls threedoclusion.v1.ScanService.GetPositionScan.
-func (c *scanServiceClient) GetPositionScan(ctx context.Context, req *connect_go.Request[v1.GetPositionScanRequest]) (*connect_go.Response[v1.GetPositionScanResponse], error) {
-	return c.getPositionScan.CallUnary(ctx, req)
 }
 
 // AddPatient calls threedoclusion.v1.ScanService.AddPatient.
@@ -358,8 +334,6 @@ type ScanServiceHandler interface {
 	DeleteTagById(context.Context, *connect_go.Request[v1.DeleteTagByIdRequest]) (*connect_go.Response[v1.DeleteTagByIdResponse], error)
 	GetAllTags(context.Context, *connect_go.Request[v1.GetAllTagsRequest]) (*connect_go.Response[v1.GetAllTagsResponse], error)
 	GetTagById(context.Context, *connect_go.Request[v1.GetTagByIdRequest]) (*connect_go.Response[v1.GetTagByIdResponse], error)
-	SendPositionScan(context.Context, *connect_go.Request[v1.SendPositionScanRequest]) (*connect_go.Response[v1.SendPositionScanResponse], error)
-	GetPositionScan(context.Context, *connect_go.Request[v1.GetPositionScanRequest]) (*connect_go.Response[v1.GetPositionScanResponse], error)
 	AddPatient(context.Context, *connect_go.Request[v1.AddPatientRequest]) (*connect_go.Response[v1.AddPatientResponse], error)
 	DeletePatientById(context.Context, *connect_go.Request[v1.DeletePatientByIdRequest]) (*connect_go.Response[v1.DeletePatientByIdResponse], error)
 	GetAllPatients(context.Context, *connect_go.Request[v1.GetAllPatientsRequest]) (*connect_go.Response[v1.GetAllPatientsResponse], error)
@@ -430,16 +404,6 @@ func NewScanServiceHandler(svc ScanServiceHandler, opts ...connect_go.HandlerOpt
 	mux.Handle("/threedoclusion.v1.ScanService/GetTagById", connect_go.NewUnaryHandler(
 		"/threedoclusion.v1.ScanService/GetTagById",
 		svc.GetTagById,
-		opts...,
-	))
-	mux.Handle("/threedoclusion.v1.ScanService/SendPositionScan", connect_go.NewUnaryHandler(
-		"/threedoclusion.v1.ScanService/SendPositionScan",
-		svc.SendPositionScan,
-		opts...,
-	))
-	mux.Handle("/threedoclusion.v1.ScanService/GetPositionScan", connect_go.NewUnaryHandler(
-		"/threedoclusion.v1.ScanService/GetPositionScan",
-		svc.GetPositionScan,
 		opts...,
 	))
 	mux.Handle("/threedoclusion.v1.ScanService/AddPatient", connect_go.NewUnaryHandler(
@@ -551,14 +515,6 @@ func (UnimplementedScanServiceHandler) GetAllTags(context.Context, *connect_go.R
 
 func (UnimplementedScanServiceHandler) GetTagById(context.Context, *connect_go.Request[v1.GetTagByIdRequest]) (*connect_go.Response[v1.GetTagByIdResponse], error) {
 	return nil, connect_go.NewError(connect_go.CodeUnimplemented, errors.New("threedoclusion.v1.ScanService.GetTagById is not implemented"))
-}
-
-func (UnimplementedScanServiceHandler) SendPositionScan(context.Context, *connect_go.Request[v1.SendPositionScanRequest]) (*connect_go.Response[v1.SendPositionScanResponse], error) {
-	return nil, connect_go.NewError(connect_go.CodeUnimplemented, errors.New("threedoclusion.v1.ScanService.SendPositionScan is not implemented"))
-}
-
-func (UnimplementedScanServiceHandler) GetPositionScan(context.Context, *connect_go.Request[v1.GetPositionScanRequest]) (*connect_go.Response[v1.GetPositionScanResponse], error) {
-	return nil, connect_go.NewError(connect_go.CodeUnimplemented, errors.New("threedoclusion.v1.ScanService.GetPositionScan is not implemented"))
 }
 
 func (UnimplementedScanServiceHandler) AddPatient(context.Context, *connect_go.Request[v1.AddPatientRequest]) (*connect_go.Response[v1.AddPatientResponse], error) {

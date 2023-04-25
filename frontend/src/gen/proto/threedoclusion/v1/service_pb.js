@@ -310,46 +310,6 @@ export const SendVRRequest = proto3.makeMessageType(
 );
 
 /**
- * @generated from message threedoclusion.v1.SendPositionScanRequest
- */
-export const SendPositionScanRequest = proto3.makeMessageType(
-  "threedoclusion.v1.SendPositionScanRequest",
-  () => [
-    { no: 1, name: "scan", kind: "message", T: ScanSave },
-  ],
-);
-
-/**
- * @generated from message threedoclusion.v1.SendPositionScanResponse
- */
-export const SendPositionScanResponse = proto3.makeMessageType(
-  "threedoclusion.v1.SendPositionScanResponse",
-  () => [
-    { no: 1, name: "saved", kind: "scalar", T: 8 /* ScalarType.BOOL */ },
-  ],
-);
-
-/**
- * @generated from message threedoclusion.v1.GetPositionScanRequest
- */
-export const GetPositionScanRequest = proto3.makeMessageType(
-  "threedoclusion.v1.GetPositionScanRequest",
-  () => [
-    { no: 1, name: "scan_id", kind: "scalar", T: 5 /* ScalarType.INT32 */ },
-  ],
-);
-
-/**
- * @generated from message threedoclusion.v1.GetPositionScanResponse
- */
-export const GetPositionScanResponse = proto3.makeMessageType(
-  "threedoclusion.v1.GetPositionScanResponse",
-  () => [
-    { no: 1, name: "scan", kind: "message", T: ScanSave },
-  ],
-);
-
-/**
  * @generated from message threedoclusion.v1.SendVRResponse
  */
 export const SendVRResponse = proto3.makeMessageType(
