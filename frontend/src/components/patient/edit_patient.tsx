@@ -4,8 +4,6 @@ import { Formik, Field, Form, ErrorMessage, useFormik } from 'formik';
 
 import { useState } from 'react';
 
-/* still needs to be implemented, just a dummy button */
-
 interface patientValues {
   patientFirstName: string;
   patientLastName: string;
