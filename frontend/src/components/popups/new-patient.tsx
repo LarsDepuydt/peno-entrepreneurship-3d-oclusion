@@ -23,6 +23,9 @@ export default function ModalForm() {
   const [modal, setModal] = useState(false);
   // modal is not toggled at first
 
+  const [submitOK, setSubmitOK] = useState(false);
+  const [sendOK, setSendOK] = useState(false);
+
   const [patientinfo, setData] = useState({
     patientFirstName: '',
     patientLastName: '',
@@ -33,7 +36,10 @@ export default function ModalForm() {
     doctorID: parseInt(DentistID),
   });
 
-  const { data } = useQuery(addPatient.useQuery(patientinfo));
+  //const { data } = useQuery(addPatient.useQuery(patientinfo));
+
+  const query = addPatient.useQuery(patientinfo);
+  const { data, refetch } = useQuery(query.queryKey, query.queryFn, { enabled: false });
 
   const toggleModal = () => {
     setModal(!modal); // change state f -> t and t -> f
@@ -46,25 +52,38 @@ export default function ModalForm() {
       pinned: values.pinned,
       notes: values.notes,
 
-      // doctorID: parseInt(DentistID),
-      doctorID: 64,
+      doctorID: parseInt(DentistID),
     };
   };
 
   const submitFunction = (values: patientValues) => {
-    console.log(values);
-    //console.log(ReworkValues(values));
+    console.log(ReworkValues(values));
     setData(ReworkValues(values));
-    //setData(values);
-
-    // fout zit bij pinned : true / false
     console.log(data);
-    setModal(!modal);
+    setSubmitOK(true);
+    //setModal(!modal);
+  };
+
+  const handleRedirect = () => {
+    if (submitOK) {
+      setSendOK(true);
+    }
   };
 
   //data?.message && patientinfo.patientFirstName &&
 
-  useEffect(() => console.log(data), [data]);
+  useEffect(() => {
+    if (submitOK) {
+      refetch();
+      console.log('in use effect function');
+      console.log(data);
+      setSendOK(false);
+      console.log('line 82');
+      if (data != undefined) {
+        setModal(!modal);
+      }
+    }
+  }, [data, modal, sendOK]);
 
   //, patientinfo
 
@@ -139,7 +158,7 @@ export default function ModalForm() {
                       </div>
 
                       <div className={styles.spacingbtn}>
-                        <button type="submit" className={styleB.relu_btn}>
+                        <button type="submit" className={styleB.relu_btn} onClick={handleRedirect}>
                           Save patient
                         </button>
                         <button type="button" className={styleB.relu_btn} onClick={toggleModal}>
