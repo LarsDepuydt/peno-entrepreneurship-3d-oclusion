@@ -1,4 +1,7 @@
 {
+  "functions": {
+    "source": "functions"
+  },
   "hosting": {
     "public": "out",
     "ignore": [
@@ -29,6 +32,10 @@
       {
         "source": "/:path*",
         "destination": "/index.html"
+      },
+      {
+        "source": "**",
+        "function": "nextApp"
       }
     ]
   }
