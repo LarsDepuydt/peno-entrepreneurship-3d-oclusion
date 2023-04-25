@@ -457,7 +457,9 @@ export const UpdatePatientByIdResponse = proto3.makeMessageType(
  */
 export const GetAllPinnedPatientsRequest = proto3.makeMessageType(
   "threedoclusion.v1.GetAllPinnedPatientsRequest",
-  [],
+  () => [
+    { no: 1, name: "pinned", kind: "scalar", T: 8 /* ScalarType.BOOL */ },
+  ],
 );
 
 /**

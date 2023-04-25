@@ -1222,6 +1222,11 @@ export declare class UpdatePatientByIdResponse extends Message<UpdatePatientById
  * @generated from message threedoclusion.v1.GetAllPinnedPatientsRequest
  */
 export declare class GetAllPinnedPatientsRequest extends Message<GetAllPinnedPatientsRequest> {
+  /**
+   * @generated from field: bool pinned = 1;
+   */
+  pinned: boolean;
+
   constructor(data?: PartialMessage<GetAllPinnedPatientsRequest>);
 
   static readonly runtime: typeof proto3;
