@@ -19,10 +19,11 @@ function makeStreamOnID(id: number, transport: any){
 async function checkConnected(serverStream: AsyncIterable<SubscribeConnectionResponse>) {
   for await (const res of serverStream){
     if (res.isConnected){
-      console.log("VR has connected")
+      console.log("VR has connected!")
     }
+
     else { 
-      // Close stream... How?
+      // Close stream...
       //serverStream.Close() ?
       //serverStream.cancel()
       // Show some other component
@@ -42,6 +43,7 @@ export default function ClientPage() {
     
     const query = sendVR.useQuery({ clientId, scanId });
     const { data, refetch } = useQuery(query.queryKey, query.queryFn, { enabled: false });
+
     
     if (stream != null){ 
       checkConnected(stream);

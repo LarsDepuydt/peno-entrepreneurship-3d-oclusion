@@ -42,7 +42,7 @@ export default function StartVRPage(){
         checkConnected(stream);
     }
 
-    const onQuit = () => {
+    const onQuit = () => { 
         router.push("/end-vr")
     }
 
@@ -73,11 +73,14 @@ async function checkConnected(serverStream: AsyncIterable<SubscribeConnectionRes
             console.log("No sign of client yet!")
         }
 
-        if (res.isConnected){ // Does not appear?
+        if (res.isConnected){ // Client disconnected
+            // Close stream... How?
+            //serverStream.Close() ?
+            // Show some other component
+            // Redirect?
             console.log("Client has connected!")
         }
-
-        else { // TO FIX: Slight issue if just using /start-vr without /client, sends "Client has disconnected to himself" on Quit menu option
+        else {
             console.log("Client has disconnected!")
         }
     }

@@ -17,7 +17,7 @@ async function sendMenuOption(optionNumber: number, clnt: any, oData: any){
   return res;
 }
 
-function Menu({isOpen, setIsOpen, current_scan, stream, client, onLoadItemClicked, onQuit }: {isOpen: boolean, setIsOpen: any, current_scan: Scan, stream: any, client: any, onLoadItemClicked: (inputData: Scan) => void, onQuit: () => void}){ // Add props with positions, client...
+function Menu({isOpen, setIsOpen, current_scan, stream, client, onLoadItemClicked, onQuit}: {isOpen: boolean, setIsOpen: any, current_scan: Scan, stream: any, client: any, onLoadItemClicked: (inputData: Scan) => void, onQuit: () => void}){ // Add props with positions, client...
   //const [isOpen, setIsOpen] = useState(true);
   const [showListView, setShowListView] = useState(false);
   const [listData, setListData] = useState<string[]>([]);
@@ -76,25 +76,23 @@ function Menu({isOpen, setIsOpen, current_scan, stream, client, onLoadItemClicke
   const quit = async () => {
     console.log("I quit!")
     const optionData = {case: "scanId", value: 111,} 
-    sendMenuOption(3, client, optionData).then((res) => {
-      if (res) {
+    sendMenuOption(3, client, optionData)
+      .then((res) => {
         console.log(res);
-        onQuit()
-      }
-    })
-    .catch((error) => {
-      console.error("Error fetching data:", error);
-    });
+        onQuit();
+      })
+      .catch((error) => {
+        console.error("Error fetching data:", error);
+      });
   };
 
   // onItemClicked move another level up so you can edit position in VR
   return (
+    isOpen ? (
     <Canvas>
-      <Plane>
         <Html>
-          {isOpen ? (
           <div className="menu-container">
-            <div className={`menu-button \${isOpen ? "open" : ""}`} onClick={toggleMenu}>
+            <div className={`menu-button ${isOpen ? "open" : ""}`} onClick={toggleMenu}>
               <div className="menu-button-bar" />
               <div className="menu-button-bar" />
               <div className="menu-button-bar" />
@@ -116,10 +114,7 @@ function Menu({isOpen, setIsOpen, current_scan, stream, client, onLoadItemClicke
               </div>
             ):(
               <div className="list-view-container">
-                <span className="back-arrow" onClick={handleBackClick}>
-                  <span className="arrow-left"></span>
-                </span>
-                <ListView data={listData} dictData={listDictData}  itemsPerPage={4} onItemClicked={handleLoadItemClicked}/>
+                <ListView data={listData} dictData={listDictData}  itemsPerPage={4} onItemClicked={handleLoadItemClicked} onBackClicked={handleBackClick}/>
               </div>
             )}
           <style jsx>{`
@@ -127,53 +122,36 @@ function Menu({isOpen, setIsOpen, current_scan, stream, client, onLoadItemClicke
                 position: relative;
                 top: 0;
                 left: 0;
-                right: 0;
-                bottom: 0;
                 z-index: 999;
                 display: flex;
                 justify-content: center;
                 align-items: center;
-              }
-              .back-arrow {
-                position: absolute;
-                top: 10px;
-                left: 10px;
-                width: 24px;
-                height: 24px;
-                cursor: pointer;
-                z-index: 999;
-                display: flex;
-                justify-content: center;
-                align-items: center;
-              }
-              .arrow-left {
-                width: 0;
-                height: 0;
-                border-top: 6px solid transparent;
-                border-bottom: 6px solid transparent;
-                border-right: 12px solid #fff;
+                width: 100%;
+                height: 100%;
+                background-color: #333;
               }
               .menu-container {
-                position: fixed;
+                position: relative;
                 border: 1px solid #000; // Add border around the menu
-                top: 0;
-                left: 0;
-                right: 0;
-                bottom: 0;
+                margin: auto;
+                left: -50%;
                 z-index: 999;
                 display: flex;
                 justify-content: center;
                 align-items: center;
                 background-color: rgba(0, 0, 0, 0.8);
+                width: 300px;
+                height: 350px;
               }
               .menu-content {
+                z-index: 999;
                 position: relative;
                 display: flex;
                 flex-direction: column;
                 align-items: center;
                 justify-content: center;
-                width: 300px;
-                height: 300px;
+                width: 100%;
+                height: 100%;
                 background-color: #333;
                 border-radius: 10px;
                 color: #fff;
@@ -212,10 +190,9 @@ function Menu({isOpen, setIsOpen, current_scan, stream, client, onLoadItemClicke
               }
             `}</style>
           </div>
-          ) : null}
         </Html>
-      </Plane>
     </Canvas>
+    ) : null
   );
   
 };

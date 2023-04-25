@@ -667,9 +667,9 @@ export declare class AddPatientRequest extends Message<AddPatientRequest> {
   lastName: string;
 
   /**
-   * @generated from field: int32 pinned = 3;
+   * @generated from field: bool pinned = 3;
    */
-  pinned: number;
+  pinned: boolean;
 
   /**
    * @generated from field: string notes = 4;
@@ -720,9 +720,9 @@ export declare class AddPatientResponse extends Message<AddPatientResponse> {
  */
 export declare class TagResponse extends Message<TagResponse> {
   /**
-   * @generated from field: string id = 1;
+   * @generated from field: int32 id = 1;
    */
-  id: string;
+  id: number;
 
   /**
    * @generated from field: string color = 2;
@@ -1411,9 +1411,9 @@ export declare class GetPatientByNameResponse extends Message<GetPatientByNameRe
  */
 export declare class Dentist extends Message<Dentist> {
   /**
-   * @generated from field: int64 id = 1;
+   * @generated from field: int32 id = 1;
    */
-  id: bigint;
+  id: number;
 
   /**
    * @generated from field: string email = 2;
@@ -1493,6 +1493,11 @@ export declare class AddDentistResponse extends Message<AddDentistResponse> {
    */
   message: string;
 
+  /**
+   * @generated from field: int32 id = 2;
+   */
+  id: number;
+
   constructor(data?: PartialMessage<AddDentistResponse>);
 
   static readonly runtime: typeof proto3;
@@ -1513,9 +1518,9 @@ export declare class AddDentistResponse extends Message<AddDentistResponse> {
  */
 export declare class GetDentistByIdRequest extends Message<GetDentistByIdRequest> {
   /**
-   * @generated from field: string id = 1;
+   * @generated from field: int32 id = 1;
    */
-  id: string;
+  id: number;
 
   constructor(data?: PartialMessage<GetDentistByIdRequest>);
 
@@ -1537,9 +1542,9 @@ export declare class GetDentistByIdRequest extends Message<GetDentistByIdRequest
  */
 export declare class GetDentistByIdResponse extends Message<GetDentistByIdResponse> {
   /**
-   * @generated from field: int64 id = 1;
+   * @generated from field: int32 id = 1;
    */
-  id: bigint;
+  id: number;
 
   /**
    * @generated from field: string email = 2;
@@ -1619,9 +1624,9 @@ export declare class GetAllDentistsResponse extends Message<GetAllDentistsRespon
  */
 export declare class UpdateDentistByIdRequest extends Message<UpdateDentistByIdRequest> {
   /**
-   * @generated from field: int64 id = 1;
+   * @generated from field: int32 id = 1;
    */
-  id: bigint;
+  id: number;
 
   /**
    * @generated from field: optional string email = 2;
@@ -1687,9 +1692,9 @@ export declare class UpdateDentistByIdResponse extends Message<UpdateDentistById
  */
 export declare class DeleteDentistByIdRequest extends Message<DeleteDentistByIdRequest> {
   /**
-   * @generated from field: string id = 1;
+   * @generated from field: int32 id = 1;
    */
-  id: string;
+  id: number;
 
   constructor(data?: PartialMessage<DeleteDentistByIdRequest>);
 
@@ -1714,6 +1719,16 @@ export declare class DeleteDentistByIdResponse extends Message<DeleteDentistById
    * @generated from field: string message = 1;
    */
   message: string;
+
+  /**
+   * @generated from field: int32 id = 2;
+   */
+  id: number;
+
+  /**
+   * @generated from field: string email = 3;
+   */
+  email: string;
 
   constructor(data?: PartialMessage<DeleteDentistByIdResponse>);
 
@@ -1772,6 +1787,26 @@ export declare class LoginResponse extends Message<LoginResponse> {
    * @generated from field: string token = 2;
    */
   token: string;
+
+  /**
+   * @generated from field: int32 id = 3;
+   */
+  id: number;
+
+  /**
+   * @generated from field: string email = 4;
+   */
+  email: string;
+
+  /**
+   * @generated from field: string first_name = 5;
+   */
+  firstName: string;
+
+  /**
+   * @generated from field: string last_name = 6;
+   */
+  lastName: string;
 
   constructor(data?: PartialMessage<LoginResponse>);
 
@@ -1840,6 +1875,11 @@ export declare class RegisterResponse extends Message<RegisterResponse> {
    * @generated from field: string token = 2;
    */
   token: string;
+
+  /**
+   * @generated from field: int32 id = 3;
+   */
+  id: number;
 
   constructor(data?: PartialMessage<RegisterResponse>);
 

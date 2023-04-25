@@ -19,8 +19,7 @@ export function InspectScans({ patientID }: InspectScansProps) {
 
   return (
     <div>
-      <button type="button" className={styleB.relu_btn} onClick={clickPatient}>
-        Inspect Scans
+      <button type="button" className={styleB.relu_btn} id={styleB.InspectScansIcon} onClick={clickPatient}>
       </button>
     </div>
   );

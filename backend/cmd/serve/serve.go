@@ -3,7 +3,9 @@ package serve
 import (
 	"context"
 	"database/sql"
+	"fmt"
 	"net/http"
+	"os"
 
 	"github.com/LarsDepuydt/peno-entrepreneurship-3d-oclusion/cmd/dentists"
 	"github.com/LarsDepuydt/peno-entrepreneurship-3d-oclusion/cmd/help_datastructures"
@@ -52,11 +54,17 @@ func Server(database *sql.DB) {
 
 	muxHandler := setCors(mux)
 
+	port := os.Getenv("PORT")
+	if port == "" {
+		port = "8080"
+	}
+	address := fmt.Sprintf("0.0.0.0:%s", port)
+
 	http.ListenAndServe(
-		"0.0.0.0:8080",
-		// Use h2c so we can serve HTTP/2 without TLS.
+		address,
 		h2c.NewHandler(muxHandler, &http2.Server{}),
 	)
+
 }
 
 // PUSH

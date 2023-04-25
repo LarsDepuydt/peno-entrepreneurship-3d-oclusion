@@ -263,7 +263,7 @@ export const AddPatientRequest = proto3.makeMessageType(
   () => [
     { no: 1, name: "first_name", kind: "scalar", T: 9 /* ScalarType.STRING */ },
     { no: 2, name: "last_name", kind: "scalar", T: 9 /* ScalarType.STRING */ },
-    { no: 3, name: "pinned", kind: "scalar", T: 5 /* ScalarType.INT32 */ },
+    { no: 3, name: "pinned", kind: "scalar", T: 8 /* ScalarType.BOOL */ },
     { no: 4, name: "notes", kind: "scalar", T: 9 /* ScalarType.STRING */ },
   ],
 );
@@ -284,7 +284,7 @@ export const AddPatientResponse = proto3.makeMessageType(
 export const TagResponse = proto3.makeMessageType(
   "threedoclusion.v1.TagResponse",
   () => [
-    { no: 1, name: "id", kind: "scalar", T: 9 /* ScalarType.STRING */ },
+    { no: 1, name: "id", kind: "scalar", T: 5 /* ScalarType.INT32 */ },
     { no: 2, name: "color", kind: "scalar", T: 9 /* ScalarType.STRING */ },
     { no: 3, name: "text", kind: "scalar", T: 9 /* ScalarType.STRING */ },
   ],
@@ -557,7 +557,7 @@ export const GetPatientByNameResponse = proto3.makeMessageType(
 export const Dentist = proto3.makeMessageType(
   "threedoclusion.v1.Dentist",
   () => [
-    { no: 1, name: "id", kind: "scalar", T: 3 /* ScalarType.INT64 */ },
+    { no: 1, name: "id", kind: "scalar", T: 5 /* ScalarType.INT32 */ },
     { no: 2, name: "email", kind: "scalar", T: 9 /* ScalarType.STRING */ },
     { no: 3, name: "first_name", kind: "scalar", T: 9 /* ScalarType.STRING */ },
     { no: 4, name: "last_name", kind: "scalar", T: 9 /* ScalarType.STRING */ },
@@ -584,6 +584,7 @@ export const AddDentistResponse = proto3.makeMessageType(
   "threedoclusion.v1.AddDentistResponse",
   () => [
     { no: 1, name: "message", kind: "scalar", T: 9 /* ScalarType.STRING */ },
+    { no: 2, name: "id", kind: "scalar", T: 5 /* ScalarType.INT32 */ },
   ],
 );
 
@@ -593,7 +594,7 @@ export const AddDentistResponse = proto3.makeMessageType(
 export const GetDentistByIdRequest = proto3.makeMessageType(
   "threedoclusion.v1.GetDentistByIdRequest",
   () => [
-    { no: 1, name: "id", kind: "scalar", T: 9 /* ScalarType.STRING */ },
+    { no: 1, name: "id", kind: "scalar", T: 5 /* ScalarType.INT32 */ },
   ],
 );
 
@@ -603,7 +604,7 @@ export const GetDentistByIdRequest = proto3.makeMessageType(
 export const GetDentistByIdResponse = proto3.makeMessageType(
   "threedoclusion.v1.GetDentistByIdResponse",
   () => [
-    { no: 1, name: "id", kind: "scalar", T: 3 /* ScalarType.INT64 */ },
+    { no: 1, name: "id", kind: "scalar", T: 5 /* ScalarType.INT32 */ },
     { no: 2, name: "email", kind: "scalar", T: 9 /* ScalarType.STRING */ },
     { no: 3, name: "first_name", kind: "scalar", T: 9 /* ScalarType.STRING */ },
     { no: 4, name: "last_name", kind: "scalar", T: 9 /* ScalarType.STRING */ },
@@ -634,7 +635,7 @@ export const GetAllDentistsResponse = proto3.makeMessageType(
 export const UpdateDentistByIdRequest = proto3.makeMessageType(
   "threedoclusion.v1.UpdateDentistByIdRequest",
   () => [
-    { no: 1, name: "id", kind: "scalar", T: 3 /* ScalarType.INT64 */ },
+    { no: 1, name: "id", kind: "scalar", T: 5 /* ScalarType.INT32 */ },
     { no: 2, name: "email", kind: "scalar", T: 9 /* ScalarType.STRING */, opt: true },
     { no: 3, name: "first_name", kind: "scalar", T: 9 /* ScalarType.STRING */, opt: true },
     { no: 4, name: "last_name", kind: "scalar", T: 9 /* ScalarType.STRING */, opt: true },
@@ -658,7 +659,7 @@ export const UpdateDentistByIdResponse = proto3.makeMessageType(
 export const DeleteDentistByIdRequest = proto3.makeMessageType(
   "threedoclusion.v1.DeleteDentistByIdRequest",
   () => [
-    { no: 1, name: "id", kind: "scalar", T: 9 /* ScalarType.STRING */ },
+    { no: 1, name: "id", kind: "scalar", T: 5 /* ScalarType.INT32 */ },
   ],
 );
 
@@ -669,6 +670,8 @@ export const DeleteDentistByIdResponse = proto3.makeMessageType(
   "threedoclusion.v1.DeleteDentistByIdResponse",
   () => [
     { no: 1, name: "message", kind: "scalar", T: 9 /* ScalarType.STRING */ },
+    { no: 2, name: "id", kind: "scalar", T: 5 /* ScalarType.INT32 */ },
+    { no: 3, name: "email", kind: "scalar", T: 9 /* ScalarType.STRING */ },
   ],
 );
 
@@ -691,6 +694,10 @@ export const LoginResponse = proto3.makeMessageType(
   () => [
     { no: 1, name: "message", kind: "scalar", T: 9 /* ScalarType.STRING */ },
     { no: 2, name: "token", kind: "scalar", T: 9 /* ScalarType.STRING */ },
+    { no: 3, name: "id", kind: "scalar", T: 5 /* ScalarType.INT32 */ },
+    { no: 4, name: "email", kind: "scalar", T: 9 /* ScalarType.STRING */ },
+    { no: 5, name: "first_name", kind: "scalar", T: 9 /* ScalarType.STRING */ },
+    { no: 6, name: "last_name", kind: "scalar", T: 9 /* ScalarType.STRING */ },
   ],
 );
 
@@ -715,6 +722,7 @@ export const RegisterResponse = proto3.makeMessageType(
   () => [
     { no: 1, name: "message", kind: "scalar", T: 9 /* ScalarType.STRING */ },
     { no: 2, name: "token", kind: "scalar", T: 9 /* ScalarType.STRING */ },
+    { no: 3, name: "id", kind: "scalar", T: 5 /* ScalarType.INT32 */ },
   ],
 );
 
