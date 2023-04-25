@@ -5,29 +5,30 @@ package threedoclusion.v1;
 option go_package = "github.com/LarsDepuydt/peno-entrepreneurship-3d-oclusion";
 
 
+
 service ScanService {
   rpc SendVR(SendVRRequest) returns (SendVRResponse) {}
   rpc Waiting(WaitingRequest) returns (stream WaitingResponse) {}
 
   rpc AddScan(AddScanRequest) returns (AddScanResponse) {}
-  rpc DeleteScan(DeleteScanRequest) returns (DeleteScanResponse) {}
+  rpc DeleteScanById(DeleteScanByIdRequest) returns (DeleteScanByIdResponse) {}
   rpc GetAllScans(GetAllScansRequest) returns (GetAllScansResponse) {}
-  rpc GetScanByID(GetScanByIDRequest) returns (GetScanByIDResponse) {}
-  rpc GetScanByDate(GetScanByDateRequest) returns (GetScanByDateResponse) {}
+  rpc GetScanById(GetScanByIdRequest) returns (GetScanByIdResponse) {}
 
   rpc AddTag(AddTagRequest) returns (AddTagResponse) {}
-  rpc DeleteTag(DeleteTagRequest) returns (DeleteTagResponse) {}
+  rpc DeleteTagById(DeleteTagByIdRequest) returns (DeleteTagByIdResponse) {}
   rpc GetAllTags(GetAllTagsRequest) returns (GetAllTagsResponse) {}
-  rpc GetTagByID(GetTagByIDRequest) returns (GetTagByIDResponse) {}
-  rpc GetAllTagsByType(GetAllTagsByTypeRequest) returns (GetAllTagsByTypeResponse) {}
+  rpc GetTagById(GetTagByIdRequest) returns (GetTagByIdResponse) {}
 
   rpc SendPositionScan (SendPositionScanRequest) returns (SendPositionScanResponse) {}
   rpc GetPositionScan (GetPositionScanRequest) returns (GetPositionScanResponse) {}
+
   rpc AddPatient(AddPatientRequest) returns (AddPatientResponse) {}
-  rpc DeletePatient(DeletePatientRequest) returns (DeletePatientResponse) {}
+  rpc DeletePatientById(DeletePatientByIdRequest) returns (DeletePatientByIdResponse) {}
   rpc GetAllPatients(GetAllPatientsRequest) returns (GetAllPatientsResponse) {}
-  rpc GetPatientByID(GetPatientByIDRequest) returns (GetPatientByIDResponse) {}
+  rpc GetPatientById(GetPatientByIdRequest) returns (GetPatientByIdResponse) {}
   rpc GetPatientByName(GetPatientByNameRequest) returns (GetPatientByNameResponse) {}
+  rpc UpdatePatientById(UpdatePatientByIdRequest) returns (UpdatePatientByIdResponse) {}
 
   rpc AddDentist(AddDentistRequest) returns (AddDentistResponse) {}
   rpc DeleteDentistById(DeleteDentistByIdRequest) returns (DeleteDentistByIdResponse) {}
@@ -39,65 +40,42 @@ service ScanService {
 }
 
 
-message RowDataTag {
+
+// TAGS
+message Tag {
   int32 id = 1;
   string bite = 2;
 }
 
-message Scan {
-  float lower_x = 1;
-  float lower_y = 2;
-  float lower_z = 3;
-  float lower_r_x = 4;
-  float lower_r_y = 5;
-  float lower_r_z = 6;
-  float upper_x = 7;
-  float upper_y = 8;
-  float upper_z = 9;
-  float upper_r_x = 10;
-  float upper_r_y = 11;
-  float upper_r_z = 12;
-  int32 id = 13;
-  string date = 14;
-}
-
-message Patient{
-  int32 id = 1;
-  string first_name = 2;
-  string last_name = 3;
-  int32 pinned = 4;
-  string notes = 5;
-  
-}
-
-// TAGS
 message AddTagRequest {
   string bite = 1;
 }
 
 message AddTagResponse {
   string message = 1;
+  int32 id = 2;
 }
 
-message DeleteTagRequest {
+message DeleteTagByIdRequest {
   int32 id = 1;
 }
 
-message DeleteTagResponse {
+message DeleteTagByIdResponse {
   string message = 1;
+  string bite = 2;
 }
 
 message GetAllTagsRequest {}
 
 message GetAllTagsResponse {
-  repeated RowDataTag tags = 1;
+  repeated Tag tags = 1;
 }
 
-message GetTagByIDRequest {
+message GetTagByIdRequest {
   int32 id = 1;
 }
 
-message GetTagByIDResponse {
+message GetTagByIdResponse {
   int32 id = 1;
   string bite = 2;
 }
@@ -107,26 +85,36 @@ message GetAllTagsByTypeRequest {
 }
 
 message GetAllTagsByTypeResponse {
-  repeated RowDataTag tags = 1;
+  repeated Tag tags = 1;
 }
 
-
 // SCANS
+message Scan {
+  int32 id = 1;
+  string scan = 2;
+  string created_at = 3;
+  string notes = 4;
+  int32 patient_id = 5;
+}
+
 message AddScanRequest {
   string scan_file = 1;
-  string scan_date = 2;
+  string notes = 2;
+  int32 patient_id = 3;
 }
 
 message AddScanResponse {
   string message = 1;
+  int32 id = 2;
 }
 
-message DeleteScanRequest{
+message DeleteScanByIdRequest{
   int32 id = 1;
 }
 
-message DeleteScanResponse {
+message DeleteScanByIdResponse {
   string message = 1;
+  int32 id = 2;
 }
 
 message GetAllScansRequest {}
@@ -135,33 +123,39 @@ message GetAllScansResponse {
   repeated Scan scans = 1;
 }
 
-message GetScanByIDRequest {
+message GetScanByIdRequest {
   int32 id = 1;
 }
 
-message GetScanByIDResponse {
-  Scan scan = 1;
-}
-
-message GetScanByDateRequest {
-  string date = 1 ;
-}
-
-message GetScanByDateResponse {
-  repeated Scan scans = 1;
+message GetScanByIdResponse {
+  int32 id = 1;
+  string scan = 2;
+  string created_at = 3;
+  string notes = 4;
+  int32 patient_id = 5;
 }
 
 //PATIENT
+message Patient{
+  int32 id = 1;
+  string first_name = 2;
+  string last_name = 3;
+  bool pinned = 4;
+  string notes = 5;
+  int32 dentist_id =6;
+}
 
 message AddPatientRequest{
   string first_name = 1;
   string last_name = 2;
   bool pinned = 3;
   string notes = 4;
+  int32 dentist_id = 5;
 }
 
 message AddPatientResponse{
   string message = 1;
+  int32 id = 2;
 }
 
 message TagResponse {
@@ -204,40 +198,57 @@ message WaitingResponse {
   string url = 2;
 }
 
-message DeletePatientRequest{
+message DeletePatientByIdRequest{
   int32 id = 1;
 }
 
-message DeletePatientResponse{
+message DeletePatientByIdResponse{
   string message = 1;
+  int32 id = 2;
+  string first_name = 3;
+  string last_name = 4;
 }
 
-message GetAllPatientsRequest{}
+message GetAllPatientsRequest {}
 
-message GetAllPatientsResponse{
+message GetAllPatientsResponse {
   repeated Patient patients = 1;
 }
 
-message GetPatientByIDRequest{
+message GetPatientByIdRequest {
   int32 id = 1;
 }
 
-message GetPatientByIDResponse{
+message GetPatientByIdResponse {
   int32 id = 1;
   string first_name = 2;
   string last_name = 3;
-  int32 pinned = 4;
+  bool pinned = 4;
   string notes = 5;
+  int32 dentist_id = 6;
 }
 
-message GetPatientByNameRequest{
+message GetPatientByNameRequest {
   optional string first_name = 1;
   optional string last_name = 2;
 
 }
 
-message GetPatientByNameResponse{
+message GetPatientByNameResponse {
   repeated Patient patients = 1;
+}
+
+message UpdatePatientByIdRequest {
+  int32 id = 1;
+  string first_name = 2;
+  string last_name = 3;
+  bool pinned = 4;
+  string notes = 5;
+  int32 dentist_id = 6;
+}
+
+message UpdatePatientByIdResponse {
+  string message = 1;
 }
 
 // DENTIST
@@ -279,10 +290,9 @@ message GetAllDentistsResponse {
 
 message UpdateDentistByIdRequest {
   int32 id = 1;
-  optional string email = 2;
-  optional string first_name = 3;
-  optional string last_name = 4;
-  optional string password = 5;
+  string email = 2;
+  string first_name = 3;
+  string last_name = 4;
 }
 
 message UpdateDentistByIdResponse {
