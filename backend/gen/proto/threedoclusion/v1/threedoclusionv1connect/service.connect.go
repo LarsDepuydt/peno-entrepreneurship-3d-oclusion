@@ -25,79 +25,6 @@ const (
 	ScanServiceName = "threedoclusion.v1.ScanService"
 )
 
-// These constants are the fully-qualified names of the RPCs defined in this package. They're
-// exposed at runtime as Spec.Procedure and as the final two segments of the HTTP route.
-//
-// Note that these are different from the fully-qualified method names used by
-// google.golang.org/protobuf/reflect/protoreflect. To convert from these constants to
-// reflection-formatted method names, remove the leading slash and convert the remaining slash to a
-// period.
-const (
-	// ScanServiceSendVRProcedure is the fully-qualified name of the ScanService's SendVR RPC.
-	ScanServiceSendVRProcedure = "/threedoclusion.v1.ScanService/SendVR"
-	// ScanServiceWaitingProcedure is the fully-qualified name of the ScanService's Waiting RPC.
-	ScanServiceWaitingProcedure = "/threedoclusion.v1.ScanService/Waiting"
-	// ScanServiceAddScanProcedure is the fully-qualified name of the ScanService's AddScan RPC.
-	ScanServiceAddScanProcedure = "/threedoclusion.v1.ScanService/AddScan"
-	// ScanServiceDeleteScanByIdProcedure is the fully-qualified name of the ScanService's
-	// DeleteScanById RPC.
-	ScanServiceDeleteScanByIdProcedure = "/threedoclusion.v1.ScanService/DeleteScanById"
-	// ScanServiceGetAllScansProcedure is the fully-qualified name of the ScanService's GetAllScans RPC.
-	ScanServiceGetAllScansProcedure = "/threedoclusion.v1.ScanService/GetAllScans"
-	// ScanServiceGetScanByIdProcedure is the fully-qualified name of the ScanService's GetScanById RPC.
-	ScanServiceGetScanByIdProcedure = "/threedoclusion.v1.ScanService/GetScanById"
-	// ScanServiceAddTagProcedure is the fully-qualified name of the ScanService's AddTag RPC.
-	ScanServiceAddTagProcedure = "/threedoclusion.v1.ScanService/AddTag"
-	// ScanServiceDeleteTagByIdProcedure is the fully-qualified name of the ScanService's DeleteTagById
-	// RPC.
-	ScanServiceDeleteTagByIdProcedure = "/threedoclusion.v1.ScanService/DeleteTagById"
-	// ScanServiceGetAllTagsProcedure is the fully-qualified name of the ScanService's GetAllTags RPC.
-	ScanServiceGetAllTagsProcedure = "/threedoclusion.v1.ScanService/GetAllTags"
-	// ScanServiceGetTagByIdProcedure is the fully-qualified name of the ScanService's GetTagById RPC.
-	ScanServiceGetTagByIdProcedure = "/threedoclusion.v1.ScanService/GetTagById"
-	// ScanServiceSendPositionScanProcedure is the fully-qualified name of the ScanService's
-	// SendPositionScan RPC.
-	ScanServiceSendPositionScanProcedure = "/threedoclusion.v1.ScanService/SendPositionScan"
-	// ScanServiceGetPositionScanProcedure is the fully-qualified name of the ScanService's
-	// GetPositionScan RPC.
-	ScanServiceGetPositionScanProcedure = "/threedoclusion.v1.ScanService/GetPositionScan"
-	// ScanServiceAddPatientProcedure is the fully-qualified name of the ScanService's AddPatient RPC.
-	ScanServiceAddPatientProcedure = "/threedoclusion.v1.ScanService/AddPatient"
-	// ScanServiceDeletePatientByIdProcedure is the fully-qualified name of the ScanService's
-	// DeletePatientById RPC.
-	ScanServiceDeletePatientByIdProcedure = "/threedoclusion.v1.ScanService/DeletePatientById"
-	// ScanServiceGetAllPatientsProcedure is the fully-qualified name of the ScanService's
-	// GetAllPatients RPC.
-	ScanServiceGetAllPatientsProcedure = "/threedoclusion.v1.ScanService/GetAllPatients"
-	// ScanServiceGetPatientByIdProcedure is the fully-qualified name of the ScanService's
-	// GetPatientById RPC.
-	ScanServiceGetPatientByIdProcedure = "/threedoclusion.v1.ScanService/GetPatientById"
-	// ScanServiceGetPatientByNameProcedure is the fully-qualified name of the ScanService's
-	// GetPatientByName RPC.
-	ScanServiceGetPatientByNameProcedure = "/threedoclusion.v1.ScanService/GetPatientByName"
-	// ScanServiceUpdatePatientByIdProcedure is the fully-qualified name of the ScanService's
-	// UpdatePatientById RPC.
-	ScanServiceUpdatePatientByIdProcedure = "/threedoclusion.v1.ScanService/UpdatePatientById"
-	// ScanServiceAddDentistProcedure is the fully-qualified name of the ScanService's AddDentist RPC.
-	ScanServiceAddDentistProcedure = "/threedoclusion.v1.ScanService/AddDentist"
-	// ScanServiceDeleteDentistByIdProcedure is the fully-qualified name of the ScanService's
-	// DeleteDentistById RPC.
-	ScanServiceDeleteDentistByIdProcedure = "/threedoclusion.v1.ScanService/DeleteDentistById"
-	// ScanServiceGetAllDentistsProcedure is the fully-qualified name of the ScanService's
-	// GetAllDentists RPC.
-	ScanServiceGetAllDentistsProcedure = "/threedoclusion.v1.ScanService/GetAllDentists"
-	// ScanServiceGetDentistByIdProcedure is the fully-qualified name of the ScanService's
-	// GetDentistById RPC.
-	ScanServiceGetDentistByIdProcedure = "/threedoclusion.v1.ScanService/GetDentistById"
-	// ScanServiceUpdateDentistByIdProcedure is the fully-qualified name of the ScanService's
-	// UpdateDentistById RPC.
-	ScanServiceUpdateDentistByIdProcedure = "/threedoclusion.v1.ScanService/UpdateDentistById"
-	// ScanServiceLoginProcedure is the fully-qualified name of the ScanService's Login RPC.
-	ScanServiceLoginProcedure = "/threedoclusion.v1.ScanService/Login"
-	// ScanServiceRegisterProcedure is the fully-qualified name of the ScanService's Register RPC.
-	ScanServiceRegisterProcedure = "/threedoclusion.v1.ScanService/Register"
-)
-
 // ScanServiceClient is a client for the threedoclusion.v1.ScanService service.
 type ScanServiceClient interface {
 	SendVR(context.Context, *connect_go.Request[v1.SendVRRequest]) (*connect_go.Response[v1.SendVRResponse], error)
@@ -154,7 +81,7 @@ func NewScanServiceClient(httpClient connect_go.HTTPClient, baseURL string, opts
 		),
 		deleteScanById: connect_go.NewClient[v1.DeleteScanByIdRequest, v1.DeleteScanByIdResponse](
 			httpClient,
-			baseURL+ScanServiceDeleteScanByIdProcedure,
+			baseURL+"/threedoclusion.v1.ScanService/DeleteScanById",
 			opts...,
 		),
 		getAllScans: connect_go.NewClient[v1.GetAllScansRequest, v1.GetAllScansResponse](
@@ -164,7 +91,7 @@ func NewScanServiceClient(httpClient connect_go.HTTPClient, baseURL string, opts
 		),
 		getScanById: connect_go.NewClient[v1.GetScanByIdRequest, v1.GetScanByIdResponse](
 			httpClient,
-			baseURL+ScanServiceGetScanByIdProcedure,
+			baseURL+"/threedoclusion.v1.ScanService/GetScanById",
 			opts...,
 		),
 		addTag: connect_go.NewClient[v1.AddTagRequest, v1.AddTagResponse](
@@ -174,7 +101,7 @@ func NewScanServiceClient(httpClient connect_go.HTTPClient, baseURL string, opts
 		),
 		deleteTagById: connect_go.NewClient[v1.DeleteTagByIdRequest, v1.DeleteTagByIdResponse](
 			httpClient,
-			baseURL+ScanServiceDeleteTagByIdProcedure,
+			baseURL+"/threedoclusion.v1.ScanService/DeleteTagById",
 			opts...,
 		),
 		getAllTags: connect_go.NewClient[v1.GetAllTagsRequest, v1.GetAllTagsResponse](
@@ -184,7 +111,7 @@ func NewScanServiceClient(httpClient connect_go.HTTPClient, baseURL string, opts
 		),
 		getTagById: connect_go.NewClient[v1.GetTagByIdRequest, v1.GetTagByIdResponse](
 			httpClient,
-			baseURL+ScanServiceGetTagByIdProcedure,
+			baseURL+"/threedoclusion.v1.ScanService/GetTagById",
 			opts...,
 		),
 		sendPositionScan: connect_go.NewClient[v1.SendPositionScanRequest, v1.SendPositionScanResponse](
@@ -204,7 +131,7 @@ func NewScanServiceClient(httpClient connect_go.HTTPClient, baseURL string, opts
 		),
 		deletePatientById: connect_go.NewClient[v1.DeletePatientByIdRequest, v1.DeletePatientByIdResponse](
 			httpClient,
-			baseURL+ScanServiceDeletePatientByIdProcedure,
+			baseURL+"/threedoclusion.v1.ScanService/DeletePatientById",
 			opts...,
 		),
 		getAllPatients: connect_go.NewClient[v1.GetAllPatientsRequest, v1.GetAllPatientsResponse](
@@ -214,7 +141,7 @@ func NewScanServiceClient(httpClient connect_go.HTTPClient, baseURL string, opts
 		),
 		getPatientById: connect_go.NewClient[v1.GetPatientByIdRequest, v1.GetPatientByIdResponse](
 			httpClient,
-			baseURL+ScanServiceGetPatientByIdProcedure,
+			baseURL+"/threedoclusion.v1.ScanService/GetPatientById",
 			opts...,
 		),
 		getPatientByName: connect_go.NewClient[v1.GetPatientByNameRequest, v1.GetPatientByNameResponse](
@@ -224,7 +151,7 @@ func NewScanServiceClient(httpClient connect_go.HTTPClient, baseURL string, opts
 		),
 		updatePatientById: connect_go.NewClient[v1.UpdatePatientByIdRequest, v1.UpdatePatientByIdResponse](
 			httpClient,
-			baseURL+ScanServiceUpdatePatientByIdProcedure,
+			baseURL+"/threedoclusion.v1.ScanService/UpdatePatientById",
 			opts...,
 		),
 		addDentist: connect_go.NewClient[v1.AddDentistRequest, v1.AddDentistResponse](
@@ -470,8 +397,8 @@ func NewScanServiceHandler(svc ScanServiceHandler, opts ...connect_go.HandlerOpt
 		svc.AddScan,
 		opts...,
 	))
-	mux.Handle(ScanServiceDeleteScanByIdProcedure, connect_go.NewUnaryHandler(
-		ScanServiceDeleteScanByIdProcedure,
+	mux.Handle("/threedoclusion.v1.ScanService/DeleteScanById", connect_go.NewUnaryHandler(
+		"/threedoclusion.v1.ScanService/DeleteScanById",
 		svc.DeleteScanById,
 		opts...,
 	))
@@ -480,18 +407,18 @@ func NewScanServiceHandler(svc ScanServiceHandler, opts ...connect_go.HandlerOpt
 		svc.GetAllScans,
 		opts...,
 	))
-	mux.Handle(ScanServiceGetScanByIdProcedure, connect_go.NewUnaryHandler(
-		ScanServiceGetScanByIdProcedure,
+	mux.Handle("/threedoclusion.v1.ScanService/GetScanById", connect_go.NewUnaryHandler(
+		"/threedoclusion.v1.ScanService/GetScanById",
 		svc.GetScanById,
 		opts...,
 	))
-	mux.Handle(ScanServiceAddTagProcedure, connect_go.NewUnaryHandler(
-		ScanServiceAddTagProcedure,
+	mux.Handle("/threedoclusion.v1.ScanService/AddTag", connect_go.NewUnaryHandler(
+		"/threedoclusion.v1.ScanService/AddTag",
 		svc.AddTag,
 		opts...,
 	))
-	mux.Handle(ScanServiceDeleteTagByIdProcedure, connect_go.NewUnaryHandler(
-		ScanServiceDeleteTagByIdProcedure,
+	mux.Handle("/threedoclusion.v1.ScanService/DeleteTagById", connect_go.NewUnaryHandler(
+		"/threedoclusion.v1.ScanService/DeleteTagById",
 		svc.DeleteTagById,
 		opts...,
 	))
@@ -500,13 +427,13 @@ func NewScanServiceHandler(svc ScanServiceHandler, opts ...connect_go.HandlerOpt
 		svc.GetAllTags,
 		opts...,
 	))
-	mux.Handle(ScanServiceGetTagByIdProcedure, connect_go.NewUnaryHandler(
-		ScanServiceGetTagByIdProcedure,
+	mux.Handle("/threedoclusion.v1.ScanService/GetTagById", connect_go.NewUnaryHandler(
+		"/threedoclusion.v1.ScanService/GetTagById",
 		svc.GetTagById,
 		opts...,
 	))
-	mux.Handle(ScanServiceSendPositionScanProcedure, connect_go.NewUnaryHandler(
-		ScanServiceSendPositionScanProcedure,
+	mux.Handle("/threedoclusion.v1.ScanService/SendPositionScan", connect_go.NewUnaryHandler(
+		"/threedoclusion.v1.ScanService/SendPositionScan",
 		svc.SendPositionScan,
 		opts...,
 	))
@@ -520,8 +447,8 @@ func NewScanServiceHandler(svc ScanServiceHandler, opts ...connect_go.HandlerOpt
 		svc.AddPatient,
 		opts...,
 	))
-	mux.Handle(ScanServiceDeletePatientByIdProcedure, connect_go.NewUnaryHandler(
-		ScanServiceDeletePatientByIdProcedure,
+	mux.Handle("/threedoclusion.v1.ScanService/DeletePatientById", connect_go.NewUnaryHandler(
+		"/threedoclusion.v1.ScanService/DeletePatientById",
 		svc.DeletePatientById,
 		opts...,
 	))
@@ -530,8 +457,8 @@ func NewScanServiceHandler(svc ScanServiceHandler, opts ...connect_go.HandlerOpt
 		svc.GetAllPatients,
 		opts...,
 	))
-	mux.Handle(ScanServiceGetPatientByIdProcedure, connect_go.NewUnaryHandler(
-		ScanServiceGetPatientByIdProcedure,
+	mux.Handle("/threedoclusion.v1.ScanService/GetPatientById", connect_go.NewUnaryHandler(
+		"/threedoclusion.v1.ScanService/GetPatientById",
 		svc.GetPatientById,
 		opts...,
 	))
@@ -540,13 +467,13 @@ func NewScanServiceHandler(svc ScanServiceHandler, opts ...connect_go.HandlerOpt
 		svc.GetPatientByName,
 		opts...,
 	))
-	mux.Handle(ScanServiceUpdatePatientByIdProcedure, connect_go.NewUnaryHandler(
-		ScanServiceUpdatePatientByIdProcedure,
+	mux.Handle("/threedoclusion.v1.ScanService/UpdatePatientById", connect_go.NewUnaryHandler(
+		"/threedoclusion.v1.ScanService/UpdatePatientById",
 		svc.UpdatePatientById,
 		opts...,
 	))
-	mux.Handle(ScanServiceAddDentistProcedure, connect_go.NewUnaryHandler(
-		ScanServiceAddDentistProcedure,
+	mux.Handle("/threedoclusion.v1.ScanService/AddDentist", connect_go.NewUnaryHandler(
+		"/threedoclusion.v1.ScanService/AddDentist",
 		svc.AddDentist,
 		opts...,
 	))

@@ -50,7 +50,7 @@ export function SidebarPatient({ patientfirstname, patientlastname }: HeaderPati
   return (
     <>
       <div className={styleSidebar.sidebar}>
-        <WelcomingPatient patientfirstname={patientfirstname} patientlastname={patientlastname} />
+        <WelcomingPatient />
         <div className={stylesButton.sidebarButton}>
           <New_Scan />
           <Filter_Tags />
