@@ -12,11 +12,15 @@ import ExportButton from '../../components/scan_gallery/export_scan';
 import DropdownButton from '../../components/scan_gallery/scan_dropdown';
 import dropdownPatientButton from '../patient/patient_dropdown';
 
+import { InspectObj } from '../scan_gallery/inspect_OBJ';
+
+
 interface scanProfile {
   scanid: number;
   patientid: number;
   picture: StaticImageData;
-  date: string; //new Date('2023-03-28') OF new Date(2023, 2, 28)
+  date: string;
+
 }
 
 export function SingleScan({ scanid, patientid, picture, date }: scanProfile) {
@@ -36,6 +40,7 @@ export function SingleScan({ scanid, patientid, picture, date }: scanProfile) {
     '23': 'rd',
     '31': 'st',
   };
+  
 
   const formattedDate = parsedDate.toLocaleDateString('en-US', options);
   const dayOfMonth = parsedDate.getDate().toString();
@@ -61,15 +66,23 @@ export function SingleScan({ scanid, patientid, picture, date }: scanProfile) {
     setDropDown(false);
   };
 
+  const goToObjViewer = () => {
+    setDropDown(false);
+  };
+
   return (
     <div className={styles.patientScan_container}>
       {dropDown && (
         <div className={styles.patientScan_dropDown}>
-          <button type="button" className={styleB.relu_btn} id={styleB.exitIcon} onClick={handleDropGone}></button>
+          <button type="button" className={styleB.relu_btn} id={styleB.exitIcon} onClick={() => {
+          handleDropGone();
+          goToObjViewer();
+        }}></button>
           <div className={styles.dropDownButtonWrapper}>
             <button className={styleB.relu_btn} id={styleB.dropDownButton}>
               export scan
             </button>
+
             <button className={styleB.relu_btn} id={styleB.dropDownButton}>
               show video
             </button>
