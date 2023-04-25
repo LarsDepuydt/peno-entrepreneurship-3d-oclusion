@@ -8,7 +8,8 @@ import { useRouter } from 'next/router';
 import { useState } from "react";
 import { useEffect } from "react";
 
-import Cookies from 'js-cookie';
+//import Cookies from 'js-cookie';
+const Cookies = require('js-cookie');
 
 import styleL from '@/styles/LandingPage.module.css';
 
