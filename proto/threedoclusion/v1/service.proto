@@ -39,6 +39,22 @@ service ScanService {
   rpc Register(RegisterRequest) returns (RegisterResponse) {}
 }
 
+message ScanSave {
+  int32 scan_id = 1;
+  string timestamp_save = 2;
+  float lower_x = 3;
+  float lower_y = 4;
+  float lower_z = 5;
+  float lower_r_x = 6;
+  float lower_r_y = 7;
+  float lower_r_z = 8;
+  float upper_x = 9;
+  float upper_y = 10;
+  float upper_z = 11;
+  float upper_r_x = 12;
+  float upper_r_y = 13;
+  float upper_r_z = 14;
+}
 
 
 // TAGS
@@ -95,6 +111,7 @@ message Scan {
   string created_at = 3;
   string notes = 4;
   int32 patient_id = 5;
+
 }
 
 message AddScanRequest {
@@ -171,7 +188,7 @@ message SendVRRequest {
 }
 
 message SendPositionScanRequest {
-  Scan scan = 1;
+  ScanSave scan = 1;
 }
 
 message SendPositionScanResponse {
@@ -183,7 +200,7 @@ message GetPositionScanRequest {
 }
 
 message GetPositionScanResponse {
-  Scan scan = 1;
+  ScanSave scan = 1;
 }
 message SendVRResponse {
   string feedback = 1;

@@ -419,9 +419,9 @@ function loadObjects() {
         const { x: upperX, y: upperY, z: upperZ } = coordinate_info_upper ?? {};
         const { x: upperRX, y: upperRY, z: upperRZ } = rotation_info_upper ?? {};
 
-        const scan = { scanId, date: "2022",
+        const scan = { 
             lowerX, lowerY, lowerZ, lowerRX, lowerRY, lowerRZ, 
-            upperX, upperY, upperZ, upperRX, upperRY, upperRZ};
+            upperX, upperY, upperZ, upperRX, upperRY, upperRZ, scanId, date: "2022",};
         
         /*const query = sendPositionScan.useQuery({ scanId, lowerX, lowerY, lowerZ, lowerRX, lowerRY, lowerRZ, 
             upperX, upperY, upperZ, upperRX, upperRY, upperRZ});*/

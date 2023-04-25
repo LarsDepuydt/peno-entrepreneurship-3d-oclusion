@@ -6,6 +6,29 @@
 import { proto3 } from "@bufbuild/protobuf";
 
 /**
+ * @generated from message threedoclusion.v1.ScanSave
+ */
+export const ScanSave = proto3.makeMessageType(
+  "threedoclusion.v1.ScanSave",
+  () => [
+    { no: 1, name: "scan_id", kind: "scalar", T: 5 /* ScalarType.INT32 */ },
+    { no: 2, name: "timestamp_save", kind: "scalar", T: 9 /* ScalarType.STRING */ },
+    { no: 3, name: "lower_x", kind: "scalar", T: 2 /* ScalarType.FLOAT */ },
+    { no: 4, name: "lower_y", kind: "scalar", T: 2 /* ScalarType.FLOAT */ },
+    { no: 5, name: "lower_z", kind: "scalar", T: 2 /* ScalarType.FLOAT */ },
+    { no: 6, name: "lower_r_x", kind: "scalar", T: 2 /* ScalarType.FLOAT */ },
+    { no: 7, name: "lower_r_y", kind: "scalar", T: 2 /* ScalarType.FLOAT */ },
+    { no: 8, name: "lower_r_z", kind: "scalar", T: 2 /* ScalarType.FLOAT */ },
+    { no: 9, name: "upper_x", kind: "scalar", T: 2 /* ScalarType.FLOAT */ },
+    { no: 10, name: "upper_y", kind: "scalar", T: 2 /* ScalarType.FLOAT */ },
+    { no: 11, name: "upper_z", kind: "scalar", T: 2 /* ScalarType.FLOAT */ },
+    { no: 12, name: "upper_r_x", kind: "scalar", T: 2 /* ScalarType.FLOAT */ },
+    { no: 13, name: "upper_r_y", kind: "scalar", T: 2 /* ScalarType.FLOAT */ },
+    { no: 14, name: "upper_r_z", kind: "scalar", T: 2 /* ScalarType.FLOAT */ },
+  ],
+);
+
+/**
  * TAGS
  *
  * @generated from message threedoclusion.v1.Tag
@@ -292,7 +315,7 @@ export const SendVRRequest = proto3.makeMessageType(
 export const SendPositionScanRequest = proto3.makeMessageType(
   "threedoclusion.v1.SendPositionScanRequest",
   () => [
-    { no: 1, name: "scan", kind: "message", T: Scan },
+    { no: 1, name: "scan", kind: "message", T: ScanSave },
   ],
 );
 
@@ -322,7 +345,7 @@ export const GetPositionScanRequest = proto3.makeMessageType(
 export const GetPositionScanResponse = proto3.makeMessageType(
   "threedoclusion.v1.GetPositionScanResponse",
   () => [
-    { no: 1, name: "scan", kind: "message", T: Scan },
+    { no: 1, name: "scan", kind: "message", T: ScanSave },
   ],
 );
 
