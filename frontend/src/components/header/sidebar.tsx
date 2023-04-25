@@ -9,6 +9,8 @@ import Search_ID from '../search/search-id';
 import Search_Name from '../search/search-name';
 import ReluLink from '../header/reluLink';
 import { WelcomingDoctor, WelcomingPatient } from './welcoming';
+import { useQuery } from '@tanstack/react-query';
+import { getDentistById } from '@/gen/proto/threedoclusion/v1/service-ScanService_connectquery';
 
 interface HeaderPatientProps {
   patientfirstname: string;
@@ -26,7 +28,7 @@ export function SidebarDoctor() {
   return (
     <>
       <div className={styleSidebar.sidebar}>
-        <WelcomingDoctor doctorfirstname={'Anna'} doctorlastname={'Proost'} />
+        <WelcomingDoctor />
         <div className={stylesButton.sidebarButton}>
           <New_Patient />
           <Search_ID />
@@ -41,13 +43,17 @@ export function SidebarDoctor() {
   );
 }
 
-export function SidebarPatient({ patientfirstname, patientlastname }: HeaderPatientProps) {
+export function SidebarPatient() {
   const router = useRouter();
-  const home = () => router.push('/patient');
+  const home = () => {
+    process.env.REACT_APP_PATIENT_ID = undefined;
+    router.push('/patient');
+  };
+
   return (
     <>
       <div className={styleSidebar.sidebar}>
-        <WelcomingPatient patientfirstname={patientfirstname} patientlastname={patientlastname} />
+        <WelcomingPatient />
         <div className={stylesButton.sidebarButton}>
           <New_Scan />
           <Filter_Tags />
@@ -67,7 +73,7 @@ export function SidebarObj({ patientfirstname, patientlastname }: HeaderPatientP
   return (
     <>
       <div className={styleSidebar.sidebar}>
-        <WelcomingPatient patientfirstname={patientfirstname} patientlastname={patientlastname} />
+        <WelcomingPatient />
         <div className={stylesButton.sidebarButton}>
           <button type="button" className={stylesButton.relu_btn} id={stylesButton.homeIcon} onClick={home}></button>
           <New_Scan />

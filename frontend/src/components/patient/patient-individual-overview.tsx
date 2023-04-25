@@ -14,6 +14,7 @@ interface patientProfile {
   picture: StaticImageData;
   patientfirstname: string;
   patientlastname: string;
+  doctorid: number;
 }
 
 export function SinglePatient({ id, picture, patientfirstname, patientlastname }: patientProfile) {
