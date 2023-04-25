@@ -7,20 +7,17 @@ import (
 	"github.com/bufbuild/connect-go"
 	_ "github.com/lib/pq"
 
-	"github.com/LarsDepuydt/peno-entrepreneurship-3d-oclusion/cmd/help_functions"
 	threedoclusionv1 "github.com/LarsDepuydt/peno-entrepreneurship-3d-oclusion/gen/proto/threedoclusion/v1"
 )
 
-
 func AddTag(req *connect.Request[threedoclusionv1.AddTagRequest], database *sql.DB) (*connect.Response[threedoclusionv1.AddTagResponse], error) {
-	statement, error := database.Prepare("INSERT INTO tag (bite) VALUES ($1)")
-	if error != nil {
-		return nil, error
-	}
-	defer statement.Close()
+	const sqlStatement = `
+		INSERT INTO tag (bite)
+		VALUES ($1)
+		RETURNING id;`
+	var id int32
 
-
-	_, error = statement.Exec(req.Msg.Bite)
+	error := database.QueryRow(sqlStatement, req.Msg.Bite).Scan(&id)
 	if error != nil {
 		return nil, error
 	}
@@ -30,14 +27,20 @@ func AddTag(req *connect.Request[threedoclusionv1.AddTagRequest], database *sql.
 
 	res := connect.NewResponse(&threedoclusionv1.AddTagResponse{
 		Message: responseMessage,
+		Id: id,
 	})
 
 	return res, nil
 }
 
-func DeleteTag(req *connect.Request[threedoclusionv1.DeleteTagRequest], database *sql.DB) (*connect.Response[threedoclusionv1.DeleteTagResponse], error) {
-	statement := "DELETE FROM tag WHERE id = $1"
-	_, error := database.Exec(statement, req.Msg.Id)
+func DeleteTagById(req *connect.Request[threedoclusionv1.DeleteTagByIdRequest], database *sql.DB) (*connect.Response[threedoclusionv1.DeleteTagByIdResponse], error) {
+	const sqlStatement = `
+	DELETE FROM tag 
+	WHERE id = $1
+	RETURNING bite;`
+	var bite string
+
+	error := database.QueryRow(sqlStatement, req.Msg.Id).Scan(&bite)
 	if error != nil {
 		return nil, error
 	}
@@ -45,76 +48,57 @@ func DeleteTag(req *connect.Request[threedoclusionv1.DeleteTagRequest], database
 	responseMessage := fmt.Sprintf("tag with id: %d deleted with succes", req.Msg.Id)
 	fmt.Println(responseMessage)
 
-	res := connect.NewResponse(&threedoclusionv1.DeleteTagResponse{
+	res := connect.NewResponse(&threedoclusionv1.DeleteTagByIdResponse{
 		Message: responseMessage,
+		Bite: bite,
 	})
 
 	return res, nil
 }
 
 func GetAllTags(req *connect.Request[threedoclusionv1.GetAllTagsRequest], database *sql.DB) (*connect.Response[threedoclusionv1.GetAllTagsResponse], error) {
-	statement := "SELECT * FROM tag;"
-	rows, error := database.Query(statement)
+	rows, error := database.Query("SELECT id, bite FROM tag;")
 	if error != nil {
 		return nil, error
 	}
 
-	result, error := help_functions.GetResponseMakerTag(rows)
+	tags, error := GetResponseMakerTag(rows)
 	if error != nil {
 		panic(error)
 	}
 
 	fmt.Println("Got all tags successfully")
 
+	var tagsApi = MapTagsToApi(tags)
+
 	res := connect.NewResponse(&threedoclusionv1.GetAllTagsResponse{
-		Tags: result,
+		Tags: tagsApi,
 	})
 
 	return res, nil
 }
 
-func GetTagByID(req *connect.Request[threedoclusionv1.GetTagByIDRequest], database *sql.DB) (*connect.Response[threedoclusionv1.GetTagByIDResponse], error) {
-	statement := "SELECT bite FROM tag WHERE id = $1;"
-	rows, error := database.Query(statement, req.Msg.Id)
+func GetTagById(req *connect.Request[threedoclusionv1.GetTagByIdRequest], database *sql.DB) (*connect.Response[threedoclusionv1.GetTagByIdResponse], error) {
+	const sqlStatement = `
+		SELECT id, bite
+		FROM tag
+		WHERE id = $1;
+	`
+	var id int32
+	var bite string
+	
+	error := database.QueryRow(sqlStatement, req.Msg.Id).Scan(&id, &bite)
 	if error != nil {
 		return nil, error
-	}
-
-	result, error := help_functions.GetResponseMakerTag(rows)
-	if error != nil {
-		panic(error)
 	}
 
 	responseMessage := fmt.Sprintf("tag with id: %d returned with succes", req.Msg.Id)
 	fmt.Println(responseMessage)
 
-	res := connect.NewResponse(&threedoclusionv1.GetTagByIDResponse{
-		Id:   result[0].Id,
-		Bite: result[0].Bite,
+	res := connect.NewResponse(&threedoclusionv1.GetTagByIdResponse{
+		Id:   id,
+		Bite: bite,
 	})
 
 	return res, nil
-}
-
-func GetAllTagsByType(req *connect.Request[threedoclusionv1.GetAllTagsByTypeRequest], database *sql.DB) (*connect.Response[threedoclusionv1.GetAllTagsByTypeResponse], error) {
-	statement := "SELECT * FROM tag WHERE bite = $1;"
-	rows, error := database.Query(statement, req.Msg.Type)
-	if error != nil {
-		return nil, error
-	}
-
-	result, error := help_functions.GetResponseMakerTag(rows)
-	if error != nil {
-		panic(error)
-	}
-
-	responseMessage := fmt.Sprintf("tags with type: %s returned with succes;", req.Msg.Type)
-	fmt.Println(responseMessage)
-
-	res := connect.NewResponse(&threedoclusionv1.GetAllTagsByTypeResponse{
-		Tags: result,
-	})
-
-	return res, nil
-
 }

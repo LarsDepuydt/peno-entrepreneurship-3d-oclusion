@@ -1,8 +1,6 @@
 package vr
 
 import (
-	"fmt"
-
 	"github.com/bufbuild/connect-go"
 	_ "github.com/lib/pq"
 
@@ -44,19 +42,19 @@ func GetPositionScan(req *connect.Request[threedoclusionv1.GetPositionScanReques
 	
 		res := connect.NewResponse(&threedoclusionv1.GetPositionScanResponse{
 			Scan:  &threedoclusionv1.Scan{
-				LowerY:  1,
-				LowerZ:  1,
-				LowerRX: 1,
-				LowerRY: 1,
-				LowerRZ: 1,
-				UpperX:  1,
-				UpperY:  1,
-				UpperZ:  1,
-				UpperRX: 1,
-				UpperRY: 1,
-				UpperRZ: 1,
+				// LowerY:  1,
+				// LowerZ:  1,
+				// LowerRX: 1,
+				// LowerRY: 1,
+				// LowerRZ: 1,
+				// UpperX:  1,
+				// UpperY:  1,
+				// UpperZ:  1,
+				// UpperRX: 1,
+				// UpperRY: 1,
+				// UpperRZ: 1,
 				Id: 12,
-				Date: "2022",
+				// Date: "2022",
 			},
 		})
 		return res, nil
@@ -96,7 +94,7 @@ func SendPositionScan(req *connect.Request[threedoclusionv1.SendPositionScanRequ
 func SendPositionScan(req *connect.Request[threedoclusionv1.SendPositionScanRequest],
 ) (*connect.Response[threedoclusionv1.SendPositionScanResponse], error) {
 
-	fmt.Println("The Z coordinate of the lower jaw is", req.Msg.Scan.LowerZ);
+	// fmt.Println("The Z coordinate of the lower jaw is", req.Msg.Scan.LowerZ);
 
 	res := connect.NewResponse(&threedoclusionv1.SendPositionScanResponse{ // Confirm it's ok
 		Saved: true,
