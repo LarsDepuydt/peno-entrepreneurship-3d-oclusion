@@ -79,7 +79,7 @@ export function SinglePatient({ id, picture, patientfirstname, patientlastname }
               </div>
               <InspectScans patientID={id} />
               <EditButton />
-              <DeleteButton />
+              <DeleteButton patientID={id} />
             </div>
           )}
 
