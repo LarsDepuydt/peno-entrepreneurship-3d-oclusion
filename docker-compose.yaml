@@ -8,20 +8,19 @@ services:
     environment:
       POSTGRES_PASSWORD: &postgres_password "docker1"
       POSTGRES_USER: &postgres_user "docker"
-      POSTGRES_DB: &db_name "patient_server"
+      POSTGRES_DB: &db_name "postgres"
     volumes:
       - ./database:/usr/src/app/database
       - "dbdata:/var/lib/postgresql/data"
   flyway:
-    image: flyway/flyway:9.16.1
+    image: flyway/flyway
     command: -configFiles=/flyway/conf/flyway.conf info
     volumes:
       - ./flyway.conf:/flyway/conf/flyway.conf
       - ./database/migrations:/flyway/sql
     depends_on:
       - db
-  app:
-    &app
+  app: &app
     build:
       context: .
       dockerfile: Dockerfile
@@ -36,11 +35,14 @@ services:
     <<: *app
     image: "patient_server"
     environment:
-      DB_PASSWORD: &postgres_password
-      DB_USER: &postgres_user
-      DB_NAME: &db_name
+      DB_HOST: cloud-sql-proxy
+      DB_PORT: 5432
+      DB_USER: ${postgres_user}
+      DB_PASSWORD: ${postgres_password}
+      DB_NAME: ${db_name}
     links:
       - db
+      - cloud-sql-proxy
     restart: always
     working_dir: /usr/src/app/backend
     ports:
@@ -55,6 +57,12 @@ services:
     ports:
       - "3000:3000"
     entrypoint: "yarn dev"
+  cloud-sql-proxy:
+    image: gcr.io/cloudsql-docker/gce-proxy:1.27.0
+    command: /cloud_sql_proxy -instances=relu-backend:europe-west1:relu-sql-db=tcp:5432
+    ports:
+      - "5432:5432"
+
 volumes:
   dbdata: {}
   gomod-cache: {}

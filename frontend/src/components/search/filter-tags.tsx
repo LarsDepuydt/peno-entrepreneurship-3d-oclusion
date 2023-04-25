@@ -28,7 +28,7 @@ export default function ModalForm() {
   return (
     <>
       <div className={styles.btn_modal}>
-        <button onClick={toggleModal} className={styleB.relu_btn}>
+        <button onClick={toggleModal} className={styleB.relu_btn} id={styleB.fixedWidth}>
           Filter by tags
         </button>
         {/* translation files bekijken */}

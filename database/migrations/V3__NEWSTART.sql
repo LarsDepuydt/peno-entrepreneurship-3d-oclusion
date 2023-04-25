@@ -1,24 +1,28 @@
+DROP TABLE IF EXISTS patient;
+DROP TABLE IF EXISTS dentist;
+DROP TABLE IF EXISTS scan;
+DROP TABLE IF EXISTS tag;
+
 CREATE TABLE patient ( 
     id SERIAL PRIMARY KEY, 
-    first_name text,
-    last_name text,
+    firstnname text,
+    lastname text,
     pinned bit,
-    notes text,
-    dentist_id SERIAL REFERENCES dentist(id)
+    notes text
 );
 
 CREATE TABLE dentist (
     id SERIAL PRIMARY KEY,
     email text UNIQUE,
     pass_word text,
-    first_name text,
-    last_name text,
+    firstname text,
+    lastname text
 );
 
 CREATE TABLE scan (
     id SERIAL PRIMARY KEY,
     scan text,
-    date_scan date,
+    date date,
     notes text,
     patient_id SERIAL REFERENCES patient(id)
 );
@@ -34,3 +38,5 @@ CREATE TABLE scan_tag (
     tag_id INTEGER REFERENCES tag(id),
     UNIQUE (scan_id, tag_id)
 );
+
+ALTER TABLE patient ADD COLUMN dentist_id SERIAL REFERENCES dentist(id);
