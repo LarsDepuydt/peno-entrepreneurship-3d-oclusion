@@ -1,5 +1,6 @@
 {
   "/_app": "pages/_app.js",
+  "/_document": "pages/_document.js",
   "/api/hello": "pages/api/hello.js",
   "/client": "pages/client.html",
   "/contact": "pages/contact.html",
@@ -8,14 +9,13 @@
   "/landing-page": "pages/landing-page.html",
   "/login-page": "pages/login-page.html",
   "/newwaitreal": "pages/newwaitreal.html",
-  "/patient": "pages/patient.html",
   "/register-page": "pages/register-page.html",
-  "/scans-page": "pages/scans-page.html",
   "/test-vr": "pages/test-vr.html",
-  "/_document": "pages/_document.js",
   "/test": "pages/test.html",
-  "/wait": "pages/wait.html",
   "/upload-page": "pages/upload-page.html",
+  "/wait": "pages/wait.html",
+  "/scans-page": "pages/scans-page.html",
   "/_error": "pages/_error.js",
+  "/patient": "pages/patient.html",
   "/404": "pages/404.html"
 }
