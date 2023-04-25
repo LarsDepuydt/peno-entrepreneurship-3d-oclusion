@@ -134,6 +134,7 @@ const patients = [
   //   ),
 ];
 
+
 // const filteredPatients = patients
 //   .flatMap((obj) => Object.values(obj)) // flatten the array of objects into an array of patients
 //   .reduce((acc, patient) => {
@@ -151,6 +152,9 @@ const filteredPatients = patients
   .flatMap((obj) => Object.values(obj)) // flatten the array of objects into an array of patients
   .filter((patient) => patient.props.doctorid === parseInt(DentistID));
 
+
+
+
 const App: FC = () => {
   const router = useRouter();
 
@@ -166,6 +170,7 @@ const App: FC = () => {
 
       <div>
         <div className={styles.scansWrapper}>
+
           {filteredPatients.map((patient: React.ReactElement, index: number) => (
             <div key={`patient${index + 1}`}>
               <Patient
@@ -176,6 +181,7 @@ const App: FC = () => {
                 doctorid={patient.props.doctorid}
               />
             </div>
+
           ))}
           <div className={styles.patient_filler}></div>
           <div className={styles.patient_filler}></div>
