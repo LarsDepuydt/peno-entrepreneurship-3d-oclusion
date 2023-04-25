@@ -15,16 +15,11 @@ export default function DeleteButton({ patientID }: { patientID: number }) {
   const deletePatient = () => {
     console.log('patient is deleted');
     setModal(!modal);
-  };
-
-  const [patientId, setPatientId] = useState<number | undefined>(undefined);
-
-  const query = deletePatient.useQuery({ id: patientID });
-  const { data, refetch } = useQuery(query.queryKey, query.queryFn, { enabled: false });
-
-  const delete_patient = () => {
     refetch();
   };
+
+  const query = deletePatientById.useQuery({ id: patientID });
+  const { data, refetch } = useQuery(query.queryKey, query.queryFn, { enabled: false });
 
   return (
     <>
