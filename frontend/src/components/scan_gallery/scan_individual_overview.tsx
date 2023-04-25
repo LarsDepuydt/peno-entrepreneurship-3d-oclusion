@@ -11,6 +11,9 @@ import ExportButton from '../../components/scan_gallery/export_scan';
 import DropdownButton from '../../components/scan_gallery/scan_dropdown';
 import dropdownPatientButton from '../patient/patient_dropdown';
 
+import { InspectObj } from '../scan_gallery/inspect_OBJ';
+
+
 interface scanProfile {
   scanid: number;
   patientid: number;
@@ -35,6 +38,9 @@ export function SingleScan({ scanid, patientid, picture, date }: scanProfile) {
     '31': 'st',
   };
 
+  const router = useRouter();
+  const targetpatientID = router.query.patientID as string;
+
   const formattedDate = date.toLocaleDateString('en-US', options);
   const dayOfMonth = date.getDate().toString();
   const daySuffix = daySuffixes[dayOfMonth] || 'th';
@@ -57,15 +63,20 @@ export function SingleScan({ scanid, patientid, picture, date }: scanProfile) {
     setDropDown(false);
   };
 
+  const goToObjViewer = () => {
+    setDropDown(false);
+  };
+
   return (
     <div className={styles.patientScan_container}>
       {dropDown && (
         <div className={styles.patientScan_dropDown}>
-          <button type="button" className={styleB.relu_btn} id={styleB.exitIcon} onClick={handleDropGone}></button>
+          <button type="button" className={styleB.relu_btn} id={styleB.exitIcon} onClick={() => {
+          handleDropGone();
+          goToObjViewer();
+        }}></button>
           <div className={styles.dropDownButtonWrapper}>
-            <button className={styleB.relu_btn} id={styleB.dropDownButton}>
-              test
-            </button>
+            <InspectObj patientID={patientid} scanID={scanid} />
             <button className={styleB.relu_btn} id={styleB.dropDownButton}>
               test
             </button>
