@@ -44,7 +44,7 @@ const App: FC = () => {
   const targetpatientID = router.query.patientID as string;
 
   const filteredPatients = all_scans
-    .flatMap((obj) => Object.values(obj)) // flatten the array of objects into an array of patients
+    .flatMap((obj) => Object.values(obj)) // flatten the array of objects into an array of scans
     .filter((patient) => patient.props.patientid === parseInt(targetpatientID));
 
   return (

@@ -9,6 +9,8 @@ import Search_ID from '../search/search-id';
 import Search_Name from '../search/search-name';
 import ReluLink from '../header/reluLink';
 import { WelcomingDoctor, WelcomingPatient } from './welcoming';
+import { useQuery } from '@tanstack/react-query';
+import { getDentistById } from '@/gen/proto/threedoclusion/v1/service-ScanService_connectquery';
 
 interface HeaderPatientProps {
   patientfirstname: string;
@@ -20,7 +22,7 @@ interface HeaderDoctorProps {
   doctorlastname: string;
 }
 
-export function SidebarDoctor() {
+export function SidebarDoctor(id: number) {
   return (
     <>
       <div className={styleSidebar.sidebar}>

@@ -10,12 +10,10 @@ import { addPatient } from '@/gen/proto/threedoclusion/v1/service-ScanService_co
 import { useEffect, useState } from 'react';
 
 interface patientValues {
-  //patientID: string;
   patientFirstName: string;
   patientLastName: string;
 
   pinned: boolean;
-  // kunnen we van pinned een boolean maken?
   notes: string;
 }
 
@@ -24,7 +22,6 @@ export default function ModalForm() {
   // modal is not toggled at first
 
   const [patientinfo, setData] = useState({
-    //patientID: '',
     patientFirstName: '',
     patientLastName: '',
     pinned: false,
@@ -32,21 +29,45 @@ export default function ModalForm() {
   });
 
   const { data } = useQuery(addPatient.useQuery(patientinfo));
-  // kunnen we van pinned een boolean maken?
 
   const toggleModal = () => {
     setModal(!modal); // change state f -> t and t -> f
   };
 
+  const ReworkValues = (values: patientValues) => {
+    if (values.pinned) {
+      return {
+        patientFirstName: values.patientFirstName,
+        patientLastName: values.patientLastName,
+        pinned: 1,
+        notes: '',
+      };
+    } else {
+      return {
+        patientFirstName: values.patientFirstName,
+        patientLastName: values.patientLastName,
+        pinned: 0,
+        notes: '',
+      };
+    }
+  };
+
   const submitFunction = (values: patientValues) => {
     console.log(values);
+    //console.log(ReworkValues(values));
+    //setData(ReworkValues(values));
     setData(values);
+
+    // fout zit bij pinned : true / false
+    console.log(data);
     setModal(!modal);
   };
 
-  // useEffect(() => {
-  // }, [data, patientinfo]);
-  // heeft geen effect ?
+  //data?.message && patientinfo.patientFirstName &&
+
+  useEffect(() => console.log(data), [data]);
+
+  //, patientinfo
 
   return (
     <>
@@ -64,7 +85,6 @@ export default function ModalForm() {
             <div className={styles.login_box + ' p-3'}>
               <Formik
                 initialValues={{
-                  patientID: '',
                   patientFirstName: '',
                   patientLastName: '',
 
@@ -77,16 +97,6 @@ export default function ModalForm() {
                 {({ errors, status, touched }) => (
                   <Form>
                     <div className={styles.rightfont}>
-                      <div className="mb-3">
-                        <Field
-                          className="form-control"
-                          id="patientID"
-                          name="patientID"
-                          placeholder="Patient ID"
-                          type="patientID"
-                        />
-                      </div>
-
                       <div className={styles.firstandlast}>
                         <div className="mb-3">
                           <Field

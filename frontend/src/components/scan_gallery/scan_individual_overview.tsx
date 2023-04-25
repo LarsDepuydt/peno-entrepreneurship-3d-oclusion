@@ -7,6 +7,7 @@ import styleB from '@/styles/Buttons.module.css';
 import { InspectVR } from '../../components/scan_gallery/inspect_VR';
 import DeleteButton from '../../components/scan_gallery/delete_scan';
 import EditButton from '../../components/scan_gallery/edit_scan';
+import OpenObjButton from '../../components/scan_gallery/open_obj';
 import ExportButton from '../../components/scan_gallery/export_scan';
 import DropdownButton from '../../components/scan_gallery/scan_dropdown';
 import dropdownPatientButton from '../patient/patient_dropdown';
@@ -35,11 +36,12 @@ export function SingleScan({ scanid, patientid, picture, date }: scanProfile) {
     '31': 'st',
   };
 
-  const formattedDate = date.toLocaleDateString('en-US', options);
-  const dayOfMonth = date.getDate().toString();
-  const daySuffix = daySuffixes[dayOfMonth] || 'th';
+  // const formattedDate = date.toLocaleDateString('en-US', options);
+  // const dayOfMonth = date.getDate().toString();
+  // const daySuffix = daySuffixes[dayOfMonth] || 'th';
 
-  const dateString = `Scan of ${formattedDate.replace(dayOfMonth, `${dayOfMonth}${daySuffix}`)}`;
+  // const dateString = `Scan of ${formattedDate.replace(dayOfMonth, `${dayOfMonth}${daySuffix}`)}`;
+  const dateString = `Scan of October 15th`;
 
   const [showButtons, setShowButtons] = useState(false);
   const handleMouseEnter = () => {
@@ -64,10 +66,10 @@ export function SingleScan({ scanid, patientid, picture, date }: scanProfile) {
           <button type="button" className={styleB.relu_btn} id={styleB.exitIcon} onClick={handleDropGone}></button>
           <div className={styles.dropDownButtonWrapper}>
             <button className={styleB.relu_btn} id={styleB.dropDownButton}>
-              test
+              export scan
             </button>
             <button className={styleB.relu_btn} id={styleB.dropDownButton}>
-              test
+              show video
             </button>
             <button className={styleB.relu_btn} id={styleB.dropDownButton}>
               test
@@ -100,7 +102,7 @@ export function SingleScan({ scanid, patientid, picture, date }: scanProfile) {
                   onClick={handleDropDown}
                 ></button>
               </div>
-              <ExportButton />
+              <OpenObjButton />
               <InspectVR patientID={patientid} scanID={scanid} />
               <EditButton />
               <DeleteButton />

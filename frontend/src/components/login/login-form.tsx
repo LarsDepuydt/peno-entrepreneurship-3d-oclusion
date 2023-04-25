@@ -16,21 +16,36 @@ interface LUser {
   password: string;
 }
 
+interface IDprop {
+  dentistID: any;
+}
+
 export default function LoginForm() {
   const [credentials, setData] = useState({ email: '', password: '' });
+
+  const { data } = useQuery(login.useQuery(credentials));
 
   const router = useRouter();
 
   const submitFunction = (values: LUser) => {
-    const { data } = useQuery(login.useQuery(credentials));
     console.log(values);
+    console.log(' (1) REACT_APP_DENTIST_ID is ' + process.env.REACT_APP_DENTIST_ID);
     setData(values);
     console.log(data);
+    // if (data != undefined) {
+    //   process.env.REACT_APP_NOT_SECRET_CODE = (data?.id).toString();
+    // }
+    if (data != undefined) {
+      process.env.REACT_APP_DENTIST_ID = '2';
+    }
+    console.log(' (2) REACT_APP_DENTIST_ID is ' + process.env.REACT_APP_DENTIST_ID);
   };
 
   useEffect(() => {
-    data?.token && credentials.email && router.push('/patient');
-  }, [data, credentials]);
+    data?.token && credentials.email && data?.id && router.push('/patient');
+    //&& router.push({ pathname: '/patient/[dentistID]', query: { dentistID: data.id } });
+    //&& router.push({ pathname: '/patient/[dentistID]', query: { dentistID: process.env.REACT_APP_DENTIST_ID } });
+  }, [data, credentials, router]);
 
   const toRegister = () => router.push('/register-page');
 
