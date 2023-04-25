@@ -70,7 +70,7 @@ export function SidebarObj({ patientfirstname, patientlastname }: HeaderPatientP
   return (
     <>
       <div className={styleSidebar.sidebar}>
-        <WelcomingPatient patientfirstname={patientfirstname} patientlastname={patientlastname} />
+        <WelcomingPatient />
         <div className={stylesButton.sidebarButton}>
           <button type="button" className={stylesButton.relu_btn} id={stylesButton.homeIcon} onClick={home}></button>
           <New_Scan />
@@ -81,4 +81,3 @@ export function SidebarObj({ patientfirstname, patientlastname }: HeaderPatientP
     </>
   );
 }
-
