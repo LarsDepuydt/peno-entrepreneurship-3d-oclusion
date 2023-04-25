@@ -3,7 +3,7 @@
     "source": "functions",
     "runtime": "nodejs16",
     "predeploy": [
-      "cd ../ && yarn build"
+      "yarn --cwd ../ build"
     ]
   },
   "hosting": {
