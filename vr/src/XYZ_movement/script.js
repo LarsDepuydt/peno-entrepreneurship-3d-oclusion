@@ -338,7 +338,7 @@ function changeControlledCoordinates( controller, coordinate ){ // 0, 1, 2: x, y
     }
 }
 var lockstatus = 0;
-function beforeRender( controller ) {
+function beforeRender1( controller ) {
     session = renderer.xr.getSession();
     let ii = 0;
     //console.log(session);
@@ -386,6 +386,45 @@ function beforeRender( controller ) {
     
     //changeControlledCoordinates(controller, 3);
 }
+
+
+let currentOption = 3; // initialize to free movement
+let optionChanged = false; // flag to indicate that the option has changed
+let prevButtonState = 0; // initialize previous button state to not pressed
+
+function beforeRender(controller) {
+  session = renderer.xr.getSession();
+  let ii = 0;
+  if (session) {
+    for (const source of session.inputSources) {
+      if (source && source.handedness) {
+        var handedness = source.handedness; //left or right controllers
+      }
+      if (!source.gamepad) continue;
+      const controller = renderer.xr.getController(ii++);
+      const old = prevGamePads.get(source);
+      const data = {
+        handedness: handedness,
+        buttons: source.gamepad.buttons.map((b) => b.value),
+        axes: source.gamepad.axes.slice(0)
+      };
+      if (data.buttons[0] == 1 && prevButtonState == 0 && !optionChanged) {
+        currentOption = (currentOption + 1) % 4; // cycle through 0, 1, 2, 3
+        optionChanged = true; // set flag to true to indicate that the option has changed
+      } else if (data.buttons[0] == 0 && prevButtonState == 0 && optionChanged) {
+        optionChanged = false; // reset flag when squeeze button is released
+      }
+      prevButtonState = data.buttons[0]; // save button state for next frame
+      console.log(currentOption);
+      changeControlledCoordinates(controller, currentOption);
+    }
+  }
+}
+
+
+
+
+
 
 /*//added
 // Update the position and orientation of the rigid body based on the VR controller
@@ -877,6 +916,7 @@ function animate() {
 
 }
 
+var tistijd = true;
 function render() {
     cleanIntersected();
 
@@ -886,7 +926,7 @@ function render() {
     // Voor axis locking, work in progress
     beforeRender(controller1);
     beforeRender(controller2);
-
+        
     renderer.render( scene, camera );
 }
 
