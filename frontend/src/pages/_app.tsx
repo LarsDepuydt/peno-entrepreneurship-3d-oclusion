@@ -9,7 +9,7 @@ const queryClient = new QueryClient();
 
 export default function App({ Component, pageProps }: AppProps) {
   const transport = createConnectTransport({
-    baseUrl: 'https://backend-service-2ybjkij5qq-uc.a.run.app/'
+    baseUrl: 'https://backend-service-2ybjkij5qq-uc.a.run.app',
   });
 
   return (

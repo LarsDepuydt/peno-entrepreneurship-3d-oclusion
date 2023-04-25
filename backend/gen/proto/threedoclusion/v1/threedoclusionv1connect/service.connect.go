@@ -568,3 +568,4 @@ func (UnimplementedScanServiceHandler) Login(context.Context, *connect_go.Reques
 func (UnimplementedScanServiceHandler) Register(context.Context, *connect_go.Request[v1.RegisterRequest]) (*connect_go.Response[v1.RegisterResponse], error) {
 	return nil, connect_go.NewError(connect_go.CodeUnimplemented, errors.New("threedoclusion.v1.ScanService.Register is not implemented"))
 }
+

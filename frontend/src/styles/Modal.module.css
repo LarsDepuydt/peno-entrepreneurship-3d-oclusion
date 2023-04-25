@@ -21,7 +21,7 @@ module body.active_modal {
 
 .overlay {
   background: rgba(49, 49, 49, 0.8);
-  z-index: 30;
+  z-index: 70;
 }
 .modal_content {
   position: absolute;
@@ -38,7 +38,7 @@ module body.active_modal {
   border-radius: 10px;
   max-width: 500px;
   min-width: 500px;
-  z-index: 40;
+  z-index: 80;
 }
 
 .close_modal {
@@ -101,4 +101,12 @@ module .login_box {
 
 .right {
   float: right;
+}
+
+.exp_text {
+  font-weight: 600;
+  color: #737e85;
+  margin-left: 2%;
+  margin-bottom: 5%;
+  text-align: left;
 }
