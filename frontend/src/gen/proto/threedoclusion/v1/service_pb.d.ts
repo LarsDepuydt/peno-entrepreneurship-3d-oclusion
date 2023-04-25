@@ -1219,6 +1219,92 @@ export declare class UpdatePatientByIdResponse extends Message<UpdatePatientById
 }
 
 /**
+ * @generated from message threedoclusion.v1.GetAllPinnedPatientsRequest
+ */
+export declare class GetAllPinnedPatientsRequest extends Message<GetAllPinnedPatientsRequest> {
+  constructor(data?: PartialMessage<GetAllPinnedPatientsRequest>);
+
+  static readonly runtime: typeof proto3;
+  static readonly typeName = "threedoclusion.v1.GetAllPinnedPatientsRequest";
+  static readonly fields: FieldList;
+
+  static fromBinary(bytes: Uint8Array, options?: Partial<BinaryReadOptions>): GetAllPinnedPatientsRequest;
+
+  static fromJson(jsonValue: JsonValue, options?: Partial<JsonReadOptions>): GetAllPinnedPatientsRequest;
+
+  static fromJsonString(jsonString: string, options?: Partial<JsonReadOptions>): GetAllPinnedPatientsRequest;
+
+  static equals(a: GetAllPinnedPatientsRequest | PlainMessage<GetAllPinnedPatientsRequest> | undefined, b: GetAllPinnedPatientsRequest | PlainMessage<GetAllPinnedPatientsRequest> | undefined): boolean;
+}
+
+/**
+ * @generated from message threedoclusion.v1.GetAllPinnedPatientsResponse
+ */
+export declare class GetAllPinnedPatientsResponse extends Message<GetAllPinnedPatientsResponse> {
+  /**
+   * @generated from field: repeated threedoclusion.v1.Patient patients = 1;
+   */
+  patients: Patient[];
+
+  constructor(data?: PartialMessage<GetAllPinnedPatientsResponse>);
+
+  static readonly runtime: typeof proto3;
+  static readonly typeName = "threedoclusion.v1.GetAllPinnedPatientsResponse";
+  static readonly fields: FieldList;
+
+  static fromBinary(bytes: Uint8Array, options?: Partial<BinaryReadOptions>): GetAllPinnedPatientsResponse;
+
+  static fromJson(jsonValue: JsonValue, options?: Partial<JsonReadOptions>): GetAllPinnedPatientsResponse;
+
+  static fromJsonString(jsonString: string, options?: Partial<JsonReadOptions>): GetAllPinnedPatientsResponse;
+
+  static equals(a: GetAllPinnedPatientsResponse | PlainMessage<GetAllPinnedPatientsResponse> | undefined, b: GetAllPinnedPatientsResponse | PlainMessage<GetAllPinnedPatientsResponse> | undefined): boolean;
+}
+
+/**
+ * @generated from message threedoclusion.v1.GetAllUnPinnedPatientsRequest
+ */
+export declare class GetAllUnPinnedPatientsRequest extends Message<GetAllUnPinnedPatientsRequest> {
+  constructor(data?: PartialMessage<GetAllUnPinnedPatientsRequest>);
+
+  static readonly runtime: typeof proto3;
+  static readonly typeName = "threedoclusion.v1.GetAllUnPinnedPatientsRequest";
+  static readonly fields: FieldList;
+
+  static fromBinary(bytes: Uint8Array, options?: Partial<BinaryReadOptions>): GetAllUnPinnedPatientsRequest;
+
+  static fromJson(jsonValue: JsonValue, options?: Partial<JsonReadOptions>): GetAllUnPinnedPatientsRequest;
+
+  static fromJsonString(jsonString: string, options?: Partial<JsonReadOptions>): GetAllUnPinnedPatientsRequest;
+
+  static equals(a: GetAllUnPinnedPatientsRequest | PlainMessage<GetAllUnPinnedPatientsRequest> | undefined, b: GetAllUnPinnedPatientsRequest | PlainMessage<GetAllUnPinnedPatientsRequest> | undefined): boolean;
+}
+
+/**
+ * @generated from message threedoclusion.v1.GetAllUnPinnedPatientsResponse
+ */
+export declare class GetAllUnPinnedPatientsResponse extends Message<GetAllUnPinnedPatientsResponse> {
+  /**
+   * @generated from field: repeated threedoclusion.v1.Patient patients = 1;
+   */
+  patients: Patient[];
+
+  constructor(data?: PartialMessage<GetAllUnPinnedPatientsResponse>);
+
+  static readonly runtime: typeof proto3;
+  static readonly typeName = "threedoclusion.v1.GetAllUnPinnedPatientsResponse";
+  static readonly fields: FieldList;
+
+  static fromBinary(bytes: Uint8Array, options?: Partial<BinaryReadOptions>): GetAllUnPinnedPatientsResponse;
+
+  static fromJson(jsonValue: JsonValue, options?: Partial<JsonReadOptions>): GetAllUnPinnedPatientsResponse;
+
+  static fromJsonString(jsonString: string, options?: Partial<JsonReadOptions>): GetAllUnPinnedPatientsResponse;
+
+  static equals(a: GetAllUnPinnedPatientsResponse | PlainMessage<GetAllUnPinnedPatientsResponse> | undefined, b: GetAllUnPinnedPatientsResponse | PlainMessage<GetAllUnPinnedPatientsResponse> | undefined): boolean;
+}
+
+/**
  * DENTIST
  *
  * @generated from message threedoclusion.v1.Dentist

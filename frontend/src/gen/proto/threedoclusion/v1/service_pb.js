@@ -453,6 +453,42 @@ export const UpdatePatientByIdResponse = proto3.makeMessageType(
 );
 
 /**
+ * @generated from message threedoclusion.v1.GetAllPinnedPatientsRequest
+ */
+export const GetAllPinnedPatientsRequest = proto3.makeMessageType(
+  "threedoclusion.v1.GetAllPinnedPatientsRequest",
+  [],
+);
+
+/**
+ * @generated from message threedoclusion.v1.GetAllPinnedPatientsResponse
+ */
+export const GetAllPinnedPatientsResponse = proto3.makeMessageType(
+  "threedoclusion.v1.GetAllPinnedPatientsResponse",
+  () => [
+    { no: 1, name: "patients", kind: "message", T: Patient, repeated: true },
+  ],
+);
+
+/**
+ * @generated from message threedoclusion.v1.GetAllUnPinnedPatientsRequest
+ */
+export const GetAllUnPinnedPatientsRequest = proto3.makeMessageType(
+  "threedoclusion.v1.GetAllUnPinnedPatientsRequest",
+  [],
+);
+
+/**
+ * @generated from message threedoclusion.v1.GetAllUnPinnedPatientsResponse
+ */
+export const GetAllUnPinnedPatientsResponse = proto3.makeMessageType(
+  "threedoclusion.v1.GetAllUnPinnedPatientsResponse",
+  () => [
+    { no: 1, name: "patients", kind: "message", T: Patient, repeated: true },
+  ],
+);
+
+/**
  * DENTIST
  *
  * @generated from message threedoclusion.v1.Dentist
