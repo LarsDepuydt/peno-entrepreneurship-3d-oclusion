@@ -166,7 +166,7 @@ const App: FC = () => {
 
       <div>
         <div className={styles.scansWrapper}>
-          {filteredPatients.map((patient, index) => (
+          {filteredPatients.map((patient: React.ReactElement, index: number) => (
             <div key={`patient${index + 1}`}>
               <Patient
                 id={patient.props.id}
