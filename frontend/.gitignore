@@ -39,3 +39,7 @@ next-env.d.ts
 # firebase
 /functions/next
 /functions/node_modules
+
+node_modules/
+.next/
+out/
