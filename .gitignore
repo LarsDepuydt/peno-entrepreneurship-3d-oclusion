@@ -7,3 +7,7 @@ vr/src/cannon_collision/old_script.js
 /node_modules
 package.json
 package-lock.json
+
+frontend/functions/next
+frontend/functions/node_modules
+
