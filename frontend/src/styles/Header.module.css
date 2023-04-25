@@ -38,6 +38,65 @@
   word-spacing: 10px;
 }
 
+.settingsTitle {
+  margin: auto;
+  margin-top: 22vh;
+  text-align: center;
+  vertical-align: auto;
+
+  font-weight: 600;
+  font-size: 90px;
+  color: #1c3c4c;
+
+  letter-spacing: 3px;
+  word-spacing: 10px;
+  text-decoration-line: underline;
+}
+
+.settingsCode {
+  margin: auto;
+  text-align: center;
+  vertical-align: auto;
+
+  font-weight: 300;
+  font-size: 60px;
+  color: #fe7d00;
+
+  letter-spacing: 3px;
+  word-spacing: 10px;
+}
+
+.settingsCodeWrapper{
+  width: 200px;
+  margin: auto;
+  margin-top: 20px;
+  margin-bottom: 20px;
+  border-color: #fe7d00;
+  border-width: 1px;
+  border-style: solid;
+  border-radius: 0.375rem;
+}
+
+.settingsText{
+  margin: auto;
+  margin-top: 20px;
+  text-align: center;
+  vertical-align: auto;
+
+  font-size: 20px;
+  color: #1c3c4c;
+}
+
+.settingsButtons{
+  margin: auto;
+
+  display: flex;
+  flex-direction: row;
+  flex-wrap: nowrap;
+  justify-content: center;
+  align-items: center;
+}
+
 .buttons {
   margin: 50px;
   padding: 50px;

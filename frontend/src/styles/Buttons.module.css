@@ -60,7 +60,7 @@
   margin: 0px;
 }
 
-.absoluteWrapper{
+.absoluteWrapper {
   padding-left: 15px;
   padding-bottom: 15px;
 }
@@ -170,6 +170,7 @@
   border: none;
 }
 
+#loadingIconSettings,
 #loadingIcon {
   width: 48px;
   height: 48px;
@@ -178,4 +179,8 @@
   background-repeat: no-repeat;
   background-position: center;
   border: none;
+}
+
+#loadingIconSettings {
+  margin: 20px 30px;
 }

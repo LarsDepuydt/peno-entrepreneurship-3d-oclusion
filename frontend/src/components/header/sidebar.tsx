@@ -22,7 +22,7 @@ interface HeaderDoctorProps {
 
 export function SidebarDoctor() {
   const router = useRouter();
-  const wait = () => router.push('/client');
+  const wait = () => router.push('/settings');
   return (
     <>
       <div className={styleSidebar.sidebar}>
