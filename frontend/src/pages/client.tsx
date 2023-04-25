@@ -1,7 +1,8 @@
 import { sendVR } from '@/gen/proto/threedoclusion/v1/service-ScanService_connectquery'
 import { useQuery } from '@tanstack/react-query';
 import { useState, useEffect, SetStateAction } from 'react';
-import Cookies from 'js-cookie';
+//import Cookies from 'js-cookie';
+const Cookies = require('js-cookie');
 import styles from "@/styles/ClientPage.module.css"
 
 import Image from 'next/image';
