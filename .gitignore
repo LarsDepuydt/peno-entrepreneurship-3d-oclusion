@@ -10,4 +10,7 @@ package-lock.json
 
 frontend/functions/next
 frontend/functions/node_modules
+frontend/.next
+frontend/out
+fronend/node_modules/
 
