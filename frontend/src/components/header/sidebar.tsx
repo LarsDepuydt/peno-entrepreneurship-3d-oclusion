@@ -29,6 +29,8 @@ export function SidebarDoctor() {
           <New_Patient />
           <Search_ID />
           <Search_Name />
+        </div>
+        <div className={stylesButton.absoluteWrapper}>
           <ReluLink />
         </div>
       </div>
@@ -37,6 +39,26 @@ export function SidebarDoctor() {
 }
 
 export function SidebarPatient({ patientfirstname, patientlastname }: HeaderPatientProps) {
+  const router = useRouter();
+  const home = () => router.push('/patient');
+  return (
+    <>
+      <div className={styleSidebar.sidebar}>
+        <WelcomingPatient patientfirstname={patientfirstname} patientlastname={patientlastname} />
+        <div className={stylesButton.sidebarButton}>
+          <New_Scan />
+          <Filter_Tags />
+        </div>
+        <div className={stylesButton.absoluteWrapper}>
+          <button type="button" className={stylesButton.relu_btn} id={stylesButton.homeIcon} onClick={home}></button>
+          <ReluLink />
+        </div>
+      </div>
+    </>
+  );
+}
+
+export function SidebarObj({ patientfirstname, patientlastname }: HeaderPatientProps) {
   const router = useRouter();
   const home = () => router.push('/patient');
   return (

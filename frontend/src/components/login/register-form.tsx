@@ -42,7 +42,7 @@ export default function LoginForm() {
 
   useEffect(() => {
     data?.token && credentials.email && router.push('/patient');
-  }, [data, credentials]);
+  }, [data, credentials, router]);
 
   const toLogin = () => router.push('/login-page');
 

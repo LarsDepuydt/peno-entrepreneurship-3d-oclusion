@@ -51,7 +51,7 @@ export default function ModalForm() {
   return (
     <>
       <div className={styles.btn_modal}>
-        <button onClick={toggleModal} className={styleB.relu_btn}>
+        <button onClick={toggleModal} className={styleB.relu_btn} id={styleB.fixedWidth}>
           Add Patient
         </button>
         {/* translation files bekijken */}
