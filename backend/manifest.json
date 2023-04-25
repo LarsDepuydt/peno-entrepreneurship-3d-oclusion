@@ -1,9 +1,18 @@
 {
-    "theme_color" : "#f69435",
-    "background_color" : "#f69435",
-    "display" : "fullscreen",
-    "scope" : "",
-    "start_url" : "/wait",
-    "name" : "Relu tool",
-    "short_name" : "Relutool"
-    }
+  "background_color": "#f69435",
+  "display": "fullscreen",
+  "name": "Relu Immersive",
+  "orientation": "any",
+  "scope": "/",
+  "short_name": "Relu",
+  "start_url": "/wait",
+  "theme_color": "#f69435",
+  "categories": [],
+  "screenshots": [],
+  "icons": [],
+  "shortcuts": [],
+  "lang": "en",
+  "display_override": [
+    "fullscreen"
+  ]
+}
