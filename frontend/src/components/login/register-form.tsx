@@ -51,14 +51,24 @@ export default function LoginForm() {
     setSubmitOK(true);
   };
 
+  const handleRedirect = () => {
+    if (submitOK) {
+      setSendOK(true);
+    }
+  };
+
   // useEffect(() => {
   //   data?.token && credentials.email && router.push('/login-page');
   // }, [data, credentials]);
 
   useEffect(() => {
-    data?.token && credentials.email && router.push('/login-page');
-    refetch();
-  }, [data, credentials, router]);
+    if (submitOK) {
+      refetch();
+      console.log(data);
+      setSendOK(false);
+      data?.token && credentials.email && router.push('/login-page');
+    }
+  }, [data, credentials, router, sendOK]);
 
   const toLogin = () => router.push('/login-page');
 
@@ -136,7 +146,7 @@ export default function LoginForm() {
             </div>
 
             <div className={styles.spacingbtn}>
-              <button type="submit" className={styleB.relu_btn}>
+              <button type="submit" className={styleB.relu_btn} onClick={handleRedirect}>
                 Register
               </button>
               <button type="button" className={styleB.relu_btn} onClick={toLogin}>

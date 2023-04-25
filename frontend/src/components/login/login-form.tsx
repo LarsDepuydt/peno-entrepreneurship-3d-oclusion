@@ -23,7 +23,13 @@ interface IDprop {
 export default function LoginForm() {
   const [credentials, setData] = useState({ email: '', password: '' });
 
-  const { data } = useQuery(login.useQuery(credentials));
+  const [submitOK, setSubmitOK] = useState(false);
+  const [sendOK, setSendOK] = useState(false);
+
+  //const { data } = useQuery(login.useQuery(credentials));
+
+  const query = login.useQuery(credentials);
+  const { data, refetch } = useQuery(query.queryKey, query.queryFn, { enabled: false });
 
   const router = useRouter();
 
@@ -32,20 +38,32 @@ export default function LoginForm() {
     console.log(' (1) REACT_APP_DENTIST_ID is ' + process.env.REACT_APP_DENTIST_ID);
     setData(values);
     console.log(data);
-    // if (data != undefined) {
-    //   process.env.REACT_APP_NOT_SECRET_CODE = (data?.id).toString();
-    // }
-    if (data != undefined) {
-      process.env.REACT_APP_DENTIST_ID = data.id.toString();
+    setSubmitOK(true);
+  };
+
+  const handleRedirect = () => {
+    if (submitOK) {
+      setSendOK(true);
     }
-    console.log(' (2) REACT_APP_DENTIST_ID is ' + process.env.REACT_APP_DENTIST_ID);
   };
 
   useEffect(() => {
-    data?.token && credentials.email && data?.id && router.push('/patient');
-    //&& router.push({ pathname: '/patient/[dentistID]', query: { dentistID: data.id } });
-    //&& router.push({ pathname: '/patient/[dentistID]', query: { dentistID: process.env.REACT_APP_DENTIST_ID } });
-  }, [data, credentials, router]);
+    if (submitOK) {
+      refetch();
+      console.log(data);
+      setSendOK(false);
+      if (data != undefined) {
+        process.env.REACT_APP_DENTIST_ID = data.id.toString();
+      }
+      data?.token && credentials.email && router.push('/patient');
+    }
+  }, [data, credentials, router, sendOK]);
+
+  // useEffect(() => {
+  //   data?.token && credentials.email && data?.id && router.push('/patient');
+  //   //&& router.push({ pathname: '/patient/[dentistID]', query: { dentistID: data.id } });
+  //   //&& router.push({ pathname: '/patient/[dentistID]', query: { dentistID: process.env.REACT_APP_DENTIST_ID } });
+  // }, [data, credentials, router]);
 
   const toRegister = () => router.push('/register-page');
 
@@ -76,7 +94,7 @@ export default function LoginForm() {
           </div>
 
           <div className={styles.spacingbtn}>
-            <button type="submit" className={styleB.relu_btn}>
+            <button type="submit" className={styleB.relu_btn} onClick={handleRedirect}>
               Login
             </button>
             <button type="button" className={styleB.relu_btn} onClick={toRegister}>
