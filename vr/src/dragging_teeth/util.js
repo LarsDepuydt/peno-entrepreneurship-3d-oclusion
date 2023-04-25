@@ -2,6 +2,8 @@ import * as THREE from 'three';
 import * as CANNON from 'cannon-es';
 
 import { QuickHull } from './QuickHull.js';
+import { ConvexHull } from 'three/addons/math/ConvexHull.js';
+import { ConvexGeometry } from 'three/addons/geometries/ConvexGeometry.js'
 //import { sendPositionScan, getPositionScan } from '../../../frontend/src/gen/proto/threedoclusion/v1/service-ScanService_connectquery'
 
 
@@ -47,25 +49,84 @@ function getFirstBufferGeometry(object) {
 }
 
 
+// function threeMeshToConvexThreeMesh(mesh) {
+//     let convexhull = new ConvexHull().setFromObject(mesh);
+//     convexhull.cleanup();
+//     console.log(convexhull);
+//     return convexhull;
+// }
+
+
+function threeMeshToConvexThreeMesh(mesh) {
+    const points = toThreeVertices(mesh);
+    const geometry = new ConvexGeometry(points);
+    const teeth_material = new THREE.MeshStandardMaterial({color: 0x0000ff});
+    return new THREE.Mesh( geometry, teeth_material );
+}
+
+
 function threeMeshToCannonMesh(mesh) {
     let vertices = mesh.geometry.attributes.position.array;
 
     const indices = [];
-    for (let i = 0; i < vertices.length / 3; i += 3) {
-        indices.push([i, i + 1, i + 2]);
+    for (let i = 0; i < vertices.length/3; i += 3) {   // vertices.length = 3*vertices.count
+        indices.push(i);
+        indices.push(i+1);
+        indices.push(i+2);
     }
     return new CANNON.Trimesh(vertices, indices);
 }
 
 
 function threeMeshToConvexCannonMesh(mesh) {
-    let points = toVertices(mesh.geometry);
+    let points = toCannonVertices(mesh.geometry);
     const faces = QuickHull.createHull(points);
-    return new CANNON.ConvexPolyhedron({vertices:points, faces});
+    return new CANNON.ConvexPolyhedron({vertices:points, faces:faces});
 }
 
 
-function toVertices(geometry) {
+function cannonMeshToCannonConvexPolyhedron(mesh) {
+    // transform vertices
+    const vertices = [];
+    for (let index = 0; index < mesh.vertices.length; index+=3) {   // vertices.length = 3*vertices.count
+        vertices.push(
+            new CANNON.Vec3(
+                mesh.vertices[index],
+                mesh.vertices[index+1],
+                mesh.vertices[index+2]
+            )
+        );
+    }
+
+    // copy faces
+    const faces = [];
+    for (let index=0; index < mesh.indices.length; index+=3) {
+        faces.push([
+            mesh.indices[index],
+            mesh.indices[index+1],
+            mesh.indices[index+2]
+        ]);
+    }
+
+    const convexpolyhedron = new CANNON.ConvexPolyhedron({vertices:vertices, faces:faces});
+    convexpolyhedron.computeNormals();
+    return convexpolyhedron;
+}
+
+
+function toThreeVertices(mesh) {
+    const positions = mesh.geometry.attributes.position;
+    const vertices = [];
+    for (let index=0; index < positions.count; index++) {
+        const point = new THREE.Vector3();
+        point.fromBufferAttribute( positions, index );     // no .applyMatrix4( mesh.matrixWorld ) because this is executed before any global transform takes place 
+        vertices.push(point);
+    }
+    return vertices;
+}
+
+
+function toCannonVertices(geometry) {
     const positions = geometry.attributes.position;
     const vertices = [];
     for (let index = 0; index < positions.count; index++) {
@@ -131,4 +192,4 @@ function getPosition(lj_mesh){
 }
 
 
-export { getFirstMesh, getFirstBufferGeometry, threeMeshToConvexCannonMesh, threeMeshToCannonMesh, checkTime };
+export { getFirstMesh, getFirstBufferGeometry, threeMeshToConvexThreeMesh, threeMeshToConvexCannonMesh, cannonMeshToCannonConvexPolyhedron, threeMeshToCannonMesh, checkTime };
