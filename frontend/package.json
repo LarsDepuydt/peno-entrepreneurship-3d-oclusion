@@ -11,6 +11,9 @@
     "lint": "next lint",
     "format": "npx prettier --write ."
   },
+  "workspaces": [
+    "functions"
+  ],
   "dependencies": {
     "@bufbuild/connect-query": "^0.1.0",
     "@bufbuild/connect-web": "^0.8.1",

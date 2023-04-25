@@ -1,6 +1,7 @@
 {
   "functions": {
-    "source": "functions"
+    "source": "functions",
+    "runtime": "nodejs16"
   },
   "hosting": {
     "public": "out",
@@ -31,7 +32,7 @@
       },
       {
         "source": "/:path*",
-        "destination": "/index.html"
+        "destination": "/index.tsx"
       },
       {
         "source": "**",
