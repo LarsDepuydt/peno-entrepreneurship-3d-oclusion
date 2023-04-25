@@ -14,13 +14,11 @@ import dropdownPatientButton from '../patient/patient_dropdown';
 
 import { InspectObj } from '../scan_gallery/inspect_OBJ';
 
-
 interface scanProfile {
   scanid: number;
   patientid: number;
   picture: StaticImageData;
   date: string;
-
 }
 
 export function SingleScan({ scanid, patientid, picture, date }: scanProfile) {
@@ -40,7 +38,6 @@ export function SingleScan({ scanid, patientid, picture, date }: scanProfile) {
     '23': 'rd',
     '31': 'st',
   };
-  
 
   const formattedDate = parsedDate.toLocaleDateString('en-US', options);
   const dayOfMonth = parsedDate.getDate().toString();
@@ -74,10 +71,15 @@ export function SingleScan({ scanid, patientid, picture, date }: scanProfile) {
     <div className={styles.patientScan_container}>
       {dropDown && (
         <div className={styles.patientScan_dropDown}>
-          <button type="button" className={styleB.relu_btn} id={styleB.exitIcon} onClick={() => {
-          handleDropGone();
-          goToObjViewer();
-        }}></button>
+          <button
+            type="button"
+            className={styleB.relu_btn}
+            id={styleB.exitIcon}
+            onClick={() => {
+              handleDropGone();
+              goToObjViewer();
+            }}
+          ></button>
           <div className={styles.dropDownButtonWrapper}>
             <button className={styleB.relu_btn} id={styleB.dropDownButton}>
               export scan
@@ -120,7 +122,7 @@ export function SingleScan({ scanid, patientid, picture, date }: scanProfile) {
               <OpenObjButton />
               <InspectVR patientID={patientid} scanID={scanid} />
               <EditButton />
-              <DeleteButton />
+              <DeleteButton scanID={scanid} />
             </div>
           )}
 
