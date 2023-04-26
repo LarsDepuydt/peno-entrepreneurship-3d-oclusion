@@ -1,10 +1,7 @@
 {
   "functions": {
     "source": "functions",
-    "runtime": "nodejs16",
-    "predeploy": [
-      "yarn build"
-    ]
+    "runtime": "nodejs16"
   },
   "hosting": {
     "public": "out",
@@ -41,6 +38,9 @@
         "source": "**",
         "function": "nextApp"
       }
+    ],
+    "predeploy": [
+      "yarn build"
     ]
   }
 }

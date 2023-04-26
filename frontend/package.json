@@ -5,7 +5,9 @@
   "packageManager": "yarn@3.4.1",
   "scripts": {
     "dev": "next dev",
-    "build": "next build",
+    "build": "yarn build-frontend && yarn build-functions",
+    "build-frontend": "next build",
+    "build-functions": "cd functions && yarn build",
     "export": "next export",
     "start": "next start",
     "lint": "next lint",
