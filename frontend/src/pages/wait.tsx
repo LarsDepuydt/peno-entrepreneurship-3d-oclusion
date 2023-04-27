@@ -22,7 +22,7 @@ export default function WaitPage() {
   const [formVisible, setFormVisible] = useState(true); // Add formVisible state
 
   const transport = createConnectTransport({
-    baseUrl: "http://0.0.0.0:8080",
+    baseUrl: "https://backend-service-2ybjkij5qq-uc.a.run.app",
   });
 
   const router = useRouter();
@@ -56,14 +56,18 @@ export default function WaitPage() {
 
   async function waitForResponse(codeValue: number) {
     const client = createPromiseClient(ScanService, transport);
-
+  
     const req = new WaitingRequest({uniqueCode : codeValue})
-
-    const stream = client.waiting(req)
-    for await (const res of stream){
-      if (res.redirect){
-        router.push(res.url)
+  
+    const stream = client.waiting(req);
+    if (Symbol.asyncIterator in stream) { // Check if stream is an AsyncIterable
+      for await (const res of stream as AsyncIterable<any>) { // Narrow the type to AsyncIterable<any>
+        if (res.redirect){
+          router.push(res.url)
+        }
       }
+    } else {
+      throw new Error("Expected an AsyncIterable, but got a Promise");
     }
   }
 
