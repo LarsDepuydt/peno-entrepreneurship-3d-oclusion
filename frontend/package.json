@@ -5,13 +5,14 @@
   "packageManager": "yarn@3.4.1",
   "scripts": {
     "dev": "next dev",
-    "build": "yarn build-frontend && yarn build-functions",
+    "build": "yarn build-frontend && yarn export",
     "build-frontend": "next build",
-    "build-functions": "cd functions && yarn build",
+    "build-functions": "cd ../functions && yarn build",
     "export": "next export",
     "start": "next start",
     "lint": "next lint",
-    "format": "npx prettier --write ."
+    "format": "npx prettier --write .",
+    "deploy": "yarn build-frontend && cd functions && yarn build && cd .. && firebase deploy --only hosting --project relu-backend"
   },
   "workspaces": [
     "functions"
