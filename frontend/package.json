@@ -7,7 +7,6 @@
     "dev": "next dev",
     "build": "yarn build-frontend && yarn export",
     "build-frontend": "next build",
-    "build-functions": "cd ../functions && yarn build",
     "export": "next export",
     "start": "next start",
     "lint": "next lint",
