@@ -20,3 +20,4 @@ frontend/.firebase
 *.cache
 
 relu-backend-47dc600a7582.json
+cloud-sql-proxy
