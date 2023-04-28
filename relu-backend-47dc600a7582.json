@@ -1,0 +1,12 @@
+{
+  "type": "service_account",
+  "project_id": "relu-backend",
+  "private_key_id": "47dc600a7582ba895467ba3b58eab6f98e4f27d0",
+  "private_key": "-----BEGIN PRIVATE KEY-----\nMIIEvQIBADANBgkqhkiG9w0BAQEFAASCBKcwggSjAgEAAoIBAQCXZcb33ImQ3MHT\nYd42OwKG/+5byaG2GsK1JLTDLIDeZBLf/LdMzzQSoauNHql8CH7vw1Co55duGQC2\n+Bmq8oRGZn6Fu3ZjYhzoL5um/y1Svfv/Co7ayN35Rsn0muep5GrIVooDXyfkK8bE\nOH+8dDtbNNLsv3jbo0iwFUO7gwFdMKG5wuWUFMMVZiTMJ453auxS4Asr2NpOw/T/\nhwSQDr55LDoy1fPCta0dQK16z/6mBsOvZHnQpVcKe1+mHPSTy5LXUaCYm2zFBlUH\n2dS9Zw3rfmMdRRXq5XtsHRu1fg+jma4qYwk9blssHEssBiAI9oBryPrpkcHuM7ZI\nELAy91G5AgMBAAECggEACWRvREu6fhHv9V7uM/OTu8/PWALphRxiZW3+R9hwMzvG\nnv402e9F1f0RITtcfN0jENlPXPcnIhWrgW5hW0VZ1us/YKkJVm+NBwuDDshoZahz\nJHahd6m7+Z2+ZC4i/pt003Jo8/4YgbOEjIJLzGNylj0v86+KPigCV6guEEk3kbIc\n+P/G5jlQdqj7tDgMRkEAVl9MUn3jXzxKSPg3DDO4dOgKDDqOlzSogM+vKzB5N+/V\nsQ4f9xosWuaLG7pS9GtCWb+8HfwnHI22j/G0YPsgC+twBoqSRs43gIgT+egZQRsD\nJ7EDLUOmON4Cxmg1mc4ysxETCpejjJN4t/IIYLX1vQKBgQDMG1aUN8uxFCi2IIt7\nhRda8WS9C9zEMqY8sDNc0nr295Lm5i4ozykrxQdkoQ17/t1RiGbNLVNdZVgAzSU1\nBlTkFACscWKUzhP3LRZM4e6toN8tpT/BTTx+wDJk9eMc7aoFUBuIVL2VnDxuiqfP\nw/bcOozrpvXP5xBvwBOoD+Cn9QKBgQC948NrqgCV9yMvOGpA3E2Eex2Z2oVj4Suu\nYGPqNJByqyv9Uc/dmpxgAa6rGYjPCQGUuh7G5VSPNrxDxW/nzayof1cR294Ox0cM\nGa42YneKRUVYcn1SY2r6g922CoNfkHiPgxwEzaBizON9NkgaJnEWmUxseCpQ7yGO\nkYMER+bcNQKBgDq75zcxsyja3zhBt0GtM+JUsqOABWBkHtg58B3W59Gnvps5Q7E0\no+lXgmAfxEyZM8DhmouSbnnizuc0IW/XyZf0dZkp669cefxX+iHXpiJKt85fzi/m\n9PCYiCfrZhaOAa4TtkiN8hxaYD2DIvUztBb9tk2dtwDDwkQWJtHm98P9AoGAOC5x\nHSOZNMV/9XKdjT8g+Dds1J5gpOJ0CA2gwiR3MFYQl8xi0c/ywDz/LsRJQ+gIPbar\ncHFdiVnKbcq2h0DE+r1iR3hjxL+U97GJZ7HOaGyCTd7h0UR03FWzfS6zG80kvmEu\nIwWrlE/GZr9uqb4B64vDnrwW2QdHSGUo/FVBqpkCgYEAxmTO682+MpydREOKykmc\nn1vM6gyBg9RaYZIdH3PhipF91YXIZiNKc9HIH+vo6bSlUaMCvgRvY2QyPRVxRj1X\nm3jILR11pDdHCgBvMkArzci1y8uPUCK/K4mRS5HOMhkF/kQI3j/Jz2QzJJVcRGFh\n9EJRNYc/q8YhQBdafBSrUAQ=\n-----END PRIVATE KEY-----\n",
+  "client_email": "relu-backend-sql-proxy-dev@relu-backend.iam.gserviceaccount.com",
+  "client_id": "106732915662659404688",
+  "auth_uri": "https://accounts.google.com/o/oauth2/auth",
+  "token_uri": "https://oauth2.googleapis.com/token",
+  "auth_provider_x509_cert_url": "https://www.googleapis.com/oauth2/v1/certs",
+  "client_x509_cert_url": "https://www.googleapis.com/robot/v1/metadata/x509/relu-backend-sql-proxy-dev%40relu-backend.iam.gserviceaccount.com"
+}
