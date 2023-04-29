@@ -109,6 +109,27 @@
   border: none;
 }
 
+#unpinnedIcon,
+#pinnedIcon {
+  width: 48px;
+  height: 48px;
+  margin: 8px;
+  background-repeat: no-repeat;
+  background-position: center;
+  position: absolute;
+  top: -55px;
+  left: 0px;
+  border: none;
+}
+
+#unpinnedIcon {
+  background-image: url(../../public/unpinned-icon.png);
+}
+
+#pinnedIcon {
+  background-image: url(../../public/pinned-icon.png);
+}
+
 #exitIcon {
   width: 48px;
   height: 48px;
@@ -159,7 +180,6 @@
   background-position: center;
   border: none;
 }
-
 
 #editIcon {
   width: 48px;
