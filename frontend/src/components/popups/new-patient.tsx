@@ -74,13 +74,14 @@ export default function ModalForm() {
     //console.log(data);
     setSubmitOK(true);
     console.log('submitOK is set to true');
-    setModal(!modal);
+    //setModal(!modal);
   };
 
   const handleRedirect = () => {
     console.log('we started the function handleRedirect()');
     if (submitOK) {
       setSendOK(true);
+      console.log('this should go first');
       console.log('sendOK is set to true');
     }
   };
@@ -89,17 +90,17 @@ export default function ModalForm() {
 
   useEffect(() => {
     if (submitOK) {
+      refetch();
       console.log('were in the useEffect function inside the submitOK');
       console.log(patientinfo);
       console.log(patientinfo.dentist_id, ' foreign key error ', parseInt(DentistID));
-      refetch();
+
       setSendOK(false);
       console.log('line 82');
       if (data != undefined) {
         setModal(!modal);
       }
       setSubmitOK(false);
-      console.log('submitOK is set to false');
     }
   }, [data, modal, sendOK, submitOK]);
 
