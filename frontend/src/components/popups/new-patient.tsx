@@ -100,7 +100,7 @@ export default function ModalForm() {
       if (data != undefined) {
         setModal(!modal);
       }
-      setSubmitOK(false);
+      //setSubmitOK(false);
     }
   }, [data, modal, sendOK, submitOK]);
 
