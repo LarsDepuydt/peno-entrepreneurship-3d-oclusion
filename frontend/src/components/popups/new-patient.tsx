@@ -38,8 +38,13 @@ export default function ModalForm() {
 
   //const { data } = useQuery(addPatient.useQuery(patientinfo));
 
-  const query = addPatient.useQuery(patientinfo);
-  const { data, refetch } = useQuery(query.queryKey, query.queryFn, { enabled: false });
+  //const query = addPatient.useQuery(patientinfo);
+
+  const { data, refetch } = useQuery(
+    addPatient.useQuery(patientinfo).queryKey,
+    addPatient.useQuery(patientinfo).queryFn,
+    { enabled: false }
+  );
 
   const toggleModal = () => {
     setModal(!modal); // change state f -> t and t -> f
@@ -56,17 +61,27 @@ export default function ModalForm() {
     };
   };
 
+  // useEffect(() => {
+  //   console.log('patientinfo = ', patientinfo);
+  //   refetch();
+  // }, [patientinfo]);
+
   const submitFunction = (values: patientValues) => {
+    console.log('we started the function submitFunction()');
     console.log(ReworkValues(values));
     setData(ReworkValues(values));
-    console.log(data);
+
+    //console.log(data);
     setSubmitOK(true);
-    //setModal(!modal);
+    console.log('submitOK is set to true');
+    setModal(!modal);
   };
 
   const handleRedirect = () => {
+    console.log('we started the function handleRedirect()');
     if (submitOK) {
       setSendOK(true);
+      console.log('sendOK is set to true');
     }
   };
 
@@ -74,16 +89,19 @@ export default function ModalForm() {
 
   useEffect(() => {
     if (submitOK) {
+      console.log('were in the useEffect function inside the submitOK');
+      console.log(patientinfo);
+      console.log(patientinfo.dentist_id, ' foreign key error ', parseInt(DentistID));
       refetch();
-      console.log('in use effect function');
-      console.log(data);
       setSendOK(false);
       console.log('line 82');
       if (data != undefined) {
         setModal(!modal);
       }
+      setSubmitOK(false);
+      console.log('submitOK is set to false');
     }
-  }, [data, modal, sendOK]);
+  }, [data, modal, sendOK, submitOK]);
 
   //, patientinfo
 

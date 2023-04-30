@@ -5,17 +5,53 @@ import styles from '@/styles/Modal.module.css';
 import styleB from '@/styles/Buttons.module.css';
 
 import 'bootstrap/dist/css/bootstrap.css';
+import { getPatientById } from '@/gen/proto/threedoclusion/v1/service-ScanService_connectquery';
+//import { InspectScans } from '../../components/patient/inspect_scans';
+import { useQuery } from '@tanstack/react-query';
 
-interface searchName {
-  searchID: string;
+import router from 'next/router';
+
+interface IDpatient {
+  SearchID: string;
 }
 
 export default function ModalForm() {
   const [modal, setModal] = useState(false);
   // modal is not toggled at first
 
+  const [patientid, setData] = useState({ id: 0 });
+  let DentistID = process.env.REACT_APP_DENTIST_ID!;
+
+  //const query = GetPatientByIdRequest.useQuery(parseInt(patientid));
+  const query = getPatientById.useQuery(patientid);
+  const { data } = useQuery(query.queryKey, query.queryFn, { enabled: false });
+
   const toggleModal = () => {
     setModal(!modal); // change state f -> t and t -> f
+  };
+
+  const ReworkValue = (values: IDpatient) => {
+    return { id: parseInt(values.SearchID) };
+  };
+
+  const clickPatient = (values: IDpatient) => {
+    process.env.REACT_APP_PATIENT_ID = values.SearchID;
+    const idquery = parseInt(values.SearchID);
+    router.push({
+      pathname: '/scans-page',
+      query: {
+        idquery,
+      },
+    });
+  };
+
+  const submitFunction = (values: IDpatient) => {
+    console.log(values);
+    setData(ReworkValue(values));
+    console.log(data);
+    if (data?.dentistId == parseInt(DentistID)) {
+      clickPatient(values);
+    } else setModal(modal!);
   };
 
   return (
@@ -34,19 +70,18 @@ export default function ModalForm() {
             <div className={styles.login_box + ' p-3'}>
               <Formik
                 initialValues={{
-                  searchID: '',
+                  SearchID: '',
                 }}
                 // on Submit we console the values + close the popup tab
                 onSubmit={(values) => {
-                  console.log(values);
-                  setModal(!modal);
+                  submitFunction(values);
                 }}
               >
                 {({ errors, status, touched }) => (
                   <Form>
                     <div className={styles.rightfont}>
                       <div className="mb-3">
-                        <Field className="form-control" id="searchID" name="searchID" placeholder="Patient ID" />
+                        <Field className="form-control" id="SearchID" name="SearchID" placeholder="Patient ID" />
                       </div>
 
                       <div className={styles.spacingbtn}>
