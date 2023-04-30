@@ -12,13 +12,13 @@ import Head from 'next/head';
 
 const patients = [
   {
-    patient11: (
+    patient41: (
       <Patient
-        id={1}
+        id={10}
         picture={teeth3d}
         patientfirstname={'Jos'}
         patientlastname={'Van de Velde'}
-        doctorid={116}
+        doctorid={120}
         //date={new Date(2023, 2, 21)}
       />
     ),
@@ -28,7 +28,7 @@ const patients = [
         picture={teeth3d}
         patientfirstname={'Anna'}
         patientlastname={'Janssens'}
-        doctorid={116}
+        doctorid={120}
         //date={new Date(2023, 2, 20)}
       />
     ),

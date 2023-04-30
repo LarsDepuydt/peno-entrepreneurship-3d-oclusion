@@ -13,7 +13,7 @@ function App() {
 
     return (
       <div>
-        <SidebarObj patientfirstname={'TEST'} patientlastname={'TEST2'} />
+        <SidebarObj/>
         <HeaderObj />
         <ObjDisplay />
       </div>

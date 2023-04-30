@@ -11,6 +11,9 @@ import ReluLink from '../header/reluLink';
 import { WelcomingDoctor, WelcomingPatient } from './welcoming';
 import { useQuery } from '@tanstack/react-query';
 import { getDentistById } from '@/gen/proto/threedoclusion/v1/service-ScanService_connectquery';
+import NoteInput from "../OBJ_view/note-input";
+import NoteList from "../OBJ_view/note-list";
+import { useState } from 'react';
 
 interface HeaderPatientProps {
   patientfirstname: string;
@@ -64,17 +67,37 @@ export function SidebarPatient() {
   );
 }
 
-export function SidebarObj({ patientfirstname, patientlastname }: HeaderPatientProps) {
+export function SidebarObj( ) {
   const router = useRouter();
-  const home = () => router.push('/patient');
+  const openScans = () => {
+    let patientID = process.env.REACT_APP_PATIENT_ID!;
+    router.push({
+      pathname: '/scans-page',
+      query: {
+        patientID,
+      },
+    });
+  };
+
+  const [notes, setNotes] = useState<string[]>([]);
+
+  const handleAddNote = (note: string) => {
+    setNotes([...notes, note]);
+  };
+  
   return (
     <>
       <div className={styleSidebar.sidebar}>
         <WelcomingPatient />
+        <NoteInput onAddNote={handleAddNote} />
+        <NoteList notes={notes} />
         <div className={stylesButton.sidebarButton}>
-          <button type="button" className={stylesButton.relu_btn} id={stylesButton.homeIcon} onClick={home}></button>
-          <New_Scan />
-          <Filter_Tags />
+          <button
+            type="button"
+            className={stylesButton.relu_btn}
+            id={stylesButton.homeIcon}
+            onClick={openScans}
+          ></button>
           <ReluLink />
         </div>
       </div>
