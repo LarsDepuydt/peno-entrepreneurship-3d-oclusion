@@ -8,7 +8,7 @@ import { OBJLoader } from 'three/addons/loaders/OBJLoader.js';
 import { OBJExporter } from 'three/addons/exporters/OBJExporter.js';
 
 import * as CANNON from 'cannon-es';
-import { getFirstMesh, getFirstBufferGeometry, threeMeshToConvexThreeMesh, threeMeshToConvexCannonMesh, threeMeshToCannonMesh, checkTime, cannonMeshToCannonConvexPolyhedron } from './util.js'
+import { getFirstMesh, getFirstBufferGeometry, threeMeshToConvexThreeMesh, threeMeshToConvexCannonMesh, threeMeshToCannonMesh, checkTime, cannonMeshToCannonConvexPolyhedron, vec3ToVector3, vector3ToVec3, threeQuaternionToCannonQuaternion } from './util.js'
 
 
 let container;
@@ -16,45 +16,60 @@ let camera, scene, renderer;
 let controller1, controller2;
 let controllerGrip1, controllerGrip2;
 let controls;
-let group
 let raycaster;
 
 const intersected = [];     // global list that holds the first objects the controllers are pointing at
 const tempMatrix = new THREE.Matrix4();
 
-
-let world, timeStep=1/30;
+let world;
 let frameNum = 0;
 
 // lowerjaw and upperjaw are instances of class Jaw
 let lowerjaw, upperjaw;
 let floor_body;
 
-const teeth_material = new THREE.MeshStandardMaterial({color: 0x0000ff});
+const teethMaterial = new THREE.MeshStandardMaterial({color: 0x0000ff});
 const slipperyMaterial = new CANNON.Material('slippery');   // disabling friction leads to slightly better performance
-const sphereMaterial = teeth_material;
+const sphereMaterial = teethMaterial;
+const targetMaterial = new THREE.MeshStandardMaterial({color: 0xff0000});
 
 const objLoader = new OBJLoader();
+
+// parameters
+let TIMESTEP = 1/30;
+let IMPULSE_REACTIVITY = 0.1;
+let ANGULAR_REACTIVITY = 0.1;
+let LINEAR_DAMPING = 0.5;       // cannon.js default: 0.01
+let ANGULAR_DAMPING = 0.5;      // idem
+
 
 
 class Jaw {
     mesh;   // THREE.Mesh
     body;   // CANNON.Body
     sphere; // THREE.Mesh
-    target;
+    target; // THREE.Mesh
     loaded = false;
+    selected = false;
 
     constructor(path) {
-        this.target = new THREE.Object3D();     // invisible THREE.Object3D, dat aanduidt waar de jaw zou moeten zijn obv de controller selection
+        let sphere_geo = new THREE.SphereGeometry(0.05,10,5);
+        this.target = new THREE.Mesh(sphere_geo, targetMaterial);     // (invisible) THREE.Object3D, dat aanduidt waar de jaw zou moeten zijn obv de controller selection
+        scene.add(this.target);
         this.target.visible = false;
 
         // add sphere for center of mass
-        let sphere_geo = new THREE.SphereGeometry(0.05,10,5);
         this.sphere = new THREE.Mesh(sphere_geo, sphereMaterial);
         scene.add(this.sphere);
+        this.sphere.visible = true;     // true for debugging purposes
 
         // add body
-        this.body = new CANNON.Body({mass: 1, material: slipperyMaterial});
+        this.body = new CANNON.Body({
+            mass: 1,
+            material: slipperyMaterial,
+            linearDamping: LINEAR_DAMPING,
+            angularDamping: ANGULAR_DAMPING,
+        });
         this.body.position.set(0,2,0);
         let xaxis = new CANNON.Vec3(1,0,0);
         this.body.quaternion.setFromAxisAngle(xaxis, -Math.PI/2);
@@ -72,7 +87,7 @@ class Jaw {
             // called when resource is loaded
             function (object) {         // object is a 'Group', which is a subclass of 'Object3D'
                 const buffergeo = getFirstBufferGeometry(object);
-                jaw.mesh = new THREE.Mesh(buffergeo, teeth_material);
+                jaw.mesh = new THREE.Mesh(buffergeo, teethMaterial.clone());
                 
                 jaw.mesh.geometry.scale(0.01, 0.01, 0.01);
                 jaw.mesh.position.x = 0;
@@ -80,7 +95,7 @@ class Jaw {
                 jaw.mesh.position.z = 0;
                 jaw.mesh.rotation.x = 1.5 * Math.PI;
                 
-                group.add(jaw.mesh);
+                scene.add(jaw.mesh);
                 
                 // const convexmesh = threeMeshToConvexThreeMesh(jaw.mesh);
                 // const shapex = threeMeshToCannonMesh(convexmesh);
@@ -95,7 +110,7 @@ class Jaw {
                 console.log("loading mesh succeeded");
                 jaw.body.addShape(shape);
                 jaw.loaded = true;
-                startAnimation();
+                afterLoad();
             },
             
             // called when loading in progress
@@ -115,22 +130,48 @@ class Jaw {
         this.mesh.quaternion.copy(this.body.quaternion);
         this.sphere.position.copy(this.body.position);
     }
+
+    setTarget() {
+        this.target.position.copy(this.body.position);
+        this.target.quaternion.copy(this.body.quaternion);
+        this.target.visible = true;
+    }
+
+    applyForces() {
+        if (this.selected) {
+            this.body.applyImpulse(this.impulseToTarget());
+            this.body.applyTorque(this.torqueToTarget());
+        }
+    }
+
+    impulseToTarget() {
+        const worldPosition = vector3ToVec3(this.target.getWorldPosition(new THREE.Vector3()));
+        const dp = worldPosition.vsub(this.body.position);
+        const impulse = dp.scale(IMPULSE_REACTIVITY);
+        return impulse;
+    }
+
+    torqueToTarget() {
+        const worldQuaternion = threeQuaternionToCannonQuaternion(this.target.getWorldQuaternion(new THREE.Quaternion()));
+        const dtheta = worldQuaternion.mult(this.body.quaternion.inverse());
+        return dtheta;
+    }
 }
 
 
 // for both cannon.js and three.js: x=red, y=green, z=blue
 initCannon();
 initThree();
-initObjects();  // animation is started after both objects are loaded
+loadObjects();  // animation is started after both objects are loaded
 
 
 
 function initCannon() {
     world = new CANNON.World();
-    world.gravity.set(0,-0.01,0);
+    world.gravity.set(0,0,0);
     world.broadphase = new CANNON.NaiveBroadphase();
     world.broadphase.useBoundingBoxes = true;
-    world.solver.iterations = 50;     //10
+    world.solver.iterations = 10;     //10
     console.log(world);
 
     floor_body = new CANNON.Body({ mass: 0 });
@@ -185,13 +226,6 @@ function initThree() {
     light.shadow.camera.left = - 2;
     light.shadow.mapSize.set( 4096, 4096 );
     scene.add( light );
-
-
-   
-    // add all objects to an object group
-
-    group = new THREE.Group();
-    scene.add( group );
 
  
     // add renderer and enable VR
@@ -287,16 +321,23 @@ function initThree() {
 
 }
 
-function initObjects() {
+function loadObjects() {
     lowerjaw = new Jaw('../../assets/simplified/lower_180.obj');
     upperjaw = new Jaw('../../assets/simplified/upper_218.obj');
-    lowerjaw.body.position.set(0,2,0);
-    upperjaw.body.position.set(0,3,0);
 }
 
 
-function startAnimation() {
+function afterLoad() {
     if (lowerjaw.loaded && upperjaw.loaded) {
+        lowerjaw.body.position.set(0,2,0);
+        upperjaw.body.position.set(0,3,0);
+        lowerjaw.mesh.name = "lowerjaw.mesh";
+        lowerjaw.sphere.name = "lowerjaw.sphere";
+        lowerjaw.target.name = "lowerjaw.target";
+        upperjaw.mesh.name = "upperjaw.mesh";
+        upperjaw.sphere.name = "lowerjaw.sphere";
+        upperjaw.target.name = "lowerjaw.target";
+
         console.log("starting animation");
         renderer.setAnimationLoop( animate );
     }
@@ -321,8 +362,12 @@ function render() {
 }
 
 function updatePhysics() {
+    // Apply impulses and torques for both jaws
+    lowerjaw.applyForces();
+    upperjaw.applyForces();
+
     // Step the physics world
-    world.step(timeStep);
+    world.step(TIMESTEP);
 
     // Copy coordinates from Cannon.js to Three.js
     lowerjaw.syncPhysics();
@@ -351,13 +396,15 @@ function onSelectStart( event ) {
     if ( intersections.length > 0 ) {
 
         const intersection = intersections[ 0 ];
+        const jaw = meshToJaw(intersection.object);
 
-        const object = intersection.object;
-        object.material.emissive.b = 1;
-        controller.attach( object );
-
-        controller.userData.selected = object;
-
+        if (!jaw.selected) {
+            jaw.mesh.material.emissive.b = 1;
+            jaw.setTarget();
+            controller.attach( jaw.target );
+            jaw.selected = true;
+            controller.userData.selected = jaw;
+        }
     }
 
 }
@@ -371,10 +418,12 @@ function onSelectEnd( event ) {
 
     if ( controller.userData.selected !== undefined ) {
 
-        const object = controller.userData.selected;
-        object.material.emissive.b = 0;
-        group.attach( object );
+        const jaw = controller.userData.selected;
 
+        jaw.mesh.material.emissive.b = 0;
+        scene.attach( jaw.target );
+        jaw.target.visible = false;
+        jaw.selected = false;
         controller.userData.selected = undefined;
 
     }
@@ -392,7 +441,7 @@ function getIntersections( controller ) {
     raycaster.ray.origin.setFromMatrixPosition( controller.matrixWorld );
     raycaster.ray.direction.set( 0, 0, - 1 ).applyMatrix4( tempMatrix );
 
-    return raycaster.intersectObjects( group.children, true );
+    return raycaster.intersectObjects( [lowerjaw.mesh, upperjaw.mesh], true );
 
 }
 
@@ -496,3 +545,15 @@ const getFov = () => {
       Math.PI
   );
 };
+
+
+function meshToJaw(mesh) {
+    if (mesh === lowerjaw.mesh) {
+        return lowerjaw;
+    } else if (mesh === upperjaw.mesh) {
+        return upperjaw;
+    } else {
+        console.warn("Selected mesh is not a jaw, returning null");
+        return null;
+    }
+}

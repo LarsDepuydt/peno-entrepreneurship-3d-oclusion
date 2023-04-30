@@ -295,5 +295,17 @@ function getPosition(lj_mesh){
     return x, y, z, r_x, r_y, r_z
 }
 
+function vector3ToVec3(vector) {
+    return new CANNON.Vec3(vector.x, vector.y, vector.z);
+}
 
-export { getFirstMesh, getFirstBufferGeometry, threeMeshToConvexThreeMesh, threeMeshToConvexCannonMesh, cannonMeshToCannonConvexPolyhedron, threeMeshToCannonMesh, checkTime };
+function vec3ToVector3(vec) {
+    return new THREE.Vector3(vec.x, vec.y, vec.z);
+}
+
+function threeQuaternionToCannonQuaternion(quat) {
+    return new CANNON.Quaternion(quat.x, quat.y, quat.z, quat.w);
+}
+
+
+export { getFirstMesh, getFirstBufferGeometry, threeMeshToConvexThreeMesh, threeMeshToConvexCannonMesh, cannonMeshToCannonConvexPolyhedron, threeMeshToCannonMesh, checkTime, vector3ToVec3, vec3ToVector3, threeQuaternionToCannonQuaternion };
