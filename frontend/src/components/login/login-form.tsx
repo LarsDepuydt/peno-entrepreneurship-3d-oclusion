@@ -52,7 +52,6 @@ export default function LoginForm() {
         process.env.REACT_APP_DENTIST_ID = data.id.toString();
       }
       data?.token && credentials.email && router.push('/patient');
-      //setSubmitOK(false);
     }
   }, [data, credentials, router, sendOK]);
 

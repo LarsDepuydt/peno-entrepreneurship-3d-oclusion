@@ -41,13 +41,26 @@ export default function ModalForm() {
   //const query = addPatient.useQuery(patientinfo);
 
   const { data, refetch } = useQuery(
-    addPatient.useQuery(patientinfo).queryKey,
-    addPatient.useQuery(patientinfo).queryFn,
+    addPatient.useQuery({
+      firstName: 'Patient',
+      lastName: 'Test',
+      pinned: true,
+      notes: 'these are additional notes',
+      dentistId: 126,
+    }).queryKey,
+    addPatient.useQuery({
+      firstName: 'Patient',
+      lastName: 'Test',
+      pinned: true,
+      notes: 'these are additional notes',
+      dentistId: 126,
+    }).queryFn,
     { enabled: false }
   );
 
   const toggleModal = () => {
     setModal(!modal); // change state f -> t and t -> f
+    setSendOK(true);
   };
 
   const ReworkValues = (values: patientValues) => {
@@ -67,22 +80,24 @@ export default function ModalForm() {
   // }, [patientinfo]);
 
   const submitFunction = (values: patientValues) => {
-    console.log('we started the function submitFunction()');
-    console.log(ReworkValues(values));
-    setData(ReworkValues(values));
+    if (sendOK && modal) {
+      setSendOK(false);
+      console.log('we started the function submitFunction()');
+      console.log(ReworkValues(values));
+      setData(ReworkValues(values));
 
-    //console.log(data);
-    setSubmitOK(true);
-    console.log('submitOK is set to true');
-    //setModal(!modal);
+      //console.log(data);
+      setSubmitOK(true);
+      console.log('submitOK is set to true');
+    }
+
+    setModal(false);
   };
 
   const handleRedirect = () => {
-    console.log('we started the function handleRedirect()');
+    refetch();
     if (submitOK) {
       setSendOK(true);
-      console.log('this should go first');
-      console.log('sendOK is set to true');
     }
   };
 
@@ -94,15 +109,13 @@ export default function ModalForm() {
       console.log('were in the useEffect function inside the submitOK');
       console.log(patientinfo);
       console.log(patientinfo.dentist_id, ' foreign key error ', parseInt(DentistID));
-
-      setSendOK(false);
       console.log('line 82');
       if (data != undefined) {
-        setModal(!modal);
+        setModal(false);
       }
-      //setSubmitOK(false);
+      setSubmitOK(false);
     }
-  }, [data, modal, sendOK, submitOK]);
+  }, [data, modal, submitOK]);
 
   //, patientinfo
 
