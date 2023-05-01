@@ -27,34 +27,40 @@ export default function ModalForm() {
   const [sendOK, setSendOK] = useState(false);
 
   const [patientinfo, setData] = useState({
-    first_name: '',
-    last_name: '',
+    firstName: '',
+    lastName: '',
 
     pinned: false,
     notes: '',
 
-    dentist_id: 0,
+    dentistId: 0,
   });
 
   //const { data } = useQuery(addPatient.useQuery(patientinfo));
 
   //const query = addPatient.useQuery(patientinfo);
 
+  // const { data, refetch } = useQuery(
+  //   addPatient.useQuery({
+  //     firstName: 'Patient',
+  //     lastName: 'Test',
+  //     pinned: true,
+  //     notes: 'these are additional notes',
+  //     dentistId: 126,
+  //   }).queryKey,
+  //   addPatient.useQuery({
+  //     firstName: 'Patient',
+  //     lastName: 'Test',
+  //     pinned: true,
+  //     notes: 'these are additional notes',
+  //     dentistId: 126,
+  //   }).queryFn,
+  //   { enabled: false }
+  // );
+
   const { data, refetch } = useQuery(
-    addPatient.useQuery({
-      firstName: 'Patient',
-      lastName: 'Test',
-      pinned: true,
-      notes: 'these are additional notes',
-      dentistId: 126,
-    }).queryKey,
-    addPatient.useQuery({
-      firstName: 'Patient',
-      lastName: 'Test',
-      pinned: true,
-      notes: 'these are additional notes',
-      dentistId: 126,
-    }).queryFn,
+    addPatient.useQuery(patientinfo).queryKey,
+    addPatient.useQuery(patientinfo).queryFn,
     { enabled: false }
   );
 
@@ -65,12 +71,12 @@ export default function ModalForm() {
 
   const ReworkValues = (values: patientValues) => {
     return {
-      first_name: values.patientFirstName,
-      last_name: values.patientLastName,
+      firstName: values.patientFirstName,
+      lastName: values.patientLastName,
       pinned: values.pinned,
       notes: values.notes,
 
-      dentist_id: parseInt(DentistID),
+      dentistId: parseInt(DentistID),
     };
   };
 
@@ -83,8 +89,9 @@ export default function ModalForm() {
     if (sendOK && modal) {
       setSendOK(false);
       console.log('we started the function submitFunction()');
-      console.log(ReworkValues(values));
+
       setData(ReworkValues(values));
+      console.log(patientinfo);
 
       //console.log(data);
       setSubmitOK(true);
@@ -108,7 +115,7 @@ export default function ModalForm() {
       refetch();
       console.log('were in the useEffect function inside the submitOK');
       console.log(patientinfo);
-      console.log(patientinfo.dentist_id, ' foreign key error ', parseInt(DentistID));
+      console.log(patientinfo.dentistId, ' foreign key error ', parseInt(DentistID));
       console.log('line 82');
       if (data != undefined) {
         setModal(false);
