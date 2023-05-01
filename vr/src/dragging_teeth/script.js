@@ -4,7 +4,6 @@ import { VRButton } from 'three/addons/webxr/VRButton.js';
 import { XRControllerModelFactory } from 'three/addons/webxr/XRControllerModelFactory.js';
 import { OBJLoader } from 'three/addons/loaders/OBJLoader.js';
 //import * as dat from 'dat';
-//import * as fs from '../../node_modules/fs';
 import { OBJExporter } from 'three/addons/exporters/OBJExporter.js';
 
 import * as CANNON from 'cannon-es';
@@ -45,7 +44,7 @@ const ANGULAR_DAMPING = 0.9;      // idem
 
 
 // set to true for debugging / development
-const DEBUGGING_MODE = false;
+const DEBUGGING_MODE = true;
 
 
 
@@ -77,11 +76,11 @@ class Jaw {
 
         // add body
         this.body = new CANNON.Body({
-            mass: 0,
+            mass: BODYMASS,
             material: slipperyMaterial,
             linearDamping: LINEAR_DAMPING,
             angularDamping: ANGULAR_DAMPING,
-            type: CANNON.Body.DYNAMIC,
+            type: CANNON.Body.STATIC,
         });
         this.body.position.set(0,2,0);
         let xaxis = new CANNON.Vec3(1,0,0);
@@ -491,20 +490,15 @@ function onSelectStart( event ) {
         const jaw = meshToJaw(intersection.object);
 
         if (!jaw.selected) {
-            console.log(jaw.body.mass);
-            console.log(jaw.body);
-
             jaw.mesh.material.emissive.b = 1;
             jaw.setTarget();
             controller.attach( jaw.target );
             jaw.selected = true;
-            jaw.body.mass = BODYMASS;
+            jaw.body.type = CANNON.Body.DYNAMIC;
             controller.userData.selected = jaw;
-
             console.log(jaw.body);
         }
     }
-
 }
 
 
@@ -522,12 +516,9 @@ function onSelectEnd( event ) {
         scene.attach( jaw.target );
         jaw.target.visible = false;
         jaw.selected = false;
-        jaw.body.mass = 0;
+        jaw.body.type = CANNON.Body.STATIC;
         controller.userData.selected = undefined;
-
     }
-
-
 }
 
 
