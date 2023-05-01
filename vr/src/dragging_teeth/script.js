@@ -36,11 +36,16 @@ const targetMaterial = new THREE.MeshStandardMaterial({color: 0xff0000});
 const objLoader = new OBJLoader();
 
 // parameters
-let TIMESTEP = 1/30;
-let IMPULSE_REACTIVITY = 0.1;
-let ANGULAR_REACTIVITY = 0.1;
-let LINEAR_DAMPING = 0.5;       // cannon.js default: 0.01
-let ANGULAR_DAMPING = 0.5;      // idem
+const TIMESTEP = 1/30;
+const BODYMASS = 1;
+const IMPULSE_REACTIVITY = 0.1;
+const ANGULAR_REACTIVITY = 0.1;
+const LINEAR_DAMPING = 0.5;       // cannon.js default: 0.01
+const ANGULAR_DAMPING = 0.5;      // idem
+
+
+// set to true for debugging / development
+const DEBUGGING_MODE = false;
 
 
 
@@ -50,9 +55,16 @@ class Jaw {
     sphere; // THREE.Mesh
     target; // THREE.Mesh
     loaded = false;
+    body_loaded = false;
+    mesh_loaded = false;
     selected = false;
 
-    constructor(path) {
+    /**
+     * 
+     * @param {*} bodypath path to the body obj file used for collision detection
+     * @param {*} meshpath path to the mesh obj file (visual), in debugging mode, use the body model instead
+     */
+    constructor(bodypath, meshpath) {
         let sphere_geo = new THREE.SphereGeometry(0.05,10,5);
         this.target = new THREE.Mesh(sphere_geo, targetMaterial);     // (invisible) THREE.Object3D, dat aanduidt waar de jaw zou moeten zijn obv de controller selection
         scene.add(this.target);
@@ -61,11 +73,11 @@ class Jaw {
         // add sphere for center of mass
         this.sphere = new THREE.Mesh(sphere_geo, sphereMaterial);
         scene.add(this.sphere);
-        this.sphere.visible = true;     // true for debugging purposes
+        this.sphere.visible = DEBUGGING_MODE;     // true for debugging purposes
 
         // add body
         this.body = new CANNON.Body({
-            mass: 1,
+            mass: BODYMASS,
             material: slipperyMaterial,
             linearDamping: LINEAR_DAMPING,
             angularDamping: ANGULAR_DAMPING,
@@ -75,10 +87,15 @@ class Jaw {
         this.body.quaternion.setFromAxisAngle(xaxis, -Math.PI/2);
         world.addBody(this.body);
 
-        this.loadMeshAndShape(path);
+        if (DEBUGGING_MODE) {
+            this.loadMeshAndBody(bodypath);
+        } else {
+            this.loadMesh(meshpath);
+            this.loadBody(bodypath);
+        }
     }
 
-    loadMeshAndShape(path) {
+    loadMeshAndBody(path) {
         const jaw = this;
 
         objLoader.load(
@@ -88,38 +105,98 @@ class Jaw {
             function (object) {         // object is a 'Group', which is a subclass of 'Object3D'
                 const buffergeo = getFirstBufferGeometry(object);
                 jaw.mesh = new THREE.Mesh(buffergeo, teethMaterial.clone());
-                
                 jaw.mesh.geometry.scale(0.01, 0.01, 0.01);
                 jaw.mesh.position.x = 0;
                 jaw.mesh.position.y = 0;
                 jaw.mesh.position.z = 0;
                 jaw.mesh.rotation.x = 1.5 * Math.PI;
-                
                 scene.add(jaw.mesh);
-                
-                // const convexmesh = threeMeshToConvexThreeMesh(jaw.mesh);
-                // const shapex = threeMeshToCannonMesh(convexmesh);
-                // const shape = cannonMeshToCannonConvexPolyhedron(shapex);
-                // console.log("mesh: ", jaw.mesh);
-                // console.log("convexmesh: ", shapex);
-                // console.log("shape: ", shape);
-                // console.log("convexshape: ", shape);
 
                 const shape = threeMeshToConvexCannonMesh(jaw.mesh);
+                jaw.body.addShape(shape);
 
                 console.log("loading mesh succeeded");
-                jaw.body.addShape(shape);
                 jaw.loaded = true;
                 afterLoad();
             },
             
             // called when loading in progress
-            function (xhr) {
-                // pass
+            function (xhr) {},
+
+            // called when loading has errors
+            function (error) {
+                console.log('An error happened while loading mesh and body: ' + error);
+            }
+        );
+    }
+
+    loadMesh(path) {
+        const jaw = this;
+
+        objLoader.load(
+            path,
+            
+            // called when resource is loaded
+            function (object) {         // object is a 'Group', which is a subclass of 'Object3D'
+                jaw.mesh = getFirstMesh(object);
+                jaw.mesh.geometry.scale(0.01, 0.01, 0.01);
+                jaw.mesh.position.x = 0;
+                jaw.mesh.position.y = 0;
+                jaw.mesh.position.z = 0;
+                jaw.mesh.rotation.x = 1.5 * Math.PI;
+                scene.add(jaw.mesh);
+
+                console.log("loading mesh succeeded");
+                jaw.mesh_loaded = true;
+                if (jaw.mesh_loaded && jaw.body_loaded) {       // actually this is a race condition, let's ignore that for now
+                    jaw.loaded = true;
+                    afterLoad();
+                }
             },
+            
+            // called when loading in progress
+            function (xhr) {},
+
             // called when loading has errors
             function (error) {
                 console.log('An error happened while loading mesh: ' + error);
+            }
+        );
+    }
+
+    loadBody(path) {
+        const jaw = this;
+
+        objLoader.load(
+            path,
+            
+            // called when resource is loaded
+            function (object) {         // object is a 'Group', which is a subclass of 'Object3D'
+                const buffergeo = getFirstBufferGeometry(object);
+                const mesh = new THREE.Mesh(buffergeo, teethMaterial.clone());
+                mesh.geometry.scale(0.01, 0.01, 0.01);
+                mesh.position.x = 0;
+                mesh.position.y = 0;
+                mesh.position.z = 0;
+                mesh.rotation.x = 1.5 * Math.PI;
+
+                const shape = threeMeshToConvexCannonMesh(mesh);
+                jaw.body.addShape(shape);
+
+                console.log("loading mesh succeeded");
+                jaw.body_loaded = true;
+                if (jaw.mesh_loaded && jaw.body_loaded) {       // actually a race condition
+                    jaw.loaded = true;
+                    afterLoad();
+                }
+            },
+            
+            // called when loading in progress
+            function (xhr) {},
+
+            // called when loading has errors
+            function (error) {
+                console.log('An error happened while loading body: ' + error);
             }
         );
     }
@@ -134,7 +211,7 @@ class Jaw {
     setTarget() {
         this.target.position.copy(this.body.position);
         this.target.quaternion.copy(this.body.quaternion);
-        this.target.visible = true;
+        this.target.visible = DEBUGGING_MODE;
     }
 
     applyForces() {
@@ -199,8 +276,10 @@ function initThree() {
     controls.update();
 
     // axis
-    var axesHelper = new THREE.AxesHelper( 5 );
-    scene.add( axesHelper );
+    if (DEBUGGING_MODE) {
+        var axesHelper = new THREE.AxesHelper( 5 );
+        scene.add( axesHelper );
+    }
 
     // add floor
     const floorGeometry = new THREE.PlaneGeometry( 4, 4 );
@@ -322,8 +401,9 @@ function initThree() {
 }
 
 function loadObjects() {
-    lowerjaw = new Jaw('../../assets/simplified/lower_180.obj');
-    upperjaw = new Jaw('../../assets/simplified/upper_218.obj');
+    lowerjaw = new Jaw('../../assets/simplified/lower_180.obj', '../../assets/lower_ios_6.obj');
+    //upperjaw = new Jaw('../../assets/simplified/upper_218.obj');
+    upperjaw = new Jaw('../../assets/simplified/upper_209.obj', '../../assets/upper_ios_6.obj');
 }
 
 
