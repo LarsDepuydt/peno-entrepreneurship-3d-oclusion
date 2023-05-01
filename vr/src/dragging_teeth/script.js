@@ -9,6 +9,7 @@ import { OBJExporter } from 'three/addons/exporters/OBJExporter.js';
 
 import * as CANNON from 'cannon-es';
 import { getFirstMesh, getFirstBufferGeometry, threeMeshToConvexThreeMesh, threeMeshToConvexCannonMesh, threeMeshToCannonMesh, checkTime, cannonMeshToCannonConvexPolyhedron, vec3ToVector3, vector3ToVec3, threeQuaternionToCannonQuaternion } from './util.js'
+import { generateNewBody, mergeMeshes } from './CustomCannonBody.js';
 
 
 let container;
@@ -103,17 +104,36 @@ class Jaw {
             
             // called when resource is loaded
             function (object) {         // object is a 'Group', which is a subclass of 'Object3D'
-                const buffergeo = getFirstBufferGeometry(object);
+                /*const buffergeo = getFirstBufferGeometry(object); // Werkt niet met meerdere children, maak mesh voor elke child?
                 jaw.mesh = new THREE.Mesh(buffergeo, teethMaterial.clone());
                 jaw.mesh.geometry.scale(0.01, 0.01, 0.01);
                 jaw.mesh.position.x = 0;
                 jaw.mesh.position.y = 0;
                 jaw.mesh.position.z = 0;
                 jaw.mesh.rotation.x = 1.5 * Math.PI;
-                scene.add(jaw.mesh);
+                scene.add(jaw.mesh);*/
 
-                const shape = threeMeshToConvexCannonMesh(jaw.mesh);
-                jaw.body.addShape(shape);
+                //const shape = threeMeshToConvexCannonMesh(jaw.mesh);
+                //jaw.body.addShape(shape);
+                //jaw.body = generateNewBody(object, jaw.body);
+                //console.log(object);
+                // How to generate as mesh since it's built out of little parts?
+                jaw.mesh = mergeMeshes(object); // Doesn't work
+                console.log(jaw.mesh);
+
+                for (let g = 0; g < object.children.length; g++) {
+                    const child = object.children[g];
+                    let meshChild = new THREE.Mesh(child.geometry, teethMaterial.clone());
+                    meshChild.geometry.scale(0.01, 0.01, 0.01);
+                    meshChild.position.x = 0;
+                    meshChild.position.y = 0;
+                    meshChild.position.z = 0;
+                    meshChild.rotation.x = 1.5 * Math.PI;
+
+                    const shapeChild = threeMeshToConvexCannonMesh(meshChild);
+                    jaw.body.addShape(shapeChild);
+                    console.log(jaw.body);
+                }
 
                 console.log("loading mesh succeeded");
                 jaw.loaded = true;
@@ -172,7 +192,7 @@ class Jaw {
             
             // called when resource is loaded
             function (object) {         // object is a 'Group', which is a subclass of 'Object3D'
-                const buffergeo = getFirstBufferGeometry(object);
+                /*const buffergeo = getFirstBufferGeometry(object);
                 const mesh = new THREE.Mesh(buffergeo, teethMaterial.clone());
                 mesh.geometry.scale(0.01, 0.01, 0.01);
                 mesh.position.x = 0;
@@ -181,9 +201,22 @@ class Jaw {
                 mesh.rotation.x = 1.5 * Math.PI;
 
                 const shape = threeMeshToConvexCannonMesh(mesh);
-                jaw.body.addShape(shape);
+                jaw.body.addShape(shape);*/
 
-                console.log("loading mesh succeeded");
+                for (let g = 0; g < object.children.length; g++) {
+                    const child = object.children[g];
+                    let meshChild = new THREE.Mesh(child.geometry, teethMaterial.clone());
+                    meshChild.geometry.scale(0.01, 0.01, 0.01);
+                    meshChild.position.x = 0;
+                    meshChild.position.y = 0;
+                    meshChild.position.z = 0;
+                    meshChild.rotation.x = 1.5 * Math.PI;
+
+                    const shapeChild = threeMeshToConvexCannonMesh(meshChild);
+                    jaw.body.addShape(shapeChild);
+                }
+
+                console.log("loading body succeeded");
                 jaw.body_loaded = true;
                 if (jaw.mesh_loaded && jaw.body_loaded) {       // actually a race condition
                     jaw.loaded = true;
@@ -401,22 +434,24 @@ function initThree() {
 }
 
 function loadObjects() {
-    lowerjaw = new Jaw('../../assets/simplified/lower_180.obj', '../../assets/lower_ios_6.obj');
+    //lowerjaw = new Jaw('../../assets/simplified/lower_180.obj', '../../assets/lower_ios_6.obj');
     //upperjaw = new Jaw('../../assets/simplified/upper_218.obj');
-    upperjaw = new Jaw('../../assets/simplified/upper_209.obj', '../../assets/upper_ios_6.obj');
+    //upperjaw = new Jaw('../../assets/simplified/upper_209.obj', '../../assets/upper_ios_6.obj');
+    lowerjaw = new Jaw('../../assets/simplified/decomp_lower.obj', '../../assets/lower_ios_6.obj');
+    upperjaw = new Jaw('../../assets/simplified/decomp_upper.obj', '../../assets/upper_ios_6.obj');
 }
 
 
 function afterLoad() {
     if (lowerjaw.loaded && upperjaw.loaded) {
         lowerjaw.body.position.set(0,2,0);
-        upperjaw.body.position.set(0,3,0);
+        upperjaw.body.position.set(0,3,0);/*
         lowerjaw.mesh.name = "lowerjaw.mesh";
         lowerjaw.sphere.name = "lowerjaw.sphere";
         lowerjaw.target.name = "lowerjaw.target";
         upperjaw.mesh.name = "upperjaw.mesh";
         upperjaw.sphere.name = "lowerjaw.sphere";
-        upperjaw.target.name = "lowerjaw.target";
+        upperjaw.target.name = "lowerjaw.target";*/
 
         console.log("starting animation");
         renderer.setAnimationLoop( animate );
