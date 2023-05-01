@@ -82,6 +82,7 @@ class Jaw {
             material: slipperyMaterial,
             linearDamping: LINEAR_DAMPING,
             angularDamping: ANGULAR_DAMPING,
+            type: CANNON.Body.STATIC,
         });
         this.body.position.set(0,2,0);
         let xaxis = new CANNON.Vec3(1,0,0);
@@ -518,6 +519,7 @@ function onSelectStart( event ) {
             jaw.setTarget();
             controller.attach( jaw.target );
             jaw.selected = true;
+            jaw.body.type = CANNON.Body.DYNAMIC;
             controller.userData.selected = jaw;
         }
     }
@@ -539,6 +541,7 @@ function onSelectEnd( event ) {
         scene.attach( jaw.target );
         jaw.target.visible = false;
         jaw.selected = false;
+        jaw.body.type = CANNON.Body.STATIC;
         controller.userData.selected = undefined;
 
     }
