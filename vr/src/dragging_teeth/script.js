@@ -8,7 +8,7 @@ import { OBJLoader } from 'three/addons/loaders/OBJLoader.js';
 import { OBJExporter } from 'three/addons/exporters/OBJExporter.js';
 
 import * as CANNON from 'cannon-es';
-import { getFirstMesh, getFirstBufferGeometry, threeMeshToConvexThreeMesh, threeMeshToConvexCannonMesh, threeMeshToCannonMesh, checkTime, cannonMeshToCannonConvexPolyhedron, vec3ToVector3, vector3ToVec3, threeQuaternionToCannonQuaternion } from './util.js'
+import { getFirstMesh, getFirstBufferGeometry, threeMeshToConvexThreeMesh, threeMeshToConvexCannonMesh, threeMeshToCannonMesh, checkTime, cannonMeshToCannonConvexPolyhedron, vec3ToVector3, vector3ToVec3, threeQuaternionToCannonQuaternion, applyQuaternion, sqnorm, quatDot, minusQuat } from './util.js'
 
 
 let container;
@@ -37,11 +37,11 @@ const objLoader = new OBJLoader();
 
 // parameters
 const TIMESTEP = 1/30;
-const BODYMASS = 1;
-const IMPULSE_REACTIVITY = 0.1;
-const ANGULAR_REACTIVITY = 0.1;
-const LINEAR_DAMPING = 0.5;       // cannon.js default: 0.01
-const ANGULAR_DAMPING = 0.5;      // idem
+const BODYMASS = 1;               // when the body is not selected, the mass is 0 (= stationary)
+const IMPULSE_REACTIVITY = 1;
+const ANGULAR_REACTIVITY = 5;
+const LINEAR_DAMPING = 0.9;       // cannon.js default: 0.01
+const ANGULAR_DAMPING = 0.9;      // idem
 
 
 // set to true for debugging / development
@@ -77,10 +77,11 @@ class Jaw {
 
         // add body
         this.body = new CANNON.Body({
-            mass: BODYMASS,
+            mass: 0,
             material: slipperyMaterial,
             linearDamping: LINEAR_DAMPING,
             angularDamping: ANGULAR_DAMPING,
+            type: CANNON.Body.DYNAMIC,
         });
         this.body.position.set(0,2,0);
         let xaxis = new CANNON.Vec3(1,0,0);
@@ -222,16 +223,27 @@ class Jaw {
     }
 
     impulseToTarget() {
-        const worldPosition = vector3ToVec3(this.target.getWorldPosition(new THREE.Vector3()));
-        const dp = worldPosition.vsub(this.body.position);
-        const impulse = dp.scale(IMPULSE_REACTIVITY);
+        const targetWorldPosition = vector3ToVec3(this.target.getWorldPosition(new THREE.Vector3()));   // Vec3
+        const dp = targetWorldPosition.vsub(this.body.position);    // Vec3
+        const impulse = dp.scale(IMPULSE_REACTIVITY);               // Vec3
         return impulse;
     }
 
+    dthetaToTarget() {
+        let targetWorldQuaternion = this.target.getWorldQuaternion(new THREE.Quaternion());
+        targetWorldQuaternion = threeQuaternionToCannonQuaternion(targetWorldQuaternion);       // Cannon.Quaternion
+
+        // https://forum.unity.com/threads/shortest-rotation-between-two-quaternions.812346/
+        if (quatDot(targetWorldQuaternion, this.body.quaternion) < 0) {
+            return targetWorldQuaternion.mult(minusQuat(this.body.quaternion.inverse()));
+        } else {
+            return targetWorldQuaternion.mult(this.body.quaternion.inverse());
+        }
+    }
+
     torqueToTarget() {
-        const worldQuaternion = threeQuaternionToCannonQuaternion(this.target.getWorldQuaternion(new THREE.Quaternion()));
-        const dtheta = worldQuaternion.mult(this.body.quaternion.inverse());
-        return dtheta;
+        const identityQuat = new CANNON.Quaternion(0,0,0,1);
+        return identityQuat.slerp(this.dthetaToTarget(), ANGULAR_REACTIVITY);
     }
 }
 
@@ -342,7 +354,7 @@ function initThree() {
                 // }, '.');
                 uj_mesh.position.x = upperX
                 uj_mesh.position.y = upperY
-                uj_mesh.position.Z = upperZ
+                uj_mesh.position.z = upperZ
 
                 lj_mesh.position.x = lowerX
                 lj_mesh.position.y = lowerY
@@ -479,11 +491,17 @@ function onSelectStart( event ) {
         const jaw = meshToJaw(intersection.object);
 
         if (!jaw.selected) {
+            console.log(jaw.body.mass);
+            console.log(jaw.body);
+
             jaw.mesh.material.emissive.b = 1;
             jaw.setTarget();
             controller.attach( jaw.target );
             jaw.selected = true;
+            jaw.body.mass = BODYMASS;
             controller.userData.selected = jaw;
+
+            console.log(jaw.body);
         }
     }
 
@@ -504,6 +522,7 @@ function onSelectEnd( event ) {
         scene.attach( jaw.target );
         jaw.target.visible = false;
         jaw.selected = false;
+        jaw.body.mass = 0;
         controller.userData.selected = undefined;
 
     }
