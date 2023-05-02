@@ -44,7 +44,7 @@ const ANGULAR_DAMPING = 0.9;      // idem
 
 
 // set to true for debugging / development
-const DEBUGGING_MODE = true;
+const DEBUGGING_MODE = false;
 
 
 
