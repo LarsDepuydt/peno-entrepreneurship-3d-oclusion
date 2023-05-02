@@ -4,20 +4,12 @@ import (
 	"database/sql"
 	"fmt"
 	"log"
+	"os"
 
 	"github.com/LarsDepuydt/peno-entrepreneurship-3d-oclusion/cmd/serve"
 )
 
-const (
-	host     = "db"
-	port     = 5432
-	user     = "docker"
-	password = "docker1"
-	dbname   = "patient_server"
-)
-
 func main() {
-	/*
 	connectionName := os.Getenv("CLOUD_SQL_CONNECTION_NAME")
 	fmt.Print(connectionName)
     dbUser := os.Getenv("postgres_user")
@@ -29,14 +21,10 @@ func main() {
 
     connectionString := fmt.Sprintf("user=%s password=%s dbname=%s host=/cloudsql/%s sslmode=disable", dbUser, dbPassword, dbName, connectionName)
 
-    database, err := sql.Open("postgres", connectionString)*/ // FOR CLOUD
-	psqlInfo := fmt.Sprintf("host=%s port=%d user=%s "+
-	"password=%s dbname=%s sslmode=disable",
-	host, port, user, password, dbname)
-	database, err := sql.Open("postgres", psqlInfo)
+    database, err := sql.Open("postgres", connectionString)
     if err != nil {
         log.Fatalf("Failed to open database connection: %v", err)
-    } // FOR LOCAL
+    }
 	defer database.Close()
 
 	
@@ -46,7 +34,7 @@ func main() {
 		panic(err)
 	}
 
-  	fmt.Println("Successfully connected!")
+	fmt.Println("Successfully connected!")
 
 	serve.Server(database)
 }

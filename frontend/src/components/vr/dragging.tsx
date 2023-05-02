@@ -487,8 +487,15 @@ export default function DraggingView({ stream, client, onQuit }: {stream: any, c
     };
 
     return (
-        <div>
-          <Menu {...props}/>
+        <div className="menu-div">
+        <Menu {...props}/>
+        <style jsx>{`
+            .menu-div {
+                position: absolute;
+                width: 100%;
+                height: 100%;
+            }
+        `}</style>
         </div>
-      );
+    );
 }
