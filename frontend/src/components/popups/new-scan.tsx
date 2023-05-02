@@ -48,17 +48,20 @@ export default function ModalForm() {
   //const fileRef = useRef(null);
 
   const [scaninfo, setData] = useState({
-    file: path,
+    scanid: 0, 
+    date: new Date(),
     notes: '',
-
+    file: path,
     patientId: parseInt(PatientID),
   });
 
+  /*
   const date = new Date();
   let day = date.getDate();
   let month = date.getMonth() + 1;
   let year = date.getFullYear();
   let currentDate = `${day}-${month}-${year}`;
+  */
 
   const { data, refetch } = useQuery(addScan.useQuery(scaninfo).queryKey, addScan.useQuery(scaninfo).queryFn, {
     enabled: false,

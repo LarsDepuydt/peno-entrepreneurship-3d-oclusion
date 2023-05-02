@@ -22,10 +22,8 @@ export default function ModalForm() {
   const [patientinfo, setData] = useState({
     firstName: '',
     lastName: '',
-
     pinned: false,
     notes: '',
-
     dentistId: 0,
   });
 

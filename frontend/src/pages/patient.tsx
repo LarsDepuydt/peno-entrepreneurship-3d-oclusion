@@ -22,8 +22,6 @@ import { getAllPatients } from '@/gen/proto/threedoclusion/v1/service-ScanServic
 
   export default function PatientPage(this: any) {
     let DentistID = process.env.REACT_APP_DENTIST_ID!;
-    console.log('dentist id is ' + process.env.REACT_APP_DENTIST_ID);
-    console.log('patient id is ' + process.env.REACT_APP_PATIENT_ID);
 
     const { data, refetch } = useQuery(getAllPatients.useQuery( { enabled: true }));
 

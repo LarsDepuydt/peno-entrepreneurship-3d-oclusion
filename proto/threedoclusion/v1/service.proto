@@ -110,7 +110,6 @@ message Scan {
   string created_at = 3;
   string notes = 4;
   int32 patient_id = 5;
-
 }
 
 message AddScanRequest {

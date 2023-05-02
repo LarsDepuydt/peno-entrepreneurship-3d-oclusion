@@ -7,7 +7,6 @@ import React, { useState } from 'react';
 import { InspectScans } from '../../components/patient/inspect_scans';
 import DeleteButton from '../patient/delete_patient';
 import EditButton from '../patient/edit_patient';
-import DropdownButton from '../patient/patient_dropdown';
 import profilepicture from '../../../public/patient_profile_picture.png';
 
 
@@ -18,7 +17,6 @@ interface patientProfile {
   pinned : boolean; 
   notespatient : string;
   doctorid: number; 
-  //picture: StaticImageData;
 }
 
 export function SinglePatient({ id, patientfirstname, patientlastname }: patientProfile) {
