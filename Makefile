@@ -1,5 +1,5 @@
 .PHONY: up
-up: migrate
+up:
 	@docker compose up -d --build --force-recreate backend frontend
 
 .PHONY: down

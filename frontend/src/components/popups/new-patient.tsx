@@ -22,8 +22,10 @@ export default function ModalForm() {
   const [patientinfo, setData] = useState({
     firstName: '',
     lastName: '',
+
     pinned: false,
     notes: '',
+
     dentistId: 0,
   });
 
@@ -44,6 +46,7 @@ export default function ModalForm() {
       lastName: values.patientLastName,
       pinned: values.pinned,
       notes: values.notes,
+
       dentistId: parseInt(DentistID),
     };
   };
@@ -52,12 +55,15 @@ export default function ModalForm() {
     if (sendOK && modal) {
       setSendOK(false);
       console.log('we started the function submitFunction()');
+
       setData(ReworkValues(values));
       console.log(patientinfo);
+
       //console.log(data);
       setSubmitOK(true);
       console.log('submitOK is set to true');
     }
+
     setModal(false);
   };
 
@@ -72,14 +78,18 @@ export default function ModalForm() {
   useEffect(() => {
     if (submitOK) {
       refetch();
+
       console.log('new patient being added is:', patientinfo, 'belonging to', parseInt(DentistID) );
+
       if (data != undefined) {
         setModal(false);
       }
       setSubmitOK(false);
     }
-  }, [data, modal, submitOK]);
-  
+
+  }, [data, modal, sendOK, submitOK, refetch]);
+
+
   return (
     <>
       <div className={styles.btn_modal}>

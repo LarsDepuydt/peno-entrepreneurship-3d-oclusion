@@ -75,8 +75,10 @@ export function SidebarPatient() {
   );
 }
 
+
 export function SidebarObj( ) {
   const router = useRouter();
+
   const openScans = () => {
     let patientID = process.env.REACT_APP_PATIENT_ID!;
     router.push({
@@ -86,6 +88,7 @@ export function SidebarObj( ) {
       },
     });
   };
+
 
   const [notesScan, setNotes] = useState<string[]>([]);
 
@@ -106,6 +109,7 @@ export function SidebarObj( ) {
             id={stylesButton.homeIcon}
             onClick={openScans}
           ></button>
+
           <ReluLink />
         </div>
       </div>

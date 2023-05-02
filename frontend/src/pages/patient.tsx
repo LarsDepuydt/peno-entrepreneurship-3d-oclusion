@@ -73,6 +73,7 @@ import { getAllPatients } from '@/gen/proto/threedoclusion/v1/service-ScanServic
       <div>
           <div className={styles.scansWrapper}>
             {allPatients()}
+
             <div className={styles.patient_filler}></div>
             <div className={styles.patient_filler}></div>
             <div className={styles.patient_filler}></div>
@@ -91,3 +92,4 @@ import { getAllPatients } from '@/gen/proto/threedoclusion/v1/service-ScanServic
     </>
     )
 }
+
