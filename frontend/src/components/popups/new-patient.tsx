@@ -83,7 +83,7 @@ export default function ModalForm() {
         setModal(!modal);
       }
     }
-  }, [data, modal, sendOK]);
+  }, [data, modal, sendOK, submitOK, refetch]);
 
   //, patientinfo
 

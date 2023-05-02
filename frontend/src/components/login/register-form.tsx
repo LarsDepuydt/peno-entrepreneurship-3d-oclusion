@@ -68,7 +68,7 @@ export default function LoginForm() {
       setSendOK(false);
       data?.token && credentials.email && router.push('/login-page');
     }
-  }, [data, credentials, router, sendOK]);
+  }, [data, credentials, router, sendOK, submitOK, refetch]);
 
 
   const toLogin = () => router.push('/login-page');
