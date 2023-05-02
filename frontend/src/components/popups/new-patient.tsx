@@ -36,28 +36,6 @@ export default function ModalForm() {
     dentistId: 0,
   });
 
-  //const { data } = useQuery(addPatient.useQuery(patientinfo));
-
-  //const query = addPatient.useQuery(patientinfo);
-
-  // const { data, refetch } = useQuery(
-  //   addPatient.useQuery({
-  //     firstName: 'Patient',
-  //     lastName: 'Test',
-  //     pinned: true,
-  //     notes: 'these are additional notes',
-  //     dentistId: 126,
-  //   }).queryKey,
-  //   addPatient.useQuery({
-  //     firstName: 'Patient',
-  //     lastName: 'Test',
-  //     pinned: true,
-  //     notes: 'these are additional notes',
-  //     dentistId: 126,
-  //   }).queryFn,
-  //   { enabled: false }
-  // );
-
   const { data, refetch } = useQuery(
     addPatient.useQuery(patientinfo).queryKey,
     addPatient.useQuery(patientinfo).queryFn,
@@ -79,11 +57,6 @@ export default function ModalForm() {
       dentistId: parseInt(DentistID),
     };
   };
-
-  // useEffect(() => {
-  //   console.log('patientinfo = ', patientinfo);
-  //   refetch();
-  // }, [patientinfo]);
 
   const submitFunction = (values: patientValues) => {
     if (sendOK && modal) {
