@@ -53,6 +53,12 @@ const App: FC = () => {
     .filter((patient) => patient.props.patientid === parseInt(targetpatientID));
 
   return (
+    <>
+    <Head>
+        <title>relu</title>
+        <link rel="icon" href="/relu_icon.ico" />
+    </Head>
+    
     <div>
       <div className={styles.scansWrapper}>
         {filteredPatients.map((patient, index) => (
@@ -69,6 +75,8 @@ const App: FC = () => {
       <SidebarPatient />
       <HeaderPatient />
     </div>
+    </>
+
   );
 };
 

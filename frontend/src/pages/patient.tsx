@@ -3,10 +3,7 @@ import styles from '@/styles/PatientPage.module.scss';
 
 import { HeaderDoctor } from '../components/header/header';
 import { SinglePatient as Patient } from '../components/patient/patient-individual-overview';
-//import teeth3d from '../../public/3d-teeth.jpg';
-import { useRouter } from 'next/router';
-import { StaticImageData } from 'next/image';
-import { FC, useEffect, useState } from 'react';
+import { useEffect } from 'react';
 import { SidebarDoctor } from '../components/header/sidebar';
 import Head from 'next/head';
 
@@ -15,16 +12,6 @@ import { getAllPatients } from '@/gen/proto/threedoclusion/v1/service-ScanServic
 
 
   interface PatientData {
-    id: number;
-    firstName: string;
-    lastName: string;
-    pinned: boolean; 
-    notes: string;
-    dentistId: number; 
-    picture: StaticImageData;
-  }
-
-  interface PatientDatatijdelijk {
     id: number;
     firstName: string;
     lastName: string;
@@ -50,7 +37,7 @@ import { getAllPatients } from '@/gen/proto/threedoclusion/v1/service-ScanServic
 
     
 
-    const iteratePatient = (patient : PatientDatatijdelijk) => {
+    const iteratePatient = (patient : PatientData) => {
         return (
           <Patient
           id={patient.id}
@@ -81,7 +68,7 @@ import { getAllPatients } from '@/gen/proto/threedoclusion/v1/service-ScanServic
       <Head>
         <title>relu</title>
         <link rel="icon" href="/relu_icon.ico" />
-        </Head>
+      </Head>
 
       <div>
           <div className={styles.scansWrapper}>
