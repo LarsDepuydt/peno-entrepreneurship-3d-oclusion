@@ -157,7 +157,7 @@ export default function PatientPage() {
   console.log('dentist id is ' + process.env.REACT_APP_DENTIST_ID);
   console.log('patient id is ' + process.env.REACT_APP_PATIENT_ID);
 
-  if (DentistID == undefined) {
+  if (process.env.REACT_APP_DENTIST_ID == undefined) {
     return <Loading />;
   } else {
     return (
