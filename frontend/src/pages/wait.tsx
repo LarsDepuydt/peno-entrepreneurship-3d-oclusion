@@ -114,7 +114,7 @@ export default function WaitPage() {
     else {
       let cookieActive = false;
     }
-  }, [router.pathname, waitForResponse]);
+  }, [router.pathname]);
 
   return (
     <div>
