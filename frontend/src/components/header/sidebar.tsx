@@ -64,15 +64,29 @@ export function SidebarPatient() {
   );
 }
 
-export function SidebarObj({ patientfirstname, patientlastname }: HeaderPatientProps) {
+export function SidebarObj() {
   const router = useRouter();
-  const home = () => router.push('/patient');
+
+  const openScans = () => {
+    let patientID = process.env.REACT_APP_PATIENT_ID!;
+    router.push({
+      pathname: '/scans-page',
+      query: {
+        patientID,
+      },
+    });
+  };
   return (
     <>
       <div className={styleSidebar.sidebar}>
         <WelcomingPatient />
         <div className={stylesButton.sidebarButton}>
-          <button type="button" className={stylesButton.relu_btn} id={stylesButton.homeIcon} onClick={home}></button>
+          <button
+            type="button"
+            className={stylesButton.relu_btn}
+            id={stylesButton.homeIcon}
+            onClick={openScans}
+          ></button>
           <New_Scan />
           <Filter_Tags />
           <ReluLink />

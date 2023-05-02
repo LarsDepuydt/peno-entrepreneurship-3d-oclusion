@@ -1223,7 +1223,7 @@ func (x *GetScanByIdResponse) GetPatientId() int32 {
 	return 0
 }
 
-//PATIENT
+// PATIENT
 type Patient struct {
 	state         protoimpl.MessageState
 	sizeCache     protoimpl.SizeCache
