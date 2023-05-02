@@ -307,5 +307,57 @@ function threeQuaternionToCannonQuaternion(quat) {
     return new CANNON.Quaternion(quat.x, quat.y, quat.z, quat.w);
 }
 
+/** Apply a CANNON.Quaternion to a CANNON.Vec3, return the resulting vector
+ * 
+ * @param {*} vec 
+ * @param {*} quat 
+ */
+function applyQuaternion(vec, q) {
+    
+    const x = vec.x, y = vec.y, z = vec.z;
+    const qx = q.x, qy = q.y, qz = q.z, qw = q.w;
 
-export { getFirstMesh, getFirstBufferGeometry, threeMeshToConvexThreeMesh, threeMeshToConvexCannonMesh, cannonMeshToCannonConvexPolyhedron, threeMeshToCannonMesh, checkTime, vector3ToVec3, vec3ToVector3, threeQuaternionToCannonQuaternion };
+    // calculate quat * vector
+
+    const ix = qw * x + qy * z - qz * y;
+    const iy = qw * y + qz * x - qx * z;
+    const iz = qw * z + qx * y - qy * x;
+    const iw = - qx * x - qy * y - qz * z;
+
+    // calculate result * inverse quat
+
+    const rx = ix * qw + iw * - qx + iy * - qz - iz * - qy;
+    const ry = iy * qw + iw * - qy + iz * - qx - ix * - qz;
+    const rz = iz * qw + iw * - qz + ix * - qy - iy * - qx;
+
+    return new CANNON.Vec3(rx,ry,rz);
+}
+
+/** Compute the squared norm of a Quaternion (either THREE.Quaternion or CANNON.Quaternion)
+ * 
+ * @param {*} quat 
+ */
+function sqnorm(quat) {
+    return quat.x*quat.x + quat.y*quat.y + quat.z*quat.z + quat.w*quat.w;
+}
+
+/** Compute the dot product between two quaternions
+ * 
+ * @param {*} q1 
+ * @param {*} q2 
+ */
+function quatDot(q1, q2) {
+    return q1.w*q2.w + q1.x*q2.x + q1.y*q2.y + q1.z*q2.z;
+}
+
+/** Return a CANNON.Quaternion that has all components inverted
+ * 
+ * @param {*} q 
+ * @returns 
+ */
+function minusQuat(q) {
+    return new CANNON.Quaternion(-q.x, -q.y, -q.z, -q.w);
+}
+
+
+export { getFirstMesh, getFirstBufferGeometry, threeMeshToConvexThreeMesh, threeMeshToConvexCannonMesh, cannonMeshToCannonConvexPolyhedron, threeMeshToCannonMesh, checkTime, vector3ToVec3, vec3ToVector3, threeQuaternionToCannonQuaternion, applyQuaternion, sqnorm, quatDot, minusQuat };

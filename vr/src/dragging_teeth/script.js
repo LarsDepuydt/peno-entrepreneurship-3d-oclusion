@@ -4,7 +4,6 @@ import { VRButton } from 'three/addons/webxr/VRButton.js';
 import { XRControllerModelFactory } from 'three/addons/webxr/XRControllerModelFactory.js';
 import { OBJLoader } from 'three/addons/loaders/OBJLoader.js';
 //import * as dat from 'dat';
-//import * as fs from '../../node_modules/fs';
 import { OBJExporter } from 'three/addons/exporters/OBJExporter.js';
 
 import * as CANNON from 'cannon-es';
@@ -38,11 +37,11 @@ const objLoader = new OBJLoader();
 
 // parameters
 const TIMESTEP = 1/30;
-const BODYMASS = 1;
-const IMPULSE_REACTIVITY = 0.1;
-const ANGULAR_REACTIVITY = 0.1;
-const LINEAR_DAMPING = 0.5;       // cannon.js default: 0.01
-const ANGULAR_DAMPING = 0.5;      // idem
+const BODYMASS = 1;               // when the body is not selected, the mass is 0 (= stationary)
+const IMPULSE_REACTIVITY = 1;
+const ANGULAR_REACTIVITY = 5;
+const LINEAR_DAMPING = 0.9;       // cannon.js default: 0.01
+const ANGULAR_DAMPING = 0.9;      // idem
 
 
 // set to true for debugging / development
@@ -293,16 +292,27 @@ class Jaw {
     }
 
     impulseToTarget() {
-        const worldPosition = vector3ToVec3(this.target.getWorldPosition(new THREE.Vector3()));
-        const dp = worldPosition.vsub(this.body.position);
-        const impulse = dp.scale(IMPULSE_REACTIVITY);
+        const targetWorldPosition = vector3ToVec3(this.target.getWorldPosition(new THREE.Vector3()));   // Vec3
+        const dp = targetWorldPosition.vsub(this.body.position);    // Vec3
+        const impulse = dp.scale(IMPULSE_REACTIVITY);               // Vec3
         return impulse;
     }
 
+    dthetaToTarget() {
+        let targetWorldQuaternion = this.target.getWorldQuaternion(new THREE.Quaternion());
+        targetWorldQuaternion = threeQuaternionToCannonQuaternion(targetWorldQuaternion);       // Cannon.Quaternion
+
+        // https://forum.unity.com/threads/shortest-rotation-between-two-quaternions.812346/
+        if (quatDot(targetWorldQuaternion, this.body.quaternion) < 0) {
+            return targetWorldQuaternion.mult(minusQuat(this.body.quaternion.inverse()));
+        } else {
+            return targetWorldQuaternion.mult(this.body.quaternion.inverse());
+        }
+    }
+
     torqueToTarget() {
-        const worldQuaternion = threeQuaternionToCannonQuaternion(this.target.getWorldQuaternion(new THREE.Quaternion()));
-        const dtheta = worldQuaternion.mult(this.body.quaternion.inverse());
-        return dtheta;
+        const identityQuat = new CANNON.Quaternion(0,0,0,1);
+        return identityQuat.slerp(this.dthetaToTarget(), ANGULAR_REACTIVITY);
     }
 }
 
@@ -377,7 +387,7 @@ function initThree() {
     light.shadow.mapSize.set( 4096, 4096 );
     scene.add( light );
 
-
+ 
     // add renderer and enable VR
 
     renderer = new THREE.WebGLRenderer( { antialias: true } );
@@ -413,7 +423,7 @@ function initThree() {
                 // }, '.');
                 uj_mesh.position.x = upperX
                 uj_mesh.position.y = upperY
-                uj_mesh.position.Z = upperZ
+                uj_mesh.position.z = upperZ
 
                 lj_mesh.position.x = lowerX
                 lj_mesh.position.y = lowerY
@@ -483,13 +493,13 @@ function loadObjects() {
 function afterLoad() {
     if (lowerjaw.loaded && upperjaw.loaded) {
         lowerjaw.body.position.set(0,2,0);
-        upperjaw.body.position.set(0,3,0);/*
+        upperjaw.body.position.set(0,3,0);
         lowerjaw.mesh.name = "lowerjaw.mesh";
         lowerjaw.sphere.name = "lowerjaw.sphere";
         lowerjaw.target.name = "lowerjaw.target";
         upperjaw.mesh.name = "upperjaw.mesh";
         upperjaw.sphere.name = "lowerjaw.sphere";
-        upperjaw.target.name = "lowerjaw.target";*/
+        upperjaw.target.name = "lowerjaw.target";
 
         console.log("starting animation");
         renderer.setAnimationLoop( animate );
@@ -558,9 +568,9 @@ function onSelectStart( event ) {
             jaw.selected = true;
             jaw.body.type = CANNON.Body.DYNAMIC;
             controller.userData.selected = jaw;
+            console.log(jaw.body);
         }
     }
-
 }
 
 
@@ -580,10 +590,7 @@ function onSelectEnd( event ) {
         jaw.selected = false;
         jaw.body.type = CANNON.Body.STATIC;
         controller.userData.selected = undefined;
-
     }
-
-
 }
 
 
