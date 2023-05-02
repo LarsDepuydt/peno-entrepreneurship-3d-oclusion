@@ -50,10 +50,18 @@ export function SidebarPatient() {
     router.push('/patient');
   };
 
+  const [notesPatient, setNotes] = useState<string[]>([]);
+
+  const handleAddNotePatient = (note: string) => {
+    setNotes([...notesPatient, note]);
+  };
+  
   return (
     <>
       <div className={styleSidebar.sidebar}>
         <WelcomingPatient />
+        <NoteInput onAddNote={handleAddNotePatient} />
+        <NoteList notes={notesPatient} />
         <div className={stylesButton.sidebarButton}>
           <New_Scan />
           <Filter_Tags />
@@ -79,18 +87,18 @@ export function SidebarObj( ) {
     });
   };
 
-  const [notes, setNotes] = useState<string[]>([]);
+  const [notesScan, setNotes] = useState<string[]>([]);
 
-  const handleAddNote = (note: string) => {
-    setNotes([...notes, note]);
+  const handleAddNoteScan = (note: string) => {
+    setNotes([...notesScan, note]);
   };
   
   return (
     <>
       <div className={styleSidebar.sidebar}>
         <WelcomingPatient />
-        <NoteInput onAddNote={handleAddNote} />
-        <NoteList notes={notes} />
+        <NoteInput onAddNote={handleAddNoteScan} />
+        <NoteList notes={notesScan} />
         <div className={stylesButton.sidebarButton}>
           <button
             type="button"
