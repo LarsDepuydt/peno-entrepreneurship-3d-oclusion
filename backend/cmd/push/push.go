@@ -10,7 +10,6 @@ import (
 	"github.com/bufbuild/connect-go"
 
 	"github.com/LarsDepuydt/peno-entrepreneurship-3d-oclusion/cmd/help_datastructures"
-	"github.com/LarsDepuydt/peno-entrepreneurship-3d-oclusion/cmd/help_functions"
 	threedoclusionv1 "github.com/LarsDepuydt/peno-entrepreneurship-3d-oclusion/gen/proto/threedoclusion/v1"
 )
 
@@ -78,7 +77,7 @@ func SendMenuOption(req *connect.Request[threedoclusionv1.SendMenuOptionRequest]
 		formattedTimestamp := t.Format("2006-01-02T15:04:05")
 
 		save := req.Msg.GetSaveData()
-		_, error = statement.Exec(save.Id, save.LowerX, save.LowerY, save.LowerZ, save.LowerRX, save.LowerRY, save.LowerRZ, save.UpperX, save.UpperY, save.UpperZ, save.UpperRX, save.UpperRY, save.UpperRZ, formattedTimestamp)
+		_, error = statement.Exec(save.ScanId, save.LowerX, save.LowerY, save.LowerZ, save.LowerRX, save.LowerRY, save.LowerRZ, save.UpperX, save.UpperY, save.UpperZ, save.UpperRX, save.UpperRY, save.UpperRZ, formattedTimestamp)
 		if error != nil {
 			return nil, error
 		}
@@ -99,7 +98,7 @@ func SendMenuOption(req *connect.Request[threedoclusionv1.SendMenuOptionRequest]
 			return nil, error
 		}
 
-		result, error := help_functions.GetResponseMakerScan(rows)
+		result, error := GetResponseMakerScan(rows)
 		if error != nil {
 			//panic(error)
 			return nil, error
@@ -127,7 +126,7 @@ func SendMenuOption(req *connect.Request[threedoclusionv1.SendMenuOptionRequest]
 		formattedTimestamp := t.Format("2006-01-02T15:04:05")
 
 		save := req.Msg.GetSaveData()
-		_, error = statement.Exec(save.Id, save.LowerX, save.LowerY, save.LowerZ, save.LowerRX, save.LowerRY, save.LowerRZ, save.UpperX, save.UpperY, save.UpperZ, save.UpperRX, save.UpperRY, save.UpperRZ, formattedTimestamp)
+		_, error = statement.Exec(save.ScanId, save.LowerX, save.LowerY, save.LowerZ, save.LowerRX, save.LowerRY, save.LowerRZ, save.UpperX, save.UpperY, save.UpperZ, save.UpperRX, save.UpperRY, save.UpperRZ, formattedTimestamp)
 		if error != nil {
 			return nil, error
 		}
@@ -150,7 +149,7 @@ func SendMenuOption(req *connect.Request[threedoclusionv1.SendMenuOptionRequest]
 			OtherData: &msg,
 		})
 
-		connections.ReleaseChannel(req.Msg.GetSaveData().GetId(), 1); // VR deviceID 1
+		connections.ReleaseChannel(req.Msg.GetSaveData().GetScanId(), 1); // VR deviceID 1
 
 		return res, nil
 

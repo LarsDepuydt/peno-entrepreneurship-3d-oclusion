@@ -9,6 +9,8 @@ import Image_L from '../../public/landing-image.png';
 const inter = Inter({ subsets: ['latin'] });
 
 export default function Login() {
+  process.env.REACT_APP_DENTIST_ID = undefined;
+  process.env.REACT_APP_PATIENT_ID = undefined;
   return (
     <>
       <Head>

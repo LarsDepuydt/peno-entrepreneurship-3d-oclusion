@@ -9,6 +9,7 @@ export function InspectScans({ patientID }: InspectScansProps) {
   const router = useRouter();
 
   const clickPatient = () => {
+    process.env.REACT_APP_PATIENT_ID = patientID.toString();
     router.push({
       pathname: '/scans-page',
       query: {
@@ -19,8 +20,7 @@ export function InspectScans({ patientID }: InspectScansProps) {
 
   return (
     <div>
-      <button type="button" className={styleB.relu_btn} id={styleB.InspectScansIcon} onClick={clickPatient}>
-      </button>
+      <button type="button" className={styleB.relu_btn} id={styleB.InspectScansIcon} onClick={clickPatient}></button>
     </div>
   );
 }

@@ -1,0 +1,46 @@
+{
+  "functions": {
+    "source": "functions",
+    "runtime": "nodejs16"
+  },
+  "hosting": {
+    "public": "out",
+    "ignore": [
+      "firebase.json",
+      "**/.*",
+      "**/node_modules/**"
+    ],
+    "headers": [
+      {
+        "source": "/_next/static/**",
+        "headers": [
+          {
+            "key": "Cache-Control",
+            "value": "public, max-age=31536000, immutable"
+          }
+        ]
+      }
+    ],
+    "rewrites": [
+      {
+        "source": "/_next/:path*",
+        "destination": "/_next/:path*"
+      },
+      {
+        "source": "/api/:path*",
+        "destination": "/api/:path*"
+      },
+      {
+        "source": "/:path*",
+        "destination": "/index.html"
+      },
+      {
+        "source": "**",
+        "function": "nextApp"
+      }
+    ],
+    "predeploy": [
+      "yarn build"
+    ]
+  }
+}

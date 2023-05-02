@@ -4,7 +4,7 @@ import { VRButton } from 'three/examples/jsm/webxr/VRButton.js';
 import { XRControllerModelFactory } from 'three/examples/jsm/webxr/XRControllerModelFactory.js';
 import { OBJLoader } from 'three/examples/jsm/loaders/OBJLoader.js';
 import { useState, useEffect } from 'react';
-import { SendMenuOptionRequest, Scan } from "@/gen/proto/threedoclusion/v1/service_pb";
+import { SendMenuOptionRequest, ScanSave } from "@/gen/proto/threedoclusion/v1/service_pb";
 import Menu from './menu';
 import { useRouter } from 'next/router';
 
@@ -27,7 +27,7 @@ const path_lower_jaw = '/lower_ios_6.obj'; // TO DO: get with cloud
 
 const SCALE_MODEL = 0.01;
 
-function init(initialScan: Scan) {
+function init(initialScan: ScanSave) {
     // create container
     container = document.createElement( 'div' );
     document.body.appendChild( container );
@@ -368,7 +368,7 @@ function render() {
 }
 
 function updateScanData(setCurrentScan: any) {
-    let newScan = new Scan({id: 111, timestamp: "2006-01-02T15:04:05"});
+    let newScan = new ScanSave({scanId: 111, timestampSave: "2006-01-02T15:04:05"});
     for (let i = 0; i < group.children.length; i++) {
         if (group.children[i].name == "lowerjaw"){
             newScan.lowerX = group.children[i].position.x;
@@ -391,7 +391,7 @@ function updateScanData(setCurrentScan: any) {
 }
 
 export default function DraggingView({ stream, client, onQuit }: {stream: any, client: any, onQuit: () => void}){
-    const initialScan = new Scan({
+    const initialScan = new ScanSave({
         lowerX: 0,
         lowerY: 2,
         lowerZ: 0.12,
@@ -404,10 +404,10 @@ export default function DraggingView({ stream, client, onQuit }: {stream: any, c
         upperRX: 1.5 * Math.PI,
         upperRY: 0,
         upperRZ: 0,
-        id: 111,
-        timestamp: "2006-01-02T15:04:05"
+        scanId: 111,
+        timestampSave: "2006-01-02T15:04:05"
     });
-    const [current_scan, setCurrentScan] = useState<Scan>(initialScan);
+    const [current_scan, setCurrentScan] = useState<ScanSave>(initialScan);
     const [openMenu, setOpenMenu] = useState(false);
 
     useEffect(() => { // https://github.com/facebook/react/issues/24502
@@ -438,9 +438,9 @@ export default function DraggingView({ stream, client, onQuit }: {stream: any, c
 
     // ASK FOR SCAN DATA OR STH INITIALLY
 
-    const onLoadItemClicked = (inputData: Scan) => {
+    const onLoadItemClicked = (inputData: ScanSave) => {
         console.log(inputData)
-        const {id, timestamp, ...positionData } = inputData
+        const {scanId, timestampSave, ...positionData } = inputData
         loadPosition(positionData);
     }
     const props = {isOpen: openMenu, setIsOpen: setOpenMenu, current_scan, stream, client, onLoadItemClicked, onQuit };

@@ -272,23 +272,13 @@ function checkAnimation(duration: number, rest_time: number, setVideoChunks: any
       moveWithFactor(duration, elapsedTime, upperMove);
     }
 }
-  
+
 // Accept 4 models: initialLower, initialUpper, lastLower, lastUpper
 function moveWithFactor(duration: number, time_passed: number, jawToMove: any){ // Maybe after user has exited VR session -> new scene to render the animation in the webpage along with an alert to save or sth
     // Call when session has ended and user has saved manually
     // Not animating the actual movements the user has performed but linearly interpolating between the two states
-
-    // previousSave -> upper and lower
-    // Two options for previousSave; initial state -> get from server; or the one at the beginning of the session -> maybe just retrieve locally
-
-    // currentSave -> upper and lower
-
-    // Set lower jaw as reference, or any jaw that has zero/minimal rotation change -> more user friendly?
-    // OR Reference based on tag? Underbite might want lower jaw as reference / Overbite...
-    // Can also let them both move and put the reference frame in between them?
-    // Let camera focus on point in between?
     
-    // Let's say lower is the reference; set currentsave pos of lower to initial one and then only upper needs to move relatively, with 
+    // Let's set lowerjaw as the reference; set currentsave pos of lower to initial one and then only upper needs to move relatively, with 
     const diff_pos_lower = finalPositionLower.clone().sub(initialPositionLower);
     const diff_pos_upper = finalPositionUpper.clone().sub(initialPositionUpper);
 
@@ -300,7 +290,7 @@ function moveWithFactor(duration: number, time_passed: number, jawToMove: any){ 
     const finalQuaternionUpper = new THREE.Quaternion().setFromEuler(finalRotationUpper);
 
     // Get the rotation difference between initialRotationLower and finalRotationLower
-    const deltaQuaternionLower = finalQuaternionLower.clone().multiply(initialQuaternionLower.clone().invert()); // Invert or not??
+    const deltaQuaternionLower = finalQuaternionLower.clone().multiply(initialQuaternionLower.clone().invert());
     const deltaQuaternionUpper = finalQuaternionUpper.clone().multiply(initialQuaternionUpper.clone().invert());
 
     const targetQuaternion = initialQuaternionUpper.clone().multiply(deltaQuaternionLower).multiply(deltaQuaternionUpper);
@@ -323,21 +313,12 @@ function render(setVideoChunks: any, onVideoChunksChange: any) {
     if (captureRunning) recorder.requestData();
     renderer.render( scene, camera );
 }
-/*
-function onWindowResize() {
-
-    camera.aspect = window.innerWidth / window.innerHeight; // Or container?
-    camera.updateProjectionMatrix();
-
-    renderer.setSize( window.innerWidth, window.innerHeight );
-
-}*/
 
 export default function BeforeAfter({ onVideoChunksChange }: {onVideoChunksChange: any}){
     const containerRef = useRef(null);
     const [videoChunks, setVideoChunks] = useState([]);
 
-    // Pass as parameters as well as onVideoChunksChange!!!
+    // Ask position data from database
 
     useEffect(() => { // https://github.com/facebook/react/issues/24502
         if (second_call){
