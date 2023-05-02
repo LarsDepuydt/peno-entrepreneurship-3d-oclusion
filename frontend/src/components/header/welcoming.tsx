@@ -42,8 +42,9 @@ export function WelcomingPatient() {
   if (data != undefined) {
     return (
       <>
-        <p className={styleSidebar.sidebarText}>{'Welcome. '}</p>
+        <p className={styleSidebar.sidebarText}>{'Overview of'}</p>
         <p className={styleSidebar.sidebarName}>{''.concat(data.firstName, ' ', data.lastName, '\n')}</p>
+        <p className={styleSidebar.sidebarTextNotes}>{'(ID: ' + PatientID + ')'}</p>
       </>
     );
   } else {

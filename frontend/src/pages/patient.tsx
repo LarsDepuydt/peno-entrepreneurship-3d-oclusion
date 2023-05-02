@@ -38,14 +38,15 @@ import { getAllPatients } from '@/gen/proto/threedoclusion/v1/service-ScanServic
     console.log('dentist id is ' + process.env.REACT_APP_DENTIST_ID);
     console.log('patient id is ' + process.env.REACT_APP_PATIENT_ID);
 
-    const { data, refetch } = useQuery(getAllPatients.useQuery());
+    const { data, refetch } = useQuery(getAllPatients.useQuery( { enabled: true }));
 
     useEffect(() => {
       return () => {
         // cleanup function to cancel subscription
+        data && refetch();
         console.log('cleanup');
       };
-    }, []);
+    }, [data]);
 
     
 
@@ -103,73 +104,3 @@ import { getAllPatients } from '@/gen/proto/threedoclusion/v1/service-ScanServic
     </>
     )
 }
-
-
-        
-/*
-            {data?.map((patient: React.ReactElement, index: number) => (
-                <div key={`patient${index + 1}`}>
-                  <Patient
-                    id={patient.props.id}
-                    patientfirstname={patient.props.patientfirstname}
-                    patientlastname={patient.props.patientlastname}
-                    pinned = {patient.props.pinned} 
-                    notespatient = {patient.props.notes}                 
-                    doctorid={patient.props.doctorid}
-                  />
-                </div>
-            ))}
-*/
-  
-  
-
-/*
-const patients = [
-  {
-    patient41: (
-      <Patient
-        id={10}
-        patientfirstname={'Jos'}
-        patientlastname={'Van de Velde'}
-        pinned = {true}
-        notespatient = {'Geboortedatum 10/05/1957'}
-        doctorid={120}
-        picture={teeth3d}
-      />
-    ),
-    patient12: (
-      <Patient
-        id={2}
-        patientfirstname={'Anna'}
-        patientlastname={'Janssens'}
-        pinned = {false}
-        notespatient = {'Doorgestuurd van Dr. Deroose'}
-        doctorid={120}
-        picture={teeth3d}
-
-      />
-    ),
-    patient13: (
-      <Patient
-        id={313}
-        patientfirstname={'Josephine'}
-        patientlastname={'De Goter'}
-        pinned = {false}
-        notespatient = {'Eerste consultatie gepland na de zomer 2023.'}
-        doctorid={118}
-        picture={teeth3d}
-      />
-    ),
-  },
-];
-*/
-
-// const filteredPatients = patients
-//   .flatMap((obj) => Object.values(obj)) // flatten the array of objects into an array of patients
-//   .reduce((acc, patient) => {
-//     const foundPatient = acc.find((p) => p.props.id === patient.props.id);
-//     if (!foundPatient) {
-//       acc.push(patient);
-//     }
-//     return acc;
-//   }, []);

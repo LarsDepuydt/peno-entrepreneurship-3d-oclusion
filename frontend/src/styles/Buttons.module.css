@@ -49,6 +49,9 @@
 .absoluteWrapper {
   padding-left: 15px;
   padding-bottom: 15px;
+  display: flex;
+  justify-content: space-between;
+  column-gap: 10px;
 }
 
 #homeIcon {
@@ -213,7 +216,7 @@
 
   margin-right: 10px;
   margin-top: 10px;
-  margin-left: 10px;
+  margin-left: 20px;
   margin-bottom: 10px;
 
   min-height: 60px;
