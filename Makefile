@@ -1,5 +1,5 @@
 .PHONY: up
-up: migrate
+up:
 	@docker compose up -d --build --force-recreate backend frontend
 
 .PHONY: down
@@ -19,6 +19,10 @@ buf:
 .PHONY: shell
 shell:
 	@docker compose run --rm app /bin/bash
+
+.PHONY: db
+db:
+	@docker compose run --rm db /bin/bash
 
 .PHONY: install_frontend
 install_frontend:

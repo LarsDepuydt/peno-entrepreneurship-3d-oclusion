@@ -14,6 +14,7 @@ interface patientProfile {
   picture: StaticImageData;
   patientfirstname: string;
   patientlastname: string;
+  doctorid: number;
 }
 
 export function SinglePatient({ id, picture, patientfirstname, patientlastname }: patientProfile) {
@@ -39,7 +40,6 @@ export function SinglePatient({ id, picture, patientfirstname, patientlastname }
     <div className={styles.patientScan_container}>
       {dropDown && (
         <div className={styles.patientScan_dropDown}>
-          <button type="button" className={styleB.relu_btn} id={styleB.exitIcon} onClick={handleDropGone}></button>
           <div className={styles.dropDownButtonWrapper}>
             <button className={styleB.relu_btn} id={styleB.dropDownButton}>
               test
@@ -54,6 +54,7 @@ export function SinglePatient({ id, picture, patientfirstname, patientlastname }
               test
             </button>
           </div>
+          <button type="button" className={styleB.relu_btn} id={styleB.exitIcon} onClick={handleDropGone}></button>
         </div>
       )}
       {!dropDown && (
