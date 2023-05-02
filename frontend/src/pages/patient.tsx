@@ -16,11 +16,13 @@ const patients = [
   {
     patient41: (
       <Patient
+
         id={6422}
         picture={teeth3d}
         patientfirstname={'Patient'}
         patientlastname={'Test'}
         doctorid={126}
+
         //date={new Date(2023, 2, 21)}
       />
     ),
@@ -30,7 +32,7 @@ const patients = [
         picture={teeth3d}
         patientfirstname={'Anna'}
         patientlastname={'Janssens'}
-        doctorid={116}
+        doctorid={120}
         //date={new Date(2023, 2, 20)}
       />
     ),
