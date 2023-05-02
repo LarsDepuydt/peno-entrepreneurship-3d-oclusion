@@ -330,7 +330,7 @@ export default function BeforeAfter({ onVideoChunksChange }: {onVideoChunksChang
         else {
             second_call = true;
         }
-    }, []);
+    }, [onVideoChunksChange]);
 
     //window.addEventListener( 'resize', onWindowResize );    
     return <div ref={containerRef} id="canvas">

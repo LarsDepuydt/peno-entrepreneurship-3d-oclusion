@@ -7,7 +7,7 @@ import * as CANNON from 'cannon-es';
 //import { MeshBVH, acceleratedRaycast } from 'three-mesh-bvh';
 //import { default as CannonUtils } from 'cannon-utils';
 
-import { sendPositionScan, getPositionScan } from '@/gen/proto/threedoclusion/v1/service-ScanService_connectquery'
+//import { sendPositionScan, getPositionScan } from '@/gen/proto/threedoclusion/v1/service-ScanService_connectquery'
 import { useState, useEffect } from 'react';
 import { useQuery } from '@tanstack/react-query';
 import { BufferAttribute, InterleavedBufferAttribute } from 'three';
@@ -403,7 +403,7 @@ export default function VRView(){ // Always gets rendered twice - makes it so se
             clock.start();
         }
     }
-
+    /*
     function SendPositionComponent() {
         const scanId = 111; // Hardcoded
         //const [saved, setSaved] = useState(false);
@@ -450,12 +450,13 @@ export default function VRView(){ // Always gets rendered twice - makes it so se
 
         //const {lowerX, lowerY, lowerZ, lowerRX, lowerRY, lowerRZ, upperX, upperY, upperZ, upperRX, upperRY, upperRZ} = data!;
         return null;
-    }
-
+    }*/
+    /*
     return (
         <div> 
         {send && <SendPositionComponent/>}
         {getPosition && <GetPositionComponent/>}
         </div>
-    );
+    );*/
+    return null;
 }
