@@ -46,7 +46,7 @@ const ANGULAR_DAMPING = 0.5;      // idem
 
 
 // set to true for debugging / development
-const DEBUGGING_MODE = false;
+const DEBUGGING_MODE = true;
 
 
 
@@ -75,6 +75,9 @@ class Jaw {
         this.sphere = new THREE.Mesh(sphere_geo, sphereMaterial);
         scene.add(this.sphere);
         this.sphere.visible = DEBUGGING_MODE;     // true for debugging purposes
+
+        // TEST
+        this.mesh = new THREE.Group();
 
         // add body
         this.body = new CANNON.Body({
@@ -119,9 +122,10 @@ class Jaw {
                 //jaw.body = generateNewBody(object, jaw.body);
                 //console.log(object);
                 // How to generate as mesh since it's built out of little parts?
-                jaw.mesh = mergeMeshes(object); // Doesn't work
-                console.log(jaw.mesh);
-
+                //jaw.mesh = mergeMeshes(object); // Doesn't work
+                //console.log(jaw.mesh);
+                //console.log(object); // Multiple children as meshes
+                
                 for (let g = 0; g < object.children.length; g++) {
                     const child = object.children[g];
                     let meshChild = new THREE.Mesh(child.geometry, teethMaterial.clone());
@@ -130,11 +134,24 @@ class Jaw {
                     meshChild.position.y = 0;
                     meshChild.position.z = 0;
                     meshChild.rotation.x = 1.5 * Math.PI;
+                    // Calculate the shape's local position and orientation in the compound body
+                    //const localPosition = child.position.clone().sub(jaw.body.position);
+                    //const localQuaternion = child.quaternion.clone().invert().multiply(jaw.body.quaternion);
 
-                    const shapeChild = threeMeshToConvexCannonMesh(meshChild);
-                    jaw.body.addShape(shapeChild);
-                    console.log(jaw.body);
+                    jaw.mesh.add(meshChild); // Something similar, maybe just hold in an array for every shape? But then it's equivalent to rendering multiple objects no?
+                    scene.add(meshChild);
+
+                    //const shapeChild = threeMeshToConvexCannonMesh(meshChild); // Something's wrong with this, since clips through
+                    //jaw.body.addShape(shapeChild, localPosition, localQuaternion);
+                    //jaw.body.addShape(shapeChild);
+                    jaw.body = generateNewBody(meshChild, jaw.body);
                 }
+                //console.log(jaw.body); // Multiple shapes/polyhedrons in the body
+                //jaw.mesh = object; // As group
+                scene.add(jaw.mesh);
+                console.log(jaw.body.position);
+                console.log(jaw.mesh.position);
+
 
                 console.log("loading mesh succeeded");
                 jaw.loaded = true;

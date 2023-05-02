@@ -89,33 +89,31 @@ export const generateBody = (groups, properties) => {
     return body;
 };
 
-export const generateNewBody = (groups, body) => {
-    for (let g = 0; g < groups.length; g++) {
-        const group = groups[g];
+export const generateNewBody = (childMesh, body) => {
+    /*const verts = generateThreeVertices(childMesh.vertices);
+    const faces = generateThreeFaces(childMesh.faces);
+    const geometry = new THREE.Geometry();
+    const material = new THREE.MeshBasicMaterial();
 
-        const verts = generateThreeVertices(group.vertices);
-        const faces = generateThreeFaces(group.faces);
-        const geometry = new THREE.Geometry();
-        const material = new THREE.MeshBasicMaterial();
+    geometry.vertices = verts;
+    geometry.faces = faces;
 
-        geometry.vertices = verts;
-        geometry.faces = faces;
+    const mesh = new THREE.Mesh(geometry, material);*/
+    const mesh = childMesh;
 
-        const mesh = new THREE.Mesh(geometry, material);
+    mesh.updateMatrix();
+    mesh.geometry.applyMatrix4(mesh.matrix);
+    mesh.geometry = BufferGeometryUtils.mergeVertices(mesh.geometry);
+    //mesh.geometry.computeFaceNormals();
+    mesh.geometry.computeVertexNormals();
+    mesh.matrix.identity();
 
-        mesh.updateMatrix();
-        mesh.geometry.applyMatrix(mesh.matrix);
-        mesh.geometry.computeFaceNormals();
-        mesh.geometry.computeVertexNormals();
-        mesh.matrix.identity();
+    const updatedVerts = generateCannonVertices(mesh.geometry.attributes.position.array);
+    const updatedFaces = generateCannonFaces(updatedVerts);
 
-        const updatedVerts = generateCannonVertices(mesh.geometry.vertices);
-        const updatedFaces = generateCannonFaces(mesh.geometry.faces);
+    const polyhedron = new CANNON.ConvexPolyhedron(updatedVerts,updatedFaces);
 
-        const polyhedron = new CANNON.ConvexPolyhedron(updatedVerts,updatedFaces);
-
-        body.addShape(polyhedron);
-    }
+    body.addShape(polyhedron);
 
     return body;
 };
