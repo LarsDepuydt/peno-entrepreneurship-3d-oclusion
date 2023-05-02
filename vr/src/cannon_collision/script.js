@@ -6,7 +6,6 @@ import { OBJLoader } from 'three/addons/loaders/OBJLoader.js';
 import * as CANNON from 'cannon-es';
 import { MeshBVH, acceleratedRaycast } from 'three-mesh-bvh';
 import { default as CannonUtils } from 'cannon-utils';
-<<<<<<< HEAD
 //import { sendPositionScan, getPositionScan } from '../../../frontend/src/gen/proto/threedoclusion/v1/service-ScanService_connectquery.ts'
 
 import { QuickHull } from './QuickHull.js';
@@ -15,10 +14,6 @@ import { findSepAxis } from './findSepAxis.js'
 
 // overload cannon.js function findSeparatingAxis by an equivalent that uses web workers
 CANNON.ConvexPolyhedron.prototype.findSeparatingAxis = findSepAxis;
-=======
-import { sendPositionScan, getPositionScan } from '../../../frontend/src/gen/proto/threedoclusion/v1/service-ScanService_connectquery'
-import { QuickHull } from './QuickHull.js';
->>>>>>> origin/main
 
 
 let container;
@@ -45,10 +40,7 @@ let lj_sphere, uj_sphere;
 
 let lj_loaded = false, uj_loaded = false;
 
-<<<<<<< HEAD
 const teeth_material = new THREE.MeshBasicMaterial({color: 0x0000ff});
-=======
->>>>>>> origin/main
 
 let target = new THREE.Vector3();
 const clock = new THREE.Clock();
@@ -406,12 +398,7 @@ function updatePhysics() {
 }
 
 function animate() {
-<<<<<<< HEAD
     //checkTime();
-=======
-    checkTime();
-
->>>>>>> origin/main
 
     // console.log("frame", frameNum);
     frameNum += 1;
