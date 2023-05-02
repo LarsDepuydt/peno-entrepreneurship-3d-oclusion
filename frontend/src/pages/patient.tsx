@@ -16,11 +16,13 @@ const patients = [
   {
     patient41: (
       <Patient
+
         id={6422}
         picture={teeth3d}
         patientfirstname={'Patient'}
         patientlastname={'Test'}
         doctorid={126}
+
         //date={new Date(2023, 2, 21)}
       />
     ),
@@ -30,7 +32,7 @@ const patients = [
         picture={teeth3d}
         patientfirstname={'Anna'}
         patientlastname={'Janssens'}
-        doctorid={116}
+        doctorid={120}
         //date={new Date(2023, 2, 20)}
       />
     ),
@@ -157,7 +159,7 @@ export default function PatientPage() {
   console.log('dentist id is ' + process.env.REACT_APP_DENTIST_ID);
   console.log('patient id is ' + process.env.REACT_APP_PATIENT_ID);
 
-  if (process.env.REACT_APP_DENTIST_ID == undefined) {
+  if (DentistID == undefined) {
     return <Loading />;
   } else {
     return (
