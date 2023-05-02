@@ -5,17 +5,11 @@ import styles from '@/styles/Modal.module.css';
 import styleB from '@/styles/Buttons.module.css';
 import { useQuery } from '@tanstack/react-query';
 import { addScan } from '@/gen/proto/threedoclusion/v1/service-ScanService_connectquery';
+import useStorage from '@/hooks/useStorage';
 
 // TODO add files + tags
 
 interface scanValues {
-  // type_overbite: boolean;
-  // type_underbite: boolean;
-  // type_crossbite: boolean;
-
-  // type_reconstructive: boolean;
-  // type_jawsurgery: boolean;
-
   notes: string;
   file: string;
 }
@@ -23,12 +17,26 @@ interface scanValues {
 export default function ModalForm() {
   //let DentistID = process.env.REACT_APP_DENTIST_ID!;
   let PatientID = process.env.REACT_APP_PATIENT_ID!;
+  const [scan, setScan] = useState<File | null>(null);
 
-  console.log(PatientID);
+  const path = 'gs://relu-vr-scan-database.appspot.com/Patiënt-Scans/Patient-1/upper_ios_6.obj';
+  const { handleDownloadClick, loading, error } = useStorage(path);
 
   //  file handlers
   const onFileUploadChange = (e: ChangeEvent<HTMLInputElement>) => {
+    const fileInput = e.target;
+
+    if (!fileInput.files) {
+      alert('No file was chosen');
+      return;
+    }
+
+    e.preventDefault();
     console.log('From onFileUploadChange');
+
+    const file = fileInput.files[0];
+    console.log(file);
+    setScan(file);
   };
 
   const [modal, setModal] = useState(false);
@@ -37,10 +45,10 @@ export default function ModalForm() {
   const [submitOK, setSubmitOK] = useState(false);
   const [sendOK, setSendOK] = useState(false);
 
-  const fileRef = useRef(null);
+  //const fileRef = useRef(null);
 
   const [scaninfo, setData] = useState({
-    file: '',
+    file: path,
     notes: '',
 
     patientId: parseInt(PatientID),
@@ -58,31 +66,33 @@ export default function ModalForm() {
 
   const toggleModal = () => {
     setModal(!modal); // change state f -> t and t -> f
-    setSendOK(true);
-  };
-
-  const ReworkValues = (values: scanValues) => {
-    return {
-      file: values.file,
-      notes: values.notes,
-
-      patientId: parseInt(PatientID),
-    };
+    setSendOK(!modal);
+    setScan(null);
+    setSubmitOK(false);
   };
 
   const submitFunction = (values: scanValues) => {
-    console.log(sendOK);
+    refetch();
+    console.log('in submitfunction');
+
+    console.log('this is the scan');
+    console.log(scan);
+
+    console.log('this is the OLD scan info');
+    console.log(scaninfo);
+    console.log(scaninfo.file);
 
     if (sendOK && modal) {
       setSendOK(false);
-      console.log('we started the function submitFunction()');
 
-      setData(ReworkValues(values));
+      refetch();
+      setData(scaninfo);
+      //refetch();
+
+      console.log('this is the NEW scan info');
       console.log(scaninfo);
 
-      //console.log(data);
       setSubmitOK(true);
-      console.log('submitOK is set to true');
     }
 
     setModal(false);
@@ -98,11 +108,13 @@ export default function ModalForm() {
   useEffect(() => {
     if (submitOK) {
       refetch();
-      console.log('were in the useEffect function inside the submitOK');
-      console.log(scaninfo);
-      console.log('line 82');
+      console.log('in useEffect');
+      console.log('NEW scaninfo file path is ' + scaninfo.file);
+      console.log(data);
       if (data != undefined) {
+        console.log('data is not undefined loop');
         setModal(false);
+        setSubmitOK(false);
       }
       setSubmitOK(false);
     }
@@ -136,7 +148,7 @@ export default function ModalForm() {
                     <form className="w-full p-3" action="" onSubmit={(e) => e.preventDefault()}>
                       <div>
                         <label>
-                          <input className="block w-0 h-0" name="file" type="file" onChange={onFileUploadChange} />
+                          <input className="block w-0 h-0" name="file" type="file" onChange={onFileUploadChange} />{' '}
                         </label>
                       </div>
                     </form>

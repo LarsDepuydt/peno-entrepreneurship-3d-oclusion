@@ -12,7 +12,7 @@ import { useQuery } from '@tanstack/react-query';
 import router from 'next/router';
 
 interface IDpatient {
-  SearchID: string;
+  SearchID: number;
 }
 
 export default function ModalForm() {
@@ -31,12 +31,12 @@ export default function ModalForm() {
   };
 
   const ReworkValue = (values: IDpatient) => {
-    return { id: parseInt(values.SearchID) };
+    return { id: values.SearchID };
   };
 
   const clickPatient = (values: IDpatient) => {
-    process.env.REACT_APP_PATIENT_ID = values.SearchID;
-    const idquery = parseInt(values.SearchID);
+    process.env.REACT_APP_PATIENT_ID = values.SearchID.toString();
+    const idquery = values.SearchID;
     router.push({
       pathname: '/scans-page',
       query: {
@@ -46,7 +46,7 @@ export default function ModalForm() {
   };
 
   const submitFunction = (values: IDpatient) => {
-    console.log(values);
+    console.log(values.SearchID);
     setData(ReworkValue(values));
     console.log(data);
     if (data?.dentistId == parseInt(DentistID)) {
@@ -70,7 +70,7 @@ export default function ModalForm() {
             <div className={styles.login_box + ' p-3'}>
               <Formik
                 initialValues={{
-                  SearchID: '',
+                  SearchID: 0,
                 }}
                 // on Submit we console the values + close the popup tab
                 onSubmit={(values) => {

@@ -16,10 +16,10 @@ const patients = [
   {
     patient41: (
       <Patient
-        id={10}
+        id={6422}
         picture={teeth3d}
-        patientfirstname={'Jos'}
-        patientlastname={'Van de Velde'}
+        patientfirstname={'Patient'}
+        patientlastname={'Test'}
         doctorid={126}
         //date={new Date(2023, 2, 21)}
       />
@@ -156,8 +156,6 @@ const filteredPatients = patients
 export default function PatientPage() {
   console.log('dentist id is ' + process.env.REACT_APP_DENTIST_ID);
   console.log('patient id is ' + process.env.REACT_APP_PATIENT_ID);
-
-  const router = useRouter();
 
   if (DentistID == undefined) {
     return <Loading />;
