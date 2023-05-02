@@ -1,10 +1,7 @@
 import { Formik, Field, Form, ErrorMessage } from 'formik';
-
 import styles from '@/styles/Modal.module.css';
 import styleB from '@/styles/Buttons.module.css';
-
 import 'bootstrap/dist/css/bootstrap.css';
-
 import { useQuery } from '@tanstack/react-query';
 import { addPatient } from '@/gen/proto/threedoclusion/v1/service-ScanService_connectquery';
 import { useEffect, useState } from 'react';
@@ -12,90 +9,84 @@ import { useEffect, useState } from 'react';
 interface patientValues {
   patientFirstName: string;
   patientLastName: string;
-
   pinned: boolean;
   notes: string;
 }
 
 export default function ModalForm() {
   let DentistID = process.env.REACT_APP_DENTIST_ID!;
-
   const [modal, setModal] = useState(false);
   // modal is not toggled at first
-
   const [submitOK, setSubmitOK] = useState(false);
   const [sendOK, setSendOK] = useState(false);
-
   const [patientinfo, setData] = useState({
-    first_name: '',
-    last_name: '',
-
+    firstName: '',
+    lastName: '',
     pinned: false,
     notes: '',
-
-    dentist_id: 0,
+    dentistId: 0,
   });
 
-  //const { data } = useQuery(addPatient.useQuery(patientinfo));
-
-  const query = addPatient.useQuery(patientinfo);
-  const { data, refetch } = useQuery(query.queryKey, query.queryFn, { enabled: false });
+  const { data, refetch } = useQuery(
+    addPatient.useQuery(patientinfo).queryKey,
+    addPatient.useQuery(patientinfo).queryFn,
+    { enabled: false }
+  );
 
   const toggleModal = () => {
     setModal(!modal); // change state f -> t and t -> f
+    setSendOK(true);
   };
 
   const ReworkValues = (values: patientValues) => {
     return {
-      first_name: values.patientFirstName,
-      last_name: values.patientLastName,
+      firstName: values.patientFirstName,
+      lastName: values.patientLastName,
       pinned: values.pinned,
       notes: values.notes,
-
-      dentist_id: parseInt(DentistID),
+      dentistId: parseInt(DentistID),
     };
   };
 
   const submitFunction = (values: patientValues) => {
-    console.log(ReworkValues(values));
-    setData(ReworkValues(values));
-    console.log(data);
-    setSubmitOK(true);
-    //setModal(!modal);
+    if (sendOK && modal) {
+      setSendOK(false);
+      console.log('we started the function submitFunction()');
+      setData(ReworkValues(values));
+      console.log(patientinfo);
+      //console.log(data);
+      setSubmitOK(true);
+      console.log('submitOK is set to true');
+    }
+    setModal(false);
   };
 
   const handleRedirect = () => {
+    refetch();
     if (submitOK) {
       setSendOK(true);
     }
   };
 
   //data?.message && patientinfo.patientFirstName &&
-
   useEffect(() => {
     if (submitOK) {
       refetch();
-      console.log('in use effect function');
-      console.log(data);
-      setSendOK(false);
-      console.log('line 82');
+      console.log('new patient being added is:', patientinfo, 'belonging to', parseInt(DentistID) );
       if (data != undefined) {
-        setModal(!modal);
+        setModal(false);
       }
+      setSubmitOK(false);
     }
-  }, [data, modal, sendOK]);
-
-  //, patientinfo
-
+  }, [data, modal, submitOK]);
+  
   return (
     <>
       <div className={styles.btn_modal}>
         <button onClick={toggleModal} className={styleB.relu_btn} id={styleB.fixedWidth}>
           Add Patient
         </button>
-        {/* translation files bekijken */}
       </div>
-
       {modal && (
         <div className={styles.modal}>
           <div className={styles.overlay}></div>
@@ -105,7 +96,6 @@ export default function ModalForm() {
                 initialValues={{
                   patientFirstName: '',
                   patientLastName: '',
-
                   pinned: false,
                   notes: '',
                 }}
@@ -124,7 +114,6 @@ export default function ModalForm() {
                             placeholder="First Name"
                           />
                         </div>
-
                         <div className="mb-3">
                           <Field
                             className="form-control"
@@ -134,7 +123,6 @@ export default function ModalForm() {
                           />
                         </div>
                       </div>
-
                       <div className="form-group form-check">
                         <Field
                           type="checkbox"
@@ -146,7 +134,6 @@ export default function ModalForm() {
                         </label>
                         <ErrorMessage name="pinned" component="div" className="invalid-feedback" />
                       </div>
-
                       <div className="mb-3">
                         <Field
                           className="form-control"
@@ -156,7 +143,6 @@ export default function ModalForm() {
                           type="notes"
                         />
                       </div>
-
                       <div className={styles.spacingbtn}>
                         <button type="submit" className={styleB.relu_btn} onClick={handleRedirect}>
                           Save patient
@@ -176,3 +162,5 @@ export default function ModalForm() {
     </>
   );
 }
+
+

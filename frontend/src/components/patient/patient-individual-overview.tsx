@@ -8,16 +8,20 @@ import { InspectScans } from '../../components/patient/inspect_scans';
 import DeleteButton from '../patient/delete_patient';
 import EditButton from '../patient/edit_patient';
 import DropdownButton from '../patient/patient_dropdown';
+import profilepicture from '../../../public/patient_profile_picture.png';
+
 
 interface patientProfile {
   id: number;
-  picture: StaticImageData;
   patientfirstname: string;
   patientlastname: string;
-  doctorid: number;
+  pinned : boolean; 
+  notespatient : string;
+  doctorid: number; 
+  //picture: StaticImageData;
 }
 
-export function SinglePatient({ id, picture, patientfirstname, patientlastname }: patientProfile) {
+export function SinglePatient({ id, patientfirstname, patientlastname }: patientProfile) {
   const [showButtons, setShowButtons] = useState(false);
   const handleMouseEnter = () => {
     setShowButtons(true);
@@ -63,7 +67,7 @@ export function SinglePatient({ id, picture, patientfirstname, patientlastname }
             <Image
               id={patientfirstname.concat(' ', patientlastname)}
               className={showButtons ? styles.picture_hover : styles.picture}
-              src={picture}
+              src={profilepicture}
               alt="3d picture of teeth"
             />
           </div>

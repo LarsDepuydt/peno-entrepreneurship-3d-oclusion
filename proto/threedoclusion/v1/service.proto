@@ -187,8 +187,6 @@ message SendVRRequest {
 }
 
 
-
-
 message SendVRResponse {
   string feedback = 1;
 }
