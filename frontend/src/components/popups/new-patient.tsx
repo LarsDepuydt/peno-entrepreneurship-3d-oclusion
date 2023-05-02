@@ -27,44 +27,55 @@ export default function ModalForm() {
   const [sendOK, setSendOK] = useState(false);
 
   const [patientinfo, setData] = useState({
-    first_name: '',
-    last_name: '',
+    firstName: '',
+    lastName: '',
 
     pinned: false,
     notes: '',
 
-    dentist_id: 0,
+    dentistId: 0,
   });
 
-  //const { data } = useQuery(addPatient.useQuery(patientinfo));
-
-  const query = addPatient.useQuery(patientinfo);
-  const { data, refetch } = useQuery(query.queryKey, query.queryFn, { enabled: false });
+  const { data, refetch } = useQuery(
+    addPatient.useQuery(patientinfo).queryKey,
+    addPatient.useQuery(patientinfo).queryFn,
+    { enabled: false }
+  );
 
   const toggleModal = () => {
     setModal(!modal); // change state f -> t and t -> f
+    setSendOK(true);
   };
 
   const ReworkValues = (values: patientValues) => {
     return {
-      first_name: values.patientFirstName,
-      last_name: values.patientLastName,
+      firstName: values.patientFirstName,
+      lastName: values.patientLastName,
       pinned: values.pinned,
       notes: values.notes,
 
-      dentist_id: parseInt(DentistID),
+      dentistId: parseInt(DentistID),
     };
   };
 
   const submitFunction = (values: patientValues) => {
-    console.log(ReworkValues(values));
-    setData(ReworkValues(values));
-    console.log(data);
-    setSubmitOK(true);
-    //setModal(!modal);
+    if (sendOK && modal) {
+      setSendOK(false);
+      console.log('we started the function submitFunction()');
+
+      setData(ReworkValues(values));
+      console.log(patientinfo);
+
+      //console.log(data);
+      setSubmitOK(true);
+      console.log('submitOK is set to true');
+    }
+
+    setModal(false);
   };
 
   const handleRedirect = () => {
+    refetch();
     if (submitOK) {
       setSendOK(true);
     }
@@ -75,15 +86,16 @@ export default function ModalForm() {
   useEffect(() => {
     if (submitOK) {
       refetch();
-      console.log('in use effect function');
-      console.log(data);
-      setSendOK(false);
+      console.log('were in the useEffect function inside the submitOK');
+      console.log(patientinfo);
+      console.log(patientinfo.dentistId, ' foreign key error ', parseInt(DentistID));
       console.log('line 82');
       if (data != undefined) {
-        setModal(!modal);
+        setModal(false);
       }
+      setSubmitOK(false);
     }
-  }, [data, modal, sendOK]);
+  }, [data, modal, submitOK]);
 
   //, patientinfo
 

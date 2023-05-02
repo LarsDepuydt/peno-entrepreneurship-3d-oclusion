@@ -61,7 +61,6 @@ export default function LoginForm() {
   //   //&& router.push({ pathname: '/patient/[dentistID]', query: { dentistID: process.env.REACT_APP_DENTIST_ID } });
   // }, [data, credentials, router]);
 
-
   const toRegister = () => router.push('/register-page');
 
   return (
