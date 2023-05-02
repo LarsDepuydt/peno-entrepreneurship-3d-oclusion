@@ -11,9 +11,6 @@ import OpenObjButton from '../../components/scan_gallery/open_obj';
 import ExportButton from '../../components/scan_gallery/export_scan';
 import DropdownButton from '../../components/scan_gallery/scan_dropdown';
 
-
-import { InspectObj } from '../scan_gallery/inspect_OBJ';
-
 interface scanProfile {
   scanid: number;
   patientid: number;
