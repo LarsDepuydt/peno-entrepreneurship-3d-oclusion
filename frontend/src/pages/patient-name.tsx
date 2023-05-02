@@ -9,20 +9,23 @@ import { StaticImageData } from 'next/image';
 import { FC } from 'react';
 import { SidebarDoctor } from '../components/header/sidebar';
 import Head from 'next/head';
+import { getPatientByName } from '@/gen/proto/threedoclusion/v1/service-ScanService_connectquery';
+import { useQuery } from '@tanstack/react-query';
+import { type } from 'os';
 
-import Loading from '../components/header/end-of-session';
+// type Arraypatients {
+//   patient[]
+// }
 
-const patients = [
+let namedPatients = [
   {
     patient41: (
       <Patient
-
-        id={6422}
+        id={10}
         picture={teeth3d}
-        patientfirstname={'Patient'}
-        patientlastname={'Test'}
-        doctorid={126}
-
+        patientfirstname={'Jos'}
+        patientlastname={'Van de Velde'}
+        doctorid={120}
         //date={new Date(2023, 2, 21)}
       />
     ),
@@ -32,7 +35,7 @@ const patients = [
         picture={teeth3d}
         patientfirstname={'Anna'}
         patientlastname={'Janssens'}
-        doctorid={120}
+        doctorid={116}
         //date={new Date(2023, 2, 20)}
       />
     ),
@@ -138,68 +141,66 @@ const patients = [
   //   ),
 ];
 
-// const filteredPatients = patients
-//   .flatMap((obj) => Object.values(obj)) // flatten the array of objects into an array of patients
-//   .reduce((acc, patient) => {
-//     const foundPatient = acc.find((p) => p.props.id === patient.props.id);
-//     if (!foundPatient) {
-//       acc.push(patient);
-//     }
-//     return acc;
-//   }, []);
-
 let DentistID = process.env.REACT_APP_DENTIST_ID!;
 //let DentistIDnum = parseInt(DentistIDstr);
 
-const filteredPatients = patients
+const filteredPatients = namedPatients
   .flatMap((obj) => Object.values(obj)) // flatten the array of objects into an array of patients
   .filter((patient) => patient.props.doctorid === parseInt(DentistID));
 
-export default function PatientPage() {
+const App: FC = () => {
+  const router = useRouter();
+  const patientFirstName = router.query.fn as string;
+  const patientLastName = router.query.ln as string;
+
   console.log('dentist id is ' + process.env.REACT_APP_DENTIST_ID);
   console.log('patient id is ' + process.env.REACT_APP_PATIENT_ID);
 
-  if (DentistID == undefined) {
-    return <Loading />;
-  } else {
-    return (
-      <>
-        <Head>
-          <title>relu</title>
-          <link rel="icon" href="/relu_icon.ico" />
-        </Head>
+  const query = getPatientByName.useQuery({ firstName: patientFirstName, lastName: patientLastName });
+  const { data } = useQuery(query.queryKey, query.queryFn);
 
-        <div>
-          <div className={styles.scansWrapper}>
-            {filteredPatients.map((patient: React.ReactElement, index: number) => (
-              <div key={`patient${index + 1}`}>
-                <Patient
-                  id={patient.props.id}
-                  picture={patient.props.picture}
-                  patientfirstname={patient.props.patientfirstname}
-                  patientlastname={patient.props.patientlastname}
-                  doctorid={patient.props.doctorid}
-                />
-              </div>
-            ))}
-            <div className={styles.patient_filler}></div>
-            <div className={styles.patient_filler}></div>
-            <div className={styles.patient_filler}></div>
-            <div className={styles.patient_filler}></div>
-            <div className={styles.patient_filler}></div>
-            <div className={styles.patient_filler}></div>
-            <div className={styles.patient_filler}></div>
-            <div className={styles.patient_filler}></div>
-            <div className={styles.patient_filler}></div>
-            <div className={styles.patient_filler}></div>
-            <div className={styles.patient_filler}></div>
-          </div>
-          <SidebarDoctor />
-          <HeaderDoctor />
-        </div>
-      </>
-    );
+  if (data != undefined) {
+    //namedPatients = data.patients;
+    //filteredPatients(Namedpatients)
   }
-}
 
-//export default App;
+  return (
+    <>
+      <Head>
+        <title>relu</title>
+        <link rel="icon" href="/relu_icon.ico" />
+      </Head>
+
+      <div>
+        <div className={styles.scansWrapper}>
+          {filteredPatients.map((patient: React.ReactElement, index: number) => (
+            <div key={`patient${index + 1}`}>
+              <Patient
+                id={patient.props.id}
+                picture={patient.props.picture}
+                patientfirstname={patient.props.patientfirstname}
+                patientlastname={patient.props.patientlastname}
+                doctorid={patient.props.doctorid}
+              />
+            </div>
+          ))}
+          <div className={styles.patient_filler}></div>
+          <div className={styles.patient_filler}></div>
+          <div className={styles.patient_filler}></div>
+          <div className={styles.patient_filler}></div>
+          <div className={styles.patient_filler}></div>
+          <div className={styles.patient_filler}></div>
+          <div className={styles.patient_filler}></div>
+          <div className={styles.patient_filler}></div>
+          <div className={styles.patient_filler}></div>
+          <div className={styles.patient_filler}></div>
+          <div className={styles.patient_filler}></div>
+        </div>
+        <SidebarDoctor />
+        <HeaderDoctor />
+      </div>
+    </>
+  );
+};
+
+export default App;

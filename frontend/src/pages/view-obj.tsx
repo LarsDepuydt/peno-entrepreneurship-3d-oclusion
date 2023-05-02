@@ -2,8 +2,7 @@ import { HeaderObj } from '../components/header/header';
 import { SidebarObj } from '@/components/header/sidebar';
 import { FC } from 'react';
 import { useRouter } from 'next/router';
-import ObjDisplay from '../components/OBJ_view/obj-display'
-
+import ObjDisplay from '../components/OBJ_view/obj-display';
 
 function App() {
 
@@ -13,7 +12,7 @@ function App() {
 
     return (
       <div>
-        <SidebarObj patientfirstname={'TEST'} patientlastname={'TEST2'} />
+        <SidebarObj/>
         <HeaderObj />
         <ObjDisplay />
       </div>
@@ -22,6 +21,3 @@ function App() {
 }
 
 export default App;
-
-
-
