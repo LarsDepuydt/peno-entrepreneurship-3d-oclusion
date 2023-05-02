@@ -95,7 +95,8 @@ export default function ModalForm() {
       }
       setSubmitOK(false);
     }
-  }, [data, modal, submitOK]);
+  }, [data, modal, sendOK, submitOK, refetch]);
+
 
   //, patientinfo
 
