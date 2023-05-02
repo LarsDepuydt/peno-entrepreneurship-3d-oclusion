@@ -3574,6 +3574,13 @@ __metadata:
   languageName: node
   linkType: hard
 
+"js-cookie@npm:^3.0.4":
+  version: 3.0.4
+  resolution: "js-cookie@npm:3.0.4"
+  checksum: 93678ee0d1d15db84926dcc69f453255323128c9e7182e3b43baa29c337dd304606ad3c82cb2ef0d83a165709f6612fb9566bbbadf03c381039b3a786be1d20d
+  languageName: node
+  linkType: hard
+
 "js-sdsl@npm:^4.1.4":
   version: 4.4.0
   resolution: "js-sdsl@npm:4.4.0"
@@ -5306,6 +5313,7 @@ __metadata:
     grpc-tools: ^1.12.4
     grpc-web: ^1.4.2
     grpc_tools_node_protoc_ts: ^5.3.3
+    js-cookie: ^3.0.4
     next: 13.1.6
     prettier: ^2.8.4
     react: 18.2.0
