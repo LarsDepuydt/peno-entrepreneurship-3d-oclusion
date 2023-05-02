@@ -6,7 +6,7 @@ type InspectObjProps = {
     scanID : number; 
   }
   
-export function InspectObj({ patientID, scanID }: InspectObjProps){
+export default function OpenObjButton({ patientID, scanID }: InspectObjProps){
     const router = useRouter();
   
     const viewObj = () => {
@@ -21,8 +21,7 @@ export function InspectObj({ patientID, scanID }: InspectObjProps){
   
     return (
       <div>
-        <button type="button" className={styleB.relu_btn} id={styleB.dropDownButton} onClick={viewObj}>
-          OBJ view
+        <button type="button" className={styleB.relu_btn} id={styleB.objIcon} onClick={viewObj}>
         </button>
       </div>
         );

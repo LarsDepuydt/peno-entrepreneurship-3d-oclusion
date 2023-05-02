@@ -12,18 +12,10 @@ import (
 
 func main() {
 	connectionName := os.Getenv("CLOUD_SQL_CONNECTION_NAME")
-	fmt.Print(connectionName)
-
-  dbUser := os.Getenv("postgres_user")
-	fmt.Print(dbUser)
-
-  dbPassword := os.Getenv("postgres_password")
-	fmt.Print(dbPassword)
-
-  dbName := os.Getenv("db_name")
-	fmt.Print(dbName)
-
-	connectionString := fmt.Sprintf("user=%s password=%s dbname=%s host=/cloudsql/%s sslmode=disable", dbUser, dbPassword, dbName, connectionName)
+    dbUser := os.Getenv("postgres_user")
+    dbPassword := os.Getenv("postgres_password")
+    dbName := os.Getenv("db_name")
+    connectionString := fmt.Sprintf("user=%s password=%s dbname=%s host=/cloudsql/%s sslmode=disable", dbUser, dbPassword, dbName, connectionName)
 
 	database, err := sql.Open("postgres", connectionString)
 	if err != nil {

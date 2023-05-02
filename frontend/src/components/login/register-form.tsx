@@ -30,19 +30,46 @@ interface RUser {
 export default function LoginForm() {
   const [credentials, setData] = useState({ email: '', password: '', firstName: '', lastName: '' });
 
-  const { data } = useQuery(register.useQuery(credentials));
+  const [submitOK, setSubmitOK] = useState(false);
+  const [sendOK, setSendOK] = useState(false);
+
+  const query = register.useQuery(credentials);
+  const { data, refetch } = useQuery(query.queryKey, query.queryFn, { enabled: false });
 
   const router = useRouter();
 
+  // const submitFunction = (values: RUser) => {
+  //   console.log(values);
+  //   setData(values);
+  //   console.log(data);
+  // };
+
   const submitFunction = (values: RUser) => {
     console.log(values);
-
     setData(values);
+    console.log(data);
+    setSubmitOK(true);
   };
 
+  const handleRedirect = () => {
+    if (submitOK) {
+      setSendOK(true);
+    }
+  };
+
+  // useEffect(() => {
+  //   data?.token && credentials.email && router.push('/login-page');
+  // }, [data, credentials]);
+
   useEffect(() => {
-    data?.token && credentials.email && router.push('/patient');
-  }, [data, credentials, router]);
+    if (submitOK) {
+      refetch();
+      console.log(data);
+      setSendOK(false);
+      data?.token && credentials.email && router.push('/login-page');
+    }
+  }, [data, credentials, router, sendOK, submitOK, refetch]);
+
 
   const toLogin = () => router.push('/login-page');
 
@@ -120,7 +147,7 @@ export default function LoginForm() {
             </div>
 
             <div className={styles.spacingbtn}>
-              <button type="submit" className={styleB.relu_btn}>
+              <button type="submit" className={styleB.relu_btn} onClick={handleRedirect}>
                 Register
               </button>
               <button type="button" className={styleB.relu_btn} onClick={toLogin}>

@@ -6,6 +6,7 @@ import { SidebarPatient } from '@/components/header/sidebar';
 import styles from '@/styles/PatientPage.module.scss';
 import { FC } from 'react';
 import Head from 'next/head';
+import { Patient } from '@/gen/proto/threedoclusion/v1/service_pb';
 
 // hard coded patients - 12 scans for 10 patients. Kaatje and Jozef (patientid 10 and 8) have each 2 scans. (scanid 1 and 2)
 const all_scans = [
@@ -38,12 +39,17 @@ const all_scans = [
   },
 ];
 
+let PatientID = process.env.REACT_APP_PATIENT_ID!;
+
+console.log('dentist id is ' + process.env.REACT_APP_DENTIST_ID);
+console.log('patient id is ' + process.env.REACT_APP_PATIENT_ID);
+
 const App: FC = () => {
   const router = useRouter();
   const targetpatientID = router.query.patientID as string;
 
   const filteredPatients = all_scans
-    .flatMap((obj) => Object.values(obj)) // flatten the array of objects into an array of patients
+    .flatMap((obj) => Object.values(obj)) // flatten the array of objects into an array of scans
     .filter((patient) => patient.props.patientid === parseInt(targetpatientID));
 
   return (
@@ -60,7 +66,7 @@ const App: FC = () => {
           </div>
         ))}
       </div>
-      <SidebarPatient patientfirstname={'TEST'} patientlastname={'TEST3'} />
+      <SidebarPatient />
       <HeaderPatient />
     </div>
   );
