@@ -37,7 +37,7 @@
     "eslint": "8.34.0",
     "eslint-config-next": "13.1.6",
     "file-saver": "~2.0.5",
-    "firebase": "^9.20.0",
+    "firebase": "^9.0.0",
     "formik": "^2.2.9",
     "grpc-tools": "^1.12.4",
     "grpc-web": "^1.4.2",
