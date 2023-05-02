@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from 'react'
 import Menu from '@/components/vr/menu'
-import RenderVideo from '@/components/vr/render-video';
 
 import { ScanService } from "@/gen/proto/threedoclusion/v1/service_connect";
 import { createPromiseClient } from "@bufbuild/connect";
