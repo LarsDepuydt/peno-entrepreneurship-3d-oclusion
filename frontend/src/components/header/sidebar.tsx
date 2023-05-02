@@ -95,7 +95,7 @@ export function SidebarObj( ) {
   const handleAddNoteScan = (note: string) => {
     setNotes([...notesScan, note]);
   };
-n
+
   return (
     <>
       <div className={styleSidebar.sidebar}>
