@@ -1,29 +1,58 @@
-import React, { useState, MouseEvent, ChangeEvent } from 'react';
+import React, { useState, MouseEvent, ChangeEvent, useEffect, useRef } from 'react';
 import { Formik, Field, Form, ErrorMessage, useFormik } from 'formik';
 
 import styles from '@/styles/Modal.module.css';
 import styleB from '@/styles/Buttons.module.css';
+import { useQuery } from '@tanstack/react-query';
+import { addScan } from '@/gen/proto/threedoclusion/v1/service-ScanService_connectquery';
+import useStorage from '@/hooks/useStorage';
+
 // TODO add files + tags
 
 interface scanValues {
-  type_overbite: boolean;
-  type_underbite: boolean;
-  type_crossbite: boolean;
-
-  type_reconstructive: boolean;
-  type_jawsurgery: boolean;
-
+  notes: string;
   file: string;
 }
 
 export default function ModalForm() {
+  //let DentistID = process.env.REACT_APP_DENTIST_ID!;
+  let PatientID = process.env.REACT_APP_PATIENT_ID!;
+  const [scan, setScan] = useState<File | null>(null);
+
+  const path = 'gs://relu-vr-scan-database.appspot.com/Patiënt-Scans/Patient-1/upper_ios_6.obj';
+  const { handleDownloadClick, loading, error } = useStorage(path);
+
   //  file handlers
   const onFileUploadChange = (e: ChangeEvent<HTMLInputElement>) => {
+    const fileInput = e.target;
+
+    if (!fileInput.files) {
+      alert('No file was chosen');
+      return;
+    }
+
+    e.preventDefault();
     console.log('From onFileUploadChange');
+
+    const file = fileInput.files[0];
+    console.log(file);
+    setScan(file);
   };
 
   const [modal, setModal] = useState(false);
   // modal is not open at first
+
+  const [submitOK, setSubmitOK] = useState(false);
+  const [sendOK, setSendOK] = useState(false);
+
+  //const fileRef = useRef(null);
+
+  const [scaninfo, setData] = useState({
+    file: path,
+    notes: '',
+
+    patientId: parseInt(PatientID),
+  });
 
   const date = new Date();
   let day = date.getDate();
@@ -31,13 +60,71 @@ export default function ModalForm() {
   let year = date.getFullYear();
   let currentDate = `${day}-${month}-${year}`;
 
-  const toggleModal = () => setModal(!modal); // change state f -> t and t -> f
+  const { data, refetch } = useQuery(addScan.useQuery(scaninfo).queryKey, addScan.useQuery(scaninfo).queryFn, {
+    enabled: false,
+  });
+
+  const toggleModal = () => {
+    setModal(!modal); // change state f -> t and t -> f
+    setSendOK(!modal);
+    setScan(null);
+    setSubmitOK(false);
+  };
+
+  const submitFunction = (values: scanValues) => {
+    refetch();
+    console.log('in submitfunction');
+
+    console.log('this is the scan');
+    console.log(scan);
+
+    console.log('this is the OLD scan info');
+    console.log(scaninfo);
+    console.log(scaninfo.file);
+
+    if (sendOK && modal) {
+      setSendOK(false);
+
+      refetch();
+      setData(scaninfo);
+      //refetch();
+
+      console.log('this is the NEW scan info');
+      console.log(scaninfo);
+
+      setSubmitOK(true);
+    }
+
+    setModal(false);
+  };
+
+  const handleRedirect = () => {
+    refetch();
+    if (submitOK) {
+      setSendOK(true);
+    }
+  };
+
+  useEffect(() => {
+    if (submitOK) {
+      refetch();
+      console.log('in useEffect');
+      console.log('NEW scaninfo file path is ' + scaninfo.file);
+      console.log(data);
+      if (data != undefined) {
+        console.log('data is not undefined loop');
+        setModal(false);
+        setSubmitOK(false);
+      }
+      setSubmitOK(false);
+    }
+  }, [data, modal, submitOK]);
 
   return (
     <>
       <div className={styles.btn_modal}>
         <button onClick={toggleModal} className={styleB.relu_btn} id={styleB.fixedWidth}>
-          Add Scans
+          Add Scan
         </button>
         {/* translation files bekijken */}
       </div>
@@ -49,111 +136,35 @@ export default function ModalForm() {
             <div className={styles.login_box + ' p-3'}>
               <Formik
                 initialValues={{
-                  type_overbite: false,
-                  type_underbite: false,
-                  type_crossbite: false,
-
-                  type_reconstructive: false,
-                  type_jawsurgery: false,
-
+                  notes: '',
                   file: '',
                 }}
                 // on Submit we console the values + close the popup tab
                 // implicit date = currentDate
-                onSubmit={(values) => {
-                  console.log(values, currentDate);
-                  console.log('From onUploadFile');
-                  setModal(!modal);
-                }}
+                onSubmit={submitFunction}
               >
                 {({ errors, status, touched }) => (
                   <Form>
                     <form className="w-full p-3" action="" onSubmit={(e) => e.preventDefault()}>
                       <div>
                         <label>
-                          <input className="block w-0 h-0" name="file" type="file" onChange={onFileUploadChange} />
+                          <input className="block w-0 h-0" name="file" type="file" onChange={onFileUploadChange} />{' '}
                         </label>
                       </div>
                     </form>
 
-                    <div className={styles.type_bite}>
-                      <div className="form-group form-check">
-                        <Field
-                          type="checkbox"
-                          name="type_overbite"
-                          className={
-                            'form-check-input ' + (errors.type_overbite && touched.type_overbite ? ' is-invalid' : '')
-                          }
-                        />
-                        <label htmlFor="type_overbite" className="form-check-label">
-                          overbite
-                        </label>
-                        <ErrorMessage name="type_overbite" component="div" className="invalid-feedback" />
-                      </div>
-
-                      <div className="form-group form-check">
-                        <Field
-                          type="checkbox"
-                          name="type_underbite"
-                          className={
-                            'form-check-input ' + (errors.type_underbite && touched.type_underbite ? ' is-invalid' : '')
-                          }
-                        />
-                        <label htmlFor="type_underbite" className="form-check-label">
-                          underbite
-                        </label>
-                        <ErrorMessage name="type_underbite" component="div" className="invalid-feedback" />
-                      </div>
-
-                      <div className="form-group form-check">
-                        <Field
-                          type="checkbox"
-                          name="type_crossbite"
-                          className={
-                            'form-check-input ' + (errors.type_crossbite && touched.type_crossbite ? ' is-invalid' : '')
-                          }
-                        />
-                        <label htmlFor="type_crossbite" className="form-check-label">
-                          crossbite
-                        </label>
-                        <ErrorMessage name="type_crossbite" component="div" className="invalid-feedback" />
-                      </div>
-                    </div>
-
-                    <div className={styles.type_surgery}>
-                      <div className="form-group form-check">
-                        <Field
-                          type="checkbox"
-                          name="type_reconstructive"
-                          className={
-                            'form-check-input ' +
-                            (errors.type_reconstructive && touched.type_reconstructive ? ' is-invalid' : '')
-                          }
-                        />
-                        <label htmlFor="type_reconstructive" className="form-check-label">
-                          reconstructive surgery
-                        </label>
-                        <ErrorMessage name="type_reconstructive" component="div" className="invalid-feedback" />
-                      </div>
-
-                      <div className="form-group form-check">
-                        <Field
-                          type="checkbox"
-                          name="type_jawsurgery"
-                          className={
-                            'form-check-input ' +
-                            (errors.type_jawsurgery && touched.type_jawsurgery ? ' is-invalid' : '')
-                          }
-                        />
-                        <label htmlFor="type_jawsurgery" className="form-check-label">
-                          jaw surgery
-                        </label>
-                        <ErrorMessage name="type_jawsurgery" component="div" className="invalid-feedback" />
-                      </div>
+                    <div className="mb-3">
+                      <Field
+                        className="form-control"
+                        id="notes"
+                        name="notes"
+                        placeholder="Additional notes"
+                        type="notes"
+                      />
                     </div>
 
                     <div className={styles.spacingbtn}>
-                      <button type="submit" className={styleB.relu_btn}>
+                      <button type="submit" className={styleB.relu_btn} onClick={handleRedirect}>
                         Save scan
                       </button>
                       <button type="button" className={styleB.relu_btn} onClick={toggleModal}>
