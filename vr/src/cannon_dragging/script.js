@@ -98,7 +98,7 @@ function initThree() {
 
   // add all objects to an object group
 
-  group = new THREE.Group();
+  group = new THREE.Object3D();
   scene.add(group);
 
   // load lower jaw

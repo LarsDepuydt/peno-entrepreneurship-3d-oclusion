@@ -1,14 +1,13 @@
-import * as THREE from 'three';
-import { OrbitControls } from 'three/addons/controls/OrbitControls.js';
-import { VRButton } from 'three/addons/webxr/VRButton.js';
-import { XRControllerModelFactory } from 'three/addons/webxr/XRControllerModelFactory.js';
-import { OBJLoader } from 'three/addons/loaders/OBJLoader.js';
-import * as CANNON from 'cannon-es';
-import { MeshBVH, acceleratedRaycast } from 'three-mesh-bvh';
-import { default as CannonUtils } from 'cannon-utils';
-import { sendPositionScan, getPositionScan } from '../../../frontend/src/gen/proto/threedoclusion/v1/service-ScanService_connectquery'
-import { QuickHull } from './QuickHull.js';
-
+import * as THREE from "three";
+import { OrbitControls } from "three/addons/controls/OrbitControls.js";
+import { VRButton } from "three/addons/webxr/VRButton.js";
+import { XRControllerModelFactory } from "three/addons/webxr/XRControllerModelFactory.js";
+import { OBJLoader } from "three/addons/loaders/OBJLoader.js";
+import * as CANNON from "cannon-es";
+import { MeshBVH, acceleratedRaycast } from "three-mesh-bvh";
+import { default as CannonUtils } from "cannon-utils";
+//import { sendPositionScan, getPositionScan } from '../../../frontend/src/gen/proto/threedoclusion/v1/service-ScanService_connectquery'
+import { QuickHull } from "./QuickHull.js";
 
 let container;
 let camera, scene, renderer;
@@ -19,9 +18,9 @@ let controls;
 
 let raycaster;
 
-let world, timeStep=1/10;
+let world,
+  timeStep = 1 / 10;
 let frameNum = 0;
-
 
 let floor_shape, floor_body;
 
@@ -33,8 +32,8 @@ let lj_mesh, lj_shape, lj_body;
 let uj_mesh, uj_shape, uj_body;
 let lj_sphere, uj_sphere;
 
-let lj_loaded = false, uj_loaded = false;
-
+let lj_loaded = false,
+  uj_loaded = false;
 
 let target = new THREE.Vector3();
 const clock = new THREE.Clock();
@@ -43,351 +42,514 @@ let uj_target = new THREE.Vector3();
 
 initCannon();
 initThree();
-loadObjects();  // animation is started after both objects are loaded
-
+loadObjects(); // animation is started after both objects are loaded
 
 // for both cannon.js and three.js: x=red, y=green, z=blue
 
 function initCannon() {
-    world = new CANNON.World();
-    world.gravity.set(0,-0.02,0);
-    world.broadphase = new CANNON.NaiveBroadphase();
-    world.broadphase.useBoundingBoxes = true;
-    world.solver.iterations = 4;     //10
+  world = new CANNON.World();
+  world.gravity.set(0, -0.02, 0);
+  world.broadphase = new CANNON.NaiveBroadphase();
+  world.broadphase.useBoundingBoxes = true;
+  world.solver.iterations = 4; //10
 
-    lj_body = new CANNON.Body({mass: 1});
-    uj_body = new CANNON.Body({mass: 1});
-    lj_body.position.set(0,2,0);
-    uj_body.position.set(0,4,0);
-    let xaxis = new CANNON.Vec3(1,0,0);
-    lj_body.quaternion.setFromAxisAngle(xaxis, -Math.PI/2);
-    uj_body.quaternion.setFromAxisAngle(xaxis, -Math.PI/2);
-    world.addBody(lj_body);
-    world.addBody(uj_body);
+  lj_body = new CANNON.Body({ mass: 1 });
+  uj_body = new CANNON.Body({ mass: 1 });
+  lj_body.position.set(0, 2, 0);
+  uj_body.position.set(0, 4, 0);
+  let xaxis = new CANNON.Vec3(1, 0, 0);
+  lj_body.quaternion.setFromAxisAngle(xaxis, -Math.PI / 2);
+  uj_body.quaternion.setFromAxisAngle(xaxis, -Math.PI / 2);
+  world.addBody(lj_body);
+  world.addBody(uj_body);
 
-    floor_body = new CANNON.Body({ mass: 0 });
-    floor_shape = new CANNON.Plane();
-    floor_body.addShape(floor_shape);
-    floor_body.quaternion.setFromAxisAngle(new CANNON.Vec3(1,0,0),-Math.PI/2);  // rotate floor with normal along positive y axis
-    world.addBody(floor_body);
+  floor_body = new CANNON.Body({ mass: 0 });
+  floor_shape = new CANNON.Plane();
+  floor_body.addShape(floor_shape);
+  floor_body.quaternion.setFromAxisAngle(
+    new CANNON.Vec3(1, 0, 0),
+    -Math.PI / 2
+  ); // rotate floor with normal along positive y axis
+  world.addBody(floor_body);
 }
-
 
 function initThree() {
-    // create container
-    container = document.createElement( 'div' );
-    document.body.appendChild( container );
+  // create container
+  container = document.createElement("div");
+  document.body.appendChild(container);
 
-    // create scene and camera
-    scene = new THREE.Scene();
-    scene.background = new THREE.Color( 0x808080 );
-    camera = new THREE.PerspectiveCamera( 50, window.innerWidth / window.innerHeight, 0.1, 1000 );
-    camera.position.set( 0, 1.6, 3 );
+  // create scene and camera
+  scene = new THREE.Scene();
+  scene.background = new THREE.Color(0x808080);
+  camera = new THREE.PerspectiveCamera(
+    50,
+    window.innerWidth / window.innerHeight,
+    0.1,
+    1000
+  );
+  camera.position.set(0, 1.6, 3);
 
-    // add controls
-    controls = new OrbitControls( camera, container );
-    controls.target.set( 0, 1.6, 0 );
-    controls.update();
+  // add controls
+  controls = new OrbitControls(camera, container);
+  controls.target.set(0, 1.6, 0);
+  controls.update();
 
-    // axis
-    var axesHelper = new THREE.AxesHelper( 5 );
-    scene.add( axesHelper );
+  // axis
+  var axesHelper = new THREE.AxesHelper(5);
+  scene.add(axesHelper);
 
-    // add floor
-    const floorGeometry = new THREE.PlaneGeometry( 4, 4 );
-    const floorMaterial = new THREE.MeshStandardMaterial( {
-        color: 0xeeeeee,
-        roughness: 1.0,
-        metalness: 0.0
-    } );
-    const floor = new THREE.Mesh( floorGeometry, floorMaterial );
-    floor.rotation.x = - Math.PI / 2;
-    floor.receiveShadow = true;
-    scene.add( floor );
+  // add floor
+  const floorGeometry = new THREE.PlaneGeometry(4, 4);
+  const floorMaterial = new THREE.MeshStandardMaterial({
+    color: 0xeeeeee,
+    roughness: 1.0,
+    metalness: 0.0,
+  });
+  const floor = new THREE.Mesh(floorGeometry, floorMaterial);
+  floor.rotation.x = -Math.PI / 2;
+  floor.receiveShadow = true;
+  scene.add(floor);
 
-    // add spheres
-    const lj_sphere_geo = new THREE.SphereGeometry(0.1,10,5);
-    const uj_sphere_geo = new THREE.SphereGeometry(0.1,10,5);
-    const sphereMaterial = new THREE.MeshStandardMaterial( {
-        color: 0x0000ff,
-        roughness: 1.0,
-        metalness: 0.5
-    } );
-    lj_sphere = new THREE.Mesh( lj_sphere_geo, sphereMaterial);
-    uj_sphere = new THREE.Mesh( uj_sphere_geo, sphereMaterial);
-    scene.add(lj_sphere);
-    scene.add(uj_sphere);
+  // add spheres
+  const lj_sphere_geo = new THREE.SphereGeometry(0.1, 10, 5);
+  const uj_sphere_geo = new THREE.SphereGeometry(0.1, 10, 5);
+  const sphereMaterial = new THREE.MeshStandardMaterial({
+    color: 0x0000ff,
+    roughness: 1.0,
+    metalness: 0.5,
+  });
+  lj_sphere = new THREE.Mesh(lj_sphere_geo, sphereMaterial);
+  uj_sphere = new THREE.Mesh(uj_sphere_geo, sphereMaterial);
+  scene.add(lj_sphere);
+  scene.add(uj_sphere);
 
+  // light sources
+  scene.add(new THREE.HemisphereLight(0x808080, 0x606060));
 
-    // light sources
-    scene.add( new THREE.HemisphereLight( 0x808080, 0x606060 ) );
+  const light = new THREE.DirectionalLight(0xffffff);
+  light.position.set(0, 6, 0);
+  light.castShadow = true;
+  light.shadow.camera.top = 2;
+  light.shadow.camera.bottom = -2;
+  light.shadow.camera.right = 2;
+  light.shadow.camera.left = -2;
+  light.shadow.mapSize.set(4096, 4096);
+  scene.add(light);
 
-    const light = new THREE.DirectionalLight( 0xffffff );
-    light.position.set( 0, 6, 0 );
-    light.castShadow = true;
-    light.shadow.camera.top = 2;
-    light.shadow.camera.bottom = - 2;
-    light.shadow.camera.right = 2;
-    light.shadow.camera.left = - 2;
-    light.shadow.mapSize.set( 4096, 4096 );
-    scene.add( light );
- 
+  // add renderer and enable VR
 
-    // add renderer and enable VR
+  renderer = new THREE.WebGLRenderer({ antialias: true });
+  renderer.setPixelRatio(window.devicePixelRatio);
+  renderer.setSize(window.innerWidth, window.innerHeight);
+  renderer.outputEncoding = THREE.sRGBEncoding;
+  renderer.shadowMap.enabled = true;
+  renderer.xr.enabled = true;
+  container.appendChild(renderer.domElement);
+  document.body.appendChild(VRButton.createButton(renderer));
 
-    renderer = new THREE.WebGLRenderer( { antialias: true } );
-    renderer.setPixelRatio( window.devicePixelRatio );
-    renderer.setSize( window.innerWidth, window.innerHeight );
-    renderer.outputEncoding = THREE.sRGBEncoding;
-    renderer.shadowMap.enabled = true;
-    renderer.xr.enabled = true;
-    container.appendChild( renderer.domElement );
-    document.body.appendChild( VRButton.createButton( renderer ) );
-    
-    // controllers
+  // controllers
 
-    controller1 = renderer.xr.getController( 0 );
-    scene.add( controller1 );
+  controller1 = renderer.xr.getController(0);
+  controller1.addEventListener("selectstart", onSelectStart);
+  controller1.addEventListener("selectend", onSelectEnd);
+  controller1.addEventListener("squeezestart", onSqueezeStart1);
+  controller1.addEventListener("squeezeend", onSqueezeEnd1);
 
-    controller2 = renderer.xr.getController( 1 );
-    scene.add( controller2 );
+  scene.add(controller1);
 
+  controller2 = renderer.xr.getController(1);
+  controller2.addEventListener("selectstart", onSelectStart);
+  controller2.addEventListener("selectend", onSelectEnd);
+  controller2.addEventListener("squeezestart", onSqueezeStart2);
+  controller2.addEventListener("squeezeend", onSqueezeEnd2);
+  scene.add(controller2);
 
-    // add controller models
+  // add controller models
 
-    const controllerModelFactory = new XRControllerModelFactory();
+  const controllerModelFactory = new XRControllerModelFactory();
 
-    controllerGrip1 = renderer.xr.getControllerGrip( 0 );
-    controllerGrip1.add( controllerModelFactory.createControllerModel( controllerGrip1 ) );
-    scene.add( controllerGrip1 );
+  controllerGrip1 = renderer.xr.getControllerGrip(0);
+  controllerGrip1.add(
+    controllerModelFactory.createControllerModel(controllerGrip1)
+  );
+  scene.add(controllerGrip1);
 
-    controllerGrip2 = renderer.xr.getControllerGrip( 1 );
-    controllerGrip2.add( controllerModelFactory.createControllerModel( controllerGrip2 ) );
-    scene.add( controllerGrip2 );
+  controllerGrip2 = renderer.xr.getControllerGrip(1);
+  controllerGrip2.add(
+    controllerModelFactory.createControllerModel(controllerGrip2)
+  );
+  scene.add(controllerGrip2);
 
+  // lines pointing from controllers
 
-    // lines pointing from controllers
+  const geometry = new THREE.BufferGeometry().setFromPoints([
+    new THREE.Vector3(0, 0, 0),
+    new THREE.Vector3(0, 0, -1),
+  ]);
 
-    raycaster = new THREE.Raycaster();
+  const line = new THREE.Line(geometry);
+  line.name = "line";
+  line.scale.z = 5;
 
+  controller1.add(line.clone());
+  controller2.add(line.clone());
 
-    // resize
+  raycaster = new THREE.Raycaster();
 
-    window.addEventListener( 'resize', onWindowResize );
+  // resize
 
+  window.addEventListener("resize", onWindowResize);
 }
-
 
 function loadObjects() {
-    // load lower jaw
-    const loader = new OBJLoader();
-    loader.load(
-        '../../assets/random_objects/cube.obj',
-        // path to actual teeth: '../../assets/lower_ios_6.obj'
-        
-        // called when resource is loaded
-        function (object) {         // object is a 'Group', which is a subclass of 'Object3D'
-            lj_mesh = getFirstMesh(object);
-            
-            // lj_mesh.geometry.scale(0.01, 0.01, 0.01);
-            lj_mesh.position.x = 0;
-            lj_mesh.position.y = 0;
-            lj_mesh.position.z = 0;
-            lj_mesh.rotation.x = 1.5 * Math.PI;
+  // load lower jaw
+  const loader = new OBJLoader();
+  loader.load(
+    "../../assets/random_objects/cube.obj",
+    // path to actual teeth: '../../assets/lower_ios_6.obj'
 
-            console.log(lj_mesh);
-            scene.add(lj_mesh);
-            
-            lj_shape = threeMeshToConvexCannonMesh(lj_mesh);
-            console.log("loading lj_mesh succeeded");
-            lj_body.addShape(lj_shape);
-            lj_loaded = true;
-            startAnimation();
-        },
-        
-        // called when loading in progress
-        function (xhr) {
-            // pass
-        },
-        // called when loading has errors
-        function (error) {
-            console.log('An error happened while loading lj_mesh: ' + error);
-        }
-    );
- 
-    // load upper jaw
-    loader.load(
-        '../../assets/random_objects/gourd.obj',
-        // path to actual teeth: '../../assets/lower_ios_6.obj'
+    // called when resource is loaded
+    function (object) {
+      // object is a 'Group', which is a subclass of 'Object3D'
+      lj_mesh = getFirstMesh(object);
 
-        // called when resource is loaded
-        function (object) {
-            uj_mesh = getFirstMesh(object);
-            
-            // uj_mesh.geometry.scale(0.01, 0.01, 0.01);
-            uj_mesh.position.x = 0;
-            uj_mesh.position.y = 0;
-            uj_mesh.position.z = 0;
-            uj_mesh.rotation.x = 1.5 * Math.PI;
+      // lj_mesh.geometry.scale(0.01, 0.01, 0.01);
+      lj_mesh.position.x = 0;
+      lj_mesh.position.y = 0;
+      lj_mesh.position.z = 0;
+      lj_mesh.rotation.x = 1.5 * Math.PI;
 
-            console.log(uj_mesh);
-            scene.add(uj_mesh);
-            
-            uj_shape = threeMeshToConvexCannonMesh(uj_mesh);
-            console.log("loading uj_mesh succeeded");
-            uj_body.addShape(uj_shape);
-            uj_loaded = true;
-            startAnimation();
-        },
-        
-        // called when loading in progress
-        function (xhr) {
-            // pass
-        },
-        // called when loading has errors
-        function (error) {
-            console.log('An error happened while loading uj_mesh: ' + error);
-        }
-    );
+      console.log(lj_mesh);
+      scene.add(lj_mesh);
+
+      lj_shape = threeMeshToConvexCannonMesh(lj_mesh);
+      console.log("loading lj_mesh succeeded");
+      lj_body.addShape(lj_shape);
+      lj_loaded = true;
+      startAnimation();
+    },
+
+    // called when loading in progress
+    function (xhr) {
+      // pass
+    },
+    // called when loading has errors
+    function (error) {
+      console.log("An error happened while loading lj_mesh: " + error);
+    }
+  );
+
+  // load upper jaw
+  loader.load(
+    "../../assets/random_objects/gourd.obj",
+    // path to actual teeth: '../../assets/lower_ios_6.obj'
+
+    // called when resource is loaded
+    function (object) {
+      uj_mesh = getFirstMesh(object);
+
+      // uj_mesh.geometry.scale(0.01, 0.01, 0.01);
+      uj_mesh.position.x = 0;
+      uj_mesh.position.y = 0;
+      uj_mesh.position.z = 0;
+      uj_mesh.rotation.x = 1.5 * Math.PI;
+
+      console.log(uj_mesh);
+      scene.add(uj_mesh);
+
+      uj_shape = threeMeshToConvexCannonMesh(uj_mesh);
+      console.log("loading uj_mesh succeeded");
+      uj_body.addShape(uj_shape);
+      uj_loaded = true;
+      startAnimation();
+    },
+
+    // called when loading in progress
+    function (xhr) {
+      // pass
+    },
+    // called when loading has errors
+    function (error) {
+      console.log("An error happened while loading uj_mesh: " + error);
+    }
+  );
 }
-
-
 
 function onWindowResize() {
+  camera.aspect = window.innerWidth / window.innerHeight;
+  camera.updateProjectionMatrix();
 
-    camera.aspect = window.innerWidth / window.innerHeight;
-    camera.updateProjectionMatrix();
-
-    renderer.setSize( window.innerWidth, window.innerHeight );
-
+  renderer.setSize(window.innerWidth, window.innerHeight);
 }
 
+// when controller pushes select button, select the object it is pointing to
 
+function onSelectStart(event) {
+  const controller = event.target;
 
-function printTree(object, depth=0) {
+  const intersections = getIntersections(controller);
 
-    console.log("  ".repeat(depth) + depth + ":" + object);
-    for (const o of object.children) {
-        printTree(o, depth+1);
+  if (intersections.length > 0) {
+    const intersection = intersections[0];
+
+    const object = intersection.object;
+    object.material.emissive.b = 1;
+    controller.attach(object);
+
+    controller.userData.selected = object;
+  }
+}
+
+// when controller releases select button
+
+function onSelectEnd(event) {
+  const controller = event.target;
+
+  if (controller.userData.selected !== undefined) {
+    const object = controller.userData.selected;
+    object.material.emissive.b = 0;
+    group.attach(object);
+
+    controller.userData.selected = undefined;
+  }
+}
+
+var oldPosUpper = new THREE.Vector3();
+var oldPosLower = new THREE.Vector3();
+
+function onSqueezeStart1() {
+  uj_group.getWorldPosition(oldPosUpper);
+  lj_group.getWorldPosition(oldPosLower);
+  //console.log(oldPosUpper, oldPosLower);
+
+  group.scale.multiplyScalar(0.9);
+
+  //console.log(oldPosUpper.x, oldPosUpper.y, oldPosUpper.z);
+  scene.attach(uj_group);
+  scene.attach(lj_group);
+
+  uj_group.position.set(oldPosUpper.x, oldPosUpper.y, oldPosUpper.z);
+  lj_group.position.set(oldPosLower.x, oldPosLower.y, oldPosLower.z);
+
+  group.attach(uj_group);
+  group.attach(lj_group);
+}
+
+function onSqueezeStart2() {
+  uj_group.getWorldPosition(oldPosUpper);
+  lj_group.getWorldPosition(oldPosLower);
+  //console.log(oldPosUpper, oldPosLower);
+
+  group.scale.multiplyScalar(1.1);
+
+  //console.log(oldPosUpper.x, oldPosUpper.y, oldPosUpper.z);
+  scene.attach(uj_group);
+  scene.attach(lj_group);
+
+  uj_group.position.set(oldPosUpper.x, oldPosUpper.y, oldPosUpper.z);
+  lj_group.position.set(oldPosLower.x, oldPosLower.y, oldPosLower.z);
+
+  group.attach(uj_group);
+  group.attach(lj_group);
+}
+
+function onSqueezeEnd1() {
+  // isClicked1 = false;
+}
+
+function onSqueezeEnd2(event) {
+  // isClicked2 = false;
+}
+
+// resets position to center
+
+function positionReset() {
+  const session = renderer.xr.getSession();
+  if (session == null || session.inputSources == null) {
+    return;
+  } else {
+    for (const source of session.inputSources) {
+      if (source.gamepad.buttons[4].pressed) {
+        scene.attach(uj_group);
+        scene.attach(lj_group);
+
+        uj_group.position.set(0, 2, 0.12);
+        uj_group.rotation.x = 1.5 * Math.PI;
+        lj_group.position.set(0, 2, 0.12);
+        lj_group.rotation.x = 1.5 * Math.PI;
+
+        group.attach(uj_group);
+        group.attach(lj_group);
+
+        // group.position.x = 0;
+        // group.position.y = 2;
+        // group.position.z = 0.12;
+        // group.rotation.x = 1.5 * Math.PI;
+        // group.scale.setScalar(0.01);
+      }
     }
+  }
 }
 
+// find objects the controller is pointing at
+let tempMatrix;
+function getIntersections(controller) {
+  tempMatrix.identity().extractRotation(controller.matrixWorld);
+
+  raycaster.ray.origin.setFromMatrixPosition(controller.matrixWorld);
+  raycaster.ray.direction.set(0, 0, -1).applyMatrix4(tempMatrix);
+
+  return raycaster.intersectObjects(group.children, true);
+}
+
+// highlight the object the controller points at
+
+function intersectObjects(controller) {
+  // Do not highlight when already selected
+
+  if (controller.userData.selected !== undefined) return;
+
+  const line = controller.getObjectByName("line");
+  const intersections = getIntersections(controller);
+
+  if (intersections.length > 0) {
+    const intersection = intersections[0];
+
+    const object = intersection.object;
+    object.material.emissive.r = 1;
+    intersected.push(object);
+
+    line.scale.z = intersection.distance;
+  } else {
+    line.scale.z = 5;
+  }
+}
+
+function cleanIntersected() {
+  while (intersected.length) {
+    const object = intersected.pop();
+    object.material.emissive.r = 0;
+  }
+}
+
+function printTree(object, depth = 0) {
+  console.log("  ".repeat(depth) + depth + ":" + object);
+  for (const o of object.children) {
+    printTree(o, depth + 1);
+  }
+}
 
 function getFirstMesh(object) {
-    if (object.isMesh) {
-        return object;
-    } else {
-        let mesh;
-        for (const o of object.children) {
-            mesh = getFirstMesh(o);
-            if (mesh !== null) {
-                return mesh;
-            }
-        }
-        return null;
+  if (object.isMesh) {
+    return object;
+  } else {
+    let mesh;
+    for (const o of object.children) {
+      mesh = getFirstMesh(o);
+      if (mesh !== null) {
+        return mesh;
+      }
     }
+    return null;
+  }
 }
 
-
 function threeMeshToCannonMesh(mesh) {
-    let vertices = mesh.geometry.attributes.position.array;
+  let vertices = mesh.geometry.attributes.position.array;
 
-    const indices = [];
-    for (let i = 0; i < vertices.length / 3; i += 3) {
-        indices.push([i, i + 1, i + 2]);
-    }
-    return new CANNON.Trimesh(vertices, indices);
+  const indices = [];
+  for (let i = 0; i < vertices.length / 3; i += 3) {
+    indices.push([i, i + 1, i + 2]);
+  }
+  return new CANNON.Trimesh(vertices, indices);
 }
 
 function threeMeshToConvexCannonMesh(mesh) {
-    let points = ToVertices(mesh.geometry);
-    console.log(points);
-    const faces = QuickHull.createHull(points);
-    return new CANNON.ConvexPolyhedron({vertices:points, faces});
+  let points = ToVertices(mesh.geometry);
+  console.log(points);
+  const faces = QuickHull.createHull(points);
+  return new CANNON.ConvexPolyhedron({ vertices: points, faces });
 }
 
 // this could be handy but not yet used:
 // https://gist.github.com/duhaime/6a74b9603dc7700183d43a2485b02f0f
 function convexCannonMeshToThreeMesh(shape) {
-    const geometry = new THREE.BufferGeometry();
-    const material = new THREE.MeshBasicMaterial( { color: 0xff0000 } );
-    const vertices = new Float32Array(3*shape.faces.length);
+  const geometry = new THREE.BufferGeometry();
+  const material = new THREE.MeshBasicMaterial({ color: 0xff0000 });
+  const vertices = new Float32Array(3 * shape.faces.length);
 
-    // load vertices: every vertex must occur once per face
-    for (let f=0; f < shape.faces.length; f++) {
-        var face = shape.faces[f];
-        vertices[3*f+0] = face[0];
-        vertices[3*f+1] = face[1];
-        vertices[3*f+2] = face[2];
-    }
-    geometry.setAttribute( 'position', new THREE.BufferAttribute(vertices, 3));
+  // load vertices: every vertex must occur once per face
+  for (let f = 0; f < shape.faces.length; f++) {
+    var face = shape.faces[f];
+    vertices[3 * f + 0] = face[0];
+    vertices[3 * f + 1] = face[1];
+    vertices[3 * f + 2] = face[2];
+  }
+  geometry.setAttribute("position", new THREE.BufferAttribute(vertices, 3));
 
-    const mesh = new THREE.Mesh(geometry, material);
+  const mesh = new THREE.Mesh(geometry, material);
 
-    return mesh;
+  return mesh;
 }
 
 function ToVertices(geometry) {
-    const positions = geometry.attributes.position;
-    const vertices = [];
-    for (let index = 0; index < positions.count; index++) {
-        vertices.push(
-            new CANNON.Vec3(
-                positions.getX(index),
-                positions.getY(index),
-                positions.getZ(index)
-            )
-        );
-    }
-    return vertices;
+  const positions = geometry.attributes.position;
+  const vertices = [];
+  for (let index = 0; index < positions.count; index++) {
+    vertices.push(
+      new CANNON.Vec3(
+        positions.getX(index),
+        positions.getY(index),
+        positions.getZ(index)
+      )
+    );
+  }
+  return vertices;
 }
-
-
 
 // main loops
 
 function updatePhysics() {
+  // Step the physics world
+  world.step(timeStep);
 
-    // Step the physics world
-    world.step(timeStep);
-
-    // Copy coordinates from Cannon.js to Three.js
-    lj_mesh.position.copy(lj_body.position);
-    lj_mesh.quaternion.copy(lj_body.quaternion);
-    lj_sphere.position.copy(lj_body.position);
-    uj_mesh.position.copy(uj_body.position);
-    uj_mesh.quaternion.copy(uj_body.quaternion);
-    uj_sphere.position.copy(uj_body.position);
+  // Copy coordinates from Cannon.js to Three.js
+  lj_mesh.position.copy(lj_body.position);
+  lj_mesh.quaternion.copy(lj_body.quaternion);
+  lj_sphere.position.copy(lj_body.position);
+  uj_mesh.position.copy(uj_body.position);
+  uj_mesh.quaternion.copy(uj_body.quaternion);
+  uj_sphere.position.copy(uj_body.position);
 }
 
 function animate() {
-    checkTime();
+  //checkTime();
 
-
-    console.log("frame", frameNum);
-    frameNum += 1;
-    updatePhysics();
-    render();
+  //console.log("frame", frameNum);
+  //frameNum += 1;
+  updatePhysics();
+  render();
 }
 
 function render() {
-    renderer.render( scene, camera );
+  //positionReset();
+  renderer.render(scene, camera);
 }
 
 function startAnimation() {
-    if (lj_loaded && uj_loaded) {
-        console.log("starting animation");
-        renderer.setAnimationLoop( animate );
-    }
+  if (lj_loaded && uj_loaded) {
+    console.log("starting animation");
+    renderer.setAnimationLoop(animate);
+  }
 }
 
-function sendPosition(){
-    const coordinate_info = lj_mesh.position;
-    const rotation_info = lj_mesh.rotation;
+function sendPosition() {
+  const coordinate_info = lj_mesh.position;
+  const rotation_info = lj_mesh.rotation;
 
-    const {x, y, z} = coordinate_info;
-    const {r_x, r_y, r_z} = rotation_info;
-    /*
+  const { x, y, z } = coordinate_info;
+  const { r_x, r_y, r_z } = rotation_info;
+  /*
     // Split into coordinates
     const x = coordinate_info.x;
     const y = coordinate_info.y;
@@ -396,35 +558,38 @@ function sendPosition(){
     const r_y = rotation_info.y;
     const r_z = rotation_info.z;
     */
-    const scanID = 111; // Hardcoded
-    // Call service based on scan ID
-    
-    const {data} = useQuery(sendPositionScan.useQuery({ scanID, x, y, z, r_x, r_y, r_z }));
-    
-    if (!data.saved){ // Check if saved is OK else try again
-        // Maybe wait a bit?
-        sendPosition() // Repeat
-    }
+  const scanID = 111; // Hardcoded
+  // Call service based on scan ID
+
+  const { data } = useQuery(
+    sendPositionScan.useQuery({ scanID, x, y, z, r_x, r_y, r_z })
+  );
+
+  if (!data.saved) {
+    // Check if saved is OK else try again
+    // Maybe wait a bit?
+    sendPosition(); // Repeat
+  }
 }
 
-function getPosition(){
-    target = lj_mesh.position;
-    // Call service based on scan ID
-    const scanID = 111; // Hardcoded
-    const {data} = useQuery(getPositionScan.useQuery({ scanID }));
-    
-    const {x, y, z, r_x, r_y, r_z} = data;
-    return x, y, z, r_x, r_y, r_z
+function getPosition() {
+  target = lj_mesh.position;
+  // Call service based on scan ID
+  const scanID = 111; // Hardcoded
+  const { data } = useQuery(getPositionScan.useQuery({ scanID }));
+
+  const { x, y, z, r_x, r_y, r_z } = data;
+  return x, y, z, r_x, r_y, r_z;
 }
 
 function checkTime() {
-    const elapsedTime = clock.getElapsedTime();
-    
-    if (elapsedTime >= 5) {
-      sendPosition(); // Send position after 5 seconds)
-      console.log("5 seconds have passed");
-      
-      // reset the clock
-      clock.start();
-    }
+  const elapsedTime = clock.getElapsedTime();
+
+  if (elapsedTime >= 5) {
+    sendPosition(); // Send position after 5 seconds)
+    console.log("5 seconds have passed");
+
+    // reset the clock
+    clock.start();
+  }
 }
