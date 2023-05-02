@@ -34,4 +34,18 @@ yarn-error.log*
 
 # typescript
 *.tsbuildinfo
+
 next-env.d.ts
+
+# firebase
+/functions/next
+/functions/node_modules
+
+node_modules/
+.next/
+out/
+
+*.cache
+
+.firebase
+

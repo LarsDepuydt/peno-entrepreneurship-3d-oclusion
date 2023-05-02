@@ -1,6 +1,6 @@
 FROM debian:bookworm-slim AS dev
 RUN apt-get update && \
-    apt-get install -y protobuf-compiler curl nodejs npm
+    apt-get install -y protobuf-compiler curl nodejs npm wget
   
 RUN npm install -g corepack nodemon && \
     corepack enable
@@ -24,6 +24,10 @@ RUN go install google.golang.org/protobuf/cmd/protoc-gen-go@latest && \
     go install google.golang.org/grpc/cmd/protoc-gen-go-grpc@v1.2.0 && \
     go install github.com/bufbuild/connect-go/cmd/protoc-gen-connect-go@latest
 
+# Download the Cloud SQL proxy and make executable
+RUN wget https://dl.google.com/cloudsql/cloud_sql_proxy.linux.amd64 -O /usr/local/bin/cloud_sql_proxy
+RUN chmod +x /usr/local/bin/cloud_sql_proxy
+
 WORKDIR /usr/src/app
 
 ################################
@@ -39,18 +43,28 @@ WORKDIR /usr/src/app/backend
 COPY ./backend/go.mod ./backend/go.sum ./
 RUN --mount=type=cache,mode=0777,target=/go/pkg/mod go mod download
 
-COPY backend backend
+WORKDIR /usr/src/app
+COPY . .
+
 
 # Use native go packages (CGO_ENABLED)
+WORKDIR /usr/src/app/backend
 RUN --mount=type=cache,mode=0777,target=/go/pkg/mod \
     --mount=type=cache,mode=0777,target=/.cache/go-build \
-    CGO_ENABLED=0 GOOS=linux go build -o serve ./backend/cmd/main.go
+    CGO_ENABLED=0 GOOS=linux go build -o serve ./cmd/main.go
 
 ################################
 # Run backend
 ################################
 
-FROM scratch AS backend
-WORKDIR / 
-COPY --from=backend-builder /usr/src/app/backend ./
-ENTRYPOINT ["/serve"]
+FROM alpine AS backend
+WORKDIR /
+COPY --from=backend-builder /usr/src/app/backend/serve /serve
+COPY --from=dev /usr/local/bin/cloud_sql_proxy /usr/local/bin/cloud_sql_proxy
+COPY --from=backend-builder /usr/src/app/entrypoint.sh /entrypoint.sh
+
+RUN chmod +x /entrypoint.sh
+
+EXPOSE 8080
+ENTRYPOINT ["/entrypoint.sh"]
+
