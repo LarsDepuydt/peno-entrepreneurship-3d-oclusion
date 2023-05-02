@@ -139,7 +139,7 @@ class Jaw {
                     //const localQuaternion = child.quaternion.clone().invert().multiply(jaw.body.quaternion);
 
                     jaw.mesh.add(meshChild); // Something similar, maybe just hold in an array for every shape? But then it's equivalent to rendering multiple objects no?
-                    scene.add(meshChild);
+                    //scene.add(meshChild);
 
                     //const shapeChild = threeMeshToConvexCannonMesh(meshChild); // Something's wrong with this, since clips through
                     //jaw.body.addShape(shapeChild, localPosition, localQuaternion);
@@ -220,7 +220,7 @@ class Jaw {
 
                 const shape = threeMeshToConvexCannonMesh(mesh);
                 jaw.body.addShape(shape);*/
-
+                /*
                 for (let g = 0; g < object.children.length; g++) {
                     const child = object.children[g];
                     let meshChild = new THREE.Mesh(child.geometry, teethMaterial.clone());
@@ -232,6 +232,26 @@ class Jaw {
 
                     const shapeChild = threeMeshToConvexCannonMesh(meshChild);
                     jaw.body.addShape(shapeChild);
+                }*/
+                for (let g = 0; g < object.children.length; g++) {
+                    const child = object.children[g];
+                    let meshChild = new THREE.Mesh(child.geometry, teethMaterial.clone());
+                    meshChild.geometry.scale(0.01, 0.01, 0.01);
+                    meshChild.position.x = 0;
+                    meshChild.position.y = 0;
+                    meshChild.position.z = 0;
+                    meshChild.rotation.x = 1.5 * Math.PI;
+                    // Calculate the shape's local position and orientation in the compound body
+                    //const localPosition = child.position.clone().sub(jaw.body.position);
+                    //const localQuaternion = child.quaternion.clone().invert().multiply(jaw.body.quaternion);
+
+                    // Shows MESH in correct position: jaw.mesh.add(meshChild); // Something similar, maybe just hold in an array for every shape? But then it's equivalent to rendering multiple objects no?
+                    //scene.add(meshChild);
+
+                    //const shapeChild = threeMeshToConvexCannonMesh(meshChild); // Something's wrong with this, since clips through
+                    //jaw.body.addShape(shapeChild, localPosition, localQuaternion);
+                    //jaw.body.addShape(shapeChild);
+                    jaw.body = generateNewBody(meshChild, jaw.body);
                 }
 
                 console.log("loading body succeeded");
@@ -357,7 +377,7 @@ function initThree() {
     light.shadow.mapSize.set( 4096, 4096 );
     scene.add( light );
 
- 
+
     // add renderer and enable VR
 
     renderer = new THREE.WebGLRenderer( { antialias: true } );

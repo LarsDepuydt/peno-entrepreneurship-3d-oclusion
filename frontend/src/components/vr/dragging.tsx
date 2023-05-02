@@ -221,7 +221,7 @@ function onSelectStart( event: any ) {
         const object: any = intersection.object;
         object.material.emissive.b = 1;
 
-        //controller.attach(object);
+        controller.attach(object);
 
         controller.userData.selected = object;
     }
