@@ -24,7 +24,7 @@ export default function ModalForm() {
 
   //const query = GetPatientByIdRequest.useQuery(parseInt(patientid));
   const query = getPatientById.useQuery(patientid);
-  const { data } = useQuery(query.queryKey, query.queryFn, { enabled: false });
+  const { data, refetch } = useQuery(query.queryKey, query.queryFn, { enabled: false });
 
   const toggleModal = () => {
     setModal(!modal); // change state f -> t and t -> f
@@ -48,7 +48,11 @@ export default function ModalForm() {
   const submitFunction = (values: IDpatient) => {
     console.log(values.SearchID);
     setData(ReworkValue(values));
+    refetch();
+
+    console.log(values);
     console.log(data);
+
     if (data?.dentistId == parseInt(DentistID)) {
       clickPatient(values);
     } else setModal(modal!);
