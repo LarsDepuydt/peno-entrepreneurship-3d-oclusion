@@ -63,7 +63,7 @@ export default function ClientPage() {
 
     setClientId(parseInt(cookieCode as string, 10));
     setSubmitOK(true);
-  }, []);
+  });
 
   const router = useRouter();
   const home = () => router.push('/patient');
