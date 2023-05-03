@@ -53,7 +53,7 @@ export default function LoginForm() {
       }
       data?.token && credentials.email && router.push('/patient');
     }
-  }, [data, credentials, router, sendOK]);
+  }, [data, credentials, router, sendOK, submitOK,refetch]);
 
   // useEffect(() => {
   //   data?.token && credentials.email && data?.id && router.push('/patient');

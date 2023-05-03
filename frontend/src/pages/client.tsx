@@ -44,8 +44,9 @@ export default function ClientPage() {
        }
     };
 
-    var cookieCode: string | undefined;
+    
     useEffect(() => {
+      let cookieCode: string | undefined;
       if (typeof window !== 'undefined') {
         cookieCode = Cookies.get('clientcookie');
       }
@@ -66,7 +67,7 @@ export default function ClientPage() {
       setClientId(parseInt(cookieCode as string, 10));
       setSubmitOK(true);
 
-    }, []);
+    }, [code]);
 
   return (
     <div className={styles.container}>
