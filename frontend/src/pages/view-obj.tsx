@@ -9,18 +9,13 @@ function App() {
   const targetpatientID = router.query.patientID as string;
   const targetscanID = router.query.scanID as string;
 
-    const router = useRouter();
-    const targetpatientID = router.query.patientID as string;
-    const targetscanID = router.query.scanID as string;
-
-    return (
-      <div>
-        <SidebarObj/>
-        <HeaderObj />
-        <ObjDisplay />
-      </div>
-      );
-
+  return (
+    <div>
+      <SidebarObj />
+      <HeaderObj />
+      <ObjDisplay />
+    </div>
+  );
 }
 
 export default App;
