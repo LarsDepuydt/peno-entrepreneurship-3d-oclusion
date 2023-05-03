@@ -10,7 +10,6 @@ import (
 func GetResponseMakerScan(rows *sql.Rows) ([]*threedoclusionv1.ScanSave, error) {
 	var rowArray []*threedoclusionv1.ScanSave
 	for rows.Next() {
-		//var rowData *threedoclusionv1.Scan
 		rowData := &threedoclusionv1.ScanSave{}
 		error := rows.Scan(&rowData.ScanId, &rowData.TimestampSave,
 			&rowData.LowerX, &rowData.LowerY, &rowData.LowerZ, &rowData.LowerRX, &rowData.LowerRY, &rowData.LowerRZ, 

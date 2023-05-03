@@ -25,7 +25,7 @@ import styles from "@/styles/WaitPage.module.css"
 
 export default function WaitPage() {
   const [submitted, setSubmitted] = useState(false);
-  const [formVisible, setFormVisible] = useState(true); // Add formVisible state
+  const [formVisible, setFormVisible] = useState(true);
 
   const transport = useTransport();
 
@@ -67,23 +67,6 @@ export default function WaitPage() {
 
       console.log(Cookies.get('cookie'));
     }
-
-    /*const cookieCode = Cookies.get('cookie');
-
-    var req = new WaitingRequest({uniqueCode : codeValue});
-
-    if (cookieCode) {
-      const cookieString = parseInt(cookieCode);
-      req = new WaitingRequest({uniqueCode : cookieString});
-      console.log(cookieString);
-    } else {
-      const codeString: string = `${codeValue}`;
-      Cookies.set('cookie', codeString, { expires: 7, path: '/' });
-
-      console.log(Cookies.get('cookie'));
-      req = new WaitingRequest({uniqueCode : codeValue});
-    }  */
-
 
     const req = new WaitingRequest({uniqueCode : codeValue})
   

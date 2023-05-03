@@ -21,9 +21,9 @@ export default function StartVRPage(){
     const [stream, setStream] = useState<AsyncIterable<SubscribeConnectionResponse> | null>(null);
     const transport = useTransport();
     const router = useRouter();
-  
+
     useEffect(() => setIsComponentMounted(true), [])
-  
+
     if(!isComponentMounted) {
         return null 
     }
@@ -60,7 +60,7 @@ function makeStreamOnID(id: number, clnt: any){
     const req = new SubscribeConnectionRequest({scanId: id, deviceId: 1}); // VR: 1
     return clnt.subscribeConnection(req);
 }
-  
+
 async function checkConnected(serverStream: AsyncIterable<SubscribeConnectionResponse>) {
     for await (const res of serverStream){
 
@@ -72,11 +72,7 @@ async function checkConnected(serverStream: AsyncIterable<SubscribeConnectionRes
             console.log("No sign of client yet!")
         }
 
-        if (res.isConnected){ // Client disconnected
-            // Close stream... How?
-            //serverStream.Close() ?
-            // Show some other component
-            // Redirect?
+        if (res.isConnected){
             console.log("Client has connected!")
         }
         else {

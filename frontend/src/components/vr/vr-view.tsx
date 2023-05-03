@@ -4,8 +4,6 @@ import { VRButton } from 'three/examples/jsm/webxr/VRButton.js';
 import { XRControllerModelFactory } from 'three/examples/jsm/webxr/XRControllerModelFactory.js';
 import { OBJLoader } from 'three/examples/jsm/loaders/OBJLoader.js';
 import * as CANNON from 'cannon-es';
-//import { MeshBVH, acceleratedRaycast } from 'three-mesh-bvh';
-//import { default as CannonUtils } from 'cannon-utils';
 
 //import { sendPositionScan, getPositionScan } from '@/gen/proto/threedoclusion/v1/service-ScanService_connectquery'
 import { useState, useEffect } from 'react';
@@ -191,16 +189,6 @@ function initThree() {
     // resize
 
     window.addEventListener( 'resize', onWindowResize );
-
-    const session = renderer.xr.getSession();
-    session?.addEventListener("end", (event) => { // TO DO: test
-        // When exiting VR-mode
-        // Save position
-        //setSend(true);
-        // Add a prompt; please wait until scan has been saved blabla
-        // -> allow to quit
-      });
-
 }
 
 function onWindowResize() {
@@ -231,7 +219,7 @@ function getFirstMesh(object: any): THREE.Mesh {
                 return mesh;
             }
         }
-        return null as any; // TEST
+        return null as any;
     }
 }
 
@@ -265,18 +253,6 @@ function updatePhysics() {
     // Step the physics world
     world.step(timeStep);
 
-    // console.log("Cannon: ", lj_body.position);
-    // console.log("Three: ", lj_mesh.position);
-
-    // Copy coordinates from Cannon.js to Three.js
-    // Following causes errors with Typescript
-    /*lj_mesh.position.copy(lj_body.position);
-    lj_mesh.quaternion.copy(lj_body.quaternion);
-    lj_sphere.position.copy(lj_body.position);
-    uj_mesh.position.copy(uj_body.position);
-    uj_mesh.quaternion.copy(uj_body.quaternion);
-    uj_sphere.position.copy(uj_body.position);*/
-
     lj_mesh.position.set(lj_body.position.x, lj_body.position.y, lj_body.position.z);
     lj_mesh.quaternion.set(lj_body.quaternion.x, lj_body.quaternion.y, lj_body.quaternion.z, lj_body.quaternion.w);
     uj_mesh.position.set(uj_body.position.x, uj_body.position.y, uj_body.position.z);
@@ -288,7 +264,7 @@ function render() {
     renderer.render( scene, camera );
 }
 
-export default function VRView(){ // Always gets rendered twice - makes it so sendpositioncomponent logs twice as well -> could make use of the secondcall but outside of dev build not needed
+export default function VRView(){
     const [send, setSend] = useState(false);
     const [getPosition, setGetPosition] = useState(false);
 
@@ -302,7 +278,7 @@ export default function VRView(){ // Always gets rendered twice - makes it so se
         else {
             second_call = true;
         }
-      }, []);
+    }, []);
 
     
     function loadObjects() {

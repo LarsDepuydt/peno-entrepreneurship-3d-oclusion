@@ -23,7 +23,7 @@ let controls, group: THREE.Group;
 let second_call = false;
 
 const path_upper_jaw = '/upper_ios_6.obj'; // URLs for fetch, temporarily in public folder so Nextjs can access
-const path_lower_jaw = '/lower_ios_6.obj'; // TO DO: get with cloud
+const path_lower_jaw = '/lower_ios_6.obj';
 
 const SCALE_MODEL = 0.01;
 
@@ -75,7 +75,6 @@ function init(initialScan: ScanSave) {
 
 
     // add all objects to an object group
-
     group = new THREE.Group();
     scene.add( group );
 
@@ -88,13 +87,8 @@ function init(initialScan: ScanSave) {
         // called when resource is loaded y=green, x=red, z=blue
         function (object) {
             lowerjaw = object;
-            /*lowerjaw.position.x = 0
-            lowerjaw.position.y = 2
-            lowerjaw.position.z = 0.12
-            lowerjaw.rotation.x = 1.5 * Math.PI*/
             lowerjaw.position.set(initialScan.lowerX, initialScan.lowerY, initialScan.lowerZ);
             lowerjaw.rotation.set(initialScan.lowerRX, initialScan.lowerRY, initialScan.lowerRZ);
-            //lowerjaw.rotation.y = Math.PI
             lowerjaw.scale.setScalar(SCALE_MODEL);
             lowerjaw.name = "lowerjaw";
             group.add(lowerjaw);
@@ -114,20 +108,14 @@ function init(initialScan: ScanSave) {
     );
 
     // load upper jaw
-    //const loader2 = new OBJLoader();
     var upperjaw: THREE.Group;
     loader.load(
         path_upper_jaw,
         // called when resource is loaded y=green, x=red, z=blue
         function (object) {
             upperjaw = object;
-            /*upperjaw.position.x = 0
-            upperjaw.position.y = 2
-            upperjaw.position.z = 0.12
-            upperjaw.rotation.x = 1.5 * Math.PI*/
             upperjaw.position.set(initialScan.upperX, initialScan.upperY, initialScan.upperZ);
             upperjaw.rotation.set(initialScan.upperRX, initialScan.upperRY, initialScan.upperRZ);
-            //upperjaw.rotation.y = Math.PI
             upperjaw.scale.setScalar(SCALE_MODEL);
             upperjaw.name = "upperjaw";
 
@@ -146,7 +134,7 @@ function init(initialScan: ScanSave) {
             console.log('An error happened while loading');
         }
     );
-} // Insert get_position function to retrieve pos from server
+}
 
 function initThree(setOpenMenu: any, setCurrentScan: any){
 
@@ -167,9 +155,7 @@ function initThree(setOpenMenu: any, setCurrentScan: any){
     controller1.addEventListener( 'selectstart', onSelectStart );
     controller1.addEventListener( 'selectend', onSelectEnd );
 
-    controller1.addEventListener( 'squeezestart', function foo() { // End and restart WEBXR session when triggering menu?
-        //const session = renderer.xr.getSession();
-        //session?.end().then(setOpenMenu(true));
+    controller1.addEventListener( 'squeezestart', function foo() {
         setOpenMenu(true);
         updateScanData(setCurrentScan);
     }); // Added to test menu
@@ -219,7 +205,7 @@ function vibrateTrigger() { // Vibrate TRIGGER button
     const session = renderer.xr.getSession();
     for (const source of session!.inputSources) {
         if (source.gamepad) (source.gamepad.hapticActuators[0] as any).pulse(0.8, 100); // Customise intensity and duration based on distance models? Need collision info
-    } // Distance of nearest points < a -> 0 no vibration, else inversely scale with distance -> intensity: 1-a*x and if less than zero no vibration
+    } // Distance of nearest points < a -> 0 no vibration, else inversely scale with distance -> intensity: 1-a*dist and if less than zero no vibration
 
 }
 
@@ -435,8 +421,6 @@ export default function DraggingView({ stream, client, onQuit }: {stream: any, c
 
         };
     }, []);
-
-    // ASK FOR SCAN DATA OR STH INITIALLY
 
     const onLoadItemClicked = (inputData: ScanSave) => {
         console.log(inputData)

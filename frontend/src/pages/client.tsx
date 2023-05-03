@@ -33,11 +33,7 @@ async function checkConnected(serverStream: AsyncIterable<SubscribeConnectionRes
       console.log("VR has connected!")
     }
 
-    else { 
-      // Close stream...
-      //serverStream.Close() ?
-      //serverStream.cancel()
-      // Show some other component
+    else {
       console.log("VR has disconnected!")
     }
   }
@@ -86,13 +82,9 @@ export default function ClientPage() {
     }
 
     const handleRedirect = () => {
-       if (submitOK){
+      if (submitOK){
         setSendOK(true);
-       }
-       // if redirect OK -> Redirect OK prompt. Open new connection to /start-VR TO CHECK STATUS
-       // With new connection:
-       // If manual exit here: send to /start-VR
-       // If data from new connection: exit: OK, saved: OK or NOT OK -> Prompt saved successfully.
+      }
     };
 
     
@@ -130,19 +122,3 @@ export default function ClientPage() {
     
   )
 }
-
-//old
-/*
-<div>
-      <h1>Client Page</h1>
-      <form onSubmit={afterSubmit}>
-        Code: <input type="text" id="code" size={20} name="code"/><br/>
-        <input type="submit" value="Submit"/> 
-      </form>
-      <button id="redirect-button" onClick={handleRedirect}>Send to VR</button>
-
-      <button>
-        <Link href="/video">Video</Link>
-      </button>
-    </div>
-*/

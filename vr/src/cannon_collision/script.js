@@ -7,10 +7,7 @@ import * as CANNON from 'cannon-es';
 import { MeshBVH, acceleratedRaycast } from 'three-mesh-bvh';
 import { default as CannonUtils } from 'cannon-utils';
 import { sendPositionScan, getPositionScan } from '../../../frontend/src/gen/proto/threedoclusion/v1/service-ScanService_connectquery'
-<<<<<<< HEAD
-=======
 import { QuickHull } from './QuickHull.js';
->>>>>>> adecee4657c5aa01a24950d81d1ec0311ba7aa0e
 
 
 let container;
@@ -39,9 +36,6 @@ let lj_loaded = false, uj_loaded = false;
 
 let target = new THREE.Vector3();
 const clock = new THREE.Clock();
-
-let target = new THREE.Vector3();
-const clock = new THREE.Clock();
 let lj_target = new THREE.Vector3();
 let uj_target = new THREE.Vector3();
 
@@ -54,11 +48,7 @@ loadObjects();  // animation is started after both objects are loaded
 
 function initCannon() {
     world = new CANNON.World();
-<<<<<<< HEAD
-    world.gravity.set(0,0,9);
-=======
     world.gravity.set(0,-0.02,0);
->>>>>>> adecee4657c5aa01a24950d81d1ec0311ba7aa0e
     world.broadphase = new CANNON.NaiveBroadphase();
     world.broadphase.useBoundingBoxes = true;
     world.solver.iterations = 4;     //10
@@ -190,23 +180,6 @@ function loadObjects() {
     // load lower jaw
     const loader = new OBJLoader();
     loader.load(
-<<<<<<< HEAD
-        '../../assets/lower_ios_6.obj',
-        // called when resource is loaded y=green, x=red, z=blue
-        function (object) {         // lj_group is a 'Group', which is a subclass of 'Object3D'
-            lj_group = object;
-            lj_group.scale.set(0.01, 0.01, 0.01);
-            // lj_group.scale.setScalar(0.01);
-
-            // server: getCoordinates()
-            lj_group.position.x = 0;
-            lj_group.position.y = 0;
-            lj_group.position.z = 0;
-            lj_group.rotation.x = 1.5 * Math.PI;
-            //lj_group.rotation.y = Math.PI
-            console.log(lj_group);
-            scene.add(lj_group);
-=======
         '../../assets/random_objects/cube.obj',
         // path to actual teeth: '../../assets/lower_ios_6.obj'
         
@@ -222,7 +195,6 @@ function loadObjects() {
 
             console.log(lj_mesh);
             scene.add(lj_mesh);
->>>>>>> adecee4657c5aa01a24950d81d1ec0311ba7aa0e
             
             lj_shape = threeMeshToConvexCannonMesh(lj_mesh);
             console.log("loading lj_mesh succeeded");
@@ -388,13 +360,10 @@ function updatePhysics() {
 
 function animate() {
     checkTime();
-<<<<<<< HEAD
-=======
 
 
     console.log("frame", frameNum);
     frameNum += 1;
->>>>>>> adecee4657c5aa01a24950d81d1ec0311ba7aa0e
     updatePhysics();
     render();
 }

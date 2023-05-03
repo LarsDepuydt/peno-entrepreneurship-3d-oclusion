@@ -1,11 +1,8 @@
 .gitignore
 go.work
 frontend/node_modules/**
-<<<<<<< HEAD
-=======
 vr/src/cannon_collision/old_scene.html
 vr/src/cannon_collision/old_script.js
->>>>>>> adecee4657c5aa01a24950d81d1ec0311ba7aa0e
 
 /node_modules
 package.json

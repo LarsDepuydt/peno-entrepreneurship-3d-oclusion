@@ -100,13 +100,11 @@ func SendMenuOption(req *connect.Request[threedoclusionv1.SendMenuOptionRequest]
 
 		result, error := GetResponseMakerScan(rows)
 		if error != nil {
-			//panic(error)
 			return nil, error
 		}
 
 		// Get list of all scans for this ID and return
 		res := connect.NewResponse(&threedoclusionv1.SendMenuOptionResponse{
-			//OptionData: &threedoclusionv1.SendMenuOptionResponse_LoadData{result},
 			Wrap: &threedoclusionv1.SendMenuOptionResponse_Wrapper{LoadData: result},
 		})
 		
@@ -115,15 +113,13 @@ func SendMenuOption(req *connect.Request[threedoclusionv1.SendMenuOptionRequest]
 	case 2:
 		log.Println("Menu option Save and Quit was chosen");
 		// Save And Quit data -> Scan save
-		// req.Msg.GetSaveAndQuitData() Pass this to the method -> make abstraction
 		statement, error := database.Prepare("INSERT INTO scan_save (scan_id, lowerX, lowerY, lowerZ, lowerRX, lowerRY, lowerRZ, upperX, upperY, upperZ, upperRX, upperRY, upperRZ , timestamp_save) VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12, $13, $14)")
 		if error != nil {
 			return nil, error
 		}
 
 		t := time.Now()
-		//formattedDate := t.Format("2006-01-02") // Format in yyyy-mm-dd
-		formattedTimestamp := t.Format("2006-01-02T15:04:05")
+		formattedTimestamp := t.Format("2006-01-02T15:04:05") // Format in yyyy-mm-dd T HH:MM:SS
 
 		save := req.Msg.GetSaveData()
 		_, error = statement.Exec(save.ScanId, save.LowerX, save.LowerY, save.LowerZ, save.LowerRX, save.LowerRY, save.LowerRZ, save.UpperX, save.UpperY, save.UpperZ, save.UpperRX, save.UpperRY, save.UpperRZ, formattedTimestamp)
@@ -132,20 +128,15 @@ func SendMenuOption(req *connect.Request[threedoclusionv1.SendMenuOptionRequest]
 		}
 
 		connectionChan := connections.GetChannel(req.Msg.GetScanId(), deviceID)
-		select {
+		select { // Send isConnected false to channel
 		case connectionChan <- threedoclusionv1.SubscribeConnectionResponse{IsConnected: false}:
 			// pass
 		default:
 			// pass
 		}
 
-		//connection.Send(responseConnect);
-		//connectionsClient.DeleteConnection(req.Msg.GetScanId()) // Delete the connection from memory
-
-		// DO something with connection
 		msg := "Saved successfully"
 		res := connect.NewResponse(&threedoclusionv1.SendMenuOptionResponse{
-			//OptionData: &threedoclusionv1.SendMenuOptionResponse_LoadData{result},
 			OtherData: &msg,
 		})
 
@@ -158,21 +149,13 @@ func SendMenuOption(req *connect.Request[threedoclusionv1.SendMenuOptionRequest]
 
 		connectionChan := connections.GetChannel(req.Msg.GetScanId(), deviceID);
 
-		log.Println("Test");
-
 		select {
 		case connectionChan <- threedoclusionv1.SubscribeConnectionResponse{IsConnected: false}:
 			// pass
 		default:
 			// pass
 		}
-
-		// DO something with connection
-
-
-		//connectionClient.Send(responseConnect);
-		//connectionsClient.DeleteConnection(req.Msg.GetScanId()) // Delete the connection from memory
-
+		
 		connections.ReleaseChannel(req.Msg.GetScanId(), 1) // Delete client connection from memory, then let client handle itself based on received response
 
 		msg := "Deleted connection from server"
@@ -184,7 +167,6 @@ func SendMenuOption(req *connect.Request[threedoclusionv1.SendMenuOptionRequest]
 	default:
 		msg := "Unknown option"
 		res := connect.NewResponse(&threedoclusionv1.SendMenuOptionResponse{
-			//OptionData: &threedoclusionv1.SendMenuOptionResponse_OtherData{"Unknown option"},
 			OtherData: &msg,
 		})
 		return res, nil
@@ -196,27 +178,7 @@ func SubscribeConnection(ctx context.Context, req *connect.Request[threedoclusio
     deviceID := req.Msg.DeviceId
 
 	connectionChan := connections.GetChannel(scanID, deviceID)
-
-	/*
-	// IF first time
-	var receiverDeviceID int32;
-	if (deviceID == 0){
-		receiverDeviceID = 1;
-	} else if (deviceID == 1) {
-		receiverDeviceID = 0;
-	}
-	otherConnectionChan := connections.GetChannel(scanID, receiverDeviceID)
-	select {
-	case otherConnectionChan <- threedoclusionv1.SubscribeConnectionResponse{IsConnected: true}:
-		// Message sent successfully
-	default:
-		// No receiver on the other end, do not block and continue executing
-	}
-	// TO DO: Send response on this stream if no messages yet with the notCreated attribute
-	*/
-
-	// END section first time
-
+	
     for {
         select {
         case res := <-connectionChan: // When a message gets received on the intended channel, send it over
@@ -260,7 +222,7 @@ func UpdateConnectionStatus(req *connect.Request[threedoclusionv1.UpdateConnecti
 
     mapDeviceChan := connections.GetMapDeviceChannel(scanID)
 
-    for otherDeviceID, connectionChan := range mapDeviceChan {
+    for otherDeviceID, connectionChan := range mapDeviceChan { // Notify all relevant channels
         if otherDeviceID != deviceID {
             connectionChan <- threedoclusionv1.SubscribeConnectionResponse{
                 IsConnected: isConnected,

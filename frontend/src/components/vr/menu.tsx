@@ -6,7 +6,6 @@ import ListView from "./list-view";
 
 async function sendMenuOption(optionNumber: number, clnt: any, oData: any){
   console.log(oData);
-  //let req = new SendMenuOptionRequest({option: optionNumber, optionData: oData});
   let req = new SendMenuOptionRequest({});
   req.option = optionNumber;
   req.optionData = {value: oData.value, case: oData.case};
@@ -18,7 +17,6 @@ async function sendMenuOption(optionNumber: number, clnt: any, oData: any){
 }
 
 function Menu({isOpen, setIsOpen, current_scan, stream, client, onLoadItemClicked, onQuit}: {isOpen: boolean, setIsOpen: any, current_scan: ScanSave, stream: any, client: any, onLoadItemClicked: (inputData: ScanSave) => void, onQuit: () => void}){ // Add props with positions, client...
-  //const [isOpen, setIsOpen] = useState(true);
   const [showListView, setShowListView] = useState(false);
   const [listData, setListData] = useState<string[]>([]);
   const [listDictData, setListDictData] = useState({});
@@ -86,7 +84,6 @@ function Menu({isOpen, setIsOpen, current_scan, stream, client, onLoadItemClicke
       });
   };
 
-  // onItemClicked move another level up so you can edit position in VR
   return (
     isOpen ? (
     <Canvas>

@@ -3,7 +3,6 @@ import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls';
 import { OBJLoader } from 'three/examples/jsm/loaders/OBJLoader.js';
 import { useRef, useEffect, useState } from 'react';
 
-//let container: HTMLDivElement;
 let camera: THREE.PerspectiveCamera, scene: THREE.Scene, renderer: THREE.WebGLRenderer;
 
 let controls, group: THREE.Group;
@@ -230,52 +229,46 @@ function checkAnimation(duration: number, rest_time: number, setVideoChunks: any
     let elapsedTime = clock.getElapsedTime();
     
     if (inLastPosition){ // Rest at the end 
-      if (elapsedTime >= rest_time){
-        inLastPosition = false;
-        inInitialPosition = true;
-      }
+        if (elapsedTime >= rest_time){
+            inLastPosition = false;
+            inInitialPosition = true;
+        }
     }
     
     if (inInitialPosition){ // Rest at the start point
-      if (elapsedTime >= rest_time){
-        inInitialPosition = false;
-        clock.start();
-        elapsedTime = 0; // Set elapsedTime to 0 when animation resets
-      }
+        if (elapsedTime >= rest_time){
+            inInitialPosition = false;
+            clock.start();
+            elapsedTime = 0; // Set elapsedTime to 0 when animation resets
+        }
     }
-      
+
     if (clock.running && !inLastPosition && !inInitialPosition){
-      if (!captureRunning && !animationSaved) { recorder.start(); captureRunning = true;}
-      
-      if (elapsedTime >= duration) {
-        inLastPosition = true;
-    
-        if (!animationSaved){
-          recorder.stop(); // Stop running
-          //const blob = new Blob(chunks, {type: 'video/webm'});
-          //const url = URL.createObjectURL(blob);
-          //const video = document.createElement('video');
-          //video.src = url;
-          //document.body.appendChild(video);
-          //console.log(url);
-          setVideoChunks(chunks);
-          onVideoChunksChange(chunks); // call the onVideoChunksChange function with the chunks
-          
-    
-          animationSaved = true;
-          captureRunning = false;
+        if (!captureRunning && !animationSaved) { 
+            recorder.start(); 
+            captureRunning = true;
         }
     
-        elapsedTime = duration; // Set elapsedTime to duration when animation ends
-        clock.start(); // Restart clock after animation ends so it loops
-      }
-      moveWithFactor(duration, elapsedTime, upperMove);
+        if (elapsedTime >= duration) {
+            inLastPosition = true;
+    
+            if (!animationSaved){
+                recorder.stop(); // Stop running
+                setVideoChunks(chunks);
+                onVideoChunksChange(chunks); // call the onVideoChunksChange function with the chunks
+                animationSaved = true;
+                captureRunning = false;
+            }
+    
+            elapsedTime = duration; // Set elapsedTime to duration when animation ends
+            clock.start(); // Restart clock after animation ends so it loops
+        }
+        moveWithFactor(duration, elapsedTime, upperMove);
     }
 }
 
 // Accept 4 models: initialLower, initialUpper, lastLower, lastUpper
-function moveWithFactor(duration: number, time_passed: number, jawToMove: any){ // Maybe after user has exited VR session -> new scene to render the animation in the webpage along with an alert to save or sth
-    // Call when session has ended and user has saved manually
+function moveWithFactor(duration: number, time_passed: number, jawToMove: any){
     // Not animating the actual movements the user has performed but linearly interpolating between the two states
     
     // Let's set lowerjaw as the reference; set currentsave pos of lower to initial one and then only upper needs to move relatively, with 
@@ -289,27 +282,26 @@ function moveWithFactor(duration: number, time_passed: number, jawToMove: any){ 
     const initialQuaternionUpper = new THREE.Quaternion().setFromEuler(initialRotationUpper);
     const finalQuaternionUpper = new THREE.Quaternion().setFromEuler(finalRotationUpper);
 
-    // Get the rotation difference between initialRotationLower and finalRotationLower
+    // Rotation difference between initialRotationLower and finalRotationLower
     const deltaQuaternionLower = finalQuaternionLower.clone().multiply(initialQuaternionLower.clone().invert());
     const deltaQuaternionUpper = finalQuaternionUpper.clone().multiply(initialQuaternionUpper.clone().invert());
 
     const targetQuaternion = initialQuaternionUpper.clone().multiply(deltaQuaternionLower).multiply(deltaQuaternionUpper);
 
-    const factor = time_passed / duration // Let checktime handle so it's <= 1
+    const factor = time_passed / duration // Let checkAnimation handle constraint factor <= 1
 
     jawToMove.position.copy(initialPositionLower.clone().add( diff_pos_between.clone().multiplyScalar(factor) ));
     jawToMove.quaternion.copy(jawToMove.quaternion.slerpQuaternions ( initialQuaternionUpper, targetQuaternion, factor ));    
 }
 
 function animate(setVideoChunks: any, onVideoChunksChange: any) {
-    //renderer.setAnimationLoop( render );
     renderer.setAnimationLoop( function(){
         render(setVideoChunks, onVideoChunksChange);
     });
 }
 
 function render(setVideoChunks: any, onVideoChunksChange: any) {
-    checkAnimation(5, 2, setVideoChunks, onVideoChunksChange); // 5 seconds duration
+    checkAnimation(5, 2, setVideoChunks, onVideoChunksChange); // 5 seconds duration, 2 seconds rest
     if (captureRunning) recorder.requestData();
     renderer.render( scene, camera );
 }
@@ -332,7 +324,6 @@ export default function BeforeAfter({ onVideoChunksChange }: {onVideoChunksChang
         }
     }, [onVideoChunksChange]);
 
-    //window.addEventListener( 'resize', onWindowResize );    
     return <div ref={containerRef} id="canvas">
         <style jsx>{`
         #canvas {
