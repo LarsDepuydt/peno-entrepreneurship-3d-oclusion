@@ -24,3 +24,8 @@ Send request to cloud backend and database
 ## Migrate database schema --> currently not supported on cloud backend
 Run `make migrate` to migrate the database schema to the latest version.
 Run `make migrate_info` to get migrations information.
+
+
+## Deploy frontend Next.js to Firebase hosting
+Run `cd frontend` to set your directory to the frontend directory.
+Run `sudo yarn deploy` to rebuild and deploy the firebase functions and hosting.
