@@ -1,4 +1,5 @@
 import * as CANNON from 'cannon-es';
+
 // alternative to cannon.js function findSeparatingAxis that uses web workers
 function findSepAxis(hullB, posA, quatA, posB, quatB, target, faceListA, faceListB) {
     const faceANormalWS3 = new CANNON.Vec3();
