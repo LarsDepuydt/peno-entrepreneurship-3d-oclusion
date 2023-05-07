@@ -234,22 +234,18 @@ class Jaw {
         switch (movement_mode) {
             case 0: { // Restricted to x axis
                 dp = new CANNON.Vec3(targetWorldPosition.x - this.body.position.x, 0, 0);
-                showAxes(0, curr_jaw);
                 break;
             }
             case 1: { // Restricted to y axis
                 dp = new CANNON.Vec3(0, targetWorldPosition.y - this.body.position.y, 0);
-                showAxes(1, curr_jaw);
                 break;
             }
             case 2: { // Restricted to z axis
                 dp = new CANNON.Vec3(0, 0, targetWorldPosition.z - this.body.position.z);
-                showAxes(2, curr_jaw);
                 break;
             }
             case 3: { // Free movement (default)
                 dp = targetWorldPosition.vsub(this.body.position);    // Vec3
-                showAxes(3, curr_jaw);
                 break;
             }
         }
@@ -438,7 +434,6 @@ function initThree() {
     // allow additional button inputs (for axis locking)
     session = renderer.xr.getSession();
 
-
     // resize
 
     window.addEventListener( 'resize', onWindowResize );
@@ -449,6 +444,8 @@ function loadObjects() {
     lowerjaw = new Jaw('../../assets/simplified/lower_180.obj', '../../assets/lower_ios_6.obj');
     //upperjaw = new Jaw('../../assets/simplified/upper_218.obj');
     upperjaw = new Jaw('../../assets/simplified/upper_209.obj', '../../assets/upper_ios_6.obj');
+
+    curr_jaw = upperjaw;
 }
 
 
@@ -482,6 +479,30 @@ let prevButtonState = 0; // initialize previous button state to not pressed
 
 // using X/A buttons on the controllers
 function beforeRender(controller) {
+    //console.log(curr_jaw);
+    if (curr_jaw.selected) {
+        switch (movement_mode) {
+            case 0: { // Restricted to x axis
+                showAxes(0, curr_jaw);
+                break;
+            }
+            case 1: { // Restricted to y axis
+                showAxes(1, curr_jaw);
+                break;
+            }
+            case 2: { // Restricted to z axis
+                showAxes(2, curr_jaw);
+                break;
+            }
+            case 3: { // Free movement (default)
+                showAxes(3, curr_jaw);
+                break;
+            }
+        }
+    }
+    else {
+        curr_jaw.mesh.remove(ArrowHelper);
+    }
   session = renderer.xr.getSession();
   let ii = 0;
   if (session) {
@@ -504,7 +525,7 @@ function beforeRender(controller) {
         optionChanged = false; // reset flag when squeeze button is released
       }
       prevButtonState = data.buttons[0]; // save button state for next frame
-      console.log(currentOption);
+      //console.log(currentOption);
 
       movement_mode = currentOption;
     }
@@ -516,19 +537,15 @@ var ArrowHelper;
 function showAxes(axis_num, curr_jaw) {
     switch (axis_num) {
         case 0: {
-            //console.log(ArrowHelper);
-            curr_jaw.mesh.remove(ArrowHelper);
             Axis = new THREE.Vector3(1, 0, 0);
             break;
         }
         case 1: {
-            curr_jaw.mesh.remove(ArrowHelper);
-            Axis = new THREE.Vector3(0, 1, 0);
+            Axis = new THREE.Vector3(0, 0, 1);
             break;
         }
         case 2: {
-            curr_jaw.mesh.remove(ArrowHelper);
-            Axis = new THREE.Vector3(0, 0, 1);
+            Axis = new THREE.Vector3(0, 1, 0);
             break;
         }
         case 3: {
@@ -537,20 +554,11 @@ function showAxes(axis_num, curr_jaw) {
         }
 
     }
-    // Create the axes
-   
-    //const yAxis = new THREE.Vector3(0, 1, 0);
-    //const zAxis = new THREE.Vector3(0, 0, 1);
+
+    curr_jaw.mesh.remove(ArrowHelper);
 
     const axisLength = 100;
   
-    //ArrowHelper = new THREE.ArrowHelper(Axis, new THREE.Vector3(0.3, 0.3, 0.3), axisLength, 0xff0000);
-    //const yArrowHelper = new THREE.ArrowHelper(yAxis, new THREE.Vector3(0, 0, 0), axisLength, 0x00ff00);
-    //const zArrowHelper = new THREE.ArrowHelper(zAxis, new THREE.Vector3(0, 0, 0), axisLength, 0x0000ff);
-  
-    // Add the axes to the scene
-    //curr_jaw.mesh.add(ArrowHelper);
-
     // create an ArrowHelper
     const direction = new THREE.Vector3(1, 0, 0); // specify the direction of the arrow
     const origin = new THREE.Vector3(0, 0, -0.3); // specify the starting point of the arrow
