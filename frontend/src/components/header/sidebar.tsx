@@ -64,7 +64,7 @@ export function SidebarPatient() {
         <NoteList notes={notesPatient} />
         <div className={stylesButton.sidebarButton}>
           <New_Scan />
-          <Filter_Tags />
+          {/*<Filter_Tags /> */}
         </div>
         <div className={stylesButton.absoluteWrapper}>
           <button type="button" className={stylesButton.relu_btn} id={stylesButton.homeIcon} onClick={home}></button>
