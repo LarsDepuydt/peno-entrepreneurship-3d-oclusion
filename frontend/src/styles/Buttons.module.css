@@ -49,6 +49,9 @@
 .absoluteWrapper {
   padding-left: 15px;
   padding-bottom: 15px;
+  display: flex;
+  justify-content: space-between;
+  column-gap: 10px;
 }
 
 #homeIcon {
@@ -136,7 +139,6 @@
   border: none;
 }
 
-
 #editIcon {
   width: 48px;
   height: 48px;
@@ -192,11 +194,10 @@
   margin-top: 10px;
   margin-left: 10px;
   margin-bottom: 10px;
-
 }
 
 .notes_btn:hover {
-  background-color: rgb(32,61,75,0.25);
+  background-color: rgb(32, 61, 75, 0.25);
 }
 
 .note_input {
@@ -213,13 +214,14 @@
 
   margin-right: 10px;
   margin-top: 10px;
-  margin-left: 10px;
+
+  margin-left: 20px;
+
   margin-bottom: 10px;
 
   min-height: 60px;
 }
 
 .note_input:hover {
-  background-color: rgb(32,61,75,0.25);
+  background-color: rgb(32, 61, 75, 0.25);
 }
-

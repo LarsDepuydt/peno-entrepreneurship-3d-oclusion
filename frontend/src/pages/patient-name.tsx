@@ -3,15 +3,12 @@ import styles from '@/styles/PatientPage.module.scss';
 
 import { HeaderDoctor } from '../components/header/header';
 import { SinglePatient as Patient } from '../components/patient/patient-individual-overview';
-import teeth3d from '../../public/3d-teeth.jpg';
-import { useRouter } from 'next/router';
-import { StaticImageData } from 'next/image';
-import { FC } from 'react';
+import { useEffect } from 'react';
 import { SidebarDoctor } from '../components/header/sidebar';
 import Head from 'next/head';
-import { getPatientByName } from '@/gen/proto/threedoclusion/v1/service-ScanService_connectquery';
+
 import { useQuery } from '@tanstack/react-query';
-import { type } from 'os';
+import { getAllPatients } from '@/gen/proto/threedoclusion/v1/service-ScanService_connectquery';
 
 // // type Arraypatients {
 // //   patient[]

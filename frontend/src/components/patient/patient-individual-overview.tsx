@@ -7,17 +7,23 @@ import React, { useState } from 'react';
 import { InspectScans } from '../../components/patient/inspect_scans';
 import DeleteButton from '../patient/delete_patient';
 import EditButton from '../patient/edit_patient';
-import DropdownButton from '../patient/patient_dropdown';
+
+import pfp1 from '../../../public/profile_pictures/patient_profile_picture_1.png';
+import pfp2 from '../../../public/profile_pictures/patient_profile_picture_2.png';
+import pfp3 from '../../../public/profile_pictures/patient_profile_picture_3.png';
+import pfp4 from '../../../public/profile_pictures/patient_profile_picture_4.png';
+import { randInt } from 'three/src/math/MathUtils';
 
 interface patientProfile {
   id: number;
-  picture: StaticImageData;
   patientfirstname: string;
   patientlastname: string;
+  pinned: boolean;
+  notespatient: string;
   doctorid: number;
 }
 
-export function SinglePatient({ id, picture, patientfirstname, patientlastname }: patientProfile) {
+export function SinglePatient({ id, patientfirstname, patientlastname }: patientProfile) {
   const [showButtons, setShowButtons] = useState(false);
   const handleMouseEnter = () => {
     setShowButtons(true);
@@ -34,7 +40,10 @@ export function SinglePatient({ id, picture, patientfirstname, patientlastname }
     setDropDown(false);
   };
 
-  const router = useRouter();
+  //const router = useRouter();
+
+  const num = randInt(1, 4);
+  const pfpsrc = 'pfp' + num.toString();
 
   return (
     <div className={styles.patientScan_container}>
@@ -63,7 +72,7 @@ export function SinglePatient({ id, picture, patientfirstname, patientlastname }
             <Image
               id={patientfirstname.concat(' ', patientlastname)}
               className={showButtons ? styles.picture_hover : styles.picture}
-              src={picture}
+              src={pfpsrc}
               alt="3d picture of teeth"
             />
           </div>
