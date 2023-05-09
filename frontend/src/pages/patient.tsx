@@ -23,13 +23,6 @@ export default function PatientPage(this: any) {
 
   const { data, refetch } = useQuery(getAllPatients.useQuery({ enabled: true }));
 
-  useEffect(() => {
-    return () => {
-      data && refetch();
-      //console.log('cleanup');
-    };
-  }, [data]);
-
   const iteratePatient = (patient: PatientData) => {
     return (
       <Patient
@@ -74,7 +67,6 @@ export default function PatientPage(this: any) {
         <div className={styles.scansWrapper}>
           {allPatients()}
 
-
           <div className={styles.patient_filler}></div>
           <div className={styles.patient_filler}></div>
           <div className={styles.patient_filler}></div>
@@ -86,7 +78,6 @@ export default function PatientPage(this: any) {
           <div className={styles.patient_filler}></div>
           <div className={styles.patient_filler}></div>
           <div className={styles.patient_filler}></div>
-
         </div>
         <SidebarDoctor />
         <HeaderDoctor />

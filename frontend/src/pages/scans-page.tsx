@@ -24,13 +24,6 @@ export default function ScanPage(this: any) {
 
   const { data, refetch } = useQuery(getAllScans.useQuery({ enabled: true }));
 
-  useEffect(() => {
-    return () => {
-      // cleanup function to cancel subscription
-      data && refetch();
-    };
-  }, [data]);
-
   const iterateScans = (scan: scanData) => {
     return <Scan scanid={scan.id} date={scan.createdAt} notes={scan.notes} patientid={scan.patientId} />;
   };
