@@ -42,13 +42,13 @@ export default function ClientPage() {
     }
   };
 
-  useEffect(() => {
-    let cookieCode: string | undefined;
-    if (typeof window !== 'undefined') {
-      cookieCode = Cookies.get('clientcookie');
-    }
+    
+    useEffect(() => {
+      let cookieCode: string | undefined;
+      if (typeof window !== 'undefined') {
+        cookieCode = Cookies.get('clientcookie');
+      }
 
-    //const cookieCode = Cookies.get('clientcookie');
 
     if (!cookieCode) {
       const codeString: string = `${code}`;
@@ -63,6 +63,9 @@ export default function ClientPage() {
     setClientId(parseInt(cookieCode as string, 10));
     setSubmitOK(true);
   }, [code]);
+
+  const router = useRouter();
+  const home = () => router.push('/patient');
 
   return (
     <div className={styles.container}>

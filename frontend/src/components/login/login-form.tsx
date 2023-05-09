@@ -53,14 +53,13 @@ export default function LoginForm() {
       }
       data?.token && credentials.email && router.push('/patient');
     }
-  }, [data, credentials, router, sendOK]);
+  }, [data, credentials, router, sendOK, submitOK,refetch]);
 
   // useEffect(() => {
   //   data?.token && credentials.email && data?.id && router.push('/patient');
   //   //&& router.push({ pathname: '/patient/[dentistID]', query: { dentistID: data.id } });
   //   //&& router.push({ pathname: '/patient/[dentistID]', query: { dentistID: process.env.REACT_APP_DENTIST_ID } });
   // }, [data, credentials, router]);
-
 
   const toRegister = () => router.push('/register-page');
 
