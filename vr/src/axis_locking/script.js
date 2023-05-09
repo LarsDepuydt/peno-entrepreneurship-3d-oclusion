@@ -509,6 +509,7 @@ function beforeRender(controller) {
     for (const source of session.inputSources) {
       if (source && source.handedness) {
         var handedness = source.handedness; //left or right controllers
+        if (handedness == 'right') {continue} // we willen enkel de 'X' knop van de rechtercontroller
       }
       if (!source.gamepad) continue;
       const controller = renderer.xr.getController(ii++);
@@ -518,6 +519,7 @@ function beforeRender(controller) {
         buttons: source.gamepad.buttons.map((b) => b.value),
         axes: source.gamepad.axes.slice(0)
       };
+      //console.log(source.handedness);
       if (data.buttons[4] == 1 && prevButtonState == 0 && !optionChanged) {
         currentOption = (currentOption + 1) % 4; // cycle through 0, 1, 2, 3
         optionChanged = true; // set flag to true to indicate that the option has changed
@@ -626,7 +628,7 @@ function onSelectStart( event ) {
             jaw.selected = true;
             jaw.body.type = CANNON.Body.DYNAMIC;
             controller.userData.selected = jaw;
-            console.log(jaw.body);
+            //console.log(jaw.body);
         }
     }
 }
