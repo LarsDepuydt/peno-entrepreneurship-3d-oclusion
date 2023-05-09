@@ -3,11 +3,10 @@ import { useQuery } from '@tanstack/react-query';
 import { useState, useEffect, SetStateAction } from 'react';
 //import Cookies from 'js-cookie';
 const Cookies = require('js-cookie');
-import stylesButton from '@/styles/Buttons.module.css';
-import stylesText from '@/styles/Header.module.css';
+import styles from '@/styles/ClientPage.module.css';
+
 import Image from 'next/image';
 import reluLogo from '../../public/relu-logo-small.png';
-import { useRouter } from 'next/router';
 
 function generateCode(): string {
   return Array.from({ length: 8 }, () => Math.floor(Math.random() * 10)).join('');
@@ -43,8 +42,8 @@ export default function ClientPage() {
     }
   };
 
-  var cookieCode: string | undefined;
   useEffect(() => {
+    let cookieCode: string | undefined;
     if (typeof window !== 'undefined') {
       cookieCode = Cookies.get('clientcookie');
     }
@@ -63,24 +62,28 @@ export default function ClientPage() {
 
     setClientId(parseInt(cookieCode as string, 10));
     setSubmitOK(true);
-  });
-
-  const router = useRouter();
-  const home = () => router.push('/patient');
+  }, [code]);
 
   return (
-    <div>
-      <Image className={stylesText.small_logo_log} src={reluLogo} alt="relu logo" />
-      <div className={stylesText.settingsContainer}>
-        <div className={stylesText.settingsCodeWrapper}>
-          <p className={stylesText.settingsCode}> {displayCode} </p>
-        </div>
-        <p className={stylesText.settingsText}>Enter the code above in your VR headset.</p>
-        <div className={stylesText.settingsButtons}>
-          <button type="button" className={stylesButton.relu_btn} id={stylesButton.homeIcon} onClick={home}></button>
-          <button type="button" className={stylesButton.relu_btn} id={stylesButton.loadingIconSettings}></button>
-        </div>
-      </div>
+    <div className={styles.container}>
+      <Image className={styles.small_logo_log} src={reluLogo} alt="relu logo" />
+      <h3 className={styles.h3}>{displayCode}</h3>
+      <p className={styles.p}>Enter the code above in your VR headset.</p>
+      <button id="redirect-button" onClick={handleRedirect} className={styles.btn}>
+        Send to VR
+      </button>
     </div>
   );
 }
+
+//old
+/*
+<div>
+      <h1>Client Page</h1>
+      <form onSubmit={afterSubmit}>
+        Code: <input type="text" id="code" size={20} name="code"/><br/>
+        <input type="submit" value="Submit"/> 
+      </form>
+      <button id="redirect-button" onClick={handleRedirect}>Send to VR</button>
+    </div>
+*/
