@@ -518,13 +518,13 @@ function beforeRender(controller) {
         buttons: source.gamepad.buttons.map((b) => b.value),
         axes: source.gamepad.axes.slice(0)
       };
-      if (data.buttons[0] == 1 && prevButtonState == 0 && !optionChanged) {
+      if (data.buttons[4] == 1 && prevButtonState == 0 && !optionChanged) {
         currentOption = (currentOption + 1) % 4; // cycle through 0, 1, 2, 3
         optionChanged = true; // set flag to true to indicate that the option has changed
-      } else if (data.buttons[0] == 0 && prevButtonState == 0 && optionChanged) {
+      } else if (data.buttons[4] == 0 && prevButtonState == 0 && optionChanged) {
         optionChanged = false; // reset flag when squeeze button is released
       }
-      prevButtonState = data.buttons[0]; // save button state for next frame
+      prevButtonState = data.buttons[4]; // save button state for next frame
       //console.log(currentOption);
 
       movement_mode = currentOption;
