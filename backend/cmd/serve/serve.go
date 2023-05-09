@@ -133,6 +133,13 @@ func (s *ServerStruct) GetScanById(
 	return scans.GetScanById(req, s.database)
 }
 
+func (s *ServerStruct) UpdateScanById(
+	ctx context.Context,
+	req *connect.Request[threedoclusionv1.UpdateScanByIdRequest],
+) (*connect.Response[threedoclusionv1.UpdateScanByIdResponse], error) {
+	return scans.UpdateScanById(req, s.database)
+}
+
 // TAGS
 func (s *ServerStruct) AddTag(
 	ctx context.Context,
@@ -161,6 +168,7 @@ func (s *ServerStruct) GetTagById(
 ) (*connect.Response[threedoclusionv1.GetTagByIdResponse], error) {
 	return tags.GetTagById(req, s.database)
 }
+
 // PATIENTS
 func (s *ServerStruct) AddPatient(
 	ctx context.Context,
@@ -202,6 +210,13 @@ func (s *ServerStruct) UpdatePatientById(
 	req *connect.Request[threedoclusionv1.UpdatePatientByIdRequest],
 ) (*connect.Response[threedoclusionv1.UpdatePatientByIdResponse], error) {
 	return patients.UpdatePatientById(req, s.database)
+}
+
+func (s *ServerStruct) GetAllPinnedPatients(
+	ctx context.Context,
+	req *connect.Request[threedoclusionv1.GetAllPinnedPatientsRequest],
+) (*connect.Response[threedoclusionv1.GetAllPinnedPatientsResponse], error) {
+	return patients.GetAllPinnedPatients(req, s.database)
 }
 
 // DENTISTS

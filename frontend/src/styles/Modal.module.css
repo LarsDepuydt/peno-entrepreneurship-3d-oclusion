@@ -19,9 +19,14 @@ module body.active_modal {
   position: fixed;
 }
 
+.modal {
+  z-index: 360;
+}
 .overlay {
   background: rgba(49, 49, 49, 0.8);
-  z-index: 70;
+
+  z-index: 370;
+
 }
 .modal_content {
   position: absolute;
@@ -38,7 +43,9 @@ module body.active_modal {
   border-radius: 10px;
   max-width: 500px;
   min-width: 500px;
-  z-index: 80;
+
+  z-index: 380;
+
 }
 
 .close_modal {

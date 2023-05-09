@@ -132,7 +132,7 @@ $patientBorder-width: 1.5px;
   display: flex;
   flex-direction: column;
   flex-wrap: nowrap;
-  justify-content: space-between;
+  //justify-content: space-evenly;
   align-items: center;
   height: 100%;
 }
@@ -142,4 +142,15 @@ $patientBorder-width: 1.5px;
   display: flex;
   column-gap: 20px;
   justify-content: space-between;
+}
+
+.patientScan_filler {
+  width: $patientWidth;
+  margin: 0px $patientMargin;
+}
+
+.white_background {
+  background-color: white;
+  width: 100vw;
+  height: 100vh;
 }

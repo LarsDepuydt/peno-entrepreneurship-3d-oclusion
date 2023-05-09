@@ -1,10 +1,11 @@
-import { deletePatientById } from '@/gen/proto/threedoclusion/v1/service-ScanService_connectquery';
+import { deletePatientById, getAllPatients } from '@/gen/proto/threedoclusion/v1/service-ScanService_connectquery';
 import { useQuery } from '@tanstack/react-query';
 
 import styleB from '@/styles/Buttons.module.css';
 import styles from '@/styles/Modal.module.css';
 
 import { useState } from 'react';
+import { queryClient } from '@/pages/_app';
 
 export default function DeleteButton({ patientID }: { patientID: number }) {
   const [modal, setModal] = useState(false);
@@ -13,13 +14,24 @@ export default function DeleteButton({ patientID }: { patientID: number }) {
   const toggleModal = () => setModal(!modal); // change state f -> t and t -> f
 
   const deletePatient = () => {
+    refetch();
     console.log('patient is deleted');
     setModal(!modal);
     refetch();
   };
 
-  const query = deletePatientById.useQuery({ id: patientID });
-  const { data, refetch } = useQuery(query.queryKey, query.queryFn, { enabled: false });
+  // const query = deletePatientById.useQuery({ id: patientID });
+  // const { data, refetch } = useQuery(query.queryKey, query.queryFn, { enabled: false });
+
+  const refreshKey = getAllPatients.useQuery().queryKey;
+  const { data, refetch } = useQuery(
+    deletePatientById.useQuery({ id: patientID }).queryKey,
+    deletePatientById.useQuery({ id: patientID }).queryFn,
+    {
+      enabled: false,
+      onSuccess: () => queryClient.refetchQueries(refreshKey),
+    }
+  );
 
   return (
     <>

@@ -3,8 +3,6 @@ import * as THREE from 'three';
 import { OBJLoader } from 'three/examples/jsm/loaders/OBJLoader';
 import convertGrayscale from './convertGrayscale'; 
 
-
-
 const ObjDisplay = () => {
   const canvasRef = useRef<HTMLCanvasElement>(null);
 
@@ -28,21 +26,9 @@ const ObjDisplay = () => {
       let lowerjaw: THREE.Object3D;
       let upperjaw: THREE.Object3D;
       loader.load(
-        'http://127.0.0.1:5500/vr/assets/lower_ios_6.obj',
+        'lower_ios_6.obj', 
         // called when resource is loaded
         function (object) {
-          // traverse the object to change its material
-          /*
-          object.traverse(function (child) {
-          if (child instanceof THREE.Mesh) {
-            child.material = new THREE.MeshBasicMaterial({
-              //color: new THREE.Color(0.5, 0.5, 0.5),
-              //color: convertGrayscale(child.material.color),
-              wireframe: false,
-            });
-            }
-          });
-          */
           lowerjaw = object;
           lowerjaw.position.z = -20
           lowerjaw.position.y = 10
@@ -64,7 +50,7 @@ const ObjDisplay = () => {
       );
 
       loader.load(
-        'http://127.0.0.1:5500/vr/assets/upper_ios_6.obj',
+        'upper_ios_6.obj',
         // called when resource is loaded
         function (object) {
           // traverse the object to change its material
@@ -104,7 +90,6 @@ const ObjDisplay = () => {
 
 
       // render loop
-      
       function animate() {
 
         requestAnimationFrame( animate );

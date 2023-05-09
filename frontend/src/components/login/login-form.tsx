@@ -16,6 +16,10 @@ interface LUser {
   password: string;
 }
 
+interface IDprop {
+  dentistID: any;
+}
+
 export default function LoginForm() {
   const [credentials, setData] = useState({ email: '', password: '' });
 
@@ -34,6 +38,7 @@ export default function LoginForm() {
     console.log(' (1) REACT_APP_DENTIST_ID is ' + process.env.REACT_APP_DENTIST_ID);
     setData(values);
     console.log(data);
+
     setSubmitOK(true);
   };
 
@@ -60,6 +65,7 @@ export default function LoginForm() {
   //   //&& router.push({ pathname: '/patient/[dentistID]', query: { dentistID: data.id } });
   //   //&& router.push({ pathname: '/patient/[dentistID]', query: { dentistID: process.env.REACT_APP_DENTIST_ID } });
   // }, [data, credentials, router]);
+
 
   const toRegister = () => router.push('/register-page');
 

@@ -5,9 +5,11 @@ import styleB from '@/styles/Buttons.module.css';
 
 import 'bootstrap/dist/css/bootstrap.css';
 
-import { useQuery } from '@tanstack/react-query';
+import { QueryClient, useQuery } from '@tanstack/react-query';
 import { addPatient } from '@/gen/proto/threedoclusion/v1/service-ScanService_connectquery';
 import { useEffect, useState } from 'react';
+import { getAllPatients } from '@/gen/proto/threedoclusion/v1/service-ScanService_connectquery';
+import { queryClient } from '@/pages/_app';
 
 interface patientValues {
   patientFirstName: string;
@@ -31,15 +33,18 @@ export default function ModalForm() {
     lastName: '',
 
     pinned: false,
-    notes: '',
-
+    notes: '@.',
     dentistId: 0,
   });
 
+  const refreshKey = getAllPatients.useQuery().queryKey;
   const { data, refetch } = useQuery(
     addPatient.useQuery(patientinfo).queryKey,
     addPatient.useQuery(patientinfo).queryFn,
-    { enabled: false }
+    {
+      enabled: false,
+      onSuccess: () => queryClient.refetchQueries(refreshKey),
+    }
   );
 
   const toggleModal = () => {
@@ -52,7 +57,7 @@ export default function ModalForm() {
       firstName: values.patientFirstName,
       lastName: values.patientLastName,
       pinned: values.pinned,
-      notes: values.notes,
+      notes: values.notes + '@.',
 
       dentistId: parseInt(DentistID),
     };
@@ -96,7 +101,6 @@ export default function ModalForm() {
       setSubmitOK(false);
     }
   }, [data, modal, sendOK, submitOK, refetch]);
-
 
   //, patientinfo
 
