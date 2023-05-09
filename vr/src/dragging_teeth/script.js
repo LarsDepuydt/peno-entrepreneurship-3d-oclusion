@@ -96,6 +96,10 @@ class Jaw {
     this.body.position.set(0, 2, 0);
     let xaxis = new CANNON.Vec3(1, 0, 0);
     this.body.quaternion.setFromAxisAngle(xaxis, -Math.PI / 2);
+    // console.log(this.body.quaternion.x);
+    // console.log(this.body.quaternion.y);
+    // console.log(this.body.quaternion.z);
+    // console.log(this.body.quaternion.w);
     world.addBody(this.body);
 
     if (DEBUGGING_MODE) {
@@ -458,21 +462,9 @@ function loadObjects() {
   );
 }
 
-// x=red, y=green, z=blue
-
+// define VR Headset position
 const VRHeadsetPosition = new THREE.Vector3();
 VRHeadsetPosition.setFromMatrixPosition(camera.matrixWorld);
-
-// const headsetPosition = new THREE.Vector3();
-// const headsetRotation = new THREE.Quaternion();
-// const headsetScale = new THREE.Vector3();
-
-// the following line extracts the position, rotation and scale in world space
-
-// camera.matrixWorld.decompose(headsetPosition, headsetRotation, headsetScale);
-
-// console.log(headsetPosition);
-// console.log(headsetRotation);
 
 function afterLoad() {
   if (lowerjaw.loaded && upperjaw.loaded) {
@@ -509,6 +501,8 @@ function animate() {
 function render() {
   cleanIntersected();
   positionReset();
+  undoWhenPressed();
+  redoWhenPressed();
 
   intersectObjects(controller1);
   intersectObjects(controller2);
@@ -554,7 +548,9 @@ function onSelectStart(event) {
       jaw.selected = true;
       jaw.body.type = CANNON.Body.DYNAMIC;
       controller.userData.selected = jaw;
-      console.log(jaw.body);
+      addMovementToUndoStack(jaw.body);
+      console.log(undoStack);
+      //console.log(jaw.body);
     }
   }
 }
@@ -576,12 +572,14 @@ function onSelectEnd(event) {
   }
 }
 
-// zoom in with right squeeze button
-
+// define pressed button booleans
 var pressedRight = false;
 var pressedLeft = false;
 
+// zoom in gradually with right squeeze button
+
 function onSqueezeStartRight() {
+  //undoMovement();
   pressedRight = true;
   setTimeout(function () {
     if (pressedRight) {
@@ -592,9 +590,10 @@ function onSqueezeStartRight() {
   }, 10);
 }
 
-// zoom out with left squeeze button
+// zoom out gradually with left squeeze button
 
 function onSqueezeStartLeft() {
+  //redoMovement();
   pressedLeft = true;
   setTimeout(function () {
     if (pressedLeft) {
@@ -605,31 +604,16 @@ function onSqueezeStartLeft() {
   }, 10);
 }
 
+// stop gradual zoom-in
+
 function onSqueezeEndRight() {
   pressedRight = false;
 }
 
+// stop gradual zoom-out
+
 function onSqueezeEndLeft(event) {
   pressedLeft = false;
-}
-
-// resets position to center
-
-function positionReset() {
-  const session = renderer.xr.getSession();
-  if (session == null || session.inputSources == null) {
-    return;
-  } else {
-    for (const source of session.inputSources) {
-      if (source.gamepad.buttons[4].pressed) {
-        upperjaw.mesh.position.set(0, 2, 0.12);
-        lowerjaw.mesh.position.set(0, 2, 0.12);
-        upperjaw.mesh.rotation.x = 1.5 * Math.PI;
-        lowerjaw.mesh.position.set(0, 2, 0.12);
-        lowerjaw.mesh.rotation.x = 1.5 * Math.PI;
-      }
-    }
-  }
 }
 
 // find objects the controller is pointing at and return as an Array sorted by distance
@@ -666,12 +650,16 @@ function intersectObjects(controller) {
   }
 }
 
+// clean intersected array
+
 function cleanIntersected() {
   while (intersected.length) {
     const object = intersected.pop();
     object.material.emissive.r = 0;
   }
 }
+
+// get Jaw from mesh
 
 function meshToJaw(mesh) {
   if (mesh === lowerjaw.mesh) {
@@ -681,5 +669,117 @@ function meshToJaw(mesh) {
   } else {
     console.warn("Selected mesh is not a jaw, returning null");
     return null;
+  }
+}
+
+// define the undo and redo stacks
+let undoStack = [];
+let redoStack = [];
+
+// function to add a movement to the undo stack
+
+function addMovementToUndoStack(body) {
+  // save the current position and rotation of the body
+  const position = new CANNON.Vec3().copy(body.position);
+  const quaternion = new CANNON.Quaternion().copy(body.quaternion);
+  const movement = { body: body, position: position, quaternion: quaternion };
+
+  // add the movement to the undo stack
+  undoStack.push(movement);
+
+  // clear the redo stack
+  redoStack = [];
+}
+
+// function to undo the last movement
+
+function undoMovement() {
+  if (undoStack.length > 0) {
+    // remove the last movement from the undo stack
+    const movement = undoStack.pop();
+
+    // save the current position and rotation of the body
+    const position = new CANNON.Vec3().copy(movement.body.position);
+    const quaternion = new CANNON.Quaternion().copy(movement.body.quaternion);
+    const redoMovement = {
+      body: movement.body,
+      position: position,
+      quaternion: quaternion,
+    };
+
+    // add the movement to the redo stack
+    redoStack.push(redoMovement);
+
+    // set the position and rotation of the body to the previous values
+    movement.body.position.copy(movement.position);
+    movement.body.quaternion.copy(movement.quaternion);
+  }
+}
+
+// function to redo the last undone movement
+
+function redoMovement() {
+  if (redoStack.length > 0) {
+    // remove the last redo movement from the redo stack
+    const redoMovement = redoStack.pop();
+
+    // save the current position and rotation of the body
+    const position = new CANNON.Vec3().copy(redoMovement.body.position);
+    const quaternion = new CANNON.Quaternion().copy(
+      redoMovement.body.quaternion
+    );
+    const movement = {
+      body: redoMovement.body,
+      position: position,
+      quaternion: quaternion,
+    };
+
+    // add the redo movement to the undo stack
+    undoStack.push(movement);
+
+    // set the position and rotation of the body to the next values
+    redoMovement.body.position.copy(redoMovement.position);
+    redoMovement.body.quaternion.copy(redoMovement.quaternion);
+  }
+}
+
+// when thumbstick pressed resets position to original center position
+
+function positionReset() {
+  const session = renderer.xr.getSession();
+  if (session == null || session.inputSources == null) {
+    return;
+  } else {
+    for (const source of session.inputSources) {
+      if (source.gamepad.buttons[4].pressed) {
+        // undoStack
+      }
+    }
+  }
+}
+
+function undoWhenPressed() {
+  const session = renderer.xr.getSession();
+  if (session == null || session.inputSources == null) {
+    return;
+  } else {
+    for (const source of session.inputSources) {
+      if (source.gamepad.buttons[4].pressed) {
+        undoMovement();
+      }
+    }
+  }
+}
+
+function redoWhenPressed() {
+  const session = renderer.xr.getSession();
+  if (session == null || session.inputSources == null) {
+    return;
+  } else {
+    for (const source of session.inputSources) {
+      if (source.gamepad.buttons[4].pressed) {
+        redoMovement();
+      }
+    }
   }
 }
