@@ -5,18 +5,49 @@ import styles from '@/styles/Modal.module.css';
 import styleB from '@/styles/Buttons.module.css';
 
 import 'bootstrap/dist/css/bootstrap.css';
+import { getPatientByName } from '@/gen/proto/threedoclusion/v1/service-ScanService_connectquery';
+import { useQuery } from '@tanstack/react-query';
 
-interface searchName {
-  searchFirstName: string;
-  searchLastName: string;
+import router from 'next/router';
+
+interface namePatient {
+  firstName: string;
+  lastName: string;
 }
 
 export default function ModalForm() {
   const [modal, setModal] = useState(false);
   // modal is not toggled at first
 
+  const [patientname, setData] = useState({ firstName: '', lastName: '' });
+  //let DentistID = process.env.REACT_APP_DENTIST_ID!;
+
+  const query = getPatientByName.useQuery(patientname);
+  const { data } = useQuery(query.queryKey, query.queryFn, { enabled: false });
+
   const toggleModal = () => {
     setModal(!modal); // change state f -> t and t -> f
+  };
+
+  const submitFunction = (values: namePatient) => {
+    console.log(values);
+    setData(values);
+    console.log(data);
+
+    const fn = values.firstName;
+    const ln = values.lastName;
+
+    if (data != undefined && data?.patients.length != 0) {
+      router.push({
+        pathname: '/patient-name',
+        query: {
+          fn,
+          ln,
+        },
+      });
+    } else {
+      setModal(modal!);
+    }
   };
 
   return (
@@ -35,13 +66,12 @@ export default function ModalForm() {
             <div className={styles.login_box + ' p-3'}>
               <Formik
                 initialValues={{
-                  searchFirstName: '',
-                  searchLastName: '',
+                  firstName: '',
+                  lastName: '',
                 }}
                 // on Submit we console the values + close the popup tab
                 onSubmit={(values) => {
-                  console.log(values);
-                  setModal(!modal);
+                  submitFunction(values);
                 }}
               >
                 {({ errors, status, touched }) => (
@@ -49,21 +79,11 @@ export default function ModalForm() {
                     <div className={styles.rightfont}>
                       <div className={styles.firstandlast}>
                         <div className="mb-3">
-                          <Field
-                            className="form-control"
-                            id="searchFirstName"
-                            name="searchFirstName"
-                            placeholder="First Name"
-                          />
+                          <Field className="form-control" id="firstName" name="firstName" placeholder="First Name" />
                         </div>
 
                         <div className="mb-3">
-                          <Field
-                            className="form-control"
-                            id="searchLastName"
-                            name="searchLastName"
-                            placeholder="Last Name"
-                          />
+                          <Field className="form-control" id="lastName" name="lastName" placeholder="Last Name" />
                         </div>
                       </div>
 

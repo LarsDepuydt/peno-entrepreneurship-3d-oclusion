@@ -4,6 +4,17 @@ import { Formik, Field, Form, ErrorMessage, useFormik } from 'formik';
 
 import { useState } from 'react';
 
+
+import { useState } from 'react';
+
+interface patientValues {
+  patientFirstName: string;
+  patientLastName: string;
+
+  pinned: boolean;
+  notes: string;
+}
+
 interface patientValues {
   patientFirstName: string;
   patientLastName: string;

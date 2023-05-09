@@ -5,17 +5,28 @@
   "packageManager": "yarn@3.4.1",
   "scripts": {
     "dev": "next dev",
-    "build": "next build",
+    "build": "yarn build-frontend && yarn export",
+    "build-frontend": "next build",
+    "export": "next export",
     "start": "next start",
     "lint": "next lint",
-    "format": "npx prettier --write ."
+    "format": "npx prettier --write .",
+    "deploy": "yarn build-frontend && cd functions && yarn build && cd .. && firebase deploy --only hosting --project relu-backend"
   },
+  "workspaces": [
+    "functions"
+  ],
   "dependencies": {
     "@bufbuild/connect-query": "^0.1.0",
     "@bufbuild/connect-web": "^0.8.1",
     "@bufbuild/protobuf": "^1.0.0",
+    "@firebase/analytics": "^0.10.0",
+    "@firebase/app": "^0.9.9",
+    "@firebase/app-types": "^0.9.0",
+    "@firebase/storage": "^0.11.2",
     "@grpc/proto-loader": "^0.7.5",
     "@next/font": "13.1.6",
+    "@popperjs/core": "^2.11.7",
     "@tanstack/react-query": "^4.24.10",
     "@types/downloadjs": "^1.4.3",
     "@types/three": "^0.149.0",
@@ -27,16 +38,20 @@
     "eslint": "8.34.0",
     "eslint-config-next": "13.1.6",
     "file-saver": "~2.0.5",
-    "firebase": "^9.18.0",
+    "firebase": "^9.21.0",
     "formik": "^2.2.9",
     "grpc-tools": "^1.12.4",
     "grpc-web": "^1.4.2",
     "grpc_tools_node_protoc_ts": "^5.3.3",
+    "js-cookie": "^3.0.4",
     "next": "13.1.6",
     "react": "18.2.0",
     "react-dom": "18.2.0",
+    "react-loading": "^2.0.3",
     "sass": "^1.60.0",
-    "three": "^0.151.3",
+    "sharp": "^0.32.0",
+    "three": "^0.150.1",
+    "webpack": "^5.81.0",
     "yup": "^1.0.0"
   },
   "devDependencies": {
@@ -53,6 +68,7 @@
     "@types/webxr": "^0.5.1",
     "file-loader": "^6.2.0",
     "prettier": "^2.8.4",
-    "typescript": "4.9.5"
+    "typescript": "4.9.5",
+    "unplugin-obj": "^0.1.2"
   }
 }

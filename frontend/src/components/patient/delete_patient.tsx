@@ -1,4 +1,4 @@
-import { deletePatient } from '@/gen/proto/threedoclusion/v1/service-ScanService_connectquery';
+import { deletePatientById } from '@/gen/proto/threedoclusion/v1/service-ScanService_connectquery';
 import { useQuery } from '@tanstack/react-query';
 
 import styleB from '@/styles/Buttons.module.css';

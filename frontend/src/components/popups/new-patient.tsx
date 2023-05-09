@@ -23,20 +23,40 @@ export default function ModalForm() {
   const [modal, setModal] = useState(false);
   // modal is not toggled at first
 
+  const [submitOK, setSubmitOK] = useState(false);
+  const [sendOK, setSendOK] = useState(false);
+
   const [patientinfo, setData] = useState({
-    patientFirstName: '',
-    patientLastName: '',
+
+    firstName: '',
+    lastName: '',
 
     pinned: false,
     notes: '',
-
-    doctorID: parseInt(DentistID),
+    dentistId: 0,
   });
 
-  const { data } = useQuery(addPatient.useQuery(patientinfo));
+  const { data, refetch } = useQuery(
+    addPatient.useQuery(patientinfo).queryKey,
+    addPatient.useQuery(patientinfo).queryFn,
+    { enabled: false }
+  );
+
 
   const toggleModal = () => {
     setModal(!modal); // change state f -> t and t -> f
+    setSendOK(true);
+  };
+
+  const ReworkValues = (values: patientValues) => {
+    return {
+      firstName: values.patientFirstName,
+      lastName: values.patientLastName,
+      pinned: values.pinned,
+      notes: values.notes,
+
+      dentistId: parseInt(DentistID),
+    };
   };
 
   const ReworkValues = (values: patientValues) => {
@@ -52,19 +72,46 @@ export default function ModalForm() {
   };
 
   const submitFunction = (values: patientValues) => {
-    console.log(values);
-    //console.log(ReworkValues(values));
-    setData(ReworkValues(values));
-    //setData(values);
 
-    // fout zit bij pinned : true / false
-    console.log(data);
-    setModal(!modal);
+    if (sendOK && modal) {
+      setSendOK(false);
+      console.log('we started the function submitFunction()');
+
+      setData(ReworkValues(values));
+      console.log(patientinfo);
+
+      //console.log(data);
+      setSubmitOK(true);
+      console.log('submitOK is set to true');
+    }
+
+    setModal(false);
+  };
+
+  const handleRedirect = () => {
+    refetch();
+    if (submitOK) {
+      setSendOK(true);
+    }
   };
 
   //data?.message && patientinfo.patientFirstName &&
 
-  useEffect(() => console.log(data), [data]);
+  useEffect(() => {
+    if (submitOK) {
+      refetch();
+      console.log('were in the useEffect function inside the submitOK');
+      console.log(patientinfo);
+      console.log(patientinfo.dentistId, ' foreign key error ', parseInt(DentistID));
+      console.log('line 82');
+      if (data != undefined) {
+        setModal(false);
+      }
+      setSubmitOK(false);
+    }
+  }, [data, modal, sendOK, submitOK, refetch]);
+
+
 
   //, patientinfo
 
@@ -139,7 +186,7 @@ export default function ModalForm() {
                       </div>
 
                       <div className={styles.spacingbtn}>
-                        <button type="submit" className={styleB.relu_btn}>
+                        <button type="submit" className={styleB.relu_btn} onClick={handleRedirect}>
                           Save patient
                         </button>
                         <button type="button" className={styleB.relu_btn} onClick={toggleModal}>
