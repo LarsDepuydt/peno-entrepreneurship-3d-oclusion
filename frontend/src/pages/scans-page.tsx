@@ -56,18 +56,19 @@ export default function ScanPage(this: any) {
       </Head>
 
       <div className={styles.white_background}>
-        <div className={styles.scansWrapper}>{allScans()}</div>
-        <div className={styles.patientScan_filler}></div>
-        <div className={styles.patientScan_filler}></div>
-        <div className={styles.patientScan_filler}></div>
-        <div className={styles.patientScan_filler}></div>
-        <div className={styles.patientScan_filler}></div>
-        <div className={styles.patientScan_filler}></div>
-        <div className={styles.patientScan_filler}></div>
-        <div className={styles.patientScan_filler}></div>
-        <div className={styles.patientScan_filler}></div>
-        <div className={styles.patientScan_filler}></div>
-        <div className={styles.patientScan_filler}></div>
+        <div className={styles.scansWrapper}>
+          {allScans()} <div className={styles.patientScan_filler}></div>
+          <div className={styles.patientScan_filler}></div>
+          <div className={styles.patientScan_filler}></div>
+          <div className={styles.patientScan_filler}></div>
+          <div className={styles.patientScan_filler}></div>
+          <div className={styles.patientScan_filler}></div>
+          <div className={styles.patientScan_filler}></div>
+          <div className={styles.patientScan_filler}></div>
+          <div className={styles.patientScan_filler}></div>
+          <div className={styles.patientScan_filler}></div>
+          <div className={styles.patientScan_filler}></div>
+        </div>
         <SidebarPatient />
         <HeaderPatient />
       </div>

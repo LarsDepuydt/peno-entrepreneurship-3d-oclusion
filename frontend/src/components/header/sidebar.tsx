@@ -58,7 +58,6 @@ export function SidebarDoctor() {
           <Search_Name />
         </div>
         <div className={stylesButton.absoluteWrapper}>
-          <button type="button" className={stylesButton.relu_btn} id={stylesButton.homeIcon} onClick={home}></button>
           <ReluLink />
           <button type="button" className={stylesButton.relu_btn} id={stylesButton.waitIcon} onClick={wait}></button>
         </div>
