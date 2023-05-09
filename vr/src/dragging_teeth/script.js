@@ -9,6 +9,10 @@ import { OBJExporter } from 'three/addons/exporters/OBJExporter.js';
 import * as CANNON from 'cannon-es';
 import { getFirstMesh, getFirstBufferGeometry, threeMeshToConvexThreeMesh, threeMeshToConvexCannonMesh, threeMeshToCannonMesh, checkTime, cannonMeshToCannonConvexPolyhedron, vec3ToVector3, vector3ToVec3, threeQuaternionToCannonQuaternion, applyQuaternion, sqnorm, quatDot, minusQuat } from './util.js'
 
+// axis locking parameters
+var movement_mode;
+var session;
+const prevGamePads = new Map();
 
 let container;
 let camera, scene, renderer;
@@ -217,14 +221,36 @@ class Jaw {
     applyForces() {
         if (this.selected) {
             this.body.applyImpulse(this.impulseToTarget());
-            this.body.applyTorque(this.torqueToTarget());
+            if (movement_mode == 3) {
+                this.body.applyTorque(this.torqueToTarget());
+            }
         }
     }
 
     impulseToTarget() {
         const targetWorldPosition = vector3ToVec3(this.target.getWorldPosition(new THREE.Vector3()));   // Vec3
-        const dp = targetWorldPosition.vsub(this.body.position);    // Vec3
-        const impulse = dp.scale(IMPULSE_REACTIVITY);               // Vec3
+
+        let dp;
+        switch (movement_mode) {
+            case 0: { // Restricted to x axis
+                dp = new CANNON.Vec3(targetWorldPosition.x - this.body.position.x, 0, 0);
+                break;
+            }
+            case 1: { // Restricted to y axis
+                dp = new CANNON.Vec3(0, targetWorldPosition.y - this.body.position.y, 0);
+                break;
+            }
+            case 2: { // Restricted to z axis
+                dp = new CANNON.Vec3(0, 0, targetWorldPosition.z - this.body.position.z);
+                break;
+            }
+            case 3: { // Free movement (default)
+                dp = targetWorldPosition.vsub(this.body.position);    // Vec3
+                break;
+            }
+        }
+
+        const impulse = dp.scale(IMPULSE_REACTIVITY);               // Vec3 
         return impulse;
     }
 
@@ -405,6 +431,9 @@ function initThree() {
 
     raycaster = new THREE.Raycaster();
 
+    // allow additional button inputs (for axis locking)
+    session = renderer.xr.getSession();
+
     // resize
 
     window.addEventListener( 'resize', onWindowResize );
@@ -415,6 +444,8 @@ function loadObjects() {
     lowerjaw = new Jaw('../../assets/simplified/lower_180.obj', '../../assets/lower_ios_6.obj');
     //upperjaw = new Jaw('../../assets/simplified/upper_218.obj');
     upperjaw = new Jaw('../../assets/simplified/upper_209.obj', '../../assets/upper_ios_6.obj');
+
+    curr_jaw = upperjaw;
 }
 
 
@@ -442,7 +473,108 @@ function animate() {
     render();
 }
 
+let currentOption = 3; // initialize to free movement
+let optionChanged = false; // flag to indicate that the option has changed
+let prevButtonState = 0; // initialize previous button state to not pressed
+
+// using X/A buttons on the controllers
+function beforeRender(controller) {
+    //console.log(curr_jaw);
+    if (curr_jaw.selected) {
+        switch (movement_mode) {
+            case 0: { // Restricted to x axis
+                showAxes(0, curr_jaw);
+                break;
+            }
+            case 1: { // Restricted to y axis
+                showAxes(1, curr_jaw);
+                break;
+            }
+            case 2: { // Restricted to z axis
+                showAxes(2, curr_jaw);
+                break;
+            }
+            case 3: { // Free movement (default)
+                showAxes(3, curr_jaw);
+                break;
+            }
+        }
+    }
+    else {
+        curr_jaw.mesh.remove(ArrowHelper);
+    }
+  session = renderer.xr.getSession();
+  let ii = 0;
+  if (session) {
+    for (const source of session.inputSources) {
+      if (source && source.handedness) {
+        var handedness = source.handedness; //left or right controllers
+        if (handedness == 'right') {continue} // we willen enkel de 'X' knop van de rechtercontroller
+      }
+      if (!source.gamepad) continue;
+      const controller = renderer.xr.getController(ii++);
+      const old = prevGamePads.get(source);
+      const data = {
+        handedness: handedness,
+        buttons: source.gamepad.buttons.map((b) => b.value),
+        axes: source.gamepad.axes.slice(0)
+      };
+      //console.log(source.handedness);
+      if (data.buttons[4] == 1 && prevButtonState == 0 && !optionChanged) {
+        currentOption = (currentOption + 1) % 4; // cycle through 0, 1, 2, 3
+        optionChanged = true; // set flag to true to indicate that the option has changed
+      } else if (data.buttons[4] == 0 && prevButtonState == 0 && optionChanged) {
+        optionChanged = false; // reset flag when squeeze button is released
+      }
+      prevButtonState = data.buttons[4]; // save button state for next frame
+      //console.log(currentOption);
+
+      movement_mode = currentOption;
+    }
+  }
+}
+
+var Axis;
+var ArrowHelper;
+function showAxes(axis_num, curr_jaw) {
+    switch (axis_num) {
+        case 0: {
+            Axis = new THREE.Vector3(1, 0, 0);
+            break;
+        }
+        case 1: {
+            Axis = new THREE.Vector3(0, 0, 1);
+            break;
+        }
+        case 2: {
+            Axis = new THREE.Vector3(0, 1, 0);
+            break;
+        }
+        case 3: {
+            curr_jaw.mesh.remove(ArrowHelper);
+            return;
+        }
+
+    }
+
+    curr_jaw.mesh.remove(ArrowHelper);
+
+    const axisLength = 100;
+  
+    // create an ArrowHelper
+    const direction = new THREE.Vector3(1, 0, 0); // specify the direction of the arrow
+    const origin = new THREE.Vector3(0, 0, -0.3); // specify the starting point of the arrow
+    const length = 1; // specify the length of the arrow
+    const color = 0x00ff00; // specify the color of the arrow
+    ArrowHelper = new THREE.ArrowHelper(Axis, origin, length, color);
+
+    // add the arrow to the scene
+    curr_jaw.mesh.add(ArrowHelper);
+  } 
+
 function render() {
+    beforeRender(controller1);
+    beforeRender(controller2);
 
     cleanIntersected();
 
@@ -496,7 +628,7 @@ function onSelectStart( event ) {
             jaw.selected = true;
             jaw.body.type = CANNON.Body.DYNAMIC;
             controller.userData.selected = jaw;
-            console.log(jaw.body);
+            //console.log(jaw.body);
         }
     }
 }
@@ -552,6 +684,12 @@ function intersectObjects( controller ) {
         const intersection = intersections[ 0 ];
 
         const object = intersection.object;
+
+        // anders intersect het soms met de pijl om een of andere reden
+        if (object.parent.type == 'ArrowHelper') {
+            return;
+        }
+
         object.material.emissive.r = 1;
         intersected.push( object );
 
@@ -636,11 +774,13 @@ const getFov = () => {
   );
 };
 
-
+var curr_jaw;
 function meshToJaw(mesh) {
     if (mesh === lowerjaw.mesh) {
+        curr_jaw = lowerjaw;
         return lowerjaw;
     } else if (mesh === upperjaw.mesh) {
+        curr_jaw = lowerjaw;
         return upperjaw;
     } else {
         console.warn("Selected mesh is not a jaw, returning null");
