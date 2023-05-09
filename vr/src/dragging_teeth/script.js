@@ -510,6 +510,10 @@ function animate() {
 let currentOption = 3; // initialize to free movement
 let optionChanged = false; // flag to indicate that the option has changed
 let prevButtonState = 0; // initialize previous button state to not pressed
+var optionChanged_A = false;
+var prevButtonState_A = 0;
+var optionChanged_B = false;
+var prevButtonState_B = 0;
 
 // using X/A buttons on the controllers
 function beforeRender(controller) {
@@ -770,19 +774,6 @@ function cleanIntersected() {
   }
 }
 
-// get Jaw from mesh
-
-function meshToJaw(mesh) {
-  if (mesh === lowerjaw.mesh) {
-    return lowerjaw;
-  } else if (mesh === upperjaw.mesh) {
-    return upperjaw;
-  } else {
-    console.warn("Selected mesh is not a jaw, returning null");
-    return null;
-  }
-}
-
 // define the undo and redo stacks
 let undoStack = [];
 let redoStack = [];
@@ -883,28 +874,62 @@ function meshToJaw(mesh) {
     }
 }
 
+
 function undoWhenPressed() {
-  const session = renderer.xr.getSession();
-  if (session == null || session.inputSources == null) {
-    return;
-  } else {
+  let iii = 0;
+  if (session) {
     for (const source of session.inputSources) {
-      if (source.gamepad.buttons[4].pressed) {
-        undoMovement();
+      if (source && source.handedness) {
+        var handedness = source.handedness; //left or right controllers
+        if (handedness == 'left') {continue} // we willen enkel de 'X' knop van de rechtercontroller
       }
+      if (!source.gamepad) continue;
+      const controller = renderer.xr.getController(iii++);
+      const old = prevGamePads.get(source);
+      const data = {
+        handedness: handedness,
+        buttons: source.gamepad.buttons.map((b) => b.value),
+        axes: source.gamepad.axes.slice(0)
+      };
+      //console.log(source.handedness);
+      if (data.buttons[4] == 1 && prevButtonState_A == 0 && !optionChanged_A) {
+        optionChanged_A = true; // set flag to true to indicate that the option has changed
+        undoMovement();
+      } else if (data.buttons[4] == 0 && prevButtonState_A == 0 && optionChanged_A) {
+        optionChanged_A = false; // reset flag when squeeze button is released
+      }
+      prevButtonState_A = data.buttons[4]; // save button state for next frame
     }
   }
 }
 
+
+// undoMovement();
+
 function redoWhenPressed() {
-  const session = renderer.xr.getSession();
-  if (session == null || session.inputSources == null) {
-    return;
-  } else {
+    let iiii = 0;
+  if (session) {
     for (const source of session.inputSources) {
-      if (source.gamepad.buttons[4].pressed) {
-        redoMovement();
+      if (source && source.handedness) {
+        var handedness = source.handedness; //left or right controllers
+        if (handedness == 'left') {continue} // we willen enkel de 'X' knop van de rechtercontroller
       }
+      if (!source.gamepad) continue;
+      const controller = renderer.xr.getController(iiii++);
+      const old = prevGamePads.get(source);
+      const data = {
+        handedness: handedness,
+        buttons: source.gamepad.buttons.map((b) => b.value),
+        axes: source.gamepad.axes.slice(0)
+      };
+      //console.log(source.handedness);
+      if (data.buttons[5] == 1 && prevButtonState_B == 0 && !optionChanged_B) {
+        optionChanged_B = true; // set flag to true to indicate that the option has changed
+        redoMovement();
+      } else if (data.buttons[5] == 0 && prevButtonState_B == 0 && optionChanged_B) {
+        optionChanged_B = false; // reset flag when squeeze button is released
+      }
+      prevButtonState_B = data.buttons[5]; // save button state for next frame
     }
   }
 }
