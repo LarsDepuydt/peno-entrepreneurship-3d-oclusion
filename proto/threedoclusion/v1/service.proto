@@ -18,13 +18,12 @@ service ScanService {
   rpc DeleteScanById(DeleteScanByIdRequest) returns (DeleteScanByIdResponse) {}
   rpc GetAllScans(GetAllScansRequest) returns (GetAllScansResponse) {}
   rpc GetScanById(GetScanByIdRequest) returns (GetScanByIdResponse) {}
+  rpc UpdateScanById(UpdateScanByIdRequest) returns (UpdateScanByIdResponse) {}
 
   rpc AddTag(AddTagRequest) returns (AddTagResponse) {}
   rpc DeleteTagById(DeleteTagByIdRequest) returns (DeleteTagByIdResponse) {}
   rpc GetAllTags(GetAllTagsRequest) returns (GetAllTagsResponse) {}
   rpc GetTagById(GetTagByIdRequest) returns (GetTagByIdResponse) {}
-
-  
 
   rpc AddPatient(AddPatientRequest) returns (AddPatientResponse) {}
   rpc DeletePatientById(DeletePatientByIdRequest) returns (DeletePatientByIdResponse) {}
@@ -152,6 +151,17 @@ message GetScanByIdResponse {
   string created_at = 3;
   string notes = 4;
   int32 patient_id = 5;
+}
+
+message UpdateScanByIdRequest {
+  string id = 1;
+  string scan_file = 2;
+  string notes = 3;
+  int32 patient_id = 4;
+}
+
+message UpdateScanByIdResponse {
+  string message = 1;
 }
 
 //PATIENT
