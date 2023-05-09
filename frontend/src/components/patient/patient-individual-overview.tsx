@@ -13,6 +13,8 @@ import pfp2 from '../../../public/profile_pictures/patient_profile_picture_2.png
 import pfp3 from '../../../public/profile_pictures/patient_profile_picture_3.png';
 import pfp4 from '../../../public/profile_pictures/patient_profile_picture_4.png';
 import { randInt } from 'three/src/math/MathUtils';
+import PinButton from '../patient/pin_patient';
+
 
 interface patientProfile {
   id: number;
@@ -68,6 +70,7 @@ export function SinglePatient({ id, patientfirstname, patientlastname }: patient
       )}
       {!dropDown && (
         <div className={styles.patientScan_normal} onMouseEnter={handleMouseEnter} onMouseLeave={handleMouseLeave}>
+          
           <div className={styles.picture_wrapper}>
             <Image
               id={patientfirstname.concat(' ', patientlastname)}
@@ -89,7 +92,8 @@ export function SinglePatient({ id, patientfirstname, patientlastname }: patient
               </div>
               <InspectScans patientID={id} />
               <EditButton />
-              <DeleteButton />
+              <DeleteButton patientID={id} />
+              <PinButton />
             </div>
           )}
 

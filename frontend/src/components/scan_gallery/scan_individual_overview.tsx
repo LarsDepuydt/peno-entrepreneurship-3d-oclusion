@@ -9,13 +9,19 @@ import DeleteButton from '../../components/scan_gallery/delete_scan';
 import EditButton from '../../components/scan_gallery/edit_scan';
 import OpenObjButton from '../../components/scan_gallery/inspect_OBJ';
 
+import ExportButton from '../../components/scan_gallery/export_scan';
+import DropdownButton from '../../components/scan_gallery/scan_dropdown';
+
+
 import scanpicture from '../../../public/3d-teeth.jpg';
 
 interface scanProfile {
   scanid: number;
   date: string;
+
   notes: string;
   patientid: number;
+
 }
 
 export function SingleScan({ scanid, patientid, notes, date }: scanProfile) {
@@ -113,7 +119,7 @@ export function SingleScan({ scanid, patientid, notes, date }: scanProfile) {
               <OpenObjButton patientID={patientid} scanID={scanid} />
               <InspectVR patientID={patientid} scanID={scanid} />
               <EditButton />
-              <DeleteButton />
+              <DeleteButton scanID={scanid} />
             </div>
           )}
 
