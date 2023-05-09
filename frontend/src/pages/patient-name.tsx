@@ -56,8 +56,8 @@ export default function PatientPage(this: any) {
       data.patients.forEach((patient) => {
         if (
           patient.dentistId == parseInt(DentistID) &&
-          patient.firstName == patientFirstName &&
-          patient.lastName == patientLastName
+          patient.firstName.toLowerCase() == patientFirstName.toLowerCase() &&
+          patient.lastName.toLowerCase() == patientLastName.toLowerCase()
         ) {
           arrayPatients.push(iteratePatient(patient));
         }

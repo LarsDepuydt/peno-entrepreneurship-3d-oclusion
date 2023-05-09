@@ -13,6 +13,7 @@ export default function DeleteButton({ patientID }: { patientID: number }) {
   const toggleModal = () => setModal(!modal); // change state f -> t and t -> f
 
   const deletePatient = () => {
+    refetch();
     console.log('patient is deleted');
     setModal(!modal);
     refetch();

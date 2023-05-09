@@ -80,6 +80,7 @@ export default function ModalForm() {
     console.log(scan);
 
     console.log('this is the OLD scan info');
+    scaninfo.notes = values.notes;
     console.log(scaninfo);
     console.log(scaninfo.scanFile);
 
@@ -111,6 +112,8 @@ export default function ModalForm() {
       refetch();
       console.log('in useEffect');
       console.log('NEW scaninfo file path is ' + scaninfo.scanFile);
+      setData(scaninfo);
+      refetch();
       console.log(data);
       if (data != undefined) {
         console.log('data is not undefined loop');
