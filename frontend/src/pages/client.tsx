@@ -7,6 +7,7 @@ import styles from '@/styles/ClientPage.module.css';
 
 import Image from 'next/image';
 import reluLogo from '../../public/relu-logo-small.png';
+import { useRouter } from 'next/router';
 
 function generateCode(): string {
   return Array.from({ length: 8 }, () => Math.floor(Math.random() * 10)).join('');
