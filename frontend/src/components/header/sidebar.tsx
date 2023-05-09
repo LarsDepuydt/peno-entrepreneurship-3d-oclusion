@@ -10,7 +10,7 @@ import Search_Name from '../search/search-name';
 import ReluLink from '../header/reluLink';
 import { WelcomingDoctor, WelcomingPatient } from './welcoming';
 import { useQuery } from '@tanstack/react-query';
-import { getDentistById } from '@/gen/proto/threedoclusion/v1/service-ScanService_connectquery';
+import { updatePatientById, getPatientById } from '@/gen/proto/threedoclusion/v1/service-ScanService_connectquery';
 import NoteInput from '../OBJ_view/note-input';
 import NoteList from '../OBJ_view/note-list';
 import { useState } from 'react';
@@ -24,6 +24,18 @@ interface HeaderDoctorProps {
   doctorfirstname: string;
   doctorlastname: string;
 }
+
+interface patientValues {
+  id : number; 
+  patientFirstName: string;
+  patientLastName: string;
+
+  pinned: boolean;
+  notes: string;
+
+  dentistID : number; 
+}
+
 
 export function SidebarDoctor() {
   const router = useRouter();
@@ -61,29 +73,86 @@ export function SidebarPatient() {
     router.push('/patient');
   };
 
-  const [notesPatient, setNotes] = useState<string[]>([]);
+  let patientID = process.env.REACT_APP_PATIENT_ID!;
+
+
+  const { data : patientInfoRequest } = useQuery(getPatientById.useQuery({id : parseInt(patientID)}));
+  console.log(patientInfoRequest)
+
+  const queryupdate = updatePatientById.useQuery(patientInfoRequest)
+  const { data, refetch } = useQuery(queryupdate.queryKey, queryupdate.queryFn, {enabled : false} ); 
+  //console.log(data)
+
+  let notesPatient = patientInfoRequest?.notes;
+
+  /*const { data } = useQuery(
+    UpdatePatientById.useQuery(patientinfo).queryKey,
+    UpdatePatientById.useQuery(patientinfo).queryFn,
+    { enabled: false }
+  );
+  */
 
   const handleAddNotePatient = (note: string) => {
-    setNotes([...notesPatient, note]);
+    note = note.concat('@.')
+    notesPatient = patientInfoRequest?.notes +  note ;
+    refetch();
+    patientInfoRequest.notes = notesPatient; 
+    console.log(patientInfoRequest)
+    console.log(data)
+
+
   };
 
-  return (
-    <>
-      <div className={styleSidebar.sidebar}>
-        <WelcomingPatient />
-        <NoteInput onAddNote={handleAddNotePatient} />
-        <NoteList notes={notesPatient} />
-        <div className={stylesButton.sidebarButton}>
-          <New_Scan />
-          {/*<Filter_Tags /> */}
+
+  /*message UpdatePatientByIdRequest {
+    int32 id = 1;
+    string first_name = 2;
+    string last_name = 3;
+    bool pinned = 4;
+    string notes = 5;
+    int32 dentist_id = 6;
+  }
+  */
+
+  if (patientInfoRequest != undefined) {
+    return (
+      <>
+      refetch();
+        <div className={styleSidebar.sidebar}>
+          <WelcomingPatient />
+          <NoteInput onAddNote={handleAddNotePatient} />
+          <NoteList notes={notesPatient} />
+          <div className={stylesButton.sidebarButton}>
+            <New_Scan />
+          </div>
+          <div className={stylesButton.absoluteWrapper}>
+            <ReluLink />
+            <button type="button" className={stylesButton.relu_btn} id={stylesButton.homeIcon} onClick={home}></button>
+          </div>
         </div>
-        <div className={stylesButton.absoluteWrapper}>
-          <ReluLink />
-          <button type="button" className={stylesButton.relu_btn} id={stylesButton.homeIcon} onClick={home}></button>
+      </>
+    );
+  } 
+  else {
+    return (
+      <>
+      refetch();
+        <div className={styleSidebar.sidebar}>
+          <WelcomingPatient />
+          <NoteInput onAddNote={handleAddNotePatient} />
+          <NoteList notes='@.'/>
+          <div className={stylesButton.sidebarButton}>
+            <New_Scan />
+          </div>
+          <div className={stylesButton.absoluteWrapper}>
+            <ReluLink />
+            <button type="button" className={stylesButton.relu_btn} id={stylesButton.homeIcon} onClick={home}></button>
+          </div>
         </div>
-      </div>
-    </>
-  );
+      </>
+    );
+  }
+  
 }
 
 export function SidebarObj() {
@@ -110,7 +179,7 @@ export function SidebarObj() {
       <div className={styleSidebar.sidebar}>
         <WelcomingPatient />
         <NoteInput onAddNote={handleAddNoteScan} />
-        <NoteList notes={notesScan} />
+        {/* <NoteList notes={notesScan} /> */}
         <div className={stylesButton.sidebarButton}>
           <button
             type="button"

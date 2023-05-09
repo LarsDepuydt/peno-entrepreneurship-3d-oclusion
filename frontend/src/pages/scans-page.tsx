@@ -23,7 +23,7 @@ export default function ScanPage(this: any) {
   let targetpatientID = process.env.REACT_APP_PATIENT_ID!;
 
   const { data, refetch } = useQuery(getAllScans.useQuery({ enabled: true }));
-  console.log(data);
+  
   useEffect(() => {
     return () => {
       // cleanup function to cancel subscription

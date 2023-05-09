@@ -4,6 +4,7 @@ import { Inter } from '@next/font/google';
 import styles from '@/styles/Home.module.css';
 
 import LoginPage from './login-page';
+import Wait from './wait'; 
 
 const inter = Inter({ subsets: ['latin'] });
 // import dotenv from 'dotenv';
@@ -19,6 +20,7 @@ export default function Home() {
       <main className="vh-100 d-flex justify-content-center align-items-center">
         <LoginPage />
       </main>
+
     </>
   );
 }
