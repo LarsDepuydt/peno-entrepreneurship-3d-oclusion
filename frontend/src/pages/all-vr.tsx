@@ -16,12 +16,12 @@ const inter = Inter({ subsets: ['latin'] });
 export default function Home() {
   const router = useRouter();
 
-  const toVR = () => {
-    router.push('/all-vr');
+  const toWait = () => {
+    router.push('/wait');
   };
 
-  const toWebsite = () => {
-    router.push('/login-page');
+  const tostartVR = () => {
+    router.push('/start-vr');
   };
 
   return (
@@ -38,11 +38,11 @@ export default function Home() {
 
         <div className={styleL.loginbox}>
           <div className={styleB.VRbutton}>
-            <button type="submit" className={styleB.VRbuttons} onClick={toVR}>
-              I am on VR glasses
+            <button type="submit" className={styleB.VRbuttons} onClick={toWait}>
+              Go to Wait
             </button>
-            <button type="submit" className={styleB.VRbuttons} onClick={toWebsite}>
-              I am on a computer
+            <button type="submit" className={styleB.VRbuttons} onClick={tostartVR}>
+              Go to Start-VR
             </button>
           </div>
         </div>
