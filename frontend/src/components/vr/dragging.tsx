@@ -874,7 +874,7 @@ function meshToJaw(mesh : any) {
         curr_jaw = lowerjaw;
         return lowerjaw;
     } else if (mesh === upperjaw.mesh) {
-        curr_jaw = upperjaw;
+        curr_jaw = lowerjaw;
         return upperjaw;
     } else {
         console.warn("Selected mesh is not a jaw, returning null");
