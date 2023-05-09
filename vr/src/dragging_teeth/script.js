@@ -117,6 +117,7 @@ class Jaw {
         // object is a 'Group', which is a subclass of 'Object3D'
         const buffergeo = getFirstBufferGeometry(object);
         jaw.mesh = new THREE.Mesh(buffergeo, teethMaterial.clone());
+        jaw.mesh.userData.originalScale = mesh.scale.clone();
         jaw.mesh.geometry.scale(0.01, 0.01, 0.01);
         jaw.mesh.position.x = 0;
         jaw.mesh.position.y = 0;
@@ -575,60 +576,42 @@ function onSelectEnd(event) {
   }
 }
 
-// global variable to save old position
-var oldBodyPosUpper = new THREE.Vector3();
-var oldBodyPosLower = new THREE.Vector3();
-
-var oldPosUpper = new THREE.Vector3();
-var oldPosLower = new THREE.Vector3();
-
-var newPosUpper = new THREE.Vector3();
-var newPosLower = new THREE.Vector3();
-
 // zoom in with right squeeze button
 
+var pressedRight = false;
+var pressedLeft = false;
+
 function onSqueezeStartRight() {
-  upperjaw.body.position(oldBodyPosUpper);
-  lowerjaw.body.position(oldBodyPosLower);
-
-  upperjaw.mesh.getWorldPosition(oldPosUpper);
-  lowerjaw.mesh.getWorldPosition(oldPosLower);
-  console.log(oldPosLower);
-
-  upperjaw.mesh.scale.multiplyScalar(1.1);
-  lowerjaw.mesh.scale.multiplyScalar(1.1);
-
-  upperjaw.mesh.getWorldPosition(newPosUpper);
-  lowerjaw.mesh.getWorldPosition(newPosLower);
-
-  upperjaw.body.position.set(
-    oldBodyPosUpper.x + oldPosUpper.x - newPosUpper.x,
-    oldBodyPosUpper.y + oldPosUpper.y - newPosUpper.y,
-    oldBodyPosUpper.z + oldPosUpper.z - newPosUpper.z
-  );
-  lowerjaw.body.position.set(
-    oldBodyPosLower.x + oldPosLower.x - newPosLower.x,
-    oldBodyPosLower.y + oldPosLower.y - newPosLower.y,
-    oldBodyPosLower.z + oldPosLower.z - newPosLower.z
-  );
+  pressedRight = true;
+  setTimeout(function () {
+    if (pressedRight) {
+      upperjaw.mesh.scale.multiplyScalar(1.002);
+      lowerjaw.mesh.scale.multiplyScalar(1.002);
+      onSqueezeStartRight();
+    }
+  }, 10);
 }
 
 // zoom out with left squeeze button
 
 function onSqueezeStartLeft() {
-  upperjaw.mesh.getWorldPosition(oldPosUpper);
-  lowerjaw.mesh.getWorldPosition(oldPosLower);
-
-  upperjaw.mesh.scale.multiplyScalar(0.9);
-  lowerjaw.mesh.scale.multiplyScalar(0.9);
-
-  upperjaw.mesh.position.set(oldPosUpper.x, oldPosUpper.y, oldPosUpper.z);
-  lowerjaw.mesh.position.set(oldPosLower.x, oldPosLower.y, oldPosLower.z);
+  pressedLeft = true;
+  setTimeout(function () {
+    if (pressedLeft) {
+      upperjaw.mesh.scale.multiplyScalar(0.998);
+      lowerjaw.mesh.scale.multiplyScalar(0.998);
+      onSqueezeStartLeft();
+    }
+  }, 10);
 }
 
-function onSqueezeEndRight() {}
+function onSqueezeEndRight() {
+  pressedRight = false;
+}
 
-function onSqueezeEndLeft(event) {}
+function onSqueezeEndLeft(event) {
+  pressedLeft = false;
+}
 
 // resets position to center
 
