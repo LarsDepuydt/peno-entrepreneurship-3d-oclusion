@@ -4,6 +4,7 @@ import { useState, useEffect } from 'react';
 import { ScanService } from "@/gen/proto/threedoclusion/v1/service_connect";
 import { createPromiseClient } from "@bufbuild/connect";
 import { useTransport } from "@bufbuild/connect-query";
+import { sendVR } from '@/gen/proto/threedoclusion/v1/service-ScanService_connectquery'
 import { SubscribeConnectionRequest, SubscribeConnectionResponse, UpdateConnectionStatusRequest, UpdateConnectionStatusResponse } from "@/gen/proto/threedoclusion/v1/service_pb";
 
 //import Cookies from 'js-cookie';
@@ -85,7 +86,7 @@ export default function ClientPage() {
   };
 
     
-   useEffect(() => {
+  useEffect(() => {
       let cookieCode: string | undefined;
       if (typeof window !== 'undefined') {
         cookieCode = Cookies.get('clientcookie');
