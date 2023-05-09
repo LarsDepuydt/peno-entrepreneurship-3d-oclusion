@@ -129,7 +129,6 @@ export function SidebarPatient() {
   } else {
     return (
       <>
-        refetch();
         <div className={styleSidebar.sidebar}>
           <WelcomingPatient />
           <NoteInput onAddNote={handleAddNotePatient} />
