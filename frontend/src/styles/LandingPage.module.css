@@ -18,6 +18,12 @@
 
 .loginbox {
   margin: auto;
+  width: 50vw;
+}
+
+.imgbox {
+width: 0px;
+margin-right: 50vw;
 }
 
 .all_landing {
