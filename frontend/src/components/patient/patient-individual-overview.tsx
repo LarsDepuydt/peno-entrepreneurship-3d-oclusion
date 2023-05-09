@@ -7,7 +7,7 @@ import React, { useState } from 'react';
 import { InspectScans } from '../../components/patient/inspect_scans';
 import DeleteButton from '../patient/delete_patient';
 import EditButton from '../patient/edit_patient';
-import DropdownButton from '../patient/patient_dropdown';
+import PinButton from '../patient/pin_patient';
 
 interface patientProfile {
   id: number;
@@ -59,6 +59,7 @@ export function SinglePatient({ id, picture, patientfirstname, patientlastname }
       )}
       {!dropDown && (
         <div className={styles.patientScan_normal} onMouseEnter={handleMouseEnter} onMouseLeave={handleMouseLeave}>
+          
           <div className={styles.picture_wrapper}>
             <Image
               id={patientfirstname.concat(' ', patientlastname)}
@@ -80,7 +81,8 @@ export function SinglePatient({ id, picture, patientfirstname, patientlastname }
               </div>
               <InspectScans patientID={id} />
               <EditButton />
-              <DeleteButton />
+              <DeleteButton patientID={id} />
+              <PinButton />
             </div>
           )}
 

@@ -1,11 +1,12 @@
 import { deleteScanById } from '@/gen/proto/threedoclusion/v1/service-ScanService_connectquery';
 import { useQuery } from '@tanstack/react-query';
+
 import styleB from '@/styles/Buttons.module.css';
 import styles from '@/styles/Modal.module.css';
 
 import { useState } from 'react';
 
-export default function DeleteButton() {
+export default function DeleteButton({ scanID }: { scanID: number }) {
   const [modal, setModal] = useState(false);
   // modal is not open at first
 
@@ -14,17 +15,11 @@ export default function DeleteButton() {
   const deleteScan = () => {
     console.log('scan is deleted');
     setModal(!modal);
+    refetch();
   };
 
-  const [scanId, setScanId] = useState<number | undefined>(undefined);
-
-  // useQuery(deletescan.useQuery({ id: scanId }));
-  // id still needs to be fixed
-  // data is tossed, since this query does not return usefull data
-
-  // const delete_scan = () => {
-  //   setScanId(2);
-  // };
+  const query = deleteScanById.useQuery({ id: scanID });
+  const { data, refetch } = useQuery(query.queryKey, query.queryFn, { enabled: false });
 
   return (
     <>

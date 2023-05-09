@@ -26,6 +26,8 @@ interface HeaderDoctorProps {
 }
 
 export function SidebarDoctor() {
+  const router = useRouter();
+  const wait = () => router.push('/client');
   return (
     <>
       <div className={styleSidebar.sidebar}>
@@ -37,6 +39,7 @@ export function SidebarDoctor() {
         </div>
         <div className={stylesButton.absoluteWrapper}>
           <ReluLink />
+          <button type="button" className={stylesButton.relu_btn} id={stylesButton.waitIcon} onClick={wait}></button>
         </div>
       </div>
     </>
@@ -67,8 +70,8 @@ export function SidebarPatient() {
           <Filter_Tags />
         </div>
         <div className={stylesButton.absoluteWrapper}>
-          <button type="button" className={stylesButton.relu_btn} id={stylesButton.homeIcon} onClick={home}></button>
           <ReluLink />
+          <button type="button" className={stylesButton.relu_btn} id={stylesButton.homeIcon} onClick={home}></button>
         </div>
       </div>
     </>
