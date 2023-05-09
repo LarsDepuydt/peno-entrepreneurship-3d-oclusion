@@ -84,6 +84,8 @@ function Menu({isOpen, setIsOpen, current_scan, stream, client, onLoadItemClicke
       });
   };
 
+  const reset = async () => {}
+
   return (
     isOpen ? (
     <Canvas>
@@ -107,6 +109,7 @@ function Menu({isOpen, setIsOpen, current_scan, stream, client, onLoadItemClicke
                   <li className="menu-option" onClick={save}>Save manually</li>
                   <li className="menu-option" onClick={saveAndQuit}>Save and quit</li>
                   <li className="menu-option" onClick={quit}>Quit</li>
+                  <li className="menu-option" onClick={reset}>Reset</li>
                 </ul>
               </div>
             ):(
@@ -180,10 +183,11 @@ function Menu({isOpen, setIsOpen, current_scan, stream, client, onLoadItemClicke
                 align-items: center;
               }
               .menu-option {
-                margin: 10px;
+                margin: 5px;
                 padding: 10px;
                 background-color: #444;
                 border-radius: 5px;
+                font-size: 15px;
               }
             `}</style>
           </div>
