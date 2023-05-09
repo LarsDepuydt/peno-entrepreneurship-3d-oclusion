@@ -4,7 +4,6 @@ import { useState, useEffect } from 'react';
 import { ScanService } from "@/gen/proto/threedoclusion/v1/service_connect";
 import { createPromiseClient } from "@bufbuild/connect";
 import { useTransport } from "@bufbuild/connect-query";
-import { sendVR } from '@/gen/proto/threedoclusion/v1/service-ScanService_connectquery'
 import { SendVRRequest, SubscribeConnectionRequest, SubscribeConnectionResponse } from "@/gen/proto/threedoclusion/v1/service_pb";
 
 //import Cookies from 'js-cookie';
@@ -69,18 +68,6 @@ export function InspectVR({ patientID, scanID, setStream }: InspectVRProps){
     setSubmitOK(true);
   }, []); // On rerender
   
-
-
-  /*
-  const clickPatient = () => {
-      router.push({
-        pathname: '/scans-page',
-        query: {
-          patientID,  
-          scanID,
-        },
-      });
-  };*/
 
   return (
       <div>
