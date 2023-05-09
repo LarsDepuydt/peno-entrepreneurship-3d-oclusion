@@ -4,6 +4,10 @@ import { VRButton } from 'three/examples/jsm/webxr/VRButton.js';
 import { XRControllerModelFactory } from 'three/examples/jsm/webxr/XRControllerModelFactory.js';
 import { OBJLoader } from 'three/examples/jsm/loaders/OBJLoader.js';
 import { useState, useEffect } from 'react';
+import { SendMenuOptionRequest, ScanSave } from "@/gen/proto/threedoclusion/v1/service_pb";
+import Menu from './menu';
+import { useRouter } from 'next/router';
+
 
 let container: HTMLDivElement;
 let camera: THREE.PerspectiveCamera, scene: THREE.Scene, renderer: THREE.WebGLRenderer;
@@ -23,7 +27,7 @@ const path_lower_jaw = '/lower_ios_6.obj';
 
 const SCALE_MODEL = 0.01;
 
-function init() {
+function init(initialScan: ScanSave) {
     // create container
     container = document.createElement( 'div' );
     document.body.appendChild( container );
@@ -71,7 +75,6 @@ function init() {
 
 
     // add all objects to an object group
-
     group = new THREE.Group();
     scene.add( group );
 
@@ -84,13 +87,10 @@ function init() {
         // called when resource is loaded y=green, x=red, z=blue
         function (object) {
             lowerjaw = object;
-            lowerjaw.position.x = 0
-            lowerjaw.position.y = 2
-            lowerjaw.position.z = 0.12
-            lowerjaw.rotation.x = 1.5 * Math.PI
-            //lowerjaw.rotation.y = Math.PI
+            lowerjaw.position.set(initialScan.lowerX, initialScan.lowerY, initialScan.lowerZ);
+            lowerjaw.rotation.set(initialScan.lowerRX, initialScan.lowerRY, initialScan.lowerRZ);
             lowerjaw.scale.setScalar(SCALE_MODEL);
-
+            lowerjaw.name = "lowerjaw";
             group.add(lowerjaw);
 
             console.log("Object3D? " + lowerjaw.isObject3D);
@@ -108,18 +108,14 @@ function init() {
     );
 
     // load upper jaw
-    //const loader2 = new OBJLoader();
     var upperjaw: THREE.Group;
     loader.load(
         path_upper_jaw,
         // called when resource is loaded y=green, x=red, z=blue
         function (object) {
             upperjaw = object;
-            upperjaw.position.x = 0
-            upperjaw.position.y = 2
-            upperjaw.position.z = 0.12
-            upperjaw.rotation.x = 1.5 * Math.PI
-            //upperjaw.rotation.y = Math.PI
+            upperjaw.position.set(initialScan.upperX, initialScan.upperY, initialScan.upperZ);
+            upperjaw.rotation.set(initialScan.upperRX, initialScan.upperRY, initialScan.upperRZ);
             upperjaw.scale.setScalar(SCALE_MODEL);
             upperjaw.name = "upperjaw";
 
@@ -140,7 +136,7 @@ function init() {
     );
 }
 
-function initThree(){
+function initThree(setOpenMenu: any, setCurrentScan: any){
 
 
     // add renderer and enable VR
@@ -158,6 +154,12 @@ function initThree(){
     controller1 = renderer.xr.getController( 0 );
     controller1.addEventListener( 'selectstart', onSelectStart );
     controller1.addEventListener( 'selectend', onSelectEnd );
+
+    controller1.addEventListener( 'squeezestart', function foo() {
+        setOpenMenu(true);
+        updateScanData(setCurrentScan);
+    }); // Added to test menu
+    
     scene.add( controller1 );
 
     controller2 = renderer.xr.getController( 1 );
@@ -203,8 +205,21 @@ function vibrateTrigger() { // Vibrate TRIGGER button
     const session = renderer.xr.getSession();
     for (const source of session!.inputSources) {
         if (source.gamepad) (source.gamepad.hapticActuators[0] as any).pulse(0.8, 100); // Customise intensity and duration based on distance models? Need collision info
-    } // Distance of nearest points < a -> 0 no vibration, else inversely scale with distance -> intensity: 1-a*x and if less than zero no vibration
+    } // Distance of nearest points < a -> 0 no vibration, else inversely scale with distance -> intensity: 1-a*dist and if less than zero no vibration
 
+}
+
+function loadPosition(positionData: any) {
+    for (let i = 0; i < group.children.length; i++) {
+        if (group.children[i].name == "lowerjaw"){
+            group.children[i].position.set(positionData.lowerX, positionData.lowerY, positionData.lowerZ)
+            group.children[i].rotation.set(positionData.lowerRX, positionData.lowerRY, positionData.lowerRZ)
+        }
+        else if (group.children[i].name == "upperjaw"){
+            group.children[i].position.set(positionData.upperX, positionData.upperY, positionData.upperZ)
+            group.children[i].rotation.set(positionData.upperRX, positionData.upperRY, positionData.upperRZ)
+        }
+    }
 }
 
 // when controller pushes select button, select the object it is pointing to
@@ -227,7 +242,6 @@ function onSelectStart( event: any ) {
     }
 
 }
-
 
 function beforeRender( controller: any ){
     changeControlledCoordinates(controller, 1);
@@ -323,7 +337,6 @@ function cleanIntersected() {
 }
 
 function animate() {
-
     renderer.setAnimationLoop( render );
 }
 
@@ -340,41 +353,85 @@ function render() {
     renderer.render( scene, camera );
 }
 
-export default function DraggingView(){
+function updateScanData(setCurrentScan: any) {
+    let newScan = new ScanSave({scanId: 111, timestampSave: "2006-01-02T15:04:05"});
+    for (let i = 0; i < group.children.length; i++) {
+        if (group.children[i].name == "lowerjaw"){
+            newScan.lowerX = group.children[i].position.x;
+            newScan.lowerY = group.children[i].position.y;
+            newScan.lowerZ = group.children[i].position.z;
+            newScan.lowerRX = group.children[i].rotation.x;
+            newScan.lowerRY = group.children[i].rotation.y;
+            newScan.lowerRZ = group.children[i].rotation.z;
+        }
+        else if (group.children[i].name == "upperjaw"){
+            newScan.upperX = group.children[i].position.x;
+            newScan.upperY = group.children[i].position.y;
+            newScan.upperZ = group.children[i].position.z;
+            newScan.upperRX = group.children[i].rotation.x;
+            newScan.upperRY = group.children[i].rotation.y;
+            newScan.upperRZ = group.children[i].rotation.z;
+        }
+    }
+    setCurrentScan(newScan);
+}
+
+export default function DraggingView({ stream, client, onQuit }: {stream: any, client: any, onQuit: () => void}){
+    const initialScan = new ScanSave({
+        lowerX: 0,
+        lowerY: 2,
+        lowerZ: 0.12,
+        lowerRX: 1.5 * Math.PI,
+        lowerRY: 0,
+        lowerRZ: 0,
+        upperX: 0,
+        upperY: 2,
+        upperZ: 0.12,
+        upperRX: 1.5 * Math.PI,
+        upperRY: 0,
+        upperRZ: 0,
+        scanId: 111,
+        timestampSave: "2006-01-02T15:04:05"
+    });
+    const [current_scan, setCurrentScan] = useState<ScanSave>(initialScan);
+    const [openMenu, setOpenMenu] = useState(false);
+
     useEffect(() => { // https://github.com/facebook/react/issues/24502
         if (second_call){
-            init();
-            initThree();
+            init(initialScan);
+            initThree(setOpenMenu, setCurrentScan);
             animate(); // Sets 
             console.log('Init executed!');
         }
         else {
             second_call = true;
         }
+
+        return () => { // Clean up when unmounted
+            if (renderer) {
+                renderer.dispose();
+                renderer.setAnimationLoop(null); // Cancels animation
+                document.body.removeChild(container);
+            }
+            if (scene){
+                while (scene.children.length > 0) {
+                    scene.remove(scene.children[0]);
+                }
+            }
+
+        };
     }, []);
+
+    const onLoadItemClicked = (inputData: ScanSave) => {
+        console.log(inputData)
+        const {scanId, timestampSave, ...positionData } = inputData
+        loadPosition(positionData);
+    }
+    const props = {isOpen: openMenu, setIsOpen: setOpenMenu, current_scan, stream, client, onLoadItemClicked, onQuit };
 
     // resize
 
     window.addEventListener( 'resize', onWindowResize );
-    // create zoom buttons
-
-    // import "./styles.css";
-
-    // export const ZoomBar = () => {
-    //   return (
-    //     <div className="zoom-wrapper">
-    //       <div className="zoom-bar">
-    //         <div className="button" id="zoom-out">
-    //           -
-    //         </div>
-    //         <div className="button" id="zoom-in">
-    //           +
-    //         </div>
-    //       </div>
-    //     </div>
-    //   );
-    // };
-
     const zoomInButton = document.getElementById("zoom-in");
     const zoomOutButton = document.getElementById("zoom-out");
 
@@ -405,13 +462,24 @@ export default function DraggingView(){
     };
 
     const getFov = () => {
-    return Math.floor(
-        (2 *
-        Math.atan(camera.getFilmHeight() / 2 / camera.getFocalLength()) *
-        180) /
-        Math.PI
-    );
+        return Math.floor(
+            (2 *
+            Math.atan(camera.getFilmHeight() / 2 / camera.getFocalLength()) *
+            180) /
+            Math.PI
+        );
     };
-    
-    return null;
+
+    return (
+        <div className="menu-div">
+        <Menu {...props}/>
+        <style jsx>{`
+            .menu-div {
+                position: absolute;
+                width: 100%;
+                height: 100%;
+            }
+        `}</style>
+        </div>
+    );
 }

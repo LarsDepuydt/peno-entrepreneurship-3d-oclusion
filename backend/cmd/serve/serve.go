@@ -24,6 +24,7 @@ import (
 type ServerStruct struct {
 	database *sql.DB
 	redirectVRChannels *help_datastructures.MapChannels
+	connections *help_datastructures.MapConnections
 }
 
 func setCors(mux http.Handler) http.Handler {
@@ -41,7 +42,10 @@ func setCors(mux http.Handler) http.Handler {
 
 func Server(database *sql.DB) {
 	redirectVRChannels := help_datastructures.NewMap()
-	server := &ServerStruct{database, redirectVRChannels}
+
+	connections := help_datastructures.NewConnections()
+
+	server := &ServerStruct{database, redirectVRChannels, connections}
 
 	mux := http.NewServeMux()
 	path, handler := threedoclusionv1connect.NewScanServiceHandler(server)
@@ -63,6 +67,29 @@ func Server(database *sql.DB) {
 }
 
 // PUSH
+func (s *ServerStruct) SendMenuOption(
+	ctx context.Context,
+	req *connect.Request[threedoclusionv1.SendMenuOptionRequest],
+) (*connect.Response[threedoclusionv1.SendMenuOptionResponse], error) {
+	return push.SendMenuOption(req, s.connections, s.database)
+}
+
+func (s *ServerStruct) SubscribeConnection(
+	ctx context.Context,
+	req *connect.Request[threedoclusionv1.SubscribeConnectionRequest], stream *connect.ServerStream[threedoclusionv1.SubscribeConnectionResponse],
+) error {
+	return push.SubscribeConnection(ctx, req, stream, s.connections)
+}
+
+func (s *ServerStruct) UpdateConnectionStatus(
+	ctx context.Context,
+	req *connect.Request[threedoclusionv1.UpdateConnectionStatusRequest],
+) (*connect.Response[threedoclusionv1.UpdateConnectionStatusResponse], error) {
+	return push.UpdateConnectionStatus(req, s.connections, s.database)
+}
+
+
+
 func (s *ServerStruct) SendVR(
 	ctx context.Context,
 	req *connect.Request[threedoclusionv1.SendVRRequest],

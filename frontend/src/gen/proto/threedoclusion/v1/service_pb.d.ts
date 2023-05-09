@@ -808,6 +808,295 @@ export declare class TagResponse extends Message<TagResponse> {
 }
 
 /**
+ * @generated from message threedoclusion.v1.SendPositionScanRequest
+ */
+export declare class SendPositionScanRequest extends Message<SendPositionScanRequest> {
+  /**
+   * @generated from field: threedoclusion.v1.Scan scan = 1;
+   */
+  scan?: Scan;
+
+  constructor(data?: PartialMessage<SendPositionScanRequest>);
+
+  static readonly runtime: typeof proto3;
+  static readonly typeName = "threedoclusion.v1.SendPositionScanRequest";
+  static readonly fields: FieldList;
+
+  static fromBinary(bytes: Uint8Array, options?: Partial<BinaryReadOptions>): SendPositionScanRequest;
+
+  static fromJson(jsonValue: JsonValue, options?: Partial<JsonReadOptions>): SendPositionScanRequest;
+
+  static fromJsonString(jsonString: string, options?: Partial<JsonReadOptions>): SendPositionScanRequest;
+
+  static equals(a: SendPositionScanRequest | PlainMessage<SendPositionScanRequest> | undefined, b: SendPositionScanRequest | PlainMessage<SendPositionScanRequest> | undefined): boolean;
+}
+
+/**
+ * @generated from message threedoclusion.v1.GetPositionScanResponse
+ */
+export declare class GetPositionScanResponse extends Message<GetPositionScanResponse> {
+  /**
+   * @generated from field: threedoclusion.v1.Scan scan = 1;
+   */
+  scan?: Scan;
+
+  constructor(data?: PartialMessage<GetPositionScanResponse>);
+
+  static readonly runtime: typeof proto3;
+  static readonly typeName = "threedoclusion.v1.GetPositionScanResponse";
+  static readonly fields: FieldList;
+
+  static fromBinary(bytes: Uint8Array, options?: Partial<BinaryReadOptions>): GetPositionScanResponse;
+
+  static fromJson(jsonValue: JsonValue, options?: Partial<JsonReadOptions>): GetPositionScanResponse;
+
+  static fromJsonString(jsonString: string, options?: Partial<JsonReadOptions>): GetPositionScanResponse;
+
+  static equals(a: GetPositionScanResponse | PlainMessage<GetPositionScanResponse> | undefined, b: GetPositionScanResponse | PlainMessage<GetPositionScanResponse> | undefined): boolean;
+}
+
+/**
+ * @generated from message threedoclusion.v1.SendMenuOptionRequest
+ */
+export declare class SendMenuOptionRequest extends Message<SendMenuOptionRequest> {
+  /**
+   * @generated from field: threedoclusion.v1.SendMenuOptionRequest.Option option = 1;
+   */
+  option: SendMenuOptionRequest_Option;
+
+  /**
+   * @generated from oneof threedoclusion.v1.SendMenuOptionRequest.option_data
+   */
+  optionData: {
+    /**
+     * @generated from field: threedoclusion.v1.ScanSave save_data = 2;
+     */
+    value: ScanSave;
+    case: "saveData";
+  } | {
+    /**
+     * @generated from field: int32 scan_id = 3;
+     */
+    value: number;
+    case: "scanId";
+  } | { case: undefined; value?: undefined };
+
+  constructor(data?: PartialMessage<SendMenuOptionRequest>);
+
+  static readonly runtime: typeof proto3;
+  static readonly typeName = "threedoclusion.v1.SendMenuOptionRequest";
+  static readonly fields: FieldList;
+
+  static fromBinary(bytes: Uint8Array, options?: Partial<BinaryReadOptions>): SendMenuOptionRequest;
+
+  static fromJson(jsonValue: JsonValue, options?: Partial<JsonReadOptions>): SendMenuOptionRequest;
+
+  static fromJsonString(jsonString: string, options?: Partial<JsonReadOptions>): SendMenuOptionRequest;
+
+  static equals(a: SendMenuOptionRequest | PlainMessage<SendMenuOptionRequest> | undefined, b: SendMenuOptionRequest | PlainMessage<SendMenuOptionRequest> | undefined): boolean;
+}
+
+/**
+ * @generated from enum threedoclusion.v1.SendMenuOptionRequest.Option
+ */
+export declare enum SendMenuOptionRequest_Option {
+  /**
+   * @generated from enum value: OPTION_SAVE_UNSPECIFIED = 0;
+   */
+  SAVE_UNSPECIFIED = 0,
+
+  /**
+   * @generated from enum value: OPTION_LOAD = 1;
+   */
+  LOAD = 1,
+
+  /**
+   * @generated from enum value: OPTION_SAVE_AND_QUIT = 2;
+   */
+  SAVE_AND_QUIT = 2,
+
+  /**
+   * @generated from enum value: OPTION_QUIT = 3;
+   */
+  QUIT = 3,
+}
+
+/**
+ * oneof isn't supported with repeated
+ *
+ * @generated from message threedoclusion.v1.SendMenuOptionResponse
+ */
+export declare class SendMenuOptionResponse extends Message<SendMenuOptionResponse> {
+  /**
+   * @generated from field: optional threedoclusion.v1.SendMenuOptionResponse.Wrapper wrap = 1;
+   */
+  wrap?: SendMenuOptionResponse_Wrapper;
+
+  /**
+   * @generated from field: optional string other_data = 2;
+   */
+  otherData?: string;
+
+  constructor(data?: PartialMessage<SendMenuOptionResponse>);
+
+  static readonly runtime: typeof proto3;
+  static readonly typeName = "threedoclusion.v1.SendMenuOptionResponse";
+  static readonly fields: FieldList;
+
+  static fromBinary(bytes: Uint8Array, options?: Partial<BinaryReadOptions>): SendMenuOptionResponse;
+
+  static fromJson(jsonValue: JsonValue, options?: Partial<JsonReadOptions>): SendMenuOptionResponse;
+
+  static fromJsonString(jsonString: string, options?: Partial<JsonReadOptions>): SendMenuOptionResponse;
+
+  static equals(a: SendMenuOptionResponse | PlainMessage<SendMenuOptionResponse> | undefined, b: SendMenuOptionResponse | PlainMessage<SendMenuOptionResponse> | undefined): boolean;
+}
+
+/**
+ * @generated from message threedoclusion.v1.SendMenuOptionResponse.Wrapper
+ */
+export declare class SendMenuOptionResponse_Wrapper extends Message<SendMenuOptionResponse_Wrapper> {
+  /**
+   * @generated from field: repeated threedoclusion.v1.ScanSave load_data = 3;
+   */
+  loadData: ScanSave[];
+
+  constructor(data?: PartialMessage<SendMenuOptionResponse_Wrapper>);
+
+  static readonly runtime: typeof proto3;
+  static readonly typeName = "threedoclusion.v1.SendMenuOptionResponse.Wrapper";
+  static readonly fields: FieldList;
+
+  static fromBinary(bytes: Uint8Array, options?: Partial<BinaryReadOptions>): SendMenuOptionResponse_Wrapper;
+
+  static fromJson(jsonValue: JsonValue, options?: Partial<JsonReadOptions>): SendMenuOptionResponse_Wrapper;
+
+  static fromJsonString(jsonString: string, options?: Partial<JsonReadOptions>): SendMenuOptionResponse_Wrapper;
+
+  static equals(a: SendMenuOptionResponse_Wrapper | PlainMessage<SendMenuOptionResponse_Wrapper> | undefined, b: SendMenuOptionResponse_Wrapper | PlainMessage<SendMenuOptionResponse_Wrapper> | undefined): boolean;
+}
+
+/**
+ * @generated from message threedoclusion.v1.UpdateConnectionStatusRequest
+ */
+export declare class UpdateConnectionStatusRequest extends Message<UpdateConnectionStatusRequest> {
+  /**
+   * @generated from field: bool is_connected = 1;
+   */
+  isConnected: boolean;
+
+  /**
+   * @generated from field: int32 scan_id = 2;
+   */
+  scanId: number;
+
+  /**
+   * @generated from field: int32 device_id = 3;
+   */
+  deviceId: number;
+
+  constructor(data?: PartialMessage<UpdateConnectionStatusRequest>);
+
+  static readonly runtime: typeof proto3;
+  static readonly typeName = "threedoclusion.v1.UpdateConnectionStatusRequest";
+  static readonly fields: FieldList;
+
+  static fromBinary(bytes: Uint8Array, options?: Partial<BinaryReadOptions>): UpdateConnectionStatusRequest;
+
+  static fromJson(jsonValue: JsonValue, options?: Partial<JsonReadOptions>): UpdateConnectionStatusRequest;
+
+  static fromJsonString(jsonString: string, options?: Partial<JsonReadOptions>): UpdateConnectionStatusRequest;
+
+  static equals(a: UpdateConnectionStatusRequest | PlainMessage<UpdateConnectionStatusRequest> | undefined, b: UpdateConnectionStatusRequest | PlainMessage<UpdateConnectionStatusRequest> | undefined): boolean;
+}
+
+/**
+ * @generated from message threedoclusion.v1.UpdateConnectionStatusResponse
+ */
+export declare class UpdateConnectionStatusResponse extends Message<UpdateConnectionStatusResponse> {
+  constructor(data?: PartialMessage<UpdateConnectionStatusResponse>);
+
+  static readonly runtime: typeof proto3;
+  static readonly typeName = "threedoclusion.v1.UpdateConnectionStatusResponse";
+  static readonly fields: FieldList;
+
+  static fromBinary(bytes: Uint8Array, options?: Partial<BinaryReadOptions>): UpdateConnectionStatusResponse;
+
+  static fromJson(jsonValue: JsonValue, options?: Partial<JsonReadOptions>): UpdateConnectionStatusResponse;
+
+  static fromJsonString(jsonString: string, options?: Partial<JsonReadOptions>): UpdateConnectionStatusResponse;
+
+  static equals(a: UpdateConnectionStatusResponse | PlainMessage<UpdateConnectionStatusResponse> | undefined, b: UpdateConnectionStatusResponse | PlainMessage<UpdateConnectionStatusResponse> | undefined): boolean;
+}
+
+/**
+ * Info passed to subscribeStatus; use only one VR stream per client? Made scan-specific for now
+ *
+ * @generated from message threedoclusion.v1.SubscribeConnectionRequest
+ */
+export declare class SubscribeConnectionRequest extends Message<SubscribeConnectionRequest> {
+  /**
+   * @generated from field: int32 scan_id = 1;
+   */
+  scanId: number;
+
+  /**
+   * To identify device with: Client: 0, VR: 1, ... for more devices that need update of status
+   *
+   * @generated from field: int32 device_id = 2;
+   */
+  deviceId: number;
+
+  constructor(data?: PartialMessage<SubscribeConnectionRequest>);
+
+  static readonly runtime: typeof proto3;
+  static readonly typeName = "threedoclusion.v1.SubscribeConnectionRequest";
+  static readonly fields: FieldList;
+
+  static fromBinary(bytes: Uint8Array, options?: Partial<BinaryReadOptions>): SubscribeConnectionRequest;
+
+  static fromJson(jsonValue: JsonValue, options?: Partial<JsonReadOptions>): SubscribeConnectionRequest;
+
+  static fromJsonString(jsonString: string, options?: Partial<JsonReadOptions>): SubscribeConnectionRequest;
+
+  static equals(a: SubscribeConnectionRequest | PlainMessage<SubscribeConnectionRequest> | undefined, b: SubscribeConnectionRequest | PlainMessage<SubscribeConnectionRequest> | undefined): boolean;
+}
+
+/**
+ * @generated from message threedoclusion.v1.SubscribeConnectionResponse
+ */
+export declare class SubscribeConnectionResponse extends Message<SubscribeConnectionResponse> {
+  /**
+   * @generated from field: bool is_connected = 1;
+   */
+  isConnected: boolean;
+
+  /**
+   * @generated from field: bool other_not_created = 2;
+   */
+  otherNotCreated: boolean;
+
+  /**
+   * @generated from field: optional string other_data = 3;
+   */
+  otherData?: string;
+
+  constructor(data?: PartialMessage<SubscribeConnectionResponse>);
+
+  static readonly runtime: typeof proto3;
+  static readonly typeName = "threedoclusion.v1.SubscribeConnectionResponse";
+  static readonly fields: FieldList;
+
+  static fromBinary(bytes: Uint8Array, options?: Partial<BinaryReadOptions>): SubscribeConnectionResponse;
+
+  static fromJson(jsonValue: JsonValue, options?: Partial<JsonReadOptions>): SubscribeConnectionResponse;
+
+  static fromJsonString(jsonString: string, options?: Partial<JsonReadOptions>): SubscribeConnectionResponse;
+
+  static equals(a: SubscribeConnectionResponse | PlainMessage<SubscribeConnectionResponse> | undefined, b: SubscribeConnectionResponse | PlainMessage<SubscribeConnectionResponse> | undefined): boolean;
+}
+
+/**
  * @generated from message threedoclusion.v1.SendVRRequest
  */
 export declare class SendVRRequest extends Message<SendVRRequest> {

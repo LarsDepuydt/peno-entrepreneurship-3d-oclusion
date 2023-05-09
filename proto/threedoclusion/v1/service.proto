@@ -7,6 +7,10 @@ option go_package = "github.com/LarsDepuydt/peno-entrepreneurship-3d-oclusion";
 
 
 service ScanService {
+  rpc SendMenuOption(SendMenuOptionRequest) returns (SendMenuOptionResponse) {}
+  rpc SubscribeConnection(SubscribeConnectionRequest) returns (stream SubscribeConnectionResponse) {}
+  rpc UpdateConnectionStatus(UpdateConnectionStatusRequest) returns (UpdateConnectionStatusResponse) {}
+
   rpc SendVR(SendVRRequest) returns (SendVRResponse) {}
   rpc Waiting(WaitingRequest) returns (stream WaitingResponse) {}
 
@@ -53,7 +57,6 @@ message ScanSave {
   float upper_r_y = 13;
   float upper_r_z = 14;
 }
-
 
 // TAGS
 message Tag {
@@ -177,6 +180,62 @@ message TagResponse {
   int32 id = 1;
   string color = 2;
   string text = 3;
+}
+
+
+message SendPositionScanRequest {
+  Scan scan = 1;
+}
+
+message GetPositionScanResponse {
+  Scan scan = 1;
+}
+
+
+message SendMenuOptionRequest {
+  enum Option {
+    OPTION_SAVE_UNSPECIFIED = 0;
+    OPTION_LOAD = 1;
+    OPTION_SAVE_AND_QUIT = 2;
+    OPTION_QUIT = 3;
+  }
+  Option option = 1;
+
+  oneof option_data {
+    ScanSave save_data = 2; 
+    int32 scan_id = 3; 
+  }
+}
+// save_data: Save or save and quit
+// scan_id: If load or quit
+
+// oneof isn't supported with repeated
+message SendMenuOptionResponse { 
+  optional Wrapper wrap = 1;
+  optional string other_data = 2;
+
+  message Wrapper{
+    repeated ScanSave load_data = 3;
+  }
+}
+
+message UpdateConnectionStatusRequest { 
+  bool is_connected = 1;
+  int32 scan_id = 2;
+  int32 device_id = 3;
+}
+message UpdateConnectionStatusResponse {
+}
+
+message SubscribeConnectionRequest { // Info passed to subscribeStatus; use only one VR stream per client? Made scan-specific for now
+  int32 scan_id = 1;
+  int32 device_id = 2; // To identify device with: Client: 0, VR: 1, ... for more devices that need update of status
+}
+
+message SubscribeConnectionResponse {
+  bool is_connected = 1;
+  bool other_not_created = 2;
+  optional string other_data = 3;
 }
 
 message SendVRRequest {

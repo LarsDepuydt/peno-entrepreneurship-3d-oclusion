@@ -7,22 +7,27 @@ import styleB from '@/styles/Buttons.module.css';
 import { InspectVR } from '../../components/scan_gallery/inspect_VR';
 import DeleteButton from '../../components/scan_gallery/delete_scan';
 import EditButton from '../../components/scan_gallery/edit_scan';
+
 import OpenObjButton from '../../components/scan_gallery/inspect_OBJ';
+
 import ExportButton from '../../components/scan_gallery/export_scan';
 import DropdownButton from '../../components/scan_gallery/scan_dropdown';
-import dropdownPatientButton from '../patient/patient_dropdown';
 
+
+import scanpicture from '../../../public/3d-teeth.jpg';
 
 interface scanProfile {
   scanid: number;
-  patientid: number;
-  picture: StaticImageData;
   date: string;
+
+  notes: string;
+  patientid: number;
 
 }
 
-export function SingleScan({ scanid, patientid, picture, date }: scanProfile) {
+export function SingleScan({ scanid, patientid, notes, date }: scanProfile) {
   const parsedDate = new Date(date);
+  const today = new Date();
   const options: Intl.DateTimeFormatOptions = {
     day: '2-digit',
     month: 'long',
@@ -38,7 +43,6 @@ export function SingleScan({ scanid, patientid, picture, date }: scanProfile) {
     '23': 'rd',
     '31': 'st',
   };
-  
 
   const formattedDate = parsedDate.toLocaleDateString('en-US', options);
   const dayOfMonth = parsedDate.getDate().toString();
@@ -46,7 +50,7 @@ export function SingleScan({ scanid, patientid, picture, date }: scanProfile) {
   const daySuffix = daySuffixes[dayOfMonth] || 'th';
 
   const dateString = `Scan of ${formattedDate.replace(dayOfMonth, `${dayOfMonth}${daySuffix}`)}`;
-  //const dateString = `Scan of October 15th`;
+
 
   const [showButtons, setShowButtons] = useState(false);
   const handleMouseEnter = () => {
@@ -72,23 +76,24 @@ export function SingleScan({ scanid, patientid, picture, date }: scanProfile) {
     <div className={styles.patientScan_container}>
       {dropDown && (
         <div className={styles.patientScan_dropDown}>
-          <button type="button" className={styleB.relu_btn} id={styleB.exitIcon} onClick={() => {
-          handleDropGone();
-          goToObjViewer();
-        }}></button>
+          <button
+            type="button"
+            className={styleB.relu_btn}
+            id={styleB.exitIcon}
+            onClick={() => {
+              handleDropGone();
+              goToObjViewer();
+            }}
+          ></button>
           <div className={styles.dropDownButtonWrapper}>
+
             <button className={styleB.relu_btn} id={styleB.dropDownButton}>
               export scan
             </button>
 
+
             <button className={styleB.relu_btn} id={styleB.dropDownButton}>
               show video
-            </button>
-            <button className={styleB.relu_btn} id={styleB.dropDownButton}>
-              test
-            </button>
-            <button className={styleB.relu_btn} id={styleB.dropDownButton}>
-              test
             </button>
           </div>
         </div>
@@ -98,9 +103,9 @@ export function SingleScan({ scanid, patientid, picture, date }: scanProfile) {
         <div className={styles.patientScan_normal} onMouseEnter={handleMouseEnter} onMouseLeave={handleMouseLeave}>
           <div className={styles.picture_wrapper}>
             <Image
-              id={parsedDate.toISOString()}
+              id={'hello'}
               className={showButtons ? styles.picture_hover : styles.picture}
-              src={picture}
+              src={scanpicture}
               alt="3d picture of teeth"
             />
           </div>
@@ -115,10 +120,12 @@ export function SingleScan({ scanid, patientid, picture, date }: scanProfile) {
                   onClick={handleDropDown}
                 ></button>
               </div>
+
               <OpenObjButton patientID={patientid} scanID={scanid} />
+
               <InspectVR patientID={patientid} scanID={scanid} />
               <EditButton />
-              <DeleteButton />
+              <DeleteButton scanID={scanid} />
             </div>
           )}
 
