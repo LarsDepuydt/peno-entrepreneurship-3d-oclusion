@@ -59,18 +59,6 @@ export default function ModalForm() {
     };
   };
 
-  const ReworkValues = (values: patientValues) => {
-    return {
-      patientFirstName: values.patientFirstName,
-      patientLastName: values.patientLastName,
-      pinned: values.pinned,
-      notes: values.notes,
-
-      // doctorID: parseInt(DentistID),
-      doctorID: 64,
-    };
-  };
-
   const submitFunction = (values: patientValues) => {
 
     if (sendOK && modal) {
