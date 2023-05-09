@@ -24,11 +24,10 @@ service ScanService {
   rpc GetAllTags(GetAllTagsRequest) returns (GetAllTagsResponse) {}
   rpc GetTagById(GetTagByIdRequest) returns (GetTagByIdResponse) {}
 
-  
-
   rpc AddPatient(AddPatientRequest) returns (AddPatientResponse) {}
   rpc DeletePatientById(DeletePatientByIdRequest) returns (DeletePatientByIdResponse) {}
   rpc GetAllPatients(GetAllPatientsRequest) returns (GetAllPatientsResponse) {}
+  rpc GetAllPinnedPatients(GetAllPinnedPatientsRequest) returns (GetAllPinnedPatientsResponse) {}
   rpc GetPatientById(GetPatientByIdRequest) returns (GetPatientByIdResponse) {}
   rpc GetPatientByName(GetPatientByNameRequest) returns (GetPatientByNameResponse) {}
   rpc UpdatePatientById(UpdatePatientByIdRequest) returns (UpdatePatientByIdResponse) {}
@@ -308,6 +307,20 @@ message UpdatePatientByIdRequest {
 
 message UpdatePatientByIdResponse {
   string message = 1;
+}
+
+message GetAllPinnedPatientsRequest {
+  bool pinned = 1;
+}
+
+message GetAllPinnedPatientsResponse {
+  repeated Patient patients = 1;
+}
+
+message GetAllUnPinnedPatientsRequest {}
+
+message GetAllUnPinnedPatientsResponse {
+  repeated Patient patients = 1;
 }
 
 // DENTIST

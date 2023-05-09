@@ -116,7 +116,7 @@ func GetDentistById(req *connect.Request[threedoclusionv1.GetDentistByIdRequest]
 
 func Login(req *connect.Request[threedoclusionv1.LoginRequest], database *sql.DB) (*connect.Response[threedoclusionv1.LoginResponse], error) {
 	const sqlStatement = `
-		SELECT id, email, firstname, lastname
+		SELECT id, email, firstname, lastname, password
 		FROM dentist
 		WHERE email = $1;
 	`
@@ -124,11 +124,16 @@ func Login(req *connect.Request[threedoclusionv1.LoginRequest], database *sql.DB
 	var email string
 	var firstName string
 	var lastName string
+	var password string
 	
 	// Perform the database query
-	error := database.QueryRow(sqlStatement, req.Msg.Email).Scan(&id, &email, &firstName, &lastName)
+	error := database.QueryRow(sqlStatement, req.Msg.Email).Scan(&id, &email, &firstName, &lastName, &password)
 	if error != nil {
 		return nil, error
+	}
+
+	if password!= req.Msg.Password {
+		return nil, fmt.Errorf("Invalid password")
 	}
 
 	responseMessage := fmt.Sprintf("Dentists with email: %s logged in with succes", req.Msg.Email)
