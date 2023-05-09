@@ -6,7 +6,7 @@ import styles from '@/styles/Modal.module.css';
 
 import { useState } from 'react';
 
-export default function DeleteButton() {
+export default function DeleteButton({ patientID }: { patientID: number }) {
   const [modal, setModal] = useState(false);
   // modal is not open at first
 
@@ -15,17 +15,11 @@ export default function DeleteButton() {
   const deletePatient = () => {
     console.log('patient is deleted');
     setModal(!modal);
+    refetch();
   };
 
-  const [patientId, setPatientId] = useState<number | undefined>(undefined);
-
-  // useQuery(deletePatient.useQuery({ id: patientId }));
-  // id still needs to be fixed
-  // data is tossed, since this query does not return usefull data
-
-  // const delete_patient = () => {
-  //   setPatientId(2);
-  // };
+  const query = deletePatientById.useQuery({ id: patientID });
+  const { data, refetch } = useQuery(query.queryKey, query.queryFn, { enabled: false });
 
   return (
     <>
