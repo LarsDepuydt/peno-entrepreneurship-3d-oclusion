@@ -1,5 +1,4 @@
 import Image, { StaticImageData } from 'next/image';
-import { useRouter } from 'next/router';
 import React, { useState } from 'react';
 import styles from '@/styles/PatientPage.module.scss';
 import styleB from '@/styles/Buttons.module.css';
@@ -10,6 +9,7 @@ import EditButton from '../../components/scan_gallery/edit_scan';
 
 import OpenObjButton from '../../components/scan_gallery/inspect_OBJ';
 
+import { useRouter } from 'next/router';
 import ExportButton from '../../components/scan_gallery/export_scan';
 import DropdownButton from '../../components/scan_gallery/scan_dropdown';
 
@@ -75,6 +75,13 @@ export function SingleScan({ scanid, patientid, notes, date }: scanProfile) {
     setDropDown(false);
   };
 
+  const router = useRouter();
+
+  const handleRedirectVideo = () => {
+    process.env.REACT_APP_PATIENT_ID = undefined;
+    router.push('/video');
+  };
+
   return (
     <div className={styles.patientScan_container}>
       {dropDown && (
@@ -89,13 +96,11 @@ export function SingleScan({ scanid, patientid, notes, date }: scanProfile) {
             }}
           ></button>
           <div className={styles.dropDownButtonWrapper}>
-
             <button className={styleB.relu_btn} id={styleB.dropDownButton}>
               export scan
             </button>
 
-
-            <button className={styleB.relu_btn} id={styleB.dropDownButton}>
+            <button className={styleB.relu_btn} id={styleB.dropDownButton} onClick={handleRedirectVideo}>
               show video
             </button>
           </div>
