@@ -27,12 +27,12 @@ export default function ModalForm() {
   const [sendOK, setSendOK] = useState(false);
 
   const [patientinfo, setData] = useState({
+
     firstName: '',
     lastName: '',
 
     pinned: false,
-    notes: '',
-
+    notes: '@.',
     dentistId: 0,
   });
 
@@ -41,6 +41,7 @@ export default function ModalForm() {
     addPatient.useQuery(patientinfo).queryFn,
     { enabled: false }
   );
+
 
   const toggleModal = () => {
     setModal(!modal); // change state f -> t and t -> f
@@ -52,13 +53,14 @@ export default function ModalForm() {
       firstName: values.patientFirstName,
       lastName: values.patientLastName,
       pinned: values.pinned,
-      notes: values.notes,
+      notes: values.notes + '@.',
 
       dentistId: parseInt(DentistID),
     };
   };
 
   const submitFunction = (values: patientValues) => {
+
     if (sendOK && modal) {
       setSendOK(false);
       console.log('we started the function submitFunction()');
@@ -96,6 +98,7 @@ export default function ModalForm() {
       setSubmitOK(false);
     }
   }, [data, modal, sendOK, submitOK, refetch]);
+
 
 
   //, patientinfo

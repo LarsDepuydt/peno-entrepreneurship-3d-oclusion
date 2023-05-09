@@ -13,9 +13,9 @@ export default function DeleteButton({ scanID }: { scanID: number }) {
   const toggleModal = () => setModal(!modal); // change state f -> t and t -> f
 
   const deleteScan = () => {
+    refetch();
     console.log('scan is deleted');
     setModal(!modal);
-    refetch();
   };
 
   const query = deleteScanById.useQuery({ id: scanID });

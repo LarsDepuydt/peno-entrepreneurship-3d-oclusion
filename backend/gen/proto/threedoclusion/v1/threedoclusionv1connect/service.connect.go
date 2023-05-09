@@ -55,6 +55,9 @@ const (
 	ScanServiceGetAllScansProcedure = "/threedoclusion.v1.ScanService/GetAllScans"
 	// ScanServiceGetScanByIdProcedure is the fully-qualified name of the ScanService's GetScanById RPC.
 	ScanServiceGetScanByIdProcedure = "/threedoclusion.v1.ScanService/GetScanById"
+	// ScanServiceUpdateScanByIdProcedure is the fully-qualified name of the ScanService's
+	// UpdateScanById RPC.
+	ScanServiceUpdateScanByIdProcedure = "/threedoclusion.v1.ScanService/UpdateScanById"
 	// ScanServiceAddTagProcedure is the fully-qualified name of the ScanService's AddTag RPC.
 	ScanServiceAddTagProcedure = "/threedoclusion.v1.ScanService/AddTag"
 	// ScanServiceDeleteTagByIdProcedure is the fully-qualified name of the ScanService's DeleteTagById
@@ -72,6 +75,9 @@ const (
 	// ScanServiceGetAllPatientsProcedure is the fully-qualified name of the ScanService's
 	// GetAllPatients RPC.
 	ScanServiceGetAllPatientsProcedure = "/threedoclusion.v1.ScanService/GetAllPatients"
+	// ScanServiceGetAllPinnedPatientsProcedure is the fully-qualified name of the ScanService's
+	// GetAllPinnedPatients RPC.
+	ScanServiceGetAllPinnedPatientsProcedure = "/threedoclusion.v1.ScanService/GetAllPinnedPatients"
 	// ScanServiceGetPatientByIdProcedure is the fully-qualified name of the ScanService's
 	// GetPatientById RPC.
 	ScanServiceGetPatientByIdProcedure = "/threedoclusion.v1.ScanService/GetPatientById"
@@ -112,6 +118,7 @@ type ScanServiceClient interface {
 	DeleteScanById(context.Context, *connect_go.Request[v1.DeleteScanByIdRequest]) (*connect_go.Response[v1.DeleteScanByIdResponse], error)
 	GetAllScans(context.Context, *connect_go.Request[v1.GetAllScansRequest]) (*connect_go.Response[v1.GetAllScansResponse], error)
 	GetScanById(context.Context, *connect_go.Request[v1.GetScanByIdRequest]) (*connect_go.Response[v1.GetScanByIdResponse], error)
+	UpdateScanById(context.Context, *connect_go.Request[v1.UpdateScanByIdRequest]) (*connect_go.Response[v1.UpdateScanByIdResponse], error)
 	AddTag(context.Context, *connect_go.Request[v1.AddTagRequest]) (*connect_go.Response[v1.AddTagResponse], error)
 	DeleteTagById(context.Context, *connect_go.Request[v1.DeleteTagByIdRequest]) (*connect_go.Response[v1.DeleteTagByIdResponse], error)
 	GetAllTags(context.Context, *connect_go.Request[v1.GetAllTagsRequest]) (*connect_go.Response[v1.GetAllTagsResponse], error)
@@ -119,6 +126,7 @@ type ScanServiceClient interface {
 	AddPatient(context.Context, *connect_go.Request[v1.AddPatientRequest]) (*connect_go.Response[v1.AddPatientResponse], error)
 	DeletePatientById(context.Context, *connect_go.Request[v1.DeletePatientByIdRequest]) (*connect_go.Response[v1.DeletePatientByIdResponse], error)
 	GetAllPatients(context.Context, *connect_go.Request[v1.GetAllPatientsRequest]) (*connect_go.Response[v1.GetAllPatientsResponse], error)
+	GetAllPinnedPatients(context.Context, *connect_go.Request[v1.GetAllPinnedPatientsRequest]) (*connect_go.Response[v1.GetAllPinnedPatientsResponse], error)
 	GetPatientById(context.Context, *connect_go.Request[v1.GetPatientByIdRequest]) (*connect_go.Response[v1.GetPatientByIdResponse], error)
 	GetPatientByName(context.Context, *connect_go.Request[v1.GetPatientByNameRequest]) (*connect_go.Response[v1.GetPatientByNameResponse], error)
 	UpdatePatientById(context.Context, *connect_go.Request[v1.UpdatePatientByIdRequest]) (*connect_go.Response[v1.UpdatePatientByIdResponse], error)
@@ -186,6 +194,11 @@ func NewScanServiceClient(httpClient connect_go.HTTPClient, baseURL string, opts
 			baseURL+ScanServiceGetScanByIdProcedure,
 			opts...,
 		),
+		updateScanById: connect_go.NewClient[v1.UpdateScanByIdRequest, v1.UpdateScanByIdResponse](
+			httpClient,
+			baseURL+ScanServiceUpdateScanByIdProcedure,
+			opts...,
+		),
 		addTag: connect_go.NewClient[v1.AddTagRequest, v1.AddTagResponse](
 			httpClient,
 			baseURL+ScanServiceAddTagProcedure,
@@ -219,6 +232,11 @@ func NewScanServiceClient(httpClient connect_go.HTTPClient, baseURL string, opts
 		getAllPatients: connect_go.NewClient[v1.GetAllPatientsRequest, v1.GetAllPatientsResponse](
 			httpClient,
 			baseURL+ScanServiceGetAllPatientsProcedure,
+			opts...,
+		),
+		getAllPinnedPatients: connect_go.NewClient[v1.GetAllPinnedPatientsRequest, v1.GetAllPinnedPatientsResponse](
+			httpClient,
+			baseURL+ScanServiceGetAllPinnedPatientsProcedure,
 			opts...,
 		),
 		getPatientById: connect_go.NewClient[v1.GetPatientByIdRequest, v1.GetPatientByIdResponse](
@@ -285,6 +303,7 @@ type scanServiceClient struct {
 	deleteScanById         *connect_go.Client[v1.DeleteScanByIdRequest, v1.DeleteScanByIdResponse]
 	getAllScans            *connect_go.Client[v1.GetAllScansRequest, v1.GetAllScansResponse]
 	getScanById            *connect_go.Client[v1.GetScanByIdRequest, v1.GetScanByIdResponse]
+	updateScanById         *connect_go.Client[v1.UpdateScanByIdRequest, v1.UpdateScanByIdResponse]
 	addTag                 *connect_go.Client[v1.AddTagRequest, v1.AddTagResponse]
 	deleteTagById          *connect_go.Client[v1.DeleteTagByIdRequest, v1.DeleteTagByIdResponse]
 	getAllTags             *connect_go.Client[v1.GetAllTagsRequest, v1.GetAllTagsResponse]
@@ -292,6 +311,7 @@ type scanServiceClient struct {
 	addPatient             *connect_go.Client[v1.AddPatientRequest, v1.AddPatientResponse]
 	deletePatientById      *connect_go.Client[v1.DeletePatientByIdRequest, v1.DeletePatientByIdResponse]
 	getAllPatients         *connect_go.Client[v1.GetAllPatientsRequest, v1.GetAllPatientsResponse]
+	getAllPinnedPatients   *connect_go.Client[v1.GetAllPinnedPatientsRequest, v1.GetAllPinnedPatientsResponse]
 	getPatientById         *connect_go.Client[v1.GetPatientByIdRequest, v1.GetPatientByIdResponse]
 	getPatientByName       *connect_go.Client[v1.GetPatientByNameRequest, v1.GetPatientByNameResponse]
 	updatePatientById      *connect_go.Client[v1.UpdatePatientByIdRequest, v1.UpdatePatientByIdResponse]
@@ -349,6 +369,11 @@ func (c *scanServiceClient) GetScanById(ctx context.Context, req *connect_go.Req
 	return c.getScanById.CallUnary(ctx, req)
 }
 
+// UpdateScanById calls threedoclusion.v1.ScanService.UpdateScanById.
+func (c *scanServiceClient) UpdateScanById(ctx context.Context, req *connect_go.Request[v1.UpdateScanByIdRequest]) (*connect_go.Response[v1.UpdateScanByIdResponse], error) {
+	return c.updateScanById.CallUnary(ctx, req)
+}
+
 // AddTag calls threedoclusion.v1.ScanService.AddTag.
 func (c *scanServiceClient) AddTag(ctx context.Context, req *connect_go.Request[v1.AddTagRequest]) (*connect_go.Response[v1.AddTagResponse], error) {
 	return c.addTag.CallUnary(ctx, req)
@@ -382,6 +407,11 @@ func (c *scanServiceClient) DeletePatientById(ctx context.Context, req *connect_
 // GetAllPatients calls threedoclusion.v1.ScanService.GetAllPatients.
 func (c *scanServiceClient) GetAllPatients(ctx context.Context, req *connect_go.Request[v1.GetAllPatientsRequest]) (*connect_go.Response[v1.GetAllPatientsResponse], error) {
 	return c.getAllPatients.CallUnary(ctx, req)
+}
+
+// GetAllPinnedPatients calls threedoclusion.v1.ScanService.GetAllPinnedPatients.
+func (c *scanServiceClient) GetAllPinnedPatients(ctx context.Context, req *connect_go.Request[v1.GetAllPinnedPatientsRequest]) (*connect_go.Response[v1.GetAllPinnedPatientsResponse], error) {
+	return c.getAllPinnedPatients.CallUnary(ctx, req)
 }
 
 // GetPatientById calls threedoclusion.v1.ScanService.GetPatientById.
@@ -445,6 +475,7 @@ type ScanServiceHandler interface {
 	DeleteScanById(context.Context, *connect_go.Request[v1.DeleteScanByIdRequest]) (*connect_go.Response[v1.DeleteScanByIdResponse], error)
 	GetAllScans(context.Context, *connect_go.Request[v1.GetAllScansRequest]) (*connect_go.Response[v1.GetAllScansResponse], error)
 	GetScanById(context.Context, *connect_go.Request[v1.GetScanByIdRequest]) (*connect_go.Response[v1.GetScanByIdResponse], error)
+	UpdateScanById(context.Context, *connect_go.Request[v1.UpdateScanByIdRequest]) (*connect_go.Response[v1.UpdateScanByIdResponse], error)
 	AddTag(context.Context, *connect_go.Request[v1.AddTagRequest]) (*connect_go.Response[v1.AddTagResponse], error)
 	DeleteTagById(context.Context, *connect_go.Request[v1.DeleteTagByIdRequest]) (*connect_go.Response[v1.DeleteTagByIdResponse], error)
 	GetAllTags(context.Context, *connect_go.Request[v1.GetAllTagsRequest]) (*connect_go.Response[v1.GetAllTagsResponse], error)
@@ -452,6 +483,7 @@ type ScanServiceHandler interface {
 	AddPatient(context.Context, *connect_go.Request[v1.AddPatientRequest]) (*connect_go.Response[v1.AddPatientResponse], error)
 	DeletePatientById(context.Context, *connect_go.Request[v1.DeletePatientByIdRequest]) (*connect_go.Response[v1.DeletePatientByIdResponse], error)
 	GetAllPatients(context.Context, *connect_go.Request[v1.GetAllPatientsRequest]) (*connect_go.Response[v1.GetAllPatientsResponse], error)
+	GetAllPinnedPatients(context.Context, *connect_go.Request[v1.GetAllPinnedPatientsRequest]) (*connect_go.Response[v1.GetAllPinnedPatientsResponse], error)
 	GetPatientById(context.Context, *connect_go.Request[v1.GetPatientByIdRequest]) (*connect_go.Response[v1.GetPatientByIdResponse], error)
 	GetPatientByName(context.Context, *connect_go.Request[v1.GetPatientByNameRequest]) (*connect_go.Response[v1.GetPatientByNameResponse], error)
 	UpdatePatientById(context.Context, *connect_go.Request[v1.UpdatePatientByIdRequest]) (*connect_go.Response[v1.UpdatePatientByIdResponse], error)
@@ -516,6 +548,11 @@ func NewScanServiceHandler(svc ScanServiceHandler, opts ...connect_go.HandlerOpt
 		svc.GetScanById,
 		opts...,
 	))
+	mux.Handle(ScanServiceUpdateScanByIdProcedure, connect_go.NewUnaryHandler(
+		ScanServiceUpdateScanByIdProcedure,
+		svc.UpdateScanById,
+		opts...,
+	))
 	mux.Handle(ScanServiceAddTagProcedure, connect_go.NewUnaryHandler(
 		ScanServiceAddTagProcedure,
 		svc.AddTag,
@@ -549,6 +586,11 @@ func NewScanServiceHandler(svc ScanServiceHandler, opts ...connect_go.HandlerOpt
 	mux.Handle(ScanServiceGetAllPatientsProcedure, connect_go.NewUnaryHandler(
 		ScanServiceGetAllPatientsProcedure,
 		svc.GetAllPatients,
+		opts...,
+	))
+	mux.Handle(ScanServiceGetAllPinnedPatientsProcedure, connect_go.NewUnaryHandler(
+		ScanServiceGetAllPinnedPatientsProcedure,
+		svc.GetAllPinnedPatients,
 		opts...,
 	))
 	mux.Handle(ScanServiceGetPatientByIdProcedure, connect_go.NewUnaryHandler(
@@ -643,6 +685,10 @@ func (UnimplementedScanServiceHandler) GetScanById(context.Context, *connect_go.
 	return nil, connect_go.NewError(connect_go.CodeUnimplemented, errors.New("threedoclusion.v1.ScanService.GetScanById is not implemented"))
 }
 
+func (UnimplementedScanServiceHandler) UpdateScanById(context.Context, *connect_go.Request[v1.UpdateScanByIdRequest]) (*connect_go.Response[v1.UpdateScanByIdResponse], error) {
+	return nil, connect_go.NewError(connect_go.CodeUnimplemented, errors.New("threedoclusion.v1.ScanService.UpdateScanById is not implemented"))
+}
+
 func (UnimplementedScanServiceHandler) AddTag(context.Context, *connect_go.Request[v1.AddTagRequest]) (*connect_go.Response[v1.AddTagResponse], error) {
 	return nil, connect_go.NewError(connect_go.CodeUnimplemented, errors.New("threedoclusion.v1.ScanService.AddTag is not implemented"))
 }
@@ -669,6 +715,10 @@ func (UnimplementedScanServiceHandler) DeletePatientById(context.Context, *conne
 
 func (UnimplementedScanServiceHandler) GetAllPatients(context.Context, *connect_go.Request[v1.GetAllPatientsRequest]) (*connect_go.Response[v1.GetAllPatientsResponse], error) {
 	return nil, connect_go.NewError(connect_go.CodeUnimplemented, errors.New("threedoclusion.v1.ScanService.GetAllPatients is not implemented"))
+}
+
+func (UnimplementedScanServiceHandler) GetAllPinnedPatients(context.Context, *connect_go.Request[v1.GetAllPinnedPatientsRequest]) (*connect_go.Response[v1.GetAllPinnedPatientsResponse], error) {
+	return nil, connect_go.NewError(connect_go.CodeUnimplemented, errors.New("threedoclusion.v1.ScanService.GetAllPinnedPatients is not implemented"))
 }
 
 func (UnimplementedScanServiceHandler) GetPatientById(context.Context, *connect_go.Request[v1.GetPatientByIdRequest]) (*connect_go.Response[v1.GetPatientByIdResponse], error) {

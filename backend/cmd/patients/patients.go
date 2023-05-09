@@ -192,3 +192,35 @@ func UpdatePatientById(req *connect.Request[threedoclusionv1.UpdatePatientByIdRe
 
 	return res, nil
 }
+
+func GetAllPinnedPatients(req *connect.Request[threedoclusionv1.GetAllPinnedPatientsRequest], database *sql.DB) (*connect.Response[threedoclusionv1.GetAllPinnedPatientsResponse], error) {
+	const sqlStatement = `
+	SELECT id, firstname, lastname, pinned, notes, dentist_id 
+	FROM patient 
+	WHERE pinned=$1;`
+
+	pinnedDatabase := 0
+	if req.Msg.Pinned == true {
+		pinnedDatabase = 1
+	}
+	
+	rows, error := database.Query(sqlStatement, pinnedDatabase)
+	if error != nil {
+		return nil, error
+	}
+
+	patients, error := GetResponseMakerPatient(rows)
+	if error != nil {
+		return nil, error
+	}
+
+	fmt.Println("Got all patients successfully")
+
+	patientsApi := MapPatientsToApi(patients)
+
+	res := connect.NewResponse(&threedoclusionv1.GetAllPinnedPatientsResponse{
+		Patients: patientsApi,
+	})
+
+	return res, nil
+}

@@ -23,12 +23,11 @@ export default function ScanPage(this: any) {
   let targetpatientID = process.env.REACT_APP_PATIENT_ID!;
 
   const { data, refetch } = useQuery(getAllScans.useQuery({ enabled: true }));
-  console.log(data);
+
   useEffect(() => {
     return () => {
       // cleanup function to cancel subscription
       data && refetch();
-      console.log('cleanup');
     };
   }, [data]);
 
@@ -56,8 +55,19 @@ export default function ScanPage(this: any) {
         <link rel="icon" href="/relu_icon.ico" />
       </Head>
 
-      <div>
+      <div className={styles.white_background}>
         <div className={styles.scansWrapper}>{allScans()}</div>
+        <div className={styles.patientScan_filler}></div>
+        <div className={styles.patientScan_filler}></div>
+        <div className={styles.patientScan_filler}></div>
+        <div className={styles.patientScan_filler}></div>
+        <div className={styles.patientScan_filler}></div>
+        <div className={styles.patientScan_filler}></div>
+        <div className={styles.patientScan_filler}></div>
+        <div className={styles.patientScan_filler}></div>
+        <div className={styles.patientScan_filler}></div>
+        <div className={styles.patientScan_filler}></div>
+        <div className={styles.patientScan_filler}></div>
         <SidebarPatient />
         <HeaderPatient />
       </div>

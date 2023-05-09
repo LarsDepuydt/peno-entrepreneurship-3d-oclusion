@@ -245,6 +245,29 @@ export const GetScanByIdResponse = proto3.makeMessageType(
 );
 
 /**
+ * @generated from message threedoclusion.v1.UpdateScanByIdRequest
+ */
+export const UpdateScanByIdRequest = proto3.makeMessageType(
+  "threedoclusion.v1.UpdateScanByIdRequest",
+  () => [
+    { no: 1, name: "id", kind: "scalar", T: 9 /* ScalarType.STRING */ },
+    { no: 2, name: "scan_file", kind: "scalar", T: 9 /* ScalarType.STRING */ },
+    { no: 3, name: "notes", kind: "scalar", T: 9 /* ScalarType.STRING */ },
+    { no: 4, name: "patient_id", kind: "scalar", T: 5 /* ScalarType.INT32 */ },
+  ],
+);
+
+/**
+ * @generated from message threedoclusion.v1.UpdateScanByIdResponse
+ */
+export const UpdateScanByIdResponse = proto3.makeMessageType(
+  "threedoclusion.v1.UpdateScanByIdResponse",
+  () => [
+    { no: 1, name: "message", kind: "scalar", T: 9 /* ScalarType.STRING */ },
+  ],
+);
+
+/**
  * PATIENT
  *
  * @generated from message threedoclusion.v1.Patient
@@ -563,6 +586,44 @@ export const UpdatePatientByIdResponse = proto3.makeMessageType(
   "threedoclusion.v1.UpdatePatientByIdResponse",
   () => [
     { no: 1, name: "message", kind: "scalar", T: 9 /* ScalarType.STRING */ },
+  ],
+);
+
+/**
+ * @generated from message threedoclusion.v1.GetAllPinnedPatientsRequest
+ */
+export const GetAllPinnedPatientsRequest = proto3.makeMessageType(
+  "threedoclusion.v1.GetAllPinnedPatientsRequest",
+  () => [
+    { no: 1, name: "pinned", kind: "scalar", T: 8 /* ScalarType.BOOL */ },
+  ],
+);
+
+/**
+ * @generated from message threedoclusion.v1.GetAllPinnedPatientsResponse
+ */
+export const GetAllPinnedPatientsResponse = proto3.makeMessageType(
+  "threedoclusion.v1.GetAllPinnedPatientsResponse",
+  () => [
+    { no: 1, name: "patients", kind: "message", T: Patient, repeated: true },
+  ],
+);
+
+/**
+ * @generated from message threedoclusion.v1.GetAllUnPinnedPatientsRequest
+ */
+export const GetAllUnPinnedPatientsRequest = proto3.makeMessageType(
+  "threedoclusion.v1.GetAllUnPinnedPatientsRequest",
+  [],
+);
+
+/**
+ * @generated from message threedoclusion.v1.GetAllUnPinnedPatientsResponse
+ */
+export const GetAllUnPinnedPatientsResponse = proto3.makeMessageType(
+  "threedoclusion.v1.GetAllUnPinnedPatientsResponse",
+  () => [
+    { no: 1, name: "patients", kind: "message", T: Patient, repeated: true },
   ],
 );
 
