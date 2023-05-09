@@ -27,16 +27,15 @@ interface HeaderDoctorProps {
 }
 
 interface patientValues {
-  id : number; 
+  id: number;
   patientFirstName: string;
   patientLastName: string;
 
   pinned: boolean;
   notes: string;
 
-  dentistID : number; 
+  dentistID: number;
 }
-
 
 export function SidebarDoctor() {
   const router = useRouter();
@@ -58,7 +57,6 @@ export function SidebarDoctor() {
           <Search_Name />
         </div>
         <div className={stylesButton.absoluteWrapper}>
-          <button type="button" className={stylesButton.relu_btn} id={stylesButton.homeIcon} onClick={home}></button>
           <ReluLink />
           <button type="button" className={stylesButton.relu_btn} id={stylesButton.waitIcon} onClick={wait}></button>
         </div>
@@ -76,12 +74,11 @@ export function SidebarPatient() {
 
   let patientID = process.env.REACT_APP_PATIENT_ID!;
 
+  const { data: patientInfoRequest } = useQuery(getPatientById.useQuery({ id: parseInt(patientID) }));
+  console.log(patientInfoRequest);
 
-  const { data : patientInfoRequest } = useQuery(getPatientById.useQuery({id : parseInt(patientID)}));
-  console.log(patientInfoRequest)
-
-  const queryupdate = updatePatientById.useQuery(patientInfoRequest)
-  const { data, refetch } = useQuery(queryupdate.queryKey, queryupdate.queryFn, {enabled : false} ); 
+  const queryupdate = updatePatientById.useQuery(patientInfoRequest);
+  const { data, refetch } = useQuery(queryupdate.queryKey, queryupdate.queryFn, { enabled: false });
   //console.log(data)
 
   let notesPatient = patientInfoRequest?.notes;
@@ -94,16 +91,13 @@ export function SidebarPatient() {
   */
 
   const handleAddNotePatient = (note: string) => {
-    note = note.concat('@.')
-    notesPatient = patientInfoRequest?.notes +  note ;
+    note = note.concat('@.');
+    notesPatient = patientInfoRequest?.notes + note;
     refetch();
-    patientInfoRequest.notes = notesPatient; 
-    console.log(patientInfoRequest)
-    console.log(data)
-
-
+    patientInfoRequest.notes = notesPatient;
+    console.log(patientInfoRequest);
+    console.log(data);
   };
-
 
   /*message UpdatePatientByIdRequest {
     int32 id = 1;
@@ -118,7 +112,6 @@ export function SidebarPatient() {
   if (patientInfoRequest != undefined) {
     return (
       <>
-      refetch();
         <div className={styleSidebar.sidebar}>
           <WelcomingPatient />
           <NoteInput onAddNote={handleAddNotePatient} />
@@ -133,15 +126,13 @@ export function SidebarPatient() {
         </div>
       </>
     );
-  } 
-  else {
+  } else {
     return (
       <>
-      refetch();
         <div className={styleSidebar.sidebar}>
           <WelcomingPatient />
           <NoteInput onAddNote={handleAddNotePatient} />
-          <NoteList notes='@.'/>
+          <NoteList notes="@." />
           <div className={stylesButton.sidebarButton}>
             <New_Scan />
           </div>
@@ -153,7 +144,6 @@ export function SidebarPatient() {
       </>
     );
   }
-  
 }
 
 export function SidebarObj() {

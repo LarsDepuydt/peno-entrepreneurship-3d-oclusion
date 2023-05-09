@@ -24,13 +24,6 @@ export default function ScanPage(this: any) {
 
   const { data, refetch } = useQuery(getAllScans.useQuery({ enabled: true }));
 
-  useEffect(() => {
-    return () => {
-      // cleanup function to cancel subscription
-      data && refetch();
-    };
-  }, [data]);
-
   const iterateScans = (scan: scanData) => {
     return <Scan scanid={scan.id} date={scan.createdAt} notes={scan.notes} patientid={scan.patientId} />;
   };
@@ -56,18 +49,19 @@ export default function ScanPage(this: any) {
       </Head>
 
       <div className={styles.white_background}>
-        <div className={styles.scansWrapper}>{allScans()}</div>
-        <div className={styles.patientScan_filler}></div>
-        <div className={styles.patientScan_filler}></div>
-        <div className={styles.patientScan_filler}></div>
-        <div className={styles.patientScan_filler}></div>
-        <div className={styles.patientScan_filler}></div>
-        <div className={styles.patientScan_filler}></div>
-        <div className={styles.patientScan_filler}></div>
-        <div className={styles.patientScan_filler}></div>
-        <div className={styles.patientScan_filler}></div>
-        <div className={styles.patientScan_filler}></div>
-        <div className={styles.patientScan_filler}></div>
+        <div className={styles.scansWrapper}>
+          {allScans()} <div className={styles.patientScan_filler}></div>
+          <div className={styles.patientScan_filler}></div>
+          <div className={styles.patientScan_filler}></div>
+          <div className={styles.patientScan_filler}></div>
+          <div className={styles.patientScan_filler}></div>
+          <div className={styles.patientScan_filler}></div>
+          <div className={styles.patientScan_filler}></div>
+          <div className={styles.patientScan_filler}></div>
+          <div className={styles.patientScan_filler}></div>
+          <div className={styles.patientScan_filler}></div>
+          <div className={styles.patientScan_filler}></div>
+        </div>
         <SidebarPatient />
         <HeaderPatient />
       </div>
