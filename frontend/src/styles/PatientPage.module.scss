@@ -148,3 +148,9 @@ $patientBorder-width: 1.5px;
   width: $patientWidth;
   margin: 0px $patientMargin;
 }
+
+.white_background {
+  background-color: white;
+  width: 100vw;
+  height: 100vh;
+}

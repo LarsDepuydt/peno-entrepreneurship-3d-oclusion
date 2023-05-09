@@ -64,7 +64,7 @@ export default function PatientPage(this: any) {
         <link rel="icon" href="/relu_icon.ico" />
       </Head>
 
-      <div>
+      <div className={styles.white_background}>
         <div className={styles.scansWrapper}>
           {allPatients()}
 
