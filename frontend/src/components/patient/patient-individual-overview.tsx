@@ -42,8 +42,8 @@ export function SinglePatient({ id, patientfirstname, patientlastname }: patient
 
   //const router = useRouter();
 
-  const num = randInt(1, 4);
-  const pfpsrc = 'pfp' + num.toString();
+  const num = id % 4;
+  const pfps = [pfp1, pfp2, pfp3, pfp4];
 
   return (
     <div className={styles.patientScan_container}>
@@ -72,7 +72,7 @@ export function SinglePatient({ id, patientfirstname, patientlastname }: patient
             <Image
               id={patientfirstname.concat(' ', patientlastname)}
               className={showButtons ? styles.picture_hover : styles.picture}
-              src={pfpsrc}
+              src={pfps[num]}
               alt="3d picture of teeth"
             />
           </div>

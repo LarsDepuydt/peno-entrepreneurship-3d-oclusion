@@ -26,6 +26,11 @@ interface HeaderDoctorProps {
 }
 
 export function SidebarDoctor() {
+  const router = useRouter();
+  const home = () => {
+    process.env.REACT_APP_PATIENT_ID = undefined;
+    router.push('/patient');
+  };
   return (
     <>
       <div className={styleSidebar.sidebar}>
@@ -36,6 +41,7 @@ export function SidebarDoctor() {
           <Search_Name />
         </div>
         <div className={stylesButton.absoluteWrapper}>
+          <button type="button" className={stylesButton.relu_btn} id={stylesButton.homeIcon} onClick={home}></button>
           <ReluLink />
         </div>
       </div>
