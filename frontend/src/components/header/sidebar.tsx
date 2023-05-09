@@ -16,7 +16,6 @@ import NoteInput from '../OBJ_view/note-input';
 import NoteList from '../OBJ_view/note-list';
 import { useState } from 'react';
 
-
 interface HeaderPatientProps {
   patientfirstname: string;
   patientlastname: string;
@@ -35,7 +34,7 @@ export function SidebarDoctor() {
     router.push('/patient');
   };
 
-  const wait = () => router.push('/client');
+  const wait = () => router.push('/settings');
 
   return (
     <>
