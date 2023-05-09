@@ -468,7 +468,7 @@ function initThree(setOpenMenu: any, setCurrentScan: any) {
 
   // resize
 
-  window.addEventListener("resize", onWindowResize);
+  //window.addEventListener("resize", onWindowResize);
 }
 
 function loadObjects() {
