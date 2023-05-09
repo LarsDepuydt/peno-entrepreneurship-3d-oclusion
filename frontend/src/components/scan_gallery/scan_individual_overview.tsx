@@ -15,6 +15,8 @@ import DropdownButton from '../../components/scan_gallery/scan_dropdown';
 
 
 import scanpicture from '../../../public/3d-teeth.jpg';
+import { SubscribeConnectionRequest, SubscribeConnectionResponse } from "@/gen/proto/threedoclusion/v1/service_pb";
+
 
 interface scanProfile {
   scanid: number;
@@ -23,9 +25,10 @@ interface scanProfile {
   notes: string;
   patientid: number;
 
+  setStream: (stream: AsyncIterable<SubscribeConnectionResponse>) => void;
 }
 
-export function SingleScan({ scanid, patientid, notes, date }: scanProfile) {
+export function SingleScan({ scanid, patientid, notes, date, setStream }: scanProfile) {
   const parsedDate = new Date(date);
   const today = new Date();
   const options: Intl.DateTimeFormatOptions = {
@@ -123,7 +126,7 @@ export function SingleScan({ scanid, patientid, notes, date }: scanProfile) {
 
               <OpenObjButton patientID={patientid} scanID={scanid} />
 
-              <InspectVR patientID={patientid} scanID={scanid} />
+              <InspectVR patientID={patientid} scanID={scanid} setStream={setStream} />
               <EditButton />
               <DeleteButton scanID={scanid} />
             </div>
