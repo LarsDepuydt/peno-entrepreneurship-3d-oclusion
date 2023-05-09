@@ -3,6 +3,7 @@ import { Formik, Field, Form, ErrorMessage, useFormik } from 'formik';
 
 import styles from '@/styles/Modal.module.css';
 import styleB from '@/styles/Buttons.module.css';
+
 import { useQuery } from '@tanstack/react-query';
 import { addScan } from '@/gen/proto/threedoclusion/v1/service-ScanService_connectquery';
 import useStorage from '@/hooks/useStorage';
@@ -148,10 +149,13 @@ export default function ModalForm() {
                     <form className="w-full p-3" action="" onSubmit={(e) => e.preventDefault()}>
                       <div>
                         <label>
+
                           <input className="block w-0 h-0" name="file" type="file" onChange={onFileUploadChange} />{' '}
+
                         </label>
                       </div>
                     </form>
+
 
                     <div className="mb-3">
                       <Field
@@ -165,6 +169,7 @@ export default function ModalForm() {
 
                     <div className={styles.spacingbtn}>
                       <button type="submit" className={styleB.relu_btn} onClick={handleRedirect}>
+
                         Save scan
                       </button>
                       <button type="button" className={styleB.relu_btn} onClick={toggleModal}>

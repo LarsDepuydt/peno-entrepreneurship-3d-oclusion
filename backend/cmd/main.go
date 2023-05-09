@@ -16,10 +16,10 @@ func main() {
     dbName := os.Getenv("db_name")
     connectionString := fmt.Sprintf("user=%s password=%s dbname=%s host=/cloudsql/%s sslmode=disable", dbUser, dbPassword, dbName, connectionName)
 
-    database, err := sql.Open("postgres", connectionString)
-    if err != nil {
-        log.Fatalf("Failed to open database connection: %v", err)
-    }
+	database, err := sql.Open("postgres", connectionString)
+	if err != nil {
+			log.Fatalf("Failed to open database connection: %v", err)
+	}
 	defer database.Close()
 
 	

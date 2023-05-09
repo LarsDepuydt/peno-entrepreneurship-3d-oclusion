@@ -12,6 +12,7 @@
 }
 
 .header_layout {
+  z-index: 31;
   width: 100vw;
   height: 8vh;
   display: flex;
