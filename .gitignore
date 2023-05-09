@@ -18,6 +18,7 @@ frontend/.firebase
 
 
 *.cache
+*.DS_Store
 
 relu-backend-47dc600a7582.json
 cloud-sql-proxy
