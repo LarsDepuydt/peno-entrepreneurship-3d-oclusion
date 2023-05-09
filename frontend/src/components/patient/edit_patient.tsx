@@ -33,7 +33,6 @@ export default function EditPatientButton({ patientID }: { patientID: number }) 
 
   const query = getPatientById.useQuery({ id: patientID });
   const { data, refetch } = useQuery(query.queryKey, query.queryFn, { enabled: false });
-  console.log(data);
 
   const handleRedirect = () => {
     refetch();
