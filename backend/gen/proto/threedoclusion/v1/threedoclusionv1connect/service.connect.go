@@ -33,6 +33,15 @@ const (
 // reflection-formatted method names, remove the leading slash and convert the remaining slash to a
 // period.
 const (
+	// ScanServiceSendMenuOptionProcedure is the fully-qualified name of the ScanService's
+	// SendMenuOption RPC.
+	ScanServiceSendMenuOptionProcedure = "/threedoclusion.v1.ScanService/SendMenuOption"
+	// ScanServiceSubscribeConnectionProcedure is the fully-qualified name of the ScanService's
+	// SubscribeConnection RPC.
+	ScanServiceSubscribeConnectionProcedure = "/threedoclusion.v1.ScanService/SubscribeConnection"
+	// ScanServiceUpdateConnectionStatusProcedure is the fully-qualified name of the ScanService's
+	// UpdateConnectionStatus RPC.
+	ScanServiceUpdateConnectionStatusProcedure = "/threedoclusion.v1.ScanService/UpdateConnectionStatus"
 	// ScanServiceSendVRProcedure is the fully-qualified name of the ScanService's SendVR RPC.
 	ScanServiceSendVRProcedure = "/threedoclusion.v1.ScanService/SendVR"
 	// ScanServiceWaitingProcedure is the fully-qualified name of the ScanService's Waiting RPC.
@@ -94,6 +103,9 @@ const (
 
 // ScanServiceClient is a client for the threedoclusion.v1.ScanService service.
 type ScanServiceClient interface {
+	SendMenuOption(context.Context, *connect_go.Request[v1.SendMenuOptionRequest]) (*connect_go.Response[v1.SendMenuOptionResponse], error)
+	SubscribeConnection(context.Context, *connect_go.Request[v1.SubscribeConnectionRequest]) (*connect_go.ServerStreamForClient[v1.SubscribeConnectionResponse], error)
+	UpdateConnectionStatus(context.Context, *connect_go.Request[v1.UpdateConnectionStatusRequest]) (*connect_go.Response[v1.UpdateConnectionStatusResponse], error)
 	SendVR(context.Context, *connect_go.Request[v1.SendVRRequest]) (*connect_go.Response[v1.SendVRResponse], error)
 	Waiting(context.Context, *connect_go.Request[v1.WaitingRequest]) (*connect_go.ServerStreamForClient[v1.WaitingResponse], error)
 	AddScan(context.Context, *connect_go.Request[v1.AddScanRequest]) (*connect_go.Response[v1.AddScanResponse], error)
@@ -129,6 +141,21 @@ type ScanServiceClient interface {
 func NewScanServiceClient(httpClient connect_go.HTTPClient, baseURL string, opts ...connect_go.ClientOption) ScanServiceClient {
 	baseURL = strings.TrimRight(baseURL, "/")
 	return &scanServiceClient{
+		sendMenuOption: connect_go.NewClient[v1.SendMenuOptionRequest, v1.SendMenuOptionResponse](
+			httpClient,
+			baseURL+ScanServiceSendMenuOptionProcedure,
+			opts...,
+		),
+		subscribeConnection: connect_go.NewClient[v1.SubscribeConnectionRequest, v1.SubscribeConnectionResponse](
+			httpClient,
+			baseURL+ScanServiceSubscribeConnectionProcedure,
+			opts...,
+		),
+		updateConnectionStatus: connect_go.NewClient[v1.UpdateConnectionStatusRequest, v1.UpdateConnectionStatusResponse](
+			httpClient,
+			baseURL+ScanServiceUpdateConnectionStatusProcedure,
+			opts...,
+		),
 		sendVR: connect_go.NewClient[v1.SendVRRequest, v1.SendVRResponse](
 			httpClient,
 			baseURL+"/threedoclusion.v1.ScanService/SendVR",
@@ -250,29 +277,47 @@ func NewScanServiceClient(httpClient connect_go.HTTPClient, baseURL string, opts
 
 // scanServiceClient implements ScanServiceClient.
 type scanServiceClient struct {
-	sendVR            *connect_go.Client[v1.SendVRRequest, v1.SendVRResponse]
-	waiting           *connect_go.Client[v1.WaitingRequest, v1.WaitingResponse]
-	addScan           *connect_go.Client[v1.AddScanRequest, v1.AddScanResponse]
-	deleteScanById    *connect_go.Client[v1.DeleteScanByIdRequest, v1.DeleteScanByIdResponse]
-	getAllScans       *connect_go.Client[v1.GetAllScansRequest, v1.GetAllScansResponse]
-	getScanById       *connect_go.Client[v1.GetScanByIdRequest, v1.GetScanByIdResponse]
-	addTag            *connect_go.Client[v1.AddTagRequest, v1.AddTagResponse]
-	deleteTagById     *connect_go.Client[v1.DeleteTagByIdRequest, v1.DeleteTagByIdResponse]
-	getAllTags        *connect_go.Client[v1.GetAllTagsRequest, v1.GetAllTagsResponse]
-	getTagById        *connect_go.Client[v1.GetTagByIdRequest, v1.GetTagByIdResponse]
-	addPatient        *connect_go.Client[v1.AddPatientRequest, v1.AddPatientResponse]
-	deletePatientById *connect_go.Client[v1.DeletePatientByIdRequest, v1.DeletePatientByIdResponse]
-	getAllPatients    *connect_go.Client[v1.GetAllPatientsRequest, v1.GetAllPatientsResponse]
-	getPatientById    *connect_go.Client[v1.GetPatientByIdRequest, v1.GetPatientByIdResponse]
-	getPatientByName  *connect_go.Client[v1.GetPatientByNameRequest, v1.GetPatientByNameResponse]
-	updatePatientById *connect_go.Client[v1.UpdatePatientByIdRequest, v1.UpdatePatientByIdResponse]
-	addDentist        *connect_go.Client[v1.AddDentistRequest, v1.AddDentistResponse]
-	deleteDentistById *connect_go.Client[v1.DeleteDentistByIdRequest, v1.DeleteDentistByIdResponse]
-	getAllDentists    *connect_go.Client[v1.GetAllDentistsRequest, v1.GetAllDentistsResponse]
-	getDentistById    *connect_go.Client[v1.GetDentistByIdRequest, v1.GetDentistByIdResponse]
-	updateDentistById *connect_go.Client[v1.UpdateDentistByIdRequest, v1.UpdateDentistByIdResponse]
-	login             *connect_go.Client[v1.LoginRequest, v1.LoginResponse]
-	register          *connect_go.Client[v1.RegisterRequest, v1.RegisterResponse]
+	sendMenuOption         *connect_go.Client[v1.SendMenuOptionRequest, v1.SendMenuOptionResponse]
+	subscribeConnection    *connect_go.Client[v1.SubscribeConnectionRequest, v1.SubscribeConnectionResponse]
+	updateConnectionStatus *connect_go.Client[v1.UpdateConnectionStatusRequest, v1.UpdateConnectionStatusResponse]
+	sendVR                 *connect_go.Client[v1.SendVRRequest, v1.SendVRResponse]
+	waiting                *connect_go.Client[v1.WaitingRequest, v1.WaitingResponse]
+	addScan                *connect_go.Client[v1.AddScanRequest, v1.AddScanResponse]
+	deleteScanById         *connect_go.Client[v1.DeleteScanByIdRequest, v1.DeleteScanByIdResponse]
+	getAllScans            *connect_go.Client[v1.GetAllScansRequest, v1.GetAllScansResponse]
+	getScanById            *connect_go.Client[v1.GetScanByIdRequest, v1.GetScanByIdResponse]
+	addTag                 *connect_go.Client[v1.AddTagRequest, v1.AddTagResponse]
+	deleteTagById          *connect_go.Client[v1.DeleteTagByIdRequest, v1.DeleteTagByIdResponse]
+	getAllTags             *connect_go.Client[v1.GetAllTagsRequest, v1.GetAllTagsResponse]
+	getTagById             *connect_go.Client[v1.GetTagByIdRequest, v1.GetTagByIdResponse]
+	addPatient             *connect_go.Client[v1.AddPatientRequest, v1.AddPatientResponse]
+	deletePatientById      *connect_go.Client[v1.DeletePatientByIdRequest, v1.DeletePatientByIdResponse]
+	getAllPatients         *connect_go.Client[v1.GetAllPatientsRequest, v1.GetAllPatientsResponse]
+	getPatientById         *connect_go.Client[v1.GetPatientByIdRequest, v1.GetPatientByIdResponse]
+	getPatientByName       *connect_go.Client[v1.GetPatientByNameRequest, v1.GetPatientByNameResponse]
+	updatePatientById      *connect_go.Client[v1.UpdatePatientByIdRequest, v1.UpdatePatientByIdResponse]
+	addDentist             *connect_go.Client[v1.AddDentistRequest, v1.AddDentistResponse]
+	deleteDentistById      *connect_go.Client[v1.DeleteDentistByIdRequest, v1.DeleteDentistByIdResponse]
+	getAllDentists         *connect_go.Client[v1.GetAllDentistsRequest, v1.GetAllDentistsResponse]
+	getDentistById         *connect_go.Client[v1.GetDentistByIdRequest, v1.GetDentistByIdResponse]
+	updateDentistById      *connect_go.Client[v1.UpdateDentistByIdRequest, v1.UpdateDentistByIdResponse]
+	login                  *connect_go.Client[v1.LoginRequest, v1.LoginResponse]
+	register               *connect_go.Client[v1.RegisterRequest, v1.RegisterResponse]
+}
+
+// SendMenuOption calls threedoclusion.v1.ScanService.SendMenuOption.
+func (c *scanServiceClient) SendMenuOption(ctx context.Context, req *connect_go.Request[v1.SendMenuOptionRequest]) (*connect_go.Response[v1.SendMenuOptionResponse], error) {
+	return c.sendMenuOption.CallUnary(ctx, req)
+}
+
+// SubscribeConnection calls threedoclusion.v1.ScanService.SubscribeConnection.
+func (c *scanServiceClient) SubscribeConnection(ctx context.Context, req *connect_go.Request[v1.SubscribeConnectionRequest]) (*connect_go.ServerStreamForClient[v1.SubscribeConnectionResponse], error) {
+	return c.subscribeConnection.CallServerStream(ctx, req)
+}
+
+// UpdateConnectionStatus calls threedoclusion.v1.ScanService.UpdateConnectionStatus.
+func (c *scanServiceClient) UpdateConnectionStatus(ctx context.Context, req *connect_go.Request[v1.UpdateConnectionStatusRequest]) (*connect_go.Response[v1.UpdateConnectionStatusResponse], error) {
+	return c.updateConnectionStatus.CallUnary(ctx, req)
 }
 
 // SendVR calls threedoclusion.v1.ScanService.SendVR.
@@ -392,6 +437,9 @@ func (c *scanServiceClient) Register(ctx context.Context, req *connect_go.Reques
 
 // ScanServiceHandler is an implementation of the threedoclusion.v1.ScanService service.
 type ScanServiceHandler interface {
+	SendMenuOption(context.Context, *connect_go.Request[v1.SendMenuOptionRequest]) (*connect_go.Response[v1.SendMenuOptionResponse], error)
+	SubscribeConnection(context.Context, *connect_go.Request[v1.SubscribeConnectionRequest], *connect_go.ServerStream[v1.SubscribeConnectionResponse]) error
+	UpdateConnectionStatus(context.Context, *connect_go.Request[v1.UpdateConnectionStatusRequest]) (*connect_go.Response[v1.UpdateConnectionStatusResponse], error)
 	SendVR(context.Context, *connect_go.Request[v1.SendVRRequest]) (*connect_go.Response[v1.SendVRResponse], error)
 	Waiting(context.Context, *connect_go.Request[v1.WaitingRequest], *connect_go.ServerStream[v1.WaitingResponse]) error
 	AddScan(context.Context, *connect_go.Request[v1.AddScanRequest]) (*connect_go.Response[v1.AddScanResponse], error)
@@ -424,8 +472,24 @@ type ScanServiceHandler interface {
 // and JSON codecs. They also support gzip compression.
 func NewScanServiceHandler(svc ScanServiceHandler, opts ...connect_go.HandlerOption) (string, http.Handler) {
 	mux := http.NewServeMux()
-	mux.Handle("/threedoclusion.v1.ScanService/SendVR", connect_go.NewUnaryHandler(
-		"/threedoclusion.v1.ScanService/SendVR",
+
+	mux.Handle(ScanServiceSendMenuOptionProcedure, connect_go.NewUnaryHandler(
+		ScanServiceSendMenuOptionProcedure,
+		svc.SendMenuOption,
+		opts...,
+	))
+	mux.Handle(ScanServiceSubscribeConnectionProcedure, connect_go.NewServerStreamHandler(
+		ScanServiceSubscribeConnectionProcedure,
+		svc.SubscribeConnection,
+		opts...,
+	))
+	mux.Handle(ScanServiceUpdateConnectionStatusProcedure, connect_go.NewUnaryHandler(
+		ScanServiceUpdateConnectionStatusProcedure,
+		svc.UpdateConnectionStatus,
+		opts...,
+	))
+	mux.Handle(ScanServiceSendVRProcedure, connect_go.NewUnaryHandler(
+		ScanServiceSendVRProcedure,
 		svc.SendVR,
 		opts...,
 	))
@@ -546,6 +610,18 @@ func NewScanServiceHandler(svc ScanServiceHandler, opts ...connect_go.HandlerOpt
 
 // UnimplementedScanServiceHandler returns CodeUnimplemented from all methods.
 type UnimplementedScanServiceHandler struct{}
+
+func (UnimplementedScanServiceHandler) SendMenuOption(context.Context, *connect_go.Request[v1.SendMenuOptionRequest]) (*connect_go.Response[v1.SendMenuOptionResponse], error) {
+	return nil, connect_go.NewError(connect_go.CodeUnimplemented, errors.New("threedoclusion.v1.ScanService.SendMenuOption is not implemented"))
+}
+
+func (UnimplementedScanServiceHandler) SubscribeConnection(context.Context, *connect_go.Request[v1.SubscribeConnectionRequest], *connect_go.ServerStream[v1.SubscribeConnectionResponse]) error {
+	return connect_go.NewError(connect_go.CodeUnimplemented, errors.New("threedoclusion.v1.ScanService.SubscribeConnection is not implemented"))
+}
+
+func (UnimplementedScanServiceHandler) UpdateConnectionStatus(context.Context, *connect_go.Request[v1.UpdateConnectionStatusRequest]) (*connect_go.Response[v1.UpdateConnectionStatusResponse], error) {
+	return nil, connect_go.NewError(connect_go.CodeUnimplemented, errors.New("threedoclusion.v1.ScanService.UpdateConnectionStatus is not implemented"))
+}
 
 func (UnimplementedScanServiceHandler) SendVR(context.Context, *connect_go.Request[v1.SendVRRequest]) (*connect_go.Response[v1.SendVRResponse], error) {
 	return nil, connect_go.NewError(connect_go.CodeUnimplemented, errors.New("threedoclusion.v1.ScanService.SendVR is not implemented"))

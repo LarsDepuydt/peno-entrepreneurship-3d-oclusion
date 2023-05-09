@@ -22,32 +22,23 @@ export default function ModalForm() {
   const [patientname, setData] = useState({ firstName: '', lastName: '' });
   //let DentistID = process.env.REACT_APP_DENTIST_ID!;
 
-  const query = getPatientByName.useQuery(patientname);
-  const { data } = useQuery(query.queryKey, query.queryFn, { enabled: false });
-
   const toggleModal = () => {
     setModal(!modal); // change state f -> t and t -> f
   };
 
   const submitFunction = (values: namePatient) => {
     console.log(values);
-    setData(values);
-    console.log(data);
 
     const fn = values.firstName;
     const ln = values.lastName;
 
-    if (data != undefined && data?.patients.length != 0) {
-      router.push({
-        pathname: '/patient-name',
-        query: {
-          fn,
-          ln,
-        },
-      });
-    } else {
-      setModal(modal!);
-    }
+    router.push({
+      pathname: '/patient-name',
+      query: {
+        fn,
+        ln,
+      },
+    });
   };
 
   return (

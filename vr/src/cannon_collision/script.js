@@ -34,7 +34,6 @@ let lj_sphere, uj_sphere;
 
 let lj_loaded = false, uj_loaded = false;
 
-
 let target = new THREE.Vector3();
 const clock = new THREE.Clock();
 let lj_target = new THREE.Vector3();
