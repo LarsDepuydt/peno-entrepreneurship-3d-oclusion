@@ -3,7 +3,9 @@ import { WaitingRequest } from "@/gen/proto/threedoclusion/v1/service_pb";
 import { ScanService } from "@/gen/proto/threedoclusion/v1/service_connect";
 
 import { createPromiseClient } from "@bufbuild/connect";
-import { createConnectTransport } from "@bufbuild/connect-web";
+import { useTransport } from "@bufbuild/connect-query";
+
+
 import { useRouter } from 'next/router';
 import { useState } from "react";
 import { useEffect } from "react";
@@ -23,11 +25,9 @@ import styles from "@/styles/WaitPage.module.css"
 
 export default function WaitPage() {
   const [submitted, setSubmitted] = useState(false);
-  const [formVisible, setFormVisible] = useState(true); // Add formVisible state
+  const [formVisible, setFormVisible] = useState(true);
 
-  const transport = createConnectTransport({
-    baseUrl: "https://backend-service-2ybjkij5qq-uc.a.run.app",
-  });
+  const transport = useTransport();
 
   const router = useRouter();
 
@@ -57,7 +57,6 @@ export default function WaitPage() {
       setFormVisible(false); // Set formVisible to false
     }
   }
-  // See _app, can't use queryClient for streams so I made a new client here -> implement in _app as well to support other streams?
 
   async function waitForResponse(codeValue: number, cookieActive: boolean) {
     const client = createPromiseClient(ScanService, transport);
@@ -68,23 +67,6 @@ export default function WaitPage() {
 
       console.log(Cookies.get('cookie'));
     }
-
-    /*const cookieCode = Cookies.get('cookie');
-
-    var req = new WaitingRequest({uniqueCode : codeValue});
-
-    if (cookieCode) {
-      const cookieString = parseInt(cookieCode);
-      req = new WaitingRequest({uniqueCode : cookieString});
-      console.log(cookieString);
-    } else {
-      const codeString: string = `${codeValue}`;
-      Cookies.set('cookie', codeString, { expires: 7, path: '/' });
-
-      console.log(Cookies.get('cookie'));
-      req = new WaitingRequest({uniqueCode : codeValue});
-    }  */
-
 
     const req = new WaitingRequest({uniqueCode : codeValue})
   

@@ -299,6 +299,120 @@ export const TagResponse = proto3.makeMessageType(
 );
 
 /**
+ * @generated from message threedoclusion.v1.SendPositionScanRequest
+ */
+export const SendPositionScanRequest = proto3.makeMessageType(
+  "threedoclusion.v1.SendPositionScanRequest",
+  () => [
+    { no: 1, name: "scan", kind: "message", T: Scan },
+  ],
+);
+
+/**
+ * @generated from message threedoclusion.v1.GetPositionScanResponse
+ */
+export const GetPositionScanResponse = proto3.makeMessageType(
+  "threedoclusion.v1.GetPositionScanResponse",
+  () => [
+    { no: 1, name: "scan", kind: "message", T: Scan },
+  ],
+);
+
+/**
+ * @generated from message threedoclusion.v1.SendMenuOptionRequest
+ */
+export const SendMenuOptionRequest = proto3.makeMessageType(
+  "threedoclusion.v1.SendMenuOptionRequest",
+  () => [
+    { no: 1, name: "option", kind: "enum", T: proto3.getEnumType(SendMenuOptionRequest_Option) },
+    { no: 2, name: "save_data", kind: "message", T: ScanSave, oneof: "option_data" },
+    { no: 3, name: "scan_id", kind: "scalar", T: 5 /* ScalarType.INT32 */, oneof: "option_data" },
+  ],
+);
+
+/**
+ * @generated from enum threedoclusion.v1.SendMenuOptionRequest.Option
+ */
+export const SendMenuOptionRequest_Option = proto3.makeEnum(
+  "threedoclusion.v1.SendMenuOptionRequest.Option",
+  [
+    {no: 0, name: "OPTION_SAVE_UNSPECIFIED", localName: "SAVE_UNSPECIFIED"},
+    {no: 1, name: "OPTION_LOAD", localName: "LOAD"},
+    {no: 2, name: "OPTION_SAVE_AND_QUIT", localName: "SAVE_AND_QUIT"},
+    {no: 3, name: "OPTION_QUIT", localName: "QUIT"},
+  ],
+);
+
+/**
+ * oneof isn't supported with repeated
+ *
+ * @generated from message threedoclusion.v1.SendMenuOptionResponse
+ */
+export const SendMenuOptionResponse = proto3.makeMessageType(
+  "threedoclusion.v1.SendMenuOptionResponse",
+  () => [
+    { no: 1, name: "wrap", kind: "message", T: SendMenuOptionResponse_Wrapper, opt: true },
+    { no: 2, name: "other_data", kind: "scalar", T: 9 /* ScalarType.STRING */, opt: true },
+  ],
+);
+
+/**
+ * @generated from message threedoclusion.v1.SendMenuOptionResponse.Wrapper
+ */
+export const SendMenuOptionResponse_Wrapper = proto3.makeMessageType(
+  "threedoclusion.v1.SendMenuOptionResponse.Wrapper",
+  () => [
+    { no: 3, name: "load_data", kind: "message", T: ScanSave, repeated: true },
+  ],
+  {localName: "SendMenuOptionResponse_Wrapper"},
+);
+
+/**
+ * @generated from message threedoclusion.v1.UpdateConnectionStatusRequest
+ */
+export const UpdateConnectionStatusRequest = proto3.makeMessageType(
+  "threedoclusion.v1.UpdateConnectionStatusRequest",
+  () => [
+    { no: 1, name: "is_connected", kind: "scalar", T: 8 /* ScalarType.BOOL */ },
+    { no: 2, name: "scan_id", kind: "scalar", T: 5 /* ScalarType.INT32 */ },
+    { no: 3, name: "device_id", kind: "scalar", T: 5 /* ScalarType.INT32 */ },
+  ],
+);
+
+/**
+ * @generated from message threedoclusion.v1.UpdateConnectionStatusResponse
+ */
+export const UpdateConnectionStatusResponse = proto3.makeMessageType(
+  "threedoclusion.v1.UpdateConnectionStatusResponse",
+  [],
+);
+
+/**
+ * Info passed to subscribeStatus; use only one VR stream per client? Made scan-specific for now
+ *
+ * @generated from message threedoclusion.v1.SubscribeConnectionRequest
+ */
+export const SubscribeConnectionRequest = proto3.makeMessageType(
+  "threedoclusion.v1.SubscribeConnectionRequest",
+  () => [
+    { no: 1, name: "scan_id", kind: "scalar", T: 5 /* ScalarType.INT32 */ },
+    { no: 2, name: "device_id", kind: "scalar", T: 5 /* ScalarType.INT32 */ },
+  ],
+);
+
+/**
+ * @generated from message threedoclusion.v1.SubscribeConnectionResponse
+ */
+export const SubscribeConnectionResponse = proto3.makeMessageType(
+  "threedoclusion.v1.SubscribeConnectionResponse",
+  () => [
+    { no: 1, name: "is_connected", kind: "scalar", T: 8 /* ScalarType.BOOL */ },
+    { no: 2, name: "other_not_created", kind: "scalar", T: 8 /* ScalarType.BOOL */ },
+    { no: 3, name: "other_data", kind: "scalar", T: 9 /* ScalarType.STRING */, opt: true },
+  ],
+);
+
+/**
  * @generated from message threedoclusion.v1.SendVRRequest
  */
 export const SendVRRequest = proto3.makeMessageType(

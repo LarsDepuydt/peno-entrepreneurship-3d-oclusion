@@ -49,6 +49,19 @@
 .absoluteWrapper {
   padding-left: 15px;
   padding-bottom: 15px;
+  display: flex;
+  justify-content: space-between;
+  column-gap: 10px;
+}
+
+#waitIcon {
+  width: 48px;
+  height: 48px;
+  margin: 20px 30px;
+  background-image: url(../../public/settings_icon.png);
+  background-repeat: no-repeat;
+  background-position: center;
+  border: none;
 }
 
 #homeIcon {
@@ -83,6 +96,27 @@
   top: -55px;
   right: 0px;
   border: none;
+}
+
+#unpinnedIcon,
+#pinnedIcon {
+  width: 48px;
+  height: 48px;
+  margin: 8px;
+  background-repeat: no-repeat;
+  background-position: center;
+  position: absolute;
+  top: -55px;
+  left: 0px;
+  border: none;
+}
+
+#unpinnedIcon {
+  background-image: url(../../public/unpinned-icon.png);
+}
+
+#pinnedIcon {
+  background-image: url(../../public/pinned-icon.png);
 }
 
 #exitIcon {
@@ -130,12 +164,11 @@
   width: 48px;
   height: 48px;
   margin: 8px;
-  background-image: url(../../public/open-VR-icon.png);
+  background-image: url(../../public/VR_icon.png);
   background-repeat: no-repeat;
   background-position: center;
   border: none;
 }
-
 
 #editIcon {
   width: 48px;
@@ -147,14 +180,19 @@
   border: none;
 }
 
+#loadingIconSettings,
 #loadingIcon {
   width: 48px;
   height: 48px;
   margin: 8px;
-  background-image: url(../../public/menu-icon.png);
+  background-image: url(../../public/loading_icon.png);
   background-repeat: no-repeat;
   background-position: center;
   border: none;
+}
+
+#loadingIconSettings {
+  margin: 20px 30px;
 }
 
 #objIcon {
@@ -170,7 +208,7 @@
 .note_list {
   list-style-type: none;
   padding: 0;
-  margin: 0;
+  margin-left: 15px;
 }
 
 .notes_btn {
@@ -192,11 +230,10 @@
   margin-top: 10px;
   margin-left: 10px;
   margin-bottom: 10px;
-
 }
 
 .notes_btn:hover {
-  background-color: rgb(32,61,75,0.25);
+  background-color: rgb(32, 61, 75, 0.25);
 }
 
 .note_input {
@@ -213,13 +250,14 @@
 
   margin-right: 10px;
   margin-top: 10px;
-  margin-left: 10px;
+
+  margin-left: 20px;
+
   margin-bottom: 10px;
 
   min-height: 60px;
 }
 
 .note_input:hover {
-  background-color: rgb(32,61,75,0.25);
+  background-color: rgb(32, 61, 75, 0.25);
 }
-

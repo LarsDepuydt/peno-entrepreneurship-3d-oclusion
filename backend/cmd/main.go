@@ -9,7 +9,6 @@ import (
 	"github.com/LarsDepuydt/peno-entrepreneurship-3d-oclusion/cmd/serve"
 )
 
-
 func main() {
 	connectionName := os.Getenv("CLOUD_SQL_CONNECTION_NAME")
     dbUser := os.Getenv("postgres_user")
@@ -23,13 +22,14 @@ func main() {
     }
 	defer database.Close()
 
+	
 	// Check if the database connection works
 	err = database.Ping()
 	if err != nil {
 		panic(err)
 	}
 
-  	fmt.Println("Successfully connected!")
+	fmt.Println("Successfully connected!")
 
 	serve.Server(database)
 }
