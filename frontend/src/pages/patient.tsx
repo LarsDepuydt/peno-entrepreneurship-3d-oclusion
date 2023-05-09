@@ -1,4 +1,3 @@
-import 'bootstrap/dist/css/bootstrap.css';
 import styles from '@/styles/PatientPage.module.scss';
 
 import { HeaderDoctor } from '../components/header/header';
@@ -27,7 +26,7 @@ export default function PatientPage(this: any) {
   useEffect(() => {
     return () => {
       data && refetch();
-      console.log('cleanup');
+      //console.log('cleanup');
     };
   }, [data]);
 
@@ -45,15 +44,22 @@ export default function PatientPage(this: any) {
   };
 
   const allPatients = () => {
-    let arrayPatients: JSX.Element[] = [];
+    let arrayPatientsPinned: JSX.Element[] = [];
+    let arrayPatientsNotPinned: JSX.Element[] = [];
 
     if (data && data.patients) {
       data.patients.forEach((patient) => {
         if (patient.dentistId == parseInt(DentistID)) {
-          arrayPatients.push(iteratePatient(patient));
+          if (patient.pinned) {
+            arrayPatientsPinned.push(iteratePatient(patient));
+          } else {
+            arrayPatientsNotPinned.push(iteratePatient(patient));
+          }
         }
       });
     }
+
+    let arrayPatients = arrayPatientsPinned.concat(arrayPatientsNotPinned);
     return arrayPatients;
   };
 
@@ -68,6 +74,7 @@ export default function PatientPage(this: any) {
         <div className={styles.scansWrapper}>
           {allPatients()}
 
+
           <div className={styles.patient_filler}></div>
           <div className={styles.patient_filler}></div>
           <div className={styles.patient_filler}></div>
@@ -79,6 +86,7 @@ export default function PatientPage(this: any) {
           <div className={styles.patient_filler}></div>
           <div className={styles.patient_filler}></div>
           <div className={styles.patient_filler}></div>
+
         </div>
         <SidebarDoctor />
         <HeaderDoctor />
