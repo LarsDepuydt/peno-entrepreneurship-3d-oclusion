@@ -37,7 +37,7 @@ export default function ScanPage(this: any) {
     let targetpatientID = process.env.REACT_APP_PATIENT_ID!;
     const [stream, setStream] = useState<AsyncIterable<SubscribeConnectionResponse> | null>(null);
 
-    const { data, refetch } = useQuery(getAllScans.useQuery({ enabled: true }));
+  const { data, refetch } = useQuery(getAllScans.useQuery({ enabled: true }));
 
     if (stream != null){ 
         checkConnected(stream);
@@ -75,11 +75,23 @@ export default function ScanPage(this: any) {
             <link rel="icon" href="/relu_icon.ico" />
         </Head>
 
-        <div>
-            <div className={styles.scansWrapper}>{allScans()}</div>
-            <SidebarPatient />
-            <HeaderPatient />
+    <div className={styles.white_background}>
+        <div className={styles.scansWrapper}>
+        {allScans()} <div className={styles.patientScan_filler}></div>
+        <div className={styles.patientScan_filler}></div>
+        <div className={styles.patientScan_filler}></div>
+        <div className={styles.patientScan_filler}></div>
+        <div className={styles.patientScan_filler}></div>
+        <div className={styles.patientScan_filler}></div>
+        <div className={styles.patientScan_filler}></div>
+        <div className={styles.patientScan_filler}></div>
+        <div className={styles.patientScan_filler}></div>
+        <div className={styles.patientScan_filler}></div>
+        <div className={styles.patientScan_filler}></div>
         </div>
-        </>
-    );
+        <SidebarPatient />
+        <HeaderPatient />
+    </div>
+    </>
+);
 }

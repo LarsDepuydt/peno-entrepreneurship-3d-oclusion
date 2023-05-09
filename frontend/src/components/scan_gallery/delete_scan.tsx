@@ -1,10 +1,11 @@
-import { deleteScanById } from '@/gen/proto/threedoclusion/v1/service-ScanService_connectquery';
+import { deleteScanById, getAllPatients } from '@/gen/proto/threedoclusion/v1/service-ScanService_connectquery';
 import { useQuery } from '@tanstack/react-query';
 
 import styleB from '@/styles/Buttons.module.css';
 import styles from '@/styles/Modal.module.css';
 
 import { useState } from 'react';
+import { queryClient } from '@/pages/_app';
 
 export default function DeleteButton({ scanID }: { scanID: number }) {
   const [modal, setModal] = useState(false);
@@ -13,13 +14,20 @@ export default function DeleteButton({ scanID }: { scanID: number }) {
   const toggleModal = () => setModal(!modal); // change state f -> t and t -> f
 
   const deleteScan = () => {
+    refetch();
     console.log('scan is deleted');
     setModal(!modal);
-    refetch();
   };
 
-  const query = deleteScanById.useQuery({ id: scanID });
-  const { data, refetch } = useQuery(query.queryKey, query.queryFn, { enabled: false });
+  const refreshKey = getAllPatients.useQuery().queryKey;
+  const { data, refetch } = useQuery(
+    deleteScanById.useQuery({ id: scanID }).queryKey,
+    deleteScanById.useQuery({ id: scanID }).queryFn,
+    {
+      enabled: false,
+      onSuccess: () => queryClient.refetchQueries(refreshKey),
+    }
+  );
 
   return (
     <>

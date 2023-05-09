@@ -13,8 +13,10 @@ import OpenObjButton from '../../components/scan_gallery/inspect_OBJ';
 import ExportButton from '../../components/scan_gallery/export_scan';
 import DropdownButton from '../../components/scan_gallery/scan_dropdown';
 
-
-import scanpicture from '../../../public/3d-teeth.jpg';
+import scan1 from '../../../public/scan_pictures/scan1.png';
+import scan2 from '../../../public/scan_pictures/scan2.png';
+import scan3 from '../../../public/scan_pictures/scan3.png';
+import scan4 from '../../../public/scan_pictures/scan4.png';
 import { SubscribeConnectionRequest, SubscribeConnectionResponse } from "@/gen/proto/threedoclusion/v1/service_pb";
 
 
@@ -54,6 +56,8 @@ export function SingleScan({ scanid, patientid, notes, date, setStream }: scanPr
 
   const dateString = `Scan of ${formattedDate.replace(dayOfMonth, `${dayOfMonth}${daySuffix}`)}`;
 
+  const num = scanid % 4;
+  const scanpics = [scan1, scan2, scan3, scan4];
 
   const [showButtons, setShowButtons] = useState(false);
   const handleMouseEnter = () => {
@@ -108,7 +112,7 @@ export function SingleScan({ scanid, patientid, notes, date, setStream }: scanPr
             <Image
               id={'hello'}
               className={showButtons ? styles.picture_hover : styles.picture}
-              src={scanpicture}
+              src={scanpics[num]}
               alt="3d picture of teeth"
             />
           </div>
@@ -127,7 +131,6 @@ export function SingleScan({ scanid, patientid, notes, date, setStream }: scanPr
               <OpenObjButton patientID={patientid} scanID={scanid} />
 
               <InspectVR patientID={patientid} scanID={scanid} setStream={setStream} />
-              <EditButton />
               <DeleteButton scanID={scanid} />
             </div>
           )}

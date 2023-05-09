@@ -650,6 +650,69 @@ export declare class GetScanByIdResponse extends Message<GetScanByIdResponse> {
 }
 
 /**
+ * @generated from message threedoclusion.v1.UpdateScanByIdRequest
+ */
+export declare class UpdateScanByIdRequest extends Message<UpdateScanByIdRequest> {
+  /**
+   * @generated from field: string id = 1;
+   */
+  id: string;
+
+  /**
+   * @generated from field: string scan_file = 2;
+   */
+  scanFile: string;
+
+  /**
+   * @generated from field: string notes = 3;
+   */
+  notes: string;
+
+  /**
+   * @generated from field: int32 patient_id = 4;
+   */
+  patientId: number;
+
+  constructor(data?: PartialMessage<UpdateScanByIdRequest>);
+
+  static readonly runtime: typeof proto3;
+  static readonly typeName = "threedoclusion.v1.UpdateScanByIdRequest";
+  static readonly fields: FieldList;
+
+  static fromBinary(bytes: Uint8Array, options?: Partial<BinaryReadOptions>): UpdateScanByIdRequest;
+
+  static fromJson(jsonValue: JsonValue, options?: Partial<JsonReadOptions>): UpdateScanByIdRequest;
+
+  static fromJsonString(jsonString: string, options?: Partial<JsonReadOptions>): UpdateScanByIdRequest;
+
+  static equals(a: UpdateScanByIdRequest | PlainMessage<UpdateScanByIdRequest> | undefined, b: UpdateScanByIdRequest | PlainMessage<UpdateScanByIdRequest> | undefined): boolean;
+}
+
+/**
+ * @generated from message threedoclusion.v1.UpdateScanByIdResponse
+ */
+export declare class UpdateScanByIdResponse extends Message<UpdateScanByIdResponse> {
+  /**
+   * @generated from field: string message = 1;
+   */
+  message: string;
+
+  constructor(data?: PartialMessage<UpdateScanByIdResponse>);
+
+  static readonly runtime: typeof proto3;
+  static readonly typeName = "threedoclusion.v1.UpdateScanByIdResponse";
+  static readonly fields: FieldList;
+
+  static fromBinary(bytes: Uint8Array, options?: Partial<BinaryReadOptions>): UpdateScanByIdResponse;
+
+  static fromJson(jsonValue: JsonValue, options?: Partial<JsonReadOptions>): UpdateScanByIdResponse;
+
+  static fromJsonString(jsonString: string, options?: Partial<JsonReadOptions>): UpdateScanByIdResponse;
+
+  static equals(a: UpdateScanByIdResponse | PlainMessage<UpdateScanByIdResponse> | undefined, b: UpdateScanByIdResponse | PlainMessage<UpdateScanByIdResponse> | undefined): boolean;
+}
+
+/**
  * PATIENT
  *
  * @generated from message threedoclusion.v1.Patient

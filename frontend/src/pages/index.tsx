@@ -3,7 +3,8 @@ import Image from 'next/image';
 import { Inter } from '@next/font/google';
 import styles from '@/styles/Home.module.css';
 
-import LoginPage from './login-page';
+//import StartPage from './login-page';
+import StartPage from './vr-bypass';
 
 const inter = Inter({ subsets: ['latin'] });
 // import dotenv from 'dotenv';
@@ -17,8 +18,9 @@ export default function Home() {
         <link rel="icon" href="/relu_icon.ico" />
       </Head>
       <main className="vh-100 d-flex justify-content-center align-items-center">
-        <LoginPage />
+        <StartPage />
       </main>
+
     </>
   );
 }

@@ -5,7 +5,7 @@ import { ScanService } from "@/gen/proto/threedoclusion/v1/service_connect";
 import { createPromiseClient } from "@bufbuild/connect";
 import { useTransport } from "@bufbuild/connect-query";
 import { sendVR } from '@/gen/proto/threedoclusion/v1/service-ScanService_connectquery'
-import { SubscribeConnectionRequest, SubscribeConnectionResponse } from "@/gen/proto/threedoclusion/v1/service_pb";
+import { SendVRRequest, SubscribeConnectionRequest, SubscribeConnectionResponse } from "@/gen/proto/threedoclusion/v1/service_pb";
 
 //import Cookies from 'js-cookie';
 const Cookies = require('js-cookie');
@@ -21,9 +21,9 @@ function generateCode(): string {
   return Array.from({ length: 8 }, () => Math.floor(Math.random() * 10)).join('');
 }
 
-function makeStreamOnID(id: number, transport: any){
+function makeStreamOnID(id: number, client: any){
   // Make a new stream
-  const client = createPromiseClient(ScanService, transport);
+  //const client = createPromiseClient(ScanService, transport);
   const req = new SubscribeConnectionRequest({scanId: id, deviceId: 0}); // 0 for client
   return client.subscribeConnection(req);
 }
@@ -38,26 +38,15 @@ export function InspectVR({ patientID, scanID, setStream }: InspectVRProps){
   const [sendOK, setSendOK] = useState(false);
   const transport = useTransport();
 
-  const query = sendVR.useQuery({ clientId, scanId: scanID });
-  const { data, refetch } = useQuery(query.queryKey, query.queryFn, { enabled: false });
-
-  useEffect(() => {
-    if (submitOK) {
-      refetch();
-      setSendOK(false);
-
-      const newStream = makeStreamOnID(scanID, transport);
-      // Set stream higher up in prop tree
-      setStream(newStream);
-    }
-  }, [sendOK]);
+  const client = createPromiseClient(ScanService, transport);
 
   const handleSendVR = () => {
-    if (submitOK){
-      setSendOK(true);
-    }
+    const req = new SendVRRequest({scanId: scanID, clientId });
+    client.sendVR(req);
+    makeStreamOnID(scanID, client);
   };
 
+  
     
   useEffect(() => {
       let cookieCode: string | undefined;
@@ -79,6 +68,8 @@ export function InspectVR({ patientID, scanID, setStream }: InspectVRProps){
     setClientId(parseInt(cookieCode as string, 10));
     setSubmitOK(true);
   }, []); // On rerender
+  
+
 
   /*
   const clickPatient = () => {
@@ -93,7 +84,7 @@ export function InspectVR({ patientID, scanID, setStream }: InspectVRProps){
 
   return (
       <div>
-          <button type="button" className={styleB.relu_btn} id={styleB.InspectVR} onClick={handleSendVR}>
+          <button type="submit" className={styleB.relu_btn} id={styleB.InspectVR}  onClick={handleSendVR}>
           </button>
       </div>
   );
