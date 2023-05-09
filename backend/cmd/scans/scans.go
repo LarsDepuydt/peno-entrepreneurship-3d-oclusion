@@ -109,3 +109,26 @@ func GetScanById(req *connect.Request[threedoclusionv1.GetScanByIdRequest], data
 
 	return res, nil
 }
+
+func UpdateScanById(req *connect.Request[threedoclusionv1.UpdateScanByIdRequest], database *sql.DB) (*connect.Response[threedoclusionv1.UpdateScanByIdResponse], error) {
+	const sqlStatement = `
+		UPDATE scan
+		SET scan_file=$2, notes=$3, patient_id=$4
+		WHERE id = $1
+		RETURNING id;`
+	var id int32
+
+	error := database.QueryRow(sqlStatement, req.Msg.Id, req.Msg.ScanFile, req.Msg.Notes, req.Msg.PatientId).Scan(&id)
+	if error != nil {
+		return nil, error
+	}
+
+	responseMessage := fmt.Sprintf("Scan with id: %d updated with succes", req.Msg.Id)
+	fmt.Println(responseMessage)
+
+	res := connect.NewResponse(&threedoclusionv1.UpdateScanByIdResponse{
+		Message: responseMessage,
+	})
+
+	return res, nil
+}
