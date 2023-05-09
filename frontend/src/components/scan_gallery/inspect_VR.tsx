@@ -43,18 +43,22 @@ export function InspectVR({ patientID, scanID, setStream }: InspectVRProps){
 
   useEffect(() => {
     if (submitOK) {
+      console.log("sendvr")
       refetch();
       setSendOK(false);
 
-      const newStream = makeStreamOnID(scanID, transport);
+      //const newStream = makeStreamOnID(scanID, transport);
       // Set stream higher up in prop tree
-      setStream(newStream);
+      //setStream(newStream);
     }
   }, [sendOK]);
 
   const handleSendVR = () => {
     if (submitOK){
-      setSendOK(true);
+      console.log(clientId);
+      console.log(scanID);
+      //setSendOK(true);
+      refetch();
     }
   };
 
