@@ -7,6 +7,7 @@ import styleB from '@/styles/Buttons.module.css';
 import { InspectVR } from '../../components/scan_gallery/inspect_VR';
 import DeleteButton from '../../components/scan_gallery/delete_scan';
 import EditButton from '../../components/scan_gallery/edit_scan';
+
 import OpenObjButton from '../../components/scan_gallery/inspect_OBJ';
 
 import ExportButton from '../../components/scan_gallery/export_scan';
@@ -50,6 +51,7 @@ export function SingleScan({ scanid, patientid, notes, date }: scanProfile) {
 
   const dateString = `Scan of ${formattedDate.replace(dayOfMonth, `${dayOfMonth}${daySuffix}`)}`;
 
+
   const [showButtons, setShowButtons] = useState(false);
   const handleMouseEnter = () => {
     setShowButtons(true);
@@ -84,9 +86,11 @@ export function SingleScan({ scanid, patientid, notes, date }: scanProfile) {
             }}
           ></button>
           <div className={styles.dropDownButtonWrapper}>
+
             <button className={styleB.relu_btn} id={styleB.dropDownButton}>
               export scan
             </button>
+
 
             <button className={styleB.relu_btn} id={styleB.dropDownButton}>
               show video
@@ -116,7 +120,9 @@ export function SingleScan({ scanid, patientid, notes, date }: scanProfile) {
                   onClick={handleDropDown}
                 ></button>
               </div>
+
               <OpenObjButton patientID={patientid} scanID={scanid} />
+
               <InspectVR patientID={patientid} scanID={scanid} />
               <EditButton />
               <DeleteButton scanID={scanid} />

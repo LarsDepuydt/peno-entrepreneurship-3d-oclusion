@@ -68,6 +68,7 @@ export default function PatientPage(this: any) {
         <div className={styles.scansWrapper}>
           {allPatients()}
 
+
           <div className={styles.patient_filler}></div>
           <div className={styles.patient_filler}></div>
           <div className={styles.patient_filler}></div>
@@ -79,6 +80,7 @@ export default function PatientPage(this: any) {
           <div className={styles.patient_filler}></div>
           <div className={styles.patient_filler}></div>
           <div className={styles.patient_filler}></div>
+
         </div>
         <SidebarDoctor />
         <HeaderDoctor />
