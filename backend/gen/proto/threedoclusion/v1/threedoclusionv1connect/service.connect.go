@@ -72,6 +72,9 @@ const (
 	// ScanServiceGetAllPatientsProcedure is the fully-qualified name of the ScanService's
 	// GetAllPatients RPC.
 	ScanServiceGetAllPatientsProcedure = "/threedoclusion.v1.ScanService/GetAllPatients"
+	// ScanServiceGetAllPinnedPatientsProcedure is the fully-qualified name of the ScanService's
+	// GetAllPinnedPatients RPC.
+	ScanServiceGetAllPinnedPatientsProcedure = "/threedoclusion.v1.ScanService/GetAllPinnedPatients"
 	// ScanServiceGetPatientByIdProcedure is the fully-qualified name of the ScanService's
 	// GetPatientById RPC.
 	ScanServiceGetPatientByIdProcedure = "/threedoclusion.v1.ScanService/GetPatientById"
@@ -119,6 +122,7 @@ type ScanServiceClient interface {
 	AddPatient(context.Context, *connect_go.Request[v1.AddPatientRequest]) (*connect_go.Response[v1.AddPatientResponse], error)
 	DeletePatientById(context.Context, *connect_go.Request[v1.DeletePatientByIdRequest]) (*connect_go.Response[v1.DeletePatientByIdResponse], error)
 	GetAllPatients(context.Context, *connect_go.Request[v1.GetAllPatientsRequest]) (*connect_go.Response[v1.GetAllPatientsResponse], error)
+	GetAllPinnedPatients(context.Context, *connect_go.Request[v1.GetAllPinnedPatientsRequest]) (*connect_go.Response[v1.GetAllPinnedPatientsResponse], error)
 	GetPatientById(context.Context, *connect_go.Request[v1.GetPatientByIdRequest]) (*connect_go.Response[v1.GetPatientByIdResponse], error)
 	GetPatientByName(context.Context, *connect_go.Request[v1.GetPatientByNameRequest]) (*connect_go.Response[v1.GetPatientByNameResponse], error)
 	UpdatePatientById(context.Context, *connect_go.Request[v1.UpdatePatientByIdRequest]) (*connect_go.Response[v1.UpdatePatientByIdResponse], error)
@@ -158,17 +162,17 @@ func NewScanServiceClient(httpClient connect_go.HTTPClient, baseURL string, opts
 		),
 		sendVR: connect_go.NewClient[v1.SendVRRequest, v1.SendVRResponse](
 			httpClient,
-			baseURL+"/threedoclusion.v1.ScanService/SendVR",
+			baseURL+ScanServiceSendVRProcedure,
 			opts...,
 		),
 		waiting: connect_go.NewClient[v1.WaitingRequest, v1.WaitingResponse](
 			httpClient,
-			baseURL+"/threedoclusion.v1.ScanService/Waiting",
+			baseURL+ScanServiceWaitingProcedure,
 			opts...,
 		),
 		addScan: connect_go.NewClient[v1.AddScanRequest, v1.AddScanResponse](
 			httpClient,
-			baseURL+"/threedoclusion.v1.ScanService/AddScan",
+			baseURL+ScanServiceAddScanProcedure,
 			opts...,
 		),
 		deleteScanById: connect_go.NewClient[v1.DeleteScanByIdRequest, v1.DeleteScanByIdResponse](
@@ -178,7 +182,7 @@ func NewScanServiceClient(httpClient connect_go.HTTPClient, baseURL string, opts
 		),
 		getAllScans: connect_go.NewClient[v1.GetAllScansRequest, v1.GetAllScansResponse](
 			httpClient,
-			baseURL+"/threedoclusion.v1.ScanService/GetAllScans",
+			baseURL+ScanServiceGetAllScansProcedure,
 			opts...,
 		),
 		getScanById: connect_go.NewClient[v1.GetScanByIdRequest, v1.GetScanByIdResponse](
@@ -188,7 +192,7 @@ func NewScanServiceClient(httpClient connect_go.HTTPClient, baseURL string, opts
 		),
 		addTag: connect_go.NewClient[v1.AddTagRequest, v1.AddTagResponse](
 			httpClient,
-			baseURL+"/threedoclusion.v1.ScanService/AddTag",
+			baseURL+ScanServiceAddTagProcedure,
 			opts...,
 		),
 		deleteTagById: connect_go.NewClient[v1.DeleteTagByIdRequest, v1.DeleteTagByIdResponse](
@@ -198,7 +202,7 @@ func NewScanServiceClient(httpClient connect_go.HTTPClient, baseURL string, opts
 		),
 		getAllTags: connect_go.NewClient[v1.GetAllTagsRequest, v1.GetAllTagsResponse](
 			httpClient,
-			baseURL+"/threedoclusion.v1.ScanService/GetAllTags",
+			baseURL+ScanServiceGetAllTagsProcedure,
 			opts...,
 		),
 		getTagById: connect_go.NewClient[v1.GetTagByIdRequest, v1.GetTagByIdResponse](
@@ -206,10 +210,9 @@ func NewScanServiceClient(httpClient connect_go.HTTPClient, baseURL string, opts
 			baseURL+ScanServiceGetTagByIdProcedure,
 			opts...,
 		),
-
 		addPatient: connect_go.NewClient[v1.AddPatientRequest, v1.AddPatientResponse](
 			httpClient,
-			baseURL+"/threedoclusion.v1.ScanService/AddPatient",
+			baseURL+ScanServiceAddPatientProcedure,
 			opts...,
 		),
 		deletePatientById: connect_go.NewClient[v1.DeletePatientByIdRequest, v1.DeletePatientByIdResponse](
@@ -219,7 +222,12 @@ func NewScanServiceClient(httpClient connect_go.HTTPClient, baseURL string, opts
 		),
 		getAllPatients: connect_go.NewClient[v1.GetAllPatientsRequest, v1.GetAllPatientsResponse](
 			httpClient,
-			baseURL+"/threedoclusion.v1.ScanService/GetAllPatients",
+			baseURL+ScanServiceGetAllPatientsProcedure,
+			opts...,
+		),
+		getAllPinnedPatients: connect_go.NewClient[v1.GetAllPinnedPatientsRequest, v1.GetAllPinnedPatientsResponse](
+			httpClient,
+			baseURL+ScanServiceGetAllPinnedPatientsProcedure,
 			opts...,
 		),
 		getPatientById: connect_go.NewClient[v1.GetPatientByIdRequest, v1.GetPatientByIdResponse](
@@ -229,7 +237,7 @@ func NewScanServiceClient(httpClient connect_go.HTTPClient, baseURL string, opts
 		),
 		getPatientByName: connect_go.NewClient[v1.GetPatientByNameRequest, v1.GetPatientByNameResponse](
 			httpClient,
-			baseURL+"/threedoclusion.v1.ScanService/GetPatientByName",
+			baseURL+ScanServiceGetPatientByNameProcedure,
 			opts...,
 		),
 		updatePatientById: connect_go.NewClient[v1.UpdatePatientByIdRequest, v1.UpdatePatientByIdResponse](
@@ -239,37 +247,37 @@ func NewScanServiceClient(httpClient connect_go.HTTPClient, baseURL string, opts
 		),
 		addDentist: connect_go.NewClient[v1.AddDentistRequest, v1.AddDentistResponse](
 			httpClient,
-			baseURL+"/threedoclusion.v1.ScanService/AddDentist",
+			baseURL+ScanServiceAddDentistProcedure,
 			opts...,
 		),
 		deleteDentistById: connect_go.NewClient[v1.DeleteDentistByIdRequest, v1.DeleteDentistByIdResponse](
 			httpClient,
-			baseURL+"/threedoclusion.v1.ScanService/DeleteDentistById",
+			baseURL+ScanServiceDeleteDentistByIdProcedure,
 			opts...,
 		),
 		getAllDentists: connect_go.NewClient[v1.GetAllDentistsRequest, v1.GetAllDentistsResponse](
 			httpClient,
-			baseURL+"/threedoclusion.v1.ScanService/GetAllDentists",
+			baseURL+ScanServiceGetAllDentistsProcedure,
 			opts...,
 		),
 		getDentistById: connect_go.NewClient[v1.GetDentistByIdRequest, v1.GetDentistByIdResponse](
 			httpClient,
-			baseURL+"/threedoclusion.v1.ScanService/GetDentistById",
+			baseURL+ScanServiceGetDentistByIdProcedure,
 			opts...,
 		),
 		updateDentistById: connect_go.NewClient[v1.UpdateDentistByIdRequest, v1.UpdateDentistByIdResponse](
 			httpClient,
-			baseURL+"/threedoclusion.v1.ScanService/UpdateDentistById",
+			baseURL+ScanServiceUpdateDentistByIdProcedure,
 			opts...,
 		),
 		login: connect_go.NewClient[v1.LoginRequest, v1.LoginResponse](
 			httpClient,
-			baseURL+"/threedoclusion.v1.ScanService/Login",
+			baseURL+ScanServiceLoginProcedure,
 			opts...,
 		),
 		register: connect_go.NewClient[v1.RegisterRequest, v1.RegisterResponse](
 			httpClient,
-			baseURL+"/threedoclusion.v1.ScanService/Register",
+			baseURL+ScanServiceRegisterProcedure,
 			opts...,
 		),
 	}
@@ -293,6 +301,7 @@ type scanServiceClient struct {
 	addPatient             *connect_go.Client[v1.AddPatientRequest, v1.AddPatientResponse]
 	deletePatientById      *connect_go.Client[v1.DeletePatientByIdRequest, v1.DeletePatientByIdResponse]
 	getAllPatients         *connect_go.Client[v1.GetAllPatientsRequest, v1.GetAllPatientsResponse]
+	getAllPinnedPatients   *connect_go.Client[v1.GetAllPinnedPatientsRequest, v1.GetAllPinnedPatientsResponse]
 	getPatientById         *connect_go.Client[v1.GetPatientByIdRequest, v1.GetPatientByIdResponse]
 	getPatientByName       *connect_go.Client[v1.GetPatientByNameRequest, v1.GetPatientByNameResponse]
 	updatePatientById      *connect_go.Client[v1.UpdatePatientByIdRequest, v1.UpdatePatientByIdResponse]
@@ -385,6 +394,11 @@ func (c *scanServiceClient) GetAllPatients(ctx context.Context, req *connect_go.
 	return c.getAllPatients.CallUnary(ctx, req)
 }
 
+// GetAllPinnedPatients calls threedoclusion.v1.ScanService.GetAllPinnedPatients.
+func (c *scanServiceClient) GetAllPinnedPatients(ctx context.Context, req *connect_go.Request[v1.GetAllPinnedPatientsRequest]) (*connect_go.Response[v1.GetAllPinnedPatientsResponse], error) {
+	return c.getAllPinnedPatients.CallUnary(ctx, req)
+}
+
 // GetPatientById calls threedoclusion.v1.ScanService.GetPatientById.
 func (c *scanServiceClient) GetPatientById(ctx context.Context, req *connect_go.Request[v1.GetPatientByIdRequest]) (*connect_go.Response[v1.GetPatientByIdResponse], error) {
 	return c.getPatientById.CallUnary(ctx, req)
@@ -453,6 +467,7 @@ type ScanServiceHandler interface {
 	AddPatient(context.Context, *connect_go.Request[v1.AddPatientRequest]) (*connect_go.Response[v1.AddPatientResponse], error)
 	DeletePatientById(context.Context, *connect_go.Request[v1.DeletePatientByIdRequest]) (*connect_go.Response[v1.DeletePatientByIdResponse], error)
 	GetAllPatients(context.Context, *connect_go.Request[v1.GetAllPatientsRequest]) (*connect_go.Response[v1.GetAllPatientsResponse], error)
+	GetAllPinnedPatients(context.Context, *connect_go.Request[v1.GetAllPinnedPatientsRequest]) (*connect_go.Response[v1.GetAllPinnedPatientsResponse], error)
 	GetPatientById(context.Context, *connect_go.Request[v1.GetPatientByIdRequest]) (*connect_go.Response[v1.GetPatientByIdResponse], error)
 	GetPatientByName(context.Context, *connect_go.Request[v1.GetPatientByNameRequest]) (*connect_go.Response[v1.GetPatientByNameResponse], error)
 	UpdatePatientById(context.Context, *connect_go.Request[v1.UpdatePatientByIdRequest]) (*connect_go.Response[v1.UpdatePatientByIdResponse], error)
@@ -472,7 +487,6 @@ type ScanServiceHandler interface {
 // and JSON codecs. They also support gzip compression.
 func NewScanServiceHandler(svc ScanServiceHandler, opts ...connect_go.HandlerOption) (string, http.Handler) {
 	mux := http.NewServeMux()
-
 	mux.Handle(ScanServiceSendMenuOptionProcedure, connect_go.NewUnaryHandler(
 		ScanServiceSendMenuOptionProcedure,
 		svc.SendMenuOption,
@@ -493,13 +507,13 @@ func NewScanServiceHandler(svc ScanServiceHandler, opts ...connect_go.HandlerOpt
 		svc.SendVR,
 		opts...,
 	))
-	mux.Handle("/threedoclusion.v1.ScanService/Waiting", connect_go.NewServerStreamHandler(
-		"/threedoclusion.v1.ScanService/Waiting",
+	mux.Handle(ScanServiceWaitingProcedure, connect_go.NewServerStreamHandler(
+		ScanServiceWaitingProcedure,
 		svc.Waiting,
 		opts...,
 	))
-	mux.Handle("/threedoclusion.v1.ScanService/AddScan", connect_go.NewUnaryHandler(
-		"/threedoclusion.v1.ScanService/AddScan",
+	mux.Handle(ScanServiceAddScanProcedure, connect_go.NewUnaryHandler(
+		ScanServiceAddScanProcedure,
 		svc.AddScan,
 		opts...,
 	))
@@ -508,8 +522,8 @@ func NewScanServiceHandler(svc ScanServiceHandler, opts ...connect_go.HandlerOpt
 		svc.DeleteScanById,
 		opts...,
 	))
-	mux.Handle("/threedoclusion.v1.ScanService/GetAllScans", connect_go.NewUnaryHandler(
-		"/threedoclusion.v1.ScanService/GetAllScans",
+	mux.Handle(ScanServiceGetAllScansProcedure, connect_go.NewUnaryHandler(
+		ScanServiceGetAllScansProcedure,
 		svc.GetAllScans,
 		opts...,
 	))
@@ -528,8 +542,8 @@ func NewScanServiceHandler(svc ScanServiceHandler, opts ...connect_go.HandlerOpt
 		svc.DeleteTagById,
 		opts...,
 	))
-	mux.Handle("/threedoclusion.v1.ScanService/GetAllTags", connect_go.NewUnaryHandler(
-		"/threedoclusion.v1.ScanService/GetAllTags",
+	mux.Handle(ScanServiceGetAllTagsProcedure, connect_go.NewUnaryHandler(
+		ScanServiceGetAllTagsProcedure,
 		svc.GetAllTags,
 		opts...,
 	))
@@ -538,10 +552,8 @@ func NewScanServiceHandler(svc ScanServiceHandler, opts ...connect_go.HandlerOpt
 		svc.GetTagById,
 		opts...,
 	))
-
 	mux.Handle(ScanServiceAddPatientProcedure, connect_go.NewUnaryHandler(
 		ScanServiceAddPatientProcedure,
-
 		svc.AddPatient,
 		opts...,
 	))
@@ -550,9 +562,14 @@ func NewScanServiceHandler(svc ScanServiceHandler, opts ...connect_go.HandlerOpt
 		svc.DeletePatientById,
 		opts...,
 	))
-	mux.Handle("/threedoclusion.v1.ScanService/GetAllPatients", connect_go.NewUnaryHandler(
-		"/threedoclusion.v1.ScanService/GetAllPatients",
+	mux.Handle(ScanServiceGetAllPatientsProcedure, connect_go.NewUnaryHandler(
+		ScanServiceGetAllPatientsProcedure,
 		svc.GetAllPatients,
+		opts...,
+	))
+	mux.Handle(ScanServiceGetAllPinnedPatientsProcedure, connect_go.NewUnaryHandler(
+		ScanServiceGetAllPinnedPatientsProcedure,
+		svc.GetAllPinnedPatients,
 		opts...,
 	))
 	mux.Handle(ScanServiceGetPatientByIdProcedure, connect_go.NewUnaryHandler(
@@ -560,8 +577,8 @@ func NewScanServiceHandler(svc ScanServiceHandler, opts ...connect_go.HandlerOpt
 		svc.GetPatientById,
 		opts...,
 	))
-	mux.Handle("/threedoclusion.v1.ScanService/GetPatientByName", connect_go.NewUnaryHandler(
-		"/threedoclusion.v1.ScanService/GetPatientByName",
+	mux.Handle(ScanServiceGetPatientByNameProcedure, connect_go.NewUnaryHandler(
+		ScanServiceGetPatientByNameProcedure,
 		svc.GetPatientByName,
 		opts...,
 	))
@@ -575,33 +592,33 @@ func NewScanServiceHandler(svc ScanServiceHandler, opts ...connect_go.HandlerOpt
 		svc.AddDentist,
 		opts...,
 	))
-	mux.Handle("/threedoclusion.v1.ScanService/DeleteDentistById", connect_go.NewUnaryHandler(
-		"/threedoclusion.v1.ScanService/DeleteDentistById",
+	mux.Handle(ScanServiceDeleteDentistByIdProcedure, connect_go.NewUnaryHandler(
+		ScanServiceDeleteDentistByIdProcedure,
 		svc.DeleteDentistById,
 		opts...,
 	))
-	mux.Handle("/threedoclusion.v1.ScanService/GetAllDentists", connect_go.NewUnaryHandler(
-		"/threedoclusion.v1.ScanService/GetAllDentists",
+	mux.Handle(ScanServiceGetAllDentistsProcedure, connect_go.NewUnaryHandler(
+		ScanServiceGetAllDentistsProcedure,
 		svc.GetAllDentists,
 		opts...,
 	))
-	mux.Handle("/threedoclusion.v1.ScanService/GetDentistById", connect_go.NewUnaryHandler(
-		"/threedoclusion.v1.ScanService/GetDentistById",
+	mux.Handle(ScanServiceGetDentistByIdProcedure, connect_go.NewUnaryHandler(
+		ScanServiceGetDentistByIdProcedure,
 		svc.GetDentistById,
 		opts...,
 	))
-	mux.Handle("/threedoclusion.v1.ScanService/UpdateDentistById", connect_go.NewUnaryHandler(
-		"/threedoclusion.v1.ScanService/UpdateDentistById",
+	mux.Handle(ScanServiceUpdateDentistByIdProcedure, connect_go.NewUnaryHandler(
+		ScanServiceUpdateDentistByIdProcedure,
 		svc.UpdateDentistById,
 		opts...,
 	))
-	mux.Handle("/threedoclusion.v1.ScanService/Login", connect_go.NewUnaryHandler(
-		"/threedoclusion.v1.ScanService/Login",
+	mux.Handle(ScanServiceLoginProcedure, connect_go.NewUnaryHandler(
+		ScanServiceLoginProcedure,
 		svc.Login,
 		opts...,
 	))
-	mux.Handle("/threedoclusion.v1.ScanService/Register", connect_go.NewUnaryHandler(
-		"/threedoclusion.v1.ScanService/Register",
+	mux.Handle(ScanServiceRegisterProcedure, connect_go.NewUnaryHandler(
+		ScanServiceRegisterProcedure,
 		svc.Register,
 		opts...,
 	))
@@ -673,6 +690,10 @@ func (UnimplementedScanServiceHandler) DeletePatientById(context.Context, *conne
 
 func (UnimplementedScanServiceHandler) GetAllPatients(context.Context, *connect_go.Request[v1.GetAllPatientsRequest]) (*connect_go.Response[v1.GetAllPatientsResponse], error) {
 	return nil, connect_go.NewError(connect_go.CodeUnimplemented, errors.New("threedoclusion.v1.ScanService.GetAllPatients is not implemented"))
+}
+
+func (UnimplementedScanServiceHandler) GetAllPinnedPatients(context.Context, *connect_go.Request[v1.GetAllPinnedPatientsRequest]) (*connect_go.Response[v1.GetAllPinnedPatientsResponse], error) {
+	return nil, connect_go.NewError(connect_go.CodeUnimplemented, errors.New("threedoclusion.v1.ScanService.GetAllPinnedPatients is not implemented"))
 }
 
 func (UnimplementedScanServiceHandler) GetPatientById(context.Context, *connect_go.Request[v1.GetPatientByIdRequest]) (*connect_go.Response[v1.GetPatientByIdResponse], error) {
