@@ -25,7 +25,6 @@ let frameNum = 0;
 
 let floor_shape, floor_body;
 
-// lj_group is een THREE.Group < THREE.Object3D
 // lj_mesh is een THREE.Mesh
 // lj_shape is een CANNON.Trimesh
 // lj_body is een CANNON.Body

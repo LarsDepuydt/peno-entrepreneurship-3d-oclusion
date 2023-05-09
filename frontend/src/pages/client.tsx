@@ -43,13 +43,13 @@ export default function ClientPage() {
     }
   };
 
-  var cookieCode: string | undefined;
-  useEffect(() => {
-    if (typeof window !== 'undefined') {
-      cookieCode = Cookies.get('clientcookie');
-    }
+    
+    useEffect(() => {
+      let cookieCode: string | undefined;
+      if (typeof window !== 'undefined') {
+        cookieCode = Cookies.get('clientcookie');
+      }
 
-    //const cookieCode = Cookies.get('clientcookie');
 
     if (!cookieCode) {
       const codeString: string = `${code}`;
@@ -65,8 +65,9 @@ export default function ClientPage() {
     setSubmitOK(true);
   });
 
-  const router = useRouter();
-  const home = () => router.push('/patient');
+
+    }, [code]);
+
 
   return (
     <div>

@@ -38,6 +38,9 @@
         "source": "**",
         "function": "nextApp"
       }
+    ],
+    "predeploy": [
+      "yarn build"
     ]
   }
 }

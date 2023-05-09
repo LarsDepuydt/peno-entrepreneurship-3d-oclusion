@@ -61,7 +61,6 @@ export default function WaitPage() {
 
   async function waitForResponse(codeValue: number, cookieActive: boolean) {
     const client = createPromiseClient(ScanService, transport);
-
     //added
     if (!cookieActive) {
       const codeString: string = `${codeValue}`;
@@ -86,13 +85,18 @@ export default function WaitPage() {
       req = new WaitingRequest({uniqueCode : codeValue});
     }  */
 
-    const req = new WaitingRequest({uniqueCode : codeValue})
 
-    const stream = client.waiting(req)
-    for await (const res of stream){
-      if (res.redirect){
-        router.push(res.url)
+    const req = new WaitingRequest({uniqueCode : codeValue})
+  
+    const stream = client.waiting(req);
+    if (Symbol.asyncIterator in stream) { // Check if stream is an AsyncIterable
+      for await (const res of stream as AsyncIterable<any>) { // Narrow the type to AsyncIterable<any>
+        if (res.redirect){
+          router.push(res.url)
+        }
       }
+    } else {
+      throw new Error("Expected an AsyncIterable, but got a Promise");
     }
   }
   
