@@ -517,7 +517,7 @@ var prevButtonState_B = 0;
 
 // using X/A buttons on the controllers
 function beforeRender(controller) {
-    //console.log(curr_jaw);
+    console.log(curr_jaw);
     if (curr_jaw.selected) {
         switch (movement_mode) {
             case 0: { // Restricted to x axis
@@ -866,7 +866,7 @@ function meshToJaw(mesh) {
         curr_jaw = lowerjaw;
         return lowerjaw;
     } else if (mesh === upperjaw.mesh) {
-        curr_jaw = lowerjaw;
+        curr_jaw = upperjaw;
         return upperjaw;
     } else {
         console.warn("Selected mesh is not a jaw, returning null");
