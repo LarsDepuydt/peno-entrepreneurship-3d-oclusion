@@ -48,7 +48,7 @@ export default function ModalForm() {
   //const fileRef = useRef(null);
 
   const [scaninfo, setData] = useState({
-    file: path,
+    scanFile: path,
     notes: '',
 
     patientId: parseInt(PatientID),
@@ -80,7 +80,7 @@ export default function ModalForm() {
 
     console.log('this is the OLD scan info');
     console.log(scaninfo);
-    console.log(scaninfo.file);
+    console.log(scaninfo.scanFile);
 
     if (sendOK && modal) {
       setSendOK(false);
@@ -109,7 +109,7 @@ export default function ModalForm() {
     if (submitOK) {
       refetch();
       console.log('in useEffect');
-      console.log('NEW scaninfo file path is ' + scaninfo.file);
+      console.log('NEW scaninfo file path is ' + scaninfo.scanFile);
       console.log(data);
       if (data != undefined) {
         console.log('data is not undefined loop');

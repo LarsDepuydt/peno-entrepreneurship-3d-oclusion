@@ -11,8 +11,8 @@ import ReluLink from '../header/reluLink';
 import { WelcomingDoctor, WelcomingPatient } from './welcoming';
 import { useQuery } from '@tanstack/react-query';
 import { getDentistById } from '@/gen/proto/threedoclusion/v1/service-ScanService_connectquery';
-import NoteInput from "../OBJ_view/note-input";
-import NoteList from "../OBJ_view/note-list";
+import NoteInput from '../OBJ_view/note-input';
+import NoteList from '../OBJ_view/note-list';
 import { useState } from 'react';
 
 interface HeaderPatientProps {
@@ -55,7 +55,7 @@ export function SidebarPatient() {
   const handleAddNotePatient = (note: string) => {
     setNotes([...notesPatient, note]);
   };
-  
+
   return (
     <>
       <div className={styleSidebar.sidebar}>
@@ -75,8 +75,7 @@ export function SidebarPatient() {
   );
 }
 
-
-export function SidebarObj( ) {
+export function SidebarObj() {
   const router = useRouter();
 
   const openScans = () => {
@@ -88,7 +87,6 @@ export function SidebarObj( ) {
       },
     });
   };
-
 
   const [notesScan, setNotes] = useState<string[]>([]);
 
