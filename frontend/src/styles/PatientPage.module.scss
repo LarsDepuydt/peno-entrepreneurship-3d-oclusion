@@ -143,3 +143,14 @@ $patientBorder-width: 1.5px;
   column-gap: 20px;
   justify-content: space-between;
 }
+
+.patientScan_filler {
+  width: $patientWidth;
+  margin: 0px $patientMargin;
+}
+
+.white_background {
+  background-color: white;
+  width: 100vw;
+  height: 100vh;
+}
