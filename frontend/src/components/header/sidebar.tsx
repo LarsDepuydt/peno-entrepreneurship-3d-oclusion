@@ -11,9 +11,11 @@ import ReluLink from '../header/reluLink';
 import { WelcomingDoctor, WelcomingPatient } from './welcoming';
 import { useQuery } from '@tanstack/react-query';
 import { getDentistById } from '@/gen/proto/threedoclusion/v1/service-ScanService_connectquery';
+
 import NoteInput from '../OBJ_view/note-input';
 import NoteList from '../OBJ_view/note-list';
 import { useState } from 'react';
+
 
 interface HeaderPatientProps {
   patientfirstname: string;
