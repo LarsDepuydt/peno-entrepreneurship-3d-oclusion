@@ -32,7 +32,7 @@ export default function ModalForm() {
     lastName: '',
 
     pinned: false,
-    notes: '',
+    notes: '@.',
     dentistId: 0,
   });
 
@@ -53,7 +53,7 @@ export default function ModalForm() {
       firstName: values.patientFirstName,
       lastName: values.patientLastName,
       pinned: values.pinned,
-      notes: values.notes,
+      notes: values.notes + '@.',
 
       dentistId: parseInt(DentistID),
     };
