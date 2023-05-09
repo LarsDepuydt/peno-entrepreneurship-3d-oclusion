@@ -258,7 +258,7 @@ function checkTime(lj_mesh) {
       clock.start();
     }
 }
-
+/*
 function sendPosition(lj_mesh){
     const coordinate_info = lj_mesh.position;
     const rotation_info = lj_mesh.rotation;
@@ -274,7 +274,7 @@ function sendPosition(lj_mesh){
     const r_y = rotation_info.y;
     const r_z = rotation_info.z;
     */
-    const scanID = 111; // Hardcoded
+    /*const scanID = 111; // Hardcoded
     // Call service based on scan ID
     
     const {data} = useQuery(sendPositionScan.useQuery({ scanID, x, y, z, r_x, r_y, r_z }));
@@ -283,9 +283,9 @@ function sendPosition(lj_mesh){
         // Maybe wait a bit?
         sendPosition() // Repeat
     }
-}
+}*/
 
-function getPosition(lj_mesh){
+/*function getPosition(lj_mesh){
     target = lj_mesh.position;
     // Call service based on scan ID
     const scanID = 111; // Hardcoded
@@ -293,7 +293,7 @@ function getPosition(lj_mesh){
     
     const {x, y, z, r_x, r_y, r_z} = data;
     return x, y, z, r_x, r_y, r_z
-}
+}*/
 
 function vector3ToVec3(vector) {
     return new CANNON.Vec3(vector.x, vector.y, vector.z);
