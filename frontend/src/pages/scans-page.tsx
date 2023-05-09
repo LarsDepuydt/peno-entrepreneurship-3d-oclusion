@@ -58,6 +58,17 @@ export default function ScanPage(this: any) {
 
       <div>
         <div className={styles.scansWrapper}>{allScans()}</div>
+        <div className={styles.patientScan_filler}></div>
+        <div className={styles.patientScan_filler}></div>
+        <div className={styles.patientScan_filler}></div>
+        <div className={styles.patientScan_filler}></div>
+        <div className={styles.patientScan_filler}></div>
+        <div className={styles.patientScan_filler}></div>
+        <div className={styles.patientScan_filler}></div>
+        <div className={styles.patientScan_filler}></div>
+        <div className={styles.patientScan_filler}></div>
+        <div className={styles.patientScan_filler}></div>
+        <div className={styles.patientScan_filler}></div>
         <SidebarPatient />
         <HeaderPatient />
       </div>
