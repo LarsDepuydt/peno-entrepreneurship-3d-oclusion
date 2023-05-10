@@ -17,6 +17,8 @@ import scan1 from '../../../public/scan_pictures/scan1.png';
 import scan2 from '../../../public/scan_pictures/scan2.png';
 import scan3 from '../../../public/scan_pictures/scan3.png';
 import scan4 from '../../../public/scan_pictures/scan4.png';
+import { SubscribeConnectionRequest, SubscribeConnectionResponse } from "@/gen/proto/threedoclusion/v1/service_pb";
+
 
 interface scanProfile {
   scanid: number;
@@ -24,9 +26,11 @@ interface scanProfile {
 
   notes: string;
   patientid: number;
+
+  setStream: (stream: AsyncIterable<SubscribeConnectionResponse>) => void;
 }
 
-export function SingleScan({ scanid, patientid, notes, date }: scanProfile) {
+export function SingleScan({ scanid, patientid, notes, date, setStream }: scanProfile) {
   const parsedDate = new Date(date);
   const today = new Date();
   const options: Intl.DateTimeFormatOptions = {
@@ -131,8 +135,7 @@ export function SingleScan({ scanid, patientid, notes, date }: scanProfile) {
 
               <OpenObjButton patientID={patientid} scanID={scanid} />
 
-              <InspectVR patientID={patientid} scanID={scanid} />
-              <EditButton scanID={scanid} />
+              <InspectVR patientID={patientid} scanID={scanid} setStream={setStream} />
               <DeleteButton scanID={scanid} />
             </div>
           )}
