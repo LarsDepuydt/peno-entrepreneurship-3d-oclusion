@@ -1,5 +1,4 @@
 import Image, { StaticImageData } from 'next/image';
-import { useRouter } from 'next/router';
 import React, { useState } from 'react';
 import styles from '@/styles/PatientPage.module.scss';
 import styleB from '@/styles/Buttons.module.css';
@@ -10,6 +9,7 @@ import EditButton from '../../components/scan_gallery/edit_scan';
 
 import OpenObjButton from '../../components/scan_gallery/inspect_OBJ';
 
+import { useRouter } from 'next/router';
 import ExportButton from '../../components/scan_gallery/export_scan';
 import DropdownButton from '../../components/scan_gallery/scan_dropdown';
 
@@ -17,6 +17,8 @@ import scan1 from '../../../public/scan_pictures/scan1.png';
 import scan2 from '../../../public/scan_pictures/scan2.png';
 import scan3 from '../../../public/scan_pictures/scan3.png';
 import scan4 from '../../../public/scan_pictures/scan4.png';
+import { SubscribeConnectionRequest, SubscribeConnectionResponse } from "@/gen/proto/threedoclusion/v1/service_pb";
+
 
 interface scanProfile {
   scanid: number;
@@ -24,9 +26,11 @@ interface scanProfile {
 
   notes: string;
   patientid: number;
+
+  setStream: (stream: AsyncIterable<SubscribeConnectionResponse>) => void;
 }
 
-export function SingleScan({ scanid, patientid, notes, date }: scanProfile) {
+export function SingleScan({ scanid, patientid, notes, date, setStream }: scanProfile) {
   const parsedDate = new Date(date);
   const today = new Date();
   const options: Intl.DateTimeFormatOptions = {
@@ -75,6 +79,13 @@ export function SingleScan({ scanid, patientid, notes, date }: scanProfile) {
     setDropDown(false);
   };
 
+  const router = useRouter();
+
+  const handleRedirectVideo = () => {
+    process.env.REACT_APP_PATIENT_ID = undefined;
+    router.push('/video');
+  };
+
   return (
     <div className={styles.patientScan_container}>
       {dropDown && (
@@ -89,13 +100,11 @@ export function SingleScan({ scanid, patientid, notes, date }: scanProfile) {
             }}
           ></button>
           <div className={styles.dropDownButtonWrapper}>
-
             <button className={styleB.relu_btn} id={styleB.dropDownButton}>
               export scan
             </button>
 
-
-            <button className={styleB.relu_btn} id={styleB.dropDownButton}>
+            <button className={styleB.relu_btn} id={styleB.dropDownButton} onClick={handleRedirectVideo}>
               show video
             </button>
           </div>
@@ -126,8 +135,7 @@ export function SingleScan({ scanid, patientid, notes, date }: scanProfile) {
 
               <OpenObjButton patientID={patientid} scanID={scanid} />
 
-              <InspectVR patientID={patientid} scanID={scanid} />
-              <EditButton scanID={scanid} />
+              <InspectVR patientID={patientid} scanID={scanid} setStream={setStream} />
               <DeleteButton scanID={scanid} />
             </div>
           )}

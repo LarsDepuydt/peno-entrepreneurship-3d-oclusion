@@ -250,7 +250,7 @@ export const GetScanByIdResponse = proto3.makeMessageType(
 export const UpdateScanByIdRequest = proto3.makeMessageType(
   "threedoclusion.v1.UpdateScanByIdRequest",
   () => [
-    { no: 1, name: "id", kind: "scalar", T: 9 /* ScalarType.STRING */ },
+    { no: 1, name: "id", kind: "scalar", T: 5 /* ScalarType.INT32 */ },
     { no: 2, name: "scan_file", kind: "scalar", T: 9 /* ScalarType.STRING */ },
     { no: 3, name: "notes", kind: "scalar", T: 9 /* ScalarType.STRING */ },
     { no: 4, name: "patient_id", kind: "scalar", T: 5 /* ScalarType.INT32 */ },
