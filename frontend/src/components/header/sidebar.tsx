@@ -191,22 +191,6 @@ export function SidebarObj() {
   let scanID = process.env.REACT_APP_SCAN_ID!;
   console.log(scanID);
 
-  const ReworkScanInfo = (scaninfo: GetScanByIdResponse) => {
-    if (scaninfo != undefined) {
-      return {
-        id: scaninfo.id.toString(),
-        scanFile: scaninfo.scan,
-        notes: scaninfo.notes,
-        patient_id: scaninfo.patientId,
-      };
-    }
-  };
-
-  const { data: scanInfoRequest } = useQuery(getScanById.useQuery({ id: parseInt(scanID) }));
-  const [updatedNotes, setData] = useState(ReworkScanInfo(scanInfoRequest));
-
-  const [submitOK, setSubmitOK] = useState(false);
-
   const openScans = () => {
     let patientID = process.env.REACT_APP_PATIENT_ID!;
     process.env.REACT_APP_SCAN_ID = undefined;
@@ -218,32 +202,31 @@ export function SidebarObj() {
     });
   };
 
-  const { data, refetch } = useQuery(
-    updateScanById.useQuery(updatedNotes).queryKey,
-    updateScanById.useQuery(updatedNotes).queryFn,
-    { enabled: false }
-  );
+  const { data: scanInfoRequest } = useQuery(getScanById.useQuery({ id: parseInt(scanID) }));
+
+  const queryupdate = updateScanById.useQuery({
+    id: parseInt(scanID),
+    scanFile: scanInfoRequest?.scan,
+    notes: scanInfoRequest?.notes,
+    patientId: scanInfoRequest?.patientId,
+  });
+  const { data, refetch } = useQuery(queryupdate.queryKey, queryupdate.queryFn, { enabled: false });
   //console.log(data)
 
   let notesScan = scanInfoRequest?.notes;
-  console.log(notesScan);
 
-  /*const { data } = useQuery(
-    UpdatePatientById.useQuery(patientinfo).queryKey,
-    UpdatePatientById.useQuery(patientinfo).queryFn,
-    { enabled: false }
-  );
-  */
+  //const [updatedNotes, setData] = useState(patientInfoRequest);
+
+  const [submitOK, setSubmitOK] = useState(false);
+  const [sendOK, setSendOK] = useState(false);
 
   const handleAddNoteScan = (note: string) => {
     //if (sendOK) {
+    setSendOK(false);
     note = note.concat(' | ');
     notesScan = scanInfoRequest?.notes + note;
-    console.log(notesScan);
     scanInfoRequest.notes = notesScan;
     console.log(scanInfoRequest);
-
-    setData(ReworkScanInfo(scanInfoRequest));
     setSubmitOK(true);
     console.log('submitOK is set to true');
     //}
@@ -251,16 +234,14 @@ export function SidebarObj() {
 
   useEffect(() => {
     if (submitOK) {
-      console.log('inUseEffect');
       refetch();
-      console.log(updatedNotes);
-      console.log(data);
+      setSendOK(false);
       if (data != undefined) {
         console.log('data is not undefined');
       }
       setSubmitOK(false);
     }
-  }, [submitOK, refetch, updatedNotes]);
+  }, [sendOK, submitOK, refetch, data]);
 
   if (scanInfoRequest != undefined) {
     return (
