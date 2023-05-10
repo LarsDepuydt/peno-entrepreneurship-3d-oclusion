@@ -23,7 +23,7 @@ let controllerGrip1 : any, controllerGrip2 : any;
 let controls : any;
 let raycaster : any;
 
-let second_call = false;
+//let second_call = false;
 
 const intersected = []; // global list that holds the first objects the controllers are pointing at
 const tempMatrix = new THREE.Matrix4();
@@ -989,17 +989,12 @@ export default function DraggingView({ stream, client, onQuit }: {stream: any, c
     const [openMenu, setOpenMenu] = useState(false);
 
     useEffect(() => { // https://github.com/facebook/react/issues/24502
-        if (second_call){
-            //init(initialScan);   //FIXFIX
-            initCannon();
-            initThree(setOpenMenu, setCurrentScan);
-            loadObjects();
-            // animate(); // Sets 
-            console.log('Init executed!');
-        }
-        else {
-            second_call = true;
-        }
+        //init(initialScan);   //FIXFIX
+        initCannon();
+        initThree(setOpenMenu, setCurrentScan);
+        loadObjects();
+        // animate(); // Sets 
+        console.log('Init executed!');
 
         return () => { // Clean up when unmounted
             if (renderer) {
@@ -1025,7 +1020,7 @@ export default function DraggingView({ stream, client, onQuit }: {stream: any, c
 
     // resize
 
-    window.addEventListener( 'resize', onWindowResize );
+    //window.addEventListener( 'resize', onWindowResize );
     const zoomInButton = document.getElementById("zoom-in");
     const zoomOutButton = document.getElementById("zoom-out");
 
