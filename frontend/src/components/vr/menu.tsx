@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { Canvas } from '@react-three/fiber';
 import { Html, Plane } from '@react-three/drei';
+import { Interactive, useXR, ARButton, Controllers } from '@react-three/xr'
 import { SendMenuOptionRequest, Scan, ScanSave } from "@/gen/proto/threedoclusion/v1/service_pb";
 import ListView from "./list-view";
 
@@ -86,8 +87,7 @@ function Menu({isOpen, setIsOpen, current_scan, stream, client, onLoadItemClicke
 
   return (
     isOpen ? (
-    <Canvas>
-        <Html>
+      <Html>
           <div className="menu-container">
             <div className={`menu-button ${isOpen ? "open" : ""}`} onClick={toggleMenu}>
               <div className="menu-button-bar" />
@@ -187,8 +187,7 @@ function Menu({isOpen, setIsOpen, current_scan, stream, client, onLoadItemClicke
               }
             `}</style>
           </div>
-        </Html>
-    </Canvas>
+      </Html>
     ) : null
   );
   

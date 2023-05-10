@@ -3,10 +3,13 @@ import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls';
 import { VRButton } from 'three/examples/jsm/webxr/VRButton.js';
 import { XRControllerModelFactory } from 'three/examples/jsm/webxr/XRControllerModelFactory.js';
 import { OBJLoader } from 'three/examples/jsm/loaders/OBJLoader.js';
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import { SendMenuOptionRequest, ScanSave } from "@/gen/proto/threedoclusion/v1/service_pb";
 import Menu from './menu';
 import { useRouter } from 'next/router';
+import { Canvas } from '@react-three/fiber';
+import { Interactive, XR, ARButton, Controllers } from '@react-three/xr'
+import { Html } from '@react-three/drei';
 
 import * as CANNON from 'cannon-es';
 import { getFirstMesh, getFirstBufferGeometry, threeMeshToConvexThreeMesh, threeMeshToConvexCannonMesh, threeMeshToCannonMesh, checkTime, cannonMeshToCannonConvexPolyhedron, vec3ToVector3, vector3ToVec3, threeQuaternionToCannonQuaternion, applyQuaternion, sqnorm, quatDot, minusQuat } from './util.js'
@@ -16,7 +19,7 @@ var movement_mode : any;
 var session : any;
 const prevGamePads = new Map();
 
-let container: HTMLDivElement;
+//let container: HTMLDivElement;
 let camera: THREE.PerspectiveCamera, scene: any, renderer: THREE.WebGLRenderer;
 let controller1: any, controller2 : any;
 let controllerGrip1 : any, controllerGrip2 : any;
@@ -68,7 +71,7 @@ class Jaw {
    * @param {*} bodypath path to the body obj file used for collision detection
    * @param {*} meshpath path to the mesh obj file (visual), in debugging mode, use the body model instead
    */
-  constructor(bodypath : any, meshpath : any) {
+  constructor(bodypath : any, meshpath : any, callback?: () => void) {
     let sphere_geo = new THREE.SphereGeometry(0.05, 10, 5);
     this.target = new THREE.Mesh(sphere_geo, targetMaterial); // (invisible) THREE.Object3D, dat aanduidt waar de jaw zou moeten zijn obv de controller selection
     console.log(this);
@@ -101,14 +104,14 @@ class Jaw {
     world.addBody(this.body);
 
     if (DEBUGGING_MODE) {
-      this.loadMeshAndBody(bodypath);
+      this.loadMeshAndBody(bodypath, callback);
     } else {
-      this.loadMesh(meshpath);
-      this.loadBody(bodypath);
+      this.loadMesh(meshpath, callback);
+      this.loadBody(bodypath, callback);
     }
   }
 
-  loadMeshAndBody(path) {
+  loadMeshAndBody(path, callback?: () => void) {
     const jaw = this;
 
     objLoader.load(
@@ -132,7 +135,7 @@ class Jaw {
 
         console.log("loading mesh succeeded");
         jaw.loaded = true;
-        afterLoad();
+        afterLoad(callback);
       },
 
       // called when loading in progress
@@ -145,7 +148,7 @@ class Jaw {
     );
   }
 
-  loadMesh(path : any) {
+  loadMesh(path : any, callback?: () => void) {
     const jaw = this;
 
     objLoader.load(
@@ -167,7 +170,7 @@ class Jaw {
         if (jaw.mesh_loaded && jaw.body_loaded) {
           // actually this is a race condition, let's ignore that for now
           jaw.loaded = true;
-          afterLoad();
+          afterLoad(callback);
         }
       },
 
@@ -181,7 +184,7 @@ class Jaw {
     );
   }
 
-  loadBody(path : any) {
+  loadBody(path : any, callback?: () => void) {
     const jaw = this;
 
     objLoader.load(
@@ -206,7 +209,7 @@ class Jaw {
         if (jaw.mesh_loaded && jaw.body_loaded) {
           // actually a race condition
           jaw.loaded = true;
-          afterLoad();
+          afterLoad(callback);
         }
       },
 
@@ -316,10 +319,10 @@ function initCannon() {
   world.addBody(floor_body);
 }
 
-function initThree(setOpenMenu: any, setCurrentScan: any) {
+function initThree(container: any, setOpenMenu: any, setCurrentScan: any) {
   // create container
-  container = document.createElement("div");
-  document.body.appendChild(container);
+  //container = document.createElement("div");
+  //document.body.appendChild(container);
 
   // create scene and camera
   scene = new THREE.Scene();
@@ -380,41 +383,6 @@ function initThree(setOpenMenu: any, setCurrentScan: any) {
 
   document.body.appendChild(VRButton.createButton(renderer));
 
-  // save scene
-
-  var step = 0;
-
-  var controls = new (function () {
-    this.saveScene = function () {
-      //const exporter = new OBJExporter();
-      // Parse the input and generate the OBJ output
-      //const data = exporter.parse( scene );
-      //var target = new THREE.Vector3();
-      //uj_mesh.getWorldPosition(target);
-      //console.log("X:",target.x,"Y:",target.y,"Z:",target.z);
-    };
-
-    this.importScene = function () {
-      // var json = (localStorage.getItem('scene'));
-      // var sceneLoader = new THREE.SceneLoader();
-
-      // sceneLoader.parse(JSON.parse(json), function (e) {
-      //     scene = e.scene;
-      // }, '.');
-      /*uj_mesh.position.x = upperX;
-      uj_mesh.position.y = upperY;
-      uj_mesh.position.z = upperZ;
-
-      lj_mesh.position.x = lowerX;
-      lj_mesh.position.y = lowerY;
-      lj_mesh.position.z = lowerZ;  */
-    };
-  })();
-
-  //var gui = new dat.GUI();
-  //gui.add(controls, "saveScene");
-  //gui.add(controls, "importScene");
-
   // controllers
 
   controller1 = renderer.xr.getController(0);
@@ -471,10 +439,10 @@ function initThree(setOpenMenu: any, setCurrentScan: any) {
   window.addEventListener("resize", onWindowResize);
 }
 
-function loadObjects() {
-    lowerjaw = new Jaw('/lower_180.obj', '/lower_ios_6.obj');
+function loadObjects(callback?: () => void) {
+    lowerjaw = new Jaw('/lower_180.obj', '/lower_ios_6.obj', callback);
     //upperjaw = new Jaw('../../assets/simplified/upper_218.obj');
-    upperjaw = new Jaw('/upper_209.obj', '/upper_ios_6.obj');
+    upperjaw = new Jaw('/upper_209.obj', '/upper_ios_6.obj', callback);
 
     curr_jaw = upperjaw;
 }
@@ -482,7 +450,7 @@ function loadObjects() {
 // define VR Headset position
 const VRHeadsetPosition = new THREE.Vector3();
 
-function afterLoad() {
+function afterLoad(callback?: () => void) {
   VRHeadsetPosition.setFromMatrixPosition(camera.matrixWorld);
   if (lowerjaw.loaded && upperjaw.loaded) {
     lowerjaw.body.position.set(
@@ -503,16 +471,18 @@ function afterLoad() {
     upperjaw.target.name = "lowerjaw.target";
 
     console.log("starting animation");
-    renderer.setAnimationLoop(animate);
+    renderer.setAnimationLoop(function foo(){
+        animate(callback);
+    });
   }
 }
 
-function animate() {
+function animate(callback?: () => void) {
   //checkTime(lj_mesh);
 
   frameNum += 1;
   updatePhysics();
-  render();
+  render(callback);
 }
 
 let currentOption = 3; // initialize to free movement
@@ -524,7 +494,7 @@ var optionChanged_B = false;
 var prevButtonState_B = 0;
 
 // using X/A buttons on the controllers
-function beforeRender(controller) {
+function beforeRender(controller, callback?: () => void) {
     //console.log(curr_jaw);
     if (curr_jaw.selected) {
         switch (movement_mode) {
@@ -574,6 +544,9 @@ function beforeRender(controller) {
       }
       prevButtonState = data.buttons[4]; // save button state for next frame
       //console.log(currentOption);
+      if (data.buttons[5] == 1) { // Y pressed
+        callback();
+      }
 
       movement_mode = currentOption;
     }
@@ -618,9 +591,9 @@ function showAxes(axis_num : any, curr_jaw : any) {
     curr_jaw.mesh.add(ArrowHelper);
   } 
 
-function render() {
-  beforeRender(controller1);
-  beforeRender(controller2);
+function render(callback?: () => void) {
+  beforeRender(controller1, callback);
+  beforeRender(controller2, callback);
   cleanIntersected();
   positionReset();
   undoWhenPressed();
@@ -913,33 +886,33 @@ function undoWhenPressed() {
   
   // undoMovement();
   
-  function redoWhenPressed() {
-      let iiii = 0;
-    if (session) {
-      for (const source of session.inputSources) {
-        if (source && source.handedness) {
-          var handedness = source.handedness; //left or right controllers
-          if (handedness == 'left') {continue} // we willen enkel de 'X' knop van de rechtercontroller
-        }
-        if (!source.gamepad) continue;
-        const controller = renderer.xr.getController(iiii++);
-        const old = prevGamePads.get(source);
-        const data = {
-          handedness: handedness,
-          buttons: source.gamepad.buttons.map((b) => b.value),
-          axes: source.gamepad.axes.slice(0)
-        };
-        //console.log(source.handedness);
-        if (data.buttons[5] == 1 && prevButtonState_B == 0 && !optionChanged_B) {
-          optionChanged_B = true; // set flag to true to indicate that the option has changed
-          redoMovement();
-        } else if (data.buttons[5] == 0 && prevButtonState_B == 0 && optionChanged_B) {
-          optionChanged_B = false; // reset flag when squeeze button is released
-        }
-        prevButtonState_B = data.buttons[5]; // save button state for next frame
+function redoWhenPressed() {
+    let iiii = 0;
+  if (session) {
+    for (const source of session.inputSources) {
+      if (source && source.handedness) {
+        var handedness = source.handedness; //left or right controllers
+        if (handedness == 'left') {continue} // we willen enkel de 'X' knop van de rechtercontroller
       }
+      if (!source.gamepad) continue;
+      const controller = renderer.xr.getController(iiii++);
+      const old = prevGamePads.get(source);
+      const data = {
+        handedness: handedness,
+        buttons: source.gamepad.buttons.map((b) => b.value),
+        axes: source.gamepad.axes.slice(0)
+      };
+      //console.log(source.handedness);
+      if (data.buttons[5] == 1 && prevButtonState_B == 0 && !optionChanged_B) {
+        optionChanged_B = true; // set flag to true to indicate that the option has changed
+        redoMovement();
+      } else if (data.buttons[5] == 0 && prevButtonState_B == 0 && optionChanged_B) {
+        optionChanged_B = false; // reset flag when squeeze button is released
+      }
+      prevButtonState_B = data.buttons[5]; // save button state for next frame
     }
   }
+}
 
 
 function updateScanData(setCurrentScan: any) {
@@ -987,12 +960,14 @@ export default function DraggingView({ stream, client, onQuit }: {stream: any, c
     const [current_scan, setCurrentScan] = useState<ScanSave>(initialScan);
     const [openMenu, setOpenMenu] = useState(false);
 
+    const containerRef = useRef(null);
+
     useEffect(() => { // https://github.com/facebook/react/issues/24502
         if (second_call){
             //init(initialScan);   //FIXFIX
             initCannon();
-            initThree(setOpenMenu, setCurrentScan);
-            loadObjects();
+            initThree(containerRef.current, setOpenMenu, setCurrentScan);
+            loadObjects(()=> setOpenMenu(true));
             // animate(); // Sets 
             console.log('Init executed!');
         }
@@ -1004,7 +979,8 @@ export default function DraggingView({ stream, client, onQuit }: {stream: any, c
             if (renderer) {
                 renderer.dispose();
                 renderer.setAnimationLoop(null); // Cancels animation
-                document.body.removeChild(container);
+                //document.body.removeChild(containerRef);
+                //document.body.removeChild(containerRef.current);
             }
             if (scene){
                 while (scene.children.length > 0) {
@@ -1064,8 +1040,11 @@ export default function DraggingView({ stream, client, onQuit }: {stream: any, c
     };
 
     return (
+      <Canvas ref={containerRef}>
+        <Html>
         <div className="menu-div">
         <Menu {...props}/>
+        
         <style jsx>{`
             .menu-div {
                 position: absolute;
@@ -1074,5 +1053,7 @@ export default function DraggingView({ stream, client, onQuit }: {stream: any, c
             }
         `}</style>
         </div>
+        </Html>
+      </Canvas>
     );
 }

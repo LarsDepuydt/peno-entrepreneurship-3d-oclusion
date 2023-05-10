@@ -1336,6 +1336,20 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@react-three/xr@npm:^5.5.0":
+  version: 5.5.0
+  resolution: "@react-three/xr@npm:5.5.0"
+  dependencies:
+    three-stdlib: ^2.21.1
+    zustand: ^3.7.1
+  peerDependencies:
+    "@react-three/fiber": ">=8.0.0"
+    react: ">=18.0"
+    three: ">=0.141"
+  checksum: 9c2e0570f40bbb41a3bfddc2ef0b75b973699e17c9c5d2a5b8b15090a2384f3b5934fb5091aeeaa84b568ec1a3db4c83ea3fe802e04db94f89d8ae5e9526bcca
+  languageName: node
+  linkType: hard
+
 "@rushstack/eslint-patch@npm:^1.1.3":
   version: 1.2.0
   resolution: "@rushstack/eslint-patch@npm:1.2.0"
@@ -6432,6 +6446,27 @@ __metadata:
   languageName: node
   linkType: hard
 
+"three-stdlib@npm:^2.21.1":
+  version: 2.21.11
+  resolution: "three-stdlib@npm:2.21.11"
+  dependencies:
+    "@babel/runtime": ^7.16.7
+    "@types/offscreencanvas": ^2019.6.4
+    "@webgpu/glslang": ^0.0.15
+    chevrotain: ^10.1.2
+    draco3d: ^1.4.1
+    fflate: ^0.6.9
+    ktx-parse: ^0.4.5
+    mmd-parser: ^1.0.4
+    opentype.js: ^1.3.3
+    potpack: ^1.0.1
+    zstddec: ^0.0.2
+  peerDependencies:
+    three: ">=0.122.0"
+  checksum: f6baccce6ff10e74e8bdd4175b0eefa9df70db23622a227f5bf095c21e8223e7ae1aa67452e7ab9612ed9f17c17e55a9ee1f6c57b6dd1035a66aad68bb15639b
+  languageName: node
+  linkType: hard
+
 "three-stdlib@npm:^2.21.8":
   version: 2.21.10
   resolution: "three-stdlib@npm:2.21.10"
@@ -6480,6 +6515,7 @@ __metadata:
     "@popperjs/core": ^2.11.7
     "@react-three/drei": ^9.65.5
     "@react-three/fiber": ^8.12.2
+    "@react-three/xr": ^5.5.0
     "@tanstack/react-query": ^4.24.10
     "@types/ccapture.js": ^1.1.1
     "@types/downloadjs": ^1.4.3
