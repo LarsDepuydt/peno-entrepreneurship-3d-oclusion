@@ -654,9 +654,9 @@ export declare class GetScanByIdResponse extends Message<GetScanByIdResponse> {
  */
 export declare class UpdateScanByIdRequest extends Message<UpdateScanByIdRequest> {
   /**
-   * @generated from field: string id = 1;
+   * @generated from field: int32 id = 1;
    */
-  id: string;
+  id: number;
 
   /**
    * @generated from field: string scan_file = 2;

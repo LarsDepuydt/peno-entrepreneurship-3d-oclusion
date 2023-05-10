@@ -155,7 +155,7 @@ message GetScanByIdResponse {
 }
 
 message UpdateScanByIdRequest {
-  string id = 1;
+  int32 id = 1;
   string scan_file = 2;
   string notes = 3;
   int32 patient_id = 4;
