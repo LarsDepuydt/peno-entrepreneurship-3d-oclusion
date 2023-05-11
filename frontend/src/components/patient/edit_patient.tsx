@@ -47,6 +47,8 @@ export default function EditPatientButton({ patientID }: { patientID: number }) 
   };
 
   const [patientinfo, setData] = useState({
+    id: patientID,
+
     firstName: '',
     lastName: '',
 
@@ -59,7 +61,7 @@ export default function EditPatientButton({ patientID }: { patientID: number }) 
   useEffect(() => {
     modal && refetchPatient();
     modal && console.log(patientInfoRequest);
-    console.log('inRefetchUseEffect');
+    modal && console.log('inRefetchUseEffect');
 
     if (modal && patientInfoRequest != undefined) {
       setData(patientInfoRequest);
@@ -67,9 +69,9 @@ export default function EditPatientButton({ patientID }: { patientID: number }) 
   }, [modal]);
 
   useEffect(() => {
-    console.log('this is the patientinfo ');
-    console.log(patientinfo);
-  }, [patientinfo]);
+    modal && console.log('this is the patientinfo ');
+    modal && patientinfo.firstName != '' && console.log(patientinfo);
+  }, [modal, patientinfo]);
 
   const refreshKey = getAllPatients.useQuery().queryKey;
   const { data, refetch } = useQuery(
@@ -83,6 +85,7 @@ export default function EditPatientButton({ patientID }: { patientID: number }) 
 
   const ReworkValues = (values: patientValues) => {
     return {
+      id: patientID,
       firstName: values.PatientFirstName,
       lastName: values.PatientLastName,
       pinned: values.pinned,
@@ -95,7 +98,7 @@ export default function EditPatientButton({ patientID }: { patientID: number }) 
   const submitFunction = (values: patientValues) => {
     if (sendOK && modal) {
       setSendOK(false);
-      console.log('we started the function submitFunction()');
+      console.log('we are in the updatepatient update function');
 
       setData(ReworkValues(values));
       console.log(patientinfo);
@@ -109,6 +112,7 @@ export default function EditPatientButton({ patientID }: { patientID: number }) 
 
   useEffect(() => {
     if (submitOK) {
+      console.log('in updatepatient useeffect');
       refetch();
       console.log('were in the useEffect function inside the submitOK');
       console.log(patientinfo);
@@ -125,7 +129,7 @@ export default function EditPatientButton({ patientID }: { patientID: number }) 
       <div>
         <button type="button" className={styleB.relu_btn} id={styleB.editIcon} onClick={toggleModal} />
 
-        {modal && (
+        {modal && patientInfoRequest.firstName != '' && (
           <div className={styles.modal}>
             <div className={styles.overlay}></div>
             <div className={styles.modal_content}>
@@ -148,8 +152,8 @@ export default function EditPatientButton({ patientID }: { patientID: number }) 
                           <div className="mb-3">
                             <Field
                               className="form-control"
-                              id="patientFirstName"
-                              name="patientFirstName"
+                              id="PatientFirstName"
+                              name="PatientFirstName"
                               placeholder="First Name"
                             />
                           </div>
@@ -157,8 +161,8 @@ export default function EditPatientButton({ patientID }: { patientID: number }) 
                           <div className="mb-3">
                             <Field
                               className="form-control"
-                              id="patientLastName"
-                              name="patientLastName"
+                              id="PatientLastName"
+                              name="PatientLastName"
                               placeholder="Last Name"
                             />
                           </div>
