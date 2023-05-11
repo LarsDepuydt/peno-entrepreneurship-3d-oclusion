@@ -7,9 +7,8 @@ import { useState, useEffect, useRef } from 'react';
 import { SendMenuOptionRequest, ScanSave } from "@/gen/proto/threedoclusion/v1/service_pb";
 import Menu from './menu';
 import { useRouter } from 'next/router';
-import { Canvas } from '@react-three/fiber';
-import { Interactive, XR, ARButton, Controllers } from '@react-three/xr'
-import { Html } from '@react-three/drei';
+import { CSS3DRenderer, CSS3DObject } from 'three/examples/jsm/renderers/CSS3DRenderer.js';
+import {HTMLMesh} from 'three/examples/jsm/interactive/HTMLMesh.js'
 
 import * as CANNON from 'cannon-es';
 import { getFirstMesh, getFirstBufferGeometry, threeMeshToConvexThreeMesh, threeMeshToConvexCannonMesh, threeMeshToCannonMesh, checkTime, cannonMeshToCannonConvexPolyhedron, vec3ToVector3, vector3ToVec3, threeQuaternionToCannonQuaternion, applyQuaternion, sqnorm, quatDot, minusQuat } from './util.js'
@@ -19,12 +18,13 @@ var movement_mode : any;
 var session : any;
 const prevGamePads = new Map();
 
-//let container: HTMLDivElement;
+let container: HTMLDivElement;
 let camera: THREE.PerspectiveCamera, scene: any, renderer: THREE.WebGLRenderer;
 let controller1: any, controller2 : any;
 let controllerGrip1 : any, controllerGrip2 : any;
 let controls : any;
 let raycaster : any;
+
 
 let second_call = false;
 
@@ -319,11 +319,10 @@ function initCannon() {
   world.addBody(floor_body);
 }
 
-function initThree(container: any, setOpenMenu: any, setCurrentScan: any) {
+function initThree(setOpenMenu: any, setCurrentScan: any) {
   // create container
-  //container = document.createElement("div");
-  //document.body.appendChild(container);
-
+  container = document.createElement("div");
+  document.body.appendChild(container);
   // create scene and camera
   scene = new THREE.Scene();
   scene.background = new THREE.Color(0x808080);
@@ -381,6 +380,17 @@ function initThree(container: any, setOpenMenu: any, setCurrentScan: any) {
   renderer.xr.enabled = true;
   container.appendChild(renderer.domElement);
 
+
+  const menuDiv: HTMLElement = document.querySelector(".menu-div"); // Remove then
+  menuDiv.style.width = '100%';
+  menuDiv.style.height = '100%';
+  
+  const menuMesh = new HTMLMesh(menuDiv);
+  menuMesh.position.set(3, 0, -3); // Base off camera position and maybe update every frame so it follows around, also stop interaction with jaws while menu is enabled
+  menuMesh.scale.setScalar(8);
+  scene.add(menuMesh);
+
+
   document.body.appendChild(VRButton.createButton(renderer));
 
   // controllers
@@ -433,10 +443,6 @@ function initThree(container: any, setOpenMenu: any, setCurrentScan: any) {
 
   // allow additional button inputs (for axis locking)
   session = renderer.xr.getSession();
-
-  // resize
-
-  window.addEventListener("resize", onWindowResize);
 }
 
 function loadObjects(callback?: () => void) {
@@ -958,15 +964,13 @@ export default function DraggingView({ stream, client, onQuit }: {stream: any, c
         timestampSave: "2006-01-02T15:04:05"
     });
     const [current_scan, setCurrentScan] = useState<ScanSave>(initialScan);
-    const [openMenu, setOpenMenu] = useState(false);
-
-    const containerRef = useRef(null);
+    const [openMenu, setOpenMenu] = useState(true); // SET TO false
 
     useEffect(() => { // https://github.com/facebook/react/issues/24502
         if (second_call){
             //init(initialScan);   //FIXFIX
             initCannon();
-            initThree(containerRef.current, setOpenMenu, setCurrentScan);
+            initThree(setOpenMenu, setCurrentScan);
             loadObjects(()=> setOpenMenu(true));
             // animate(); // Sets 
             console.log('Init executed!');
@@ -1040,11 +1044,8 @@ export default function DraggingView({ stream, client, onQuit }: {stream: any, c
     };
 
     return (
-      <Canvas ref={containerRef}>
-        <Html>
         <div className="menu-div">
         <Menu {...props}/>
-        
         <style jsx>{`
             .menu-div {
                 position: absolute;
@@ -1053,7 +1054,5 @@ export default function DraggingView({ stream, client, onQuit }: {stream: any, c
             }
         `}</style>
         </div>
-        </Html>
-      </Canvas>
     );
 }
