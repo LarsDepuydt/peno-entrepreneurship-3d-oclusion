@@ -943,8 +943,8 @@ function undoWhenPressed() {
   }
 
 
-function updateScanData(setCurrentScan: any) {
-    let newScan = new ScanSave({scanId: 111, timestampSave: "2006-01-02T15:04:05"});
+function updateScanData(scanID: number, setCurrentScan: any) {
+    let newScan = new ScanSave({scanId: scanID, timestampSave: "2006-01-02T15:04:05"});
         if (lowerjaw.body.name == "lowerjaw"){
             newScan.lowerX = lowerjaw.body.position.x;
             newScan.lowerY = lowerjaw.body.position.y;
@@ -968,7 +968,7 @@ function updateScanData(setCurrentScan: any) {
     //setCurrentScan(newScan);  //FIXFIX
 //}
 
-export default function DraggingView({ stream, client, onQuit }: {stream: any, client: any, onQuit: () => void}){
+export default function DraggingView({ scanId, client, onQuit }: {scanId: number, client: any, onQuit: () => void}){
     const initialScan = new ScanSave({
         lowerX: 0,
         lowerY: 2,
@@ -982,7 +982,7 @@ export default function DraggingView({ stream, client, onQuit }: {stream: any, c
         upperRX: 1.5 * Math.PI,
         upperRY: 0,
         upperRZ: 0,
-        scanId: 111,
+        scanId: scanId,
         timestampSave: "2006-01-02T15:04:05"
     });
     const [current_scan, setCurrentScan] = useState<ScanSave>(initialScan);
@@ -1016,7 +1016,7 @@ export default function DraggingView({ stream, client, onQuit }: {stream: any, c
         const {scanId, timestampSave, ...positionData } = inputData
         //loadPosition(positionData);  //FIXFIX
     }
-    const props = {isOpen: openMenu, setIsOpen: setOpenMenu, current_scan, stream, client, onLoadItemClicked, onQuit };
+    const props = {isOpen: openMenu, setIsOpen: setOpenMenu, current_scan, client, onLoadItemClicked, onQuit };
 
     // resize
 

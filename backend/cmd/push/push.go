@@ -43,8 +43,8 @@ func GetWaitingResponse(req *connect.Request[threedoclusionv1.WaitingRequest], s
 	case response := <-redirectVRChannel:
 		res := &threedoclusionv1.WaitingResponse{
 			Redirect: response.Redirect,
-			Url:      "start-vr",
-		} // fmt.Sprintf("/VR/%d", response.ScanId),
+			Url:      fmt.Sprintf("/start-vr?scanID=%d", response.ScanId),
+		} // start-vr
 		redirectVRChannels.ReleaseChannel(req.Msg.UniqueCode) // Redirect instruction has been sent, delete channel
 		if err := stream.Send(res); err != nil {
 			return err
