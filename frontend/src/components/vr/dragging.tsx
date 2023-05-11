@@ -6,8 +6,6 @@ import { OBJLoader } from 'three/examples/jsm/loaders/OBJLoader.js';
 import { useState, useEffect, useRef } from 'react';
 import { SendMenuOptionRequest, ScanSave } from "@/gen/proto/threedoclusion/v1/service_pb";
 import Menu from './menu';
-import { useRouter } from 'next/router';
-import { CSS3DRenderer, CSS3DObject } from 'three/examples/jsm/renderers/CSS3DRenderer.js';
 import {HTMLMesh} from 'three/examples/jsm/interactive/HTMLMesh.js'
 
 import * as CANNON from 'cannon-es';
