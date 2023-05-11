@@ -25,8 +25,11 @@ let controllerGrip1 : any, controllerGrip2 : any;
 let controls : any;
 let raycaster : any;
 
+let menu_toggled = true;
+let  menuDiv: HTMLElement, menuMesh: HTMLMesh;
 
 let second_call = false;
+
 
 const intersected = []; // global list that holds the first objects the controllers are pointing at
 const tempMatrix = new THREE.Matrix4();
@@ -323,6 +326,7 @@ function initThree(setOpenMenu: any, setCurrentScan: any) {
   // create container
   container = document.createElement("div");
   document.body.appendChild(container);
+
   // create scene and camera
   scene = new THREE.Scene();
   scene.background = new THREE.Color(0x808080);
@@ -381,11 +385,12 @@ function initThree(setOpenMenu: any, setCurrentScan: any) {
   container.appendChild(renderer.domElement);
 
 
-  const menuDiv: HTMLElement = document.querySelector(".menu-div"); // Remove then
-  menuDiv.style.width = '100%';
-  menuDiv.style.height = '100%';
-  
-  const menuMesh = new HTMLMesh(menuDiv);
+
+  menuDiv = document.querySelector(".menu-div");
+  const foo = () => {console.log("Clicked")}
+  menuDiv.addEventListener("click", foo);
+
+  menuMesh = new HTMLMesh(menuDiv);
   menuMesh.position.set(3, 0, -3); // Base off camera position and maybe update every frame so it follows around, also stop interaction with jaws while menu is enabled
   menuMesh.scale.setScalar(8);
   scene.add(menuMesh);
@@ -595,18 +600,21 @@ function showAxes(axis_num : any, curr_jaw : any) {
 
     // add the arrow to the scene
     curr_jaw.mesh.add(ArrowHelper);
-  } 
+} 
 
 function render(callback?: () => void) {
   beforeRender(controller1, callback);
   beforeRender(controller2, callback);
   cleanIntersected();
   positionReset();
-  undoWhenPressed();
-  redoWhenPressed();
 
-  intersectObjects(controller1);
-  intersectObjects(controller2);
+  if (!menu_toggled){ // Eig !menu_toggled
+    // So no interactions with jaws when menu is toggled
+    undoWhenPressed();
+    redoWhenPressed();
+    //intersectObjects(controller1);
+    //intersectObjects(controller2);
+  }
 
   renderer.render(scene, camera);
 }
@@ -636,22 +644,61 @@ function onWindowResize() {
 function onSelectStart(event) {
   const controller = event.target;
 
-  const intersections = getIntersections(controller);
+  if (!menu_toggled){
+    const intersections = getIntersections(controller);
 
-  if (intersections.length > 0) {
-    const intersection = intersections[0];
-    const jaw = meshToJaw(intersection.object);
+    if (intersections.length > 0) {
+      const intersection = intersections[0];
+      const jaw = meshToJaw(intersection.object);
 
-    if (!jaw.selected) {
-      jaw.mesh.material.emissive.b = 1;
-      jaw.setTarget();
-      controller.attach(jaw.target);
-      jaw.selected = true;
-      jaw.body.type = CANNON.Body.DYNAMIC;
-      controller.userData.selected = jaw;
-      addMovementToUndoStack(jaw.body);
-      console.log(undoStack);
-      //console.log(jaw.body);
+      if (!jaw.selected) {
+        jaw.mesh.material.emissive.b = 1;
+        jaw.setTarget();
+        controller.attach(jaw.target);
+        jaw.selected = true;
+        jaw.body.type = CANNON.Body.DYNAMIC;
+        controller.userData.selected = jaw;
+        addMovementToUndoStack(jaw.body);
+        console.log(undoStack);
+        //console.log(jaw.body);
+      }
+    }
+  } else {
+    const intersects = getIntersectionMenu(controller); // Further interactions necessary
+    if (intersects.length > 0) {
+      // Calculate the 2D position of the intersection point
+      /*const point = intersects[0].point;
+      console.log(menuMesh.position.x + menuMesh.);
+      console.log(point.x );
+      console.log(point.y );*/
+
+      // 1. Calculate the local intersection point relative to the menuMesh
+      const localIntersectionPoint = menuMesh.worldToLocal(intersects[0].point.clone());
+
+      // 2. Normalize the local intersection point based on the menuMesh dimensions
+      const meshWidth = menuMesh.geometry.parameters.width;
+      const meshHeight = menuMesh.geometry.parameters.height;
+
+      const normalizedX = (localIntersectionPoint.x + meshWidth / 2) / meshWidth;
+      const normalizedY = (localIntersectionPoint.y + meshHeight / 2) / meshHeight;
+
+      // 3. Convert the normalized coordinates to the corresponding 2D point on the menuDiv
+      const menuDivWidth = menuDiv.offsetWidth;
+      const menuDivHeight = menuDiv.offsetHeight;
+
+      const menuDivPosition = {
+        x: normalizedX * menuDivWidth,
+        y: (1 - normalizedY) * menuDivHeight
+      };
+
+      console.log(menuDivPosition.x);
+      console.log(menuDivPosition.y);
+
+      const clickEvent = new MouseEvent('click', {
+        clientX: menuDivPosition.x,
+        clientY: menuDivPosition.y
+      })
+      menuDiv.dispatchEvent(clickEvent);
     }
   }
 }
@@ -726,6 +773,15 @@ function getIntersections(controller : any) {
   raycaster.ray.direction.set(0, 0, -1).applyMatrix4(tempMatrix);
 
   return raycaster.intersectObjects([lowerjaw.mesh, upperjaw.mesh], true);
+}
+
+function getIntersectionMenu(controller : any) {
+  tempMatrix.identity().extractRotation(controller.matrixWorld);
+
+  raycaster.ray.origin.setFromMatrixPosition(controller.matrixWorld);
+  raycaster.ray.direction.set(0, 0, -1).applyMatrix4(tempMatrix);
+
+  return raycaster.intersectObject(menuMesh, true);
 }
 
 // highlight the object the controller points at
@@ -971,7 +1027,7 @@ export default function DraggingView({ stream, client, onQuit }: {stream: any, c
             //init(initialScan);   //FIXFIX
             initCannon();
             initThree(setOpenMenu, setCurrentScan);
-            loadObjects(()=> setOpenMenu(true));
+            loadObjects(()=> {setOpenMenu(true);}); // menu_toggled...
             // animate(); // Sets 
             console.log('Init executed!');
         }
@@ -1049,8 +1105,8 @@ export default function DraggingView({ stream, client, onQuit }: {stream: any, c
         <style jsx>{`
             .menu-div {
                 position: absolute;
-                width: 100%;
-                height: 100%;
+                width: 300px;
+                height: 350px;
             }
         `}</style>
         </div>

@@ -130,7 +130,6 @@ function Menu({isOpen, setIsOpen, current_scan, stream, client, onLoadItemClicke
             position: relative;
             border: 1px solid #000; // Add border around the menu
             margin: auto;
-            left: -50%;
             z-index: 999;
             display: flex;
             justify-content: center;
