@@ -7,8 +7,6 @@ import { useTransport } from '@bufbuild/connect-query';
 import {
   SubscribeConnectionRequest,
   SubscribeConnectionResponse,
-  SendMenuOptionRequest,
-  Scan,
 } from '@/gen/proto/threedoclusion/v1/service_pb';
 
 import dynamic from 'next/dynamic';
@@ -24,8 +22,8 @@ export default function StartVRPage(){
   const [stream, setStream] = useState<AsyncIterable<SubscribeConnectionResponse> | null>(null);
   const transport = useTransport();
   const router = useRouter();
-  const { scanIdString } = router.query;
-  const scanId = parseInt(scanIdString as string, 10);
+  const { scanID } = router.query;
+  const scanId = parseInt(scanID as string, 10);
 
   useEffect(() => setIsComponentMounted(true), [])
 
