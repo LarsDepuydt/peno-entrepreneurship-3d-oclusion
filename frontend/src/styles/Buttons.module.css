@@ -65,6 +65,62 @@
   border: none;
 }
 
+@keyframes slidingText {
+  from {
+    opacity: 0;
+    z-index: 1;
+  }
+  to {
+    opacity: 1;
+    z-index: 999;
+  }
+}
+
+.animatedText {
+  position: relative;
+  
+
+
+  animation-name: slidingText;
+  animation-duration: 2s;
+  animation-delay: 0.25s;
+  animation-iteration-count: 1;
+  animation-timing-function: ease-out;
+  /*animation-direction: reverse;*/
+}
+
+
+/* animation does not work
+.animatedText,
+.animatedText:before,
+.animatedText:after {
+  opacity: 0;
+  z-index: 1;
+}
+
+#homeIcon:hover:before {
+  opacity: 1;
+  transform: translate(0, 0);
+}
+#homeIcon:before {
+  content: attr(data-hover);
+  left: 0;
+  opacity: 0;
+  transform: translate(-100%, 0);
+  transition: all 0.3s ease-in-out;
+}
+
+#homeIcon:hover div {
+  opacity: 0;
+  transform: translate(100%, 0);
+}
+#homeIcon div {
+  transition: all 0.3s ease-in-out;
+}
+*/
+
+
+
 #homeIcon {
   width: 48px;
   height: 48px;

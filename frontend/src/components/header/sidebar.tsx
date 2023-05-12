@@ -87,6 +87,7 @@ export function SidebarDoctorName() {
         </div>
         <div className={stylesButton.absoluteWrapper}>
           <ReluLink />
+
           <button type="button" className={stylesButton.relu_btn} id={stylesButton.homeIcon} onClick={home}></button>
           <button type="button" className={stylesButton.relu_btn} id={stylesButton.waitIcon} onClick={wait}></button>
         </div>
