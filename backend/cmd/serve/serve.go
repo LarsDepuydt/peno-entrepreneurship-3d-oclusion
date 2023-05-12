@@ -72,6 +72,7 @@ func (s *ServerStruct) SaveScanData(
 	ctx context.Context,
 	req *connect.Request[threedoclusionv1.SaveScanDataRequest],
 ) (*connect.Response[threedoclusionv1.SaveScanDataResponse], error) {
+	threedoclusionv1.S
 	return vr.SaveScanData(req, s.database)
 }
 
