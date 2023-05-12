@@ -20,7 +20,7 @@ func SaveScanData(req *connect.Request[threedoclusionv1.SaveScanDataRequest], da
 		//formattedDate := t.Format("2006-01-02") // Format in yyyy-mm-dd
 		formattedTimestamp := t.Format("2006-01-02T15:04:05")
 
-		save := req.Msg.GetSaveData()
+		save := req.Msg.GetScan()
 		_, error = statement.Exec(save.ScanId, save.LowerX, save.LowerY, save.LowerZ, save.LowerRX, save.LowerRY, save.LowerRZ, save.UpperX, save.UpperY, save.UpperZ, save.UpperRX, save.UpperRY, save.UpperRZ, formattedTimestamp)
 		if error != nil {
 			return nil, error
@@ -28,7 +28,7 @@ func SaveScanData(req *connect.Request[threedoclusionv1.SaveScanDataRequest], da
 
 		msg := "Saved successfully"
 		res := connect.NewResponse(&threedoclusionv1.SaveScanDataResponse{
-			data: &msg,
+			Data: msg,
 		})
 		return res, nil
 }
