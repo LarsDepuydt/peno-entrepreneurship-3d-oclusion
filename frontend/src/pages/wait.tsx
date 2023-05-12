@@ -74,7 +74,7 @@ export default function WaitPage() {
     if (Symbol.asyncIterator in stream) { // Check if stream is an AsyncIterable
       for await (const res of stream as AsyncIterable<any>) { // Narrow the type to AsyncIterable<any>
         if (res.redirect){
-          router.push(res.url)
+          router.push(res.url) // /start-vr?scanID=\${scanId}`
         }
       }
     } else {
