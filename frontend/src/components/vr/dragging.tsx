@@ -575,6 +575,12 @@ function beforeRender(controller) {
       prevButtonState = data.buttons[4]; // save button state for next frame
       //console.log(currentOption);
 
+      /*if (data.buttons[5] == 1){ // Y pressed, ends webXR session; restart session when "x" is clicked in menu
+        const session = renderer.xr.getSession();
+        session?.end().then(setOpenMenu(true));
+        updateScanData(setCurrentScan);
+      }*/
+
       movement_mode = currentOption;
     }
   }
@@ -943,32 +949,35 @@ function undoWhenPressed() {
   }
 
 
-function updateScanData(setCurrentScan: any) {
-    let newScan = new ScanSave({scanId: 111, timestampSave: "2006-01-02T15:04:05"});
+function updateScanData(scanID: number, setCurrentScan: any) { // Use when menu is triggered for last position
+    let newScan = new ScanSave({scanId: scanID, timestampSave: "2006-01-02T15:04:05"});
         if (lowerjaw.body.name == "lowerjaw"){
             newScan.lowerX = lowerjaw.body.position.x;
             newScan.lowerY = lowerjaw.body.position.y;
             newScan.lowerZ = lowerjaw.body.position.z;
-            newScan.lowerRX = lowerjaw.body.quaterion.x;
-            newScan.lowerRY = lowerjaw.body.quaterion.y;
-            newScan.lowerRZ = lowerjaw.body.quaterion.z;
-            //newScan.lowerRZ = lowerjaw.body.quaterion.w;
-            
+            newScan.lowerRX = lowerjaw.body.rotation.x;
+            newScan.lowerRY = lowerjaw.body.rotation.y;
+            newScan.lowerRZ = lowerjaw.body.rotation.z;
         }
         else if (upperjaw.body.name == "upperjaw"){
             newScan.upperX = upperjaw.body.position.x;
             newScan.upperY = upperjaw.body.position.y;
             newScan.upperZ = upperjaw.body.position.z;
-            newScan.upperRX = upperjaw.body.quaternion.x;
-            newScan.upperRY = upperjaw.body.quaternion.y;
-            newScan.upperRZ = upperjaw.body.quaternion.z;
-            //newScan.upperRZ = upperjaw.body.quaternion.w;
+            newScan.upperRX = upperjaw.body.rotation.x;
+            newScan.upperRY = upperjaw.body.rotation.y;
+            newScan.upperRZ = upperjaw.body.rotation.z;
         }
-    }
-    //setCurrentScan(newScan);  //FIXFIX
-//}
+    setCurrentScan(newScan);
+}
 
-export default function DraggingView({ stream, client, onQuit }: {stream: any, client: any, onQuit: () => void}){
+function loadPosition(positionData: any) {
+  lowerjaw.body.position.set(positionData.lowerX, positionData.lowerY, positionData.lowerZ);
+  lowerjaw.body.rotation.set(positionData.lowerRX, positionData.lowerRY, positionData.lowerRZ);
+  upperjaw.body.position.set(positionData.upperX, positionData.upperY, positionData.upperZ);
+  upperjaw.body.rotation.set(positionData.upperRX, positionData.upperRY, positionData.upperRZ);
+}
+
+export default function DraggingView({ scanId, client, onQuit }: {scanId: number, client: any, onQuit: () => void}){
     const initialScan = new ScanSave({
         lowerX: 0,
         lowerY: 2,
@@ -982,7 +991,7 @@ export default function DraggingView({ stream, client, onQuit }: {stream: any, c
         upperRX: 1.5 * Math.PI,
         upperRY: 0,
         upperRZ: 0,
-        scanId: 111,
+        scanId: scanId,
         timestampSave: "2006-01-02T15:04:05"
     });
     const [current_scan, setCurrentScan] = useState<ScanSave>(initialScan);
@@ -1014,9 +1023,9 @@ export default function DraggingView({ stream, client, onQuit }: {stream: any, c
     const onLoadItemClicked = (inputData: ScanSave) => {
         console.log(inputData)
         const {scanId, timestampSave, ...positionData } = inputData
-        //loadPosition(positionData);  //FIXFIX
+        loadPosition(positionData);
     }
-    const props = {isOpen: openMenu, setIsOpen: setOpenMenu, current_scan, stream, client, onLoadItemClicked, onQuit };
+    const props = {isOpen: openMenu, setIsOpen: setOpenMenu, current_scan, client, onLoadItemClicked, onQuit };
 
     // resize
 
