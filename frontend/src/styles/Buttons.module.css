@@ -236,6 +236,8 @@
   margin-top: 10px;
   margin-left: 10px;
   margin-bottom: 10px;
+
+  width:15vw;
 }
 
 .notes_btn:hover {
@@ -256,12 +258,12 @@
 
   margin-right: 10px;
   margin-top: 10px;
-
   margin-left: 20px;
-
   margin-bottom: 10px;
 
   min-height: 60px;
+  width:15vw;
+  min-width: 60px;
 }
 
 .note_input:hover {
