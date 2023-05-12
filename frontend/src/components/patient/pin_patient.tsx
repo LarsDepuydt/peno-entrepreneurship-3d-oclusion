@@ -1,6 +1,6 @@
-import { getPatientById } from '@/gen/proto/threedoclusion/v1/service-ScanService_connectquery';
+import { getPatientById, updatePatientById  } from '@/gen/proto/threedoclusion/v1/service-ScanService_connectquery';
 import styleB from '@/styles/Buttons.module.css';
-import { useQuery } from '@tanstack/react-query';
+import { useMutation, useQuery } from '@tanstack/react-query';
 import React, { useState } from 'react';
 
 /* still needs to be implemented, just a dummy button */
@@ -8,6 +8,15 @@ import React, { useState } from 'react';
 export default function PinPatientButton({ patientID }: { patientID: number }) {
   const query = getPatientById.useQuery({ id: patientID });
   const { data, refetch } = useQuery(query.queryKey, query.queryFn, { enabled: true });
+  const mutation = useMutation(updatePatientById.useMutation());
+  
+
+  const handleClick = async () => {
+    if (data) {
+      await mutation.mutateAsync({ id: patientID, });
+      refetch();
+    }
+  };
 
   if (data != undefined) {
     const pinned = data.pinned;
@@ -15,13 +24,13 @@ export default function PinPatientButton({ patientID }: { patientID: number }) {
       <div>
         {pinned && (
           <div>
-            <button type="button" className={styleB.relu_btn} id={styleB.pinnedIcon}></button>
+            <button type="button" className={styleB.relu_btn} id={styleB.pinnedIcon} onClick={handleClick}></button>
           </div>
         )}
 
         {!pinned && (
           <div>
-            <button type="button" className={styleB.relu_btn} id={styleB.unpinnedIcon}></button>
+            <button type="button" className={styleB.relu_btn} id={styleB.unpinnedIcon} onClick={handleClick}></button>
           </div>
         )}
       </div>
