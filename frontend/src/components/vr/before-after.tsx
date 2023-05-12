@@ -6,7 +6,6 @@ import { useRef, useEffect, useState } from 'react';
 let camera: THREE.PerspectiveCamera, scene: THREE.Scene, renderer: THREE.WebGLRenderer;
 
 let controls, group: THREE.Group;
-let second_call = false;
 
 const path_upper_jaw = '/upper_ios_6.obj'; // URLs for fetch, temporarily in public folder so Nextjs can access
 const path_lower_jaw = '/lower_ios_6.obj';
