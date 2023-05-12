@@ -1063,14 +1063,10 @@ export default function DraggingView({ scanId, client, onQuit }: {scanId: number
         const {scanId, timestampSave, ...positionData } = inputData
         loadPosition(positionData);
     }
-<<<<<<< HEAD
     const onReset = () => {
       positionReset();
     }
-    const props = {isOpen: openMenu, setIsOpen: setOpenMenu, current_scan, stream, client, onLoadItemClicked, onQuit, onReset };
-=======
-    const props = {isOpen: openMenu, setIsOpen: setOpenMenu, current_scan, client, onLoadItemClicked, onQuit };
->>>>>>> 6c976c184e5ce1eedacf2c71667cf43e09be36c7
+    const props = {isOpen: openMenu, setIsOpen: setOpenMenu, current_scan, client, onLoadItemClicked, onQuit, onReset };
 
     // resize
 

@@ -3,7 +3,6 @@ import { Canvas } from '@react-three/fiber';
 import { Html, Plane } from '@react-three/drei';
 import { SendMenuOptionRequest, Scan, ScanSave } from "@/gen/proto/threedoclusion/v1/service_pb";
 import ListView from "./list-view";
-import positionReset from "./dragging"
 
 async function sendMenuOption(optionNumber: number, clnt: any, oData: any){
   console.log(oData);
@@ -17,11 +16,7 @@ async function sendMenuOption(optionNumber: number, clnt: any, oData: any){
   return res;
 }
 
-<<<<<<< HEAD
-function Menu({isOpen, setIsOpen, current_scan, stream, client, onLoadItemClicked, onQuit, onReset}: {isOpen: boolean, setIsOpen: any, current_scan: ScanSave, stream: any, client: any, onLoadItemClicked: (inputData: ScanSave) => void, onQuit: () => void, onReset: () => void}){ // Add props with positions, client...
-=======
-function Menu({isOpen, setIsOpen, current_scan, client, onLoadItemClicked, onQuit}: {isOpen: boolean, setIsOpen: any, current_scan: ScanSave, client: any, onLoadItemClicked: (inputData: ScanSave) => void, onQuit: () => void}){ // Add props with positions, client...
->>>>>>> 6c976c184e5ce1eedacf2c71667cf43e09be36c7
+function Menu({isOpen, setIsOpen, current_scan, client, onLoadItemClicked, onQuit, onReset}: {isOpen: boolean, setIsOpen: any, current_scan: ScanSave, client: any, onLoadItemClicked: (inputData: ScanSave) => void, onQuit: () => void, onReset: () => void}){ // Add props with positions, client...
   const [showListView, setShowListView] = useState(false);
   const [listData, setListData] = useState<string[]>([]);
   const [listDictData, setListDictData] = useState({});
