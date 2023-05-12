@@ -8,6 +8,7 @@ import Head from 'next/head';
 
 import { useQuery } from '@tanstack/react-query';
 import { getAllPatients } from '@/gen/proto/threedoclusion/v1/service-ScanService_connectquery';
+import { Router, useRouter } from 'next/router';
 
 interface PatientData {
   id: number;
@@ -19,6 +20,7 @@ interface PatientData {
 }
 
 export default function PatientPage(this: any) {
+  const router = useRouter();
   let DentistID = process.env.REACT_APP_DENTIST_ID!;
 
   const { data, refetch } = useQuery(getAllPatients.useQuery({ enabled: true }));
@@ -36,6 +38,12 @@ export default function PatientPage(this: any) {
     );
   };
 
+  useEffect(() => {
+    if (DentistID == undefined) {
+      DentistID == undefined && router.push('/redirect-page');
+    }
+  }, [DentistID, router]);
+
   const allPatients = () => {
     let arrayPatientsPinned: JSX.Element[] = [];
     let arrayPatientsNotPinned: JSX.Element[] = [];
@@ -51,11 +59,34 @@ export default function PatientPage(this: any) {
         }
       });
     }
+    //arrayPatientsPinned = [...arrayPatientsPinned].sort((a, b) => (a.firstName > b.firstName ? -1 : 1));
+    arrayPatientsPinned.sort((a, b) => {
+      const aValue = a.props.patientfirstname;
+      const bValue = b.props.patientfirstname;
+      if (aValue < bValue) {
+        return -1;
+      }
+      if (aValue > bValue) {
+        return 1;
+      }
+      return 0;
+    });
+
+    arrayPatientsNotPinned.sort((a, b) => {
+      const aValue = a.props.patientfirstname;
+      const bValue = b.props.patientfirstname;
+      if (aValue < bValue) {
+        return -1;
+      }
+      if (aValue > bValue) {
+        return 1;
+      }
+      return 0;
+    });
 
     let arrayPatients = arrayPatientsPinned.concat(arrayPatientsNotPinned);
     return arrayPatients;
   };
-
   return (
     <>
       <Head>
@@ -67,7 +98,6 @@ export default function PatientPage(this: any) {
         <div className={styles.scansWrapper}>
           {allPatients()}
 
-
           <div className={styles.patientScan_filler}></div>
           <div className={styles.patientScan_filler}></div>
           <div className={styles.patientScan_filler}></div>
@@ -79,7 +109,6 @@ export default function PatientPage(this: any) {
           <div className={styles.patientScan_filler}></div>
           <div className={styles.patientScan_filler}></div>
           <div className={styles.patientScan_filler}></div>
-
         </div>
         <SidebarDoctor />
         <HeaderDoctor />

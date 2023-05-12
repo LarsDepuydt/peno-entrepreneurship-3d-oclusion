@@ -317,6 +317,7 @@ function initCannon() {
 }
 
 function initThree(setOpenMenu: any, setCurrentScan: any) {
+  setOpenMenu(true);
   // create container
   container = document.createElement("div");
   document.body.appendChild(container);
@@ -481,20 +482,41 @@ function loadObjects() {
 
 // define VR Headset position
 const VRHeadsetPosition = new THREE.Vector3();
+const VRHeadsetQuaternion = new THREE.Quaternion();
 
 function afterLoad() {
-  VRHeadsetPosition.setFromMatrixPosition(camera.matrixWorld);
   if (lowerjaw.loaded && upperjaw.loaded) {
+    VRHeadsetPosition.setFromMatrixPosition(camera.matrixWorld);
+    VRHeadsetQuaternion.setFromRotationMatrix(camera.matrixWorld);
+    VRHeadsetQuaternion.setFromAxisAngle(
+      new THREE.Vector3(1, 0, 0),
+      -Math.PI / 2
+    );
+
     lowerjaw.body.position.set(
       VRHeadsetPosition.x,
       VRHeadsetPosition.y + 0.3,
-      VRHeadsetPosition.z - 5.5
+      VRHeadsetPosition.z - 5
     );
+    lowerjaw.body.quaternion.set(
+      VRHeadsetQuaternion.x,
+      VRHeadsetQuaternion.y,
+      VRHeadsetQuaternion.z,
+      VRHeadsetQuaternion.w
+    );
+
     upperjaw.body.position.set(
       VRHeadsetPosition.x,
       VRHeadsetPosition.y + 0.4,
-      VRHeadsetPosition.z - 5.5
+      VRHeadsetPosition.z - 5
     );
+    upperjaw.body.quaternion.set(
+      VRHeadsetQuaternion.x,
+      VRHeadsetQuaternion.y,
+      VRHeadsetQuaternion.z,
+      VRHeadsetQuaternion.w
+    );
+
     lowerjaw.mesh.name = "lowerjaw.mesh";
     lowerjaw.sphere.name = "lowerjaw.sphere";
     lowerjaw.target.name = "lowerjaw.target";
@@ -628,7 +650,7 @@ function render() {
   beforeRender(controller1);
   beforeRender(controller2);
   cleanIntersected();
-  positionReset();
+  //positionReset();
   undoWhenPressed();
   redoWhenPressed();
 
@@ -859,19 +881,55 @@ function redoMovement() {
   }
 }
 
-// when thumbstick pressed resets position to original center position
-
 function positionReset() {
-  const session = renderer.xr.getSession();
-  if (session == null || session.inputSources == null) {
-    return;
-  } else {
-    for (const source of session.inputSources) {
-      if (source.gamepad.buttons[4].pressed) {
-        // undoStack
-      }
-    }
-  }
+  // IF BUTTON PRESSED IN MENU:
+  VRHeadsetPosition.setFromMatrixPosition(camera.matrixWorld);
+  VRHeadsetQuaternion.setFromRotationMatrix(camera.matrixWorld);
+
+  // create a quaternion for 90 degree rotation around x-axis
+  var xQuaternion = new THREE.Quaternion();
+  xQuaternion.setFromAxisAngle(new THREE.Vector3(1, 0, 0), -Math.PI / 2);
+
+  let finalQuaternion = new THREE.Quaternion();
+  finalQuaternion.multiplyQuaternions(VRHeadsetQuaternion, xQuaternion);
+
+  // Calculate offset vector to position object in front of user
+  let offsetVectorLower = new THREE.Vector3(0, 0.3, -2).applyQuaternion(
+    VRHeadsetQuaternion
+  );
+  let offsetVectorUpper = new THREE.Vector3(0, 0.4, -2).applyQuaternion(
+    VRHeadsetQuaternion
+  );
+
+  VRHeadsetPosition.add(offsetVectorLower);
+
+  // Set position and orientation
+  lowerjaw.body.position.set(
+    VRHeadsetPosition.x,
+    VRHeadsetPosition.y,
+    VRHeadsetPosition.z
+  );
+  lowerjaw.body.quaternion.set(
+    finalQuaternion.x,
+    finalQuaternion.y,
+    finalQuaternion.z,
+    finalQuaternion.w
+  );
+
+  VRHeadsetPosition.sub(offsetVectorLower);
+  VRHeadsetPosition.add(offsetVectorUpper);
+
+  upperjaw.body.position.set(
+    VRHeadsetPosition.x,
+    VRHeadsetPosition.y,
+    VRHeadsetPosition.z
+  );
+  upperjaw.body.quaternion.set(
+    finalQuaternion.x,
+    finalQuaternion.y,
+    finalQuaternion.z,
+    finalQuaternion.w
+  );
 }
 
 var curr_jaw : any;
@@ -1025,7 +1083,10 @@ export default function DraggingView({ scanId, client, onQuit }: {scanId: number
         const {scanId, timestampSave, ...positionData } = inputData
         loadPosition(positionData);
     }
-    const props = {isOpen: openMenu, setIsOpen: setOpenMenu, current_scan, client, onLoadItemClicked, onQuit };
+    const onReset = () => {
+      positionReset();
+    }
+    const props = {isOpen: openMenu, setIsOpen: setOpenMenu, current_scan, client, onLoadItemClicked, onQuit, onReset };
 
     // resize
 

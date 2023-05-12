@@ -137,7 +137,7 @@ export default function EditScanButton({ scanID }: { scanID: number }) {
       {/* <div className={styleP.dropDownButtonEdit}> */}
       {/* <button type="button" className={styleB.relu_btn} id={styleB.editIcon}  /> */}
       <button className={styleB.relu_btn} id={styleB.dropDownButton} onClick={toggleModal}>
-        edit scan
+        Edit scan
       </button>
       {/* </div> */}
 

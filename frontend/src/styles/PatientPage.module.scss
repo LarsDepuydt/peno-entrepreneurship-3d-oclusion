@@ -9,6 +9,9 @@ $patientBorder-width: 1.5px;
 
 .scansWrapper {
   margin-top: 8vh;
+
+  padding-left: 15px;
+
   width: 80vw;
   float: right;
   display: flex;
@@ -16,6 +19,8 @@ $patientBorder-width: 1.5px;
   flex-wrap: wrap;
   justify-content: space-evenly;
   align-items: center;
+
+  background-color: white;
 }
 
 .patientScan_container {
