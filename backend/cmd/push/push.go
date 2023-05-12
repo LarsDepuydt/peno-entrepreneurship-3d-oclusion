@@ -229,3 +229,52 @@ func UpdateConnectionStatus(req *connect.Request[threedoclusionv1.UpdateConnecti
 
     return connect.NewResponse(&threedoclusionv1.UpdateConnectionStatusResponse{}), nil
 }
+
+func GetLastSaveData(req *connect.Request[threedoclusionv1.GetLastSaveDataRequest], database *sql.DB) (*connect.Response[threedoclusionv1.GetLastSaveDataResponse], error) {
+	const sqlStatement = `
+	SELECT  timestamp_save, lowerx, lowery, lowerz, lowerrx, lowerry, lowerrz, upperx, uppery, upperz, upperrx, upperry, upperrz
+	FROM scan_save 
+	WHERE scan_id = $1 AND timestamp_save = (
+		SELECT MAX(timestamp_save)
+		FROM scan_save
+	);`
+	var timestamp string;
+	var lowerx float32;
+	var lowery float32;
+	var lowerz float32;
+	var lowerrx float32;
+	var lowerry float32;
+	var lowerrz float32;
+	var upperx float32;
+	var uppery float32;
+	var upperz float32;
+	var upperrx float32;
+	var upperry float32;
+	var upperrz float32;
+
+	error := database.QueryRow(sqlStatement, req.Msg.Id).Scan(&timestamp, &lowerx, &lowery, &lowerz, &lowerrx, &lowerry, &lowerrz, &upperx, &uppery, &upperz, &upperrx, &upperry, &upperrz)
+	if error != nil {
+		return nil, error
+	}
+
+	responseMessage := fmt.Sprintf("scan save with id: %d returned with succes;", req.Msg.Id)
+	fmt.Println(responseMessage)
+
+	res := connect.NewResponse(&threedoclusionv1.GetLastSaveDataResponse{
+		TimestampSave: timestamp,
+		LowerX: lowerx,
+		LowerY: lowery,
+		LowerZ: lowerz,
+		LowerRX: lowerrx,
+		LowerRY: lowerry,
+		LowerRZ: lowerrz,
+		UpperX: upperx,
+		UpperY: uppery,
+		UpperZ: upperz,
+		UpperRX: upperrx,
+		UpperRY: upperry,
+		UpperRZ: upperrz,
+	})
+
+	return res, nil
+}
