@@ -42,6 +42,9 @@ const (
 	// ScanServiceUpdateConnectionStatusProcedure is the fully-qualified name of the ScanService's
 	// UpdateConnectionStatus RPC.
 	ScanServiceUpdateConnectionStatusProcedure = "/threedoclusion.v1.ScanService/UpdateConnectionStatus"
+	// ScanServiceGetLastSaveDataProcedure is the fully-qualified name of the ScanService's
+	// GetLastSaveData RPC.
+	ScanServiceGetLastSaveDataProcedure = "/threedoclusion.v1.ScanService/GetLastSaveData"
 	// ScanServiceSendVRProcedure is the fully-qualified name of the ScanService's SendVR RPC.
 	ScanServiceSendVRProcedure = "/threedoclusion.v1.ScanService/SendVR"
 	// ScanServiceWaitingProcedure is the fully-qualified name of the ScanService's Waiting RPC.
@@ -112,6 +115,7 @@ type ScanServiceClient interface {
 	SendMenuOption(context.Context, *connect_go.Request[v1.SendMenuOptionRequest]) (*connect_go.Response[v1.SendMenuOptionResponse], error)
 	SubscribeConnection(context.Context, *connect_go.Request[v1.SubscribeConnectionRequest]) (*connect_go.ServerStreamForClient[v1.SubscribeConnectionResponse], error)
 	UpdateConnectionStatus(context.Context, *connect_go.Request[v1.UpdateConnectionStatusRequest]) (*connect_go.Response[v1.UpdateConnectionStatusResponse], error)
+	GetLastSaveData(context.Context, *connect_go.Request[v1.GetLastSaveDataRequest]) (*connect_go.Response[v1.GetLastSaveDataResponse], error)
 	SendVR(context.Context, *connect_go.Request[v1.SendVRRequest]) (*connect_go.Response[v1.SendVRResponse], error)
 	Waiting(context.Context, *connect_go.Request[v1.WaitingRequest]) (*connect_go.ServerStreamForClient[v1.WaitingResponse], error)
 	AddScan(context.Context, *connect_go.Request[v1.AddScanRequest]) (*connect_go.Response[v1.AddScanResponse], error)
@@ -162,6 +166,11 @@ func NewScanServiceClient(httpClient connect_go.HTTPClient, baseURL string, opts
 		updateConnectionStatus: connect_go.NewClient[v1.UpdateConnectionStatusRequest, v1.UpdateConnectionStatusResponse](
 			httpClient,
 			baseURL+ScanServiceUpdateConnectionStatusProcedure,
+			opts...,
+		),
+		getLastSaveData: connect_go.NewClient[v1.GetLastSaveDataRequest, v1.GetLastSaveDataResponse](
+			httpClient,
+			baseURL+ScanServiceGetLastSaveDataProcedure,
 			opts...,
 		),
 		sendVR: connect_go.NewClient[v1.SendVRRequest, v1.SendVRResponse](
@@ -297,6 +306,7 @@ type scanServiceClient struct {
 	sendMenuOption         *connect_go.Client[v1.SendMenuOptionRequest, v1.SendMenuOptionResponse]
 	subscribeConnection    *connect_go.Client[v1.SubscribeConnectionRequest, v1.SubscribeConnectionResponse]
 	updateConnectionStatus *connect_go.Client[v1.UpdateConnectionStatusRequest, v1.UpdateConnectionStatusResponse]
+	getLastSaveData        *connect_go.Client[v1.GetLastSaveDataRequest, v1.GetLastSaveDataResponse]
 	sendVR                 *connect_go.Client[v1.SendVRRequest, v1.SendVRResponse]
 	waiting                *connect_go.Client[v1.WaitingRequest, v1.WaitingResponse]
 	addScan                *connect_go.Client[v1.AddScanRequest, v1.AddScanResponse]
@@ -337,6 +347,11 @@ func (c *scanServiceClient) SubscribeConnection(ctx context.Context, req *connec
 // UpdateConnectionStatus calls threedoclusion.v1.ScanService.UpdateConnectionStatus.
 func (c *scanServiceClient) UpdateConnectionStatus(ctx context.Context, req *connect_go.Request[v1.UpdateConnectionStatusRequest]) (*connect_go.Response[v1.UpdateConnectionStatusResponse], error) {
 	return c.updateConnectionStatus.CallUnary(ctx, req)
+}
+
+// GetLastSaveData calls threedoclusion.v1.ScanService.GetLastSaveData.
+func (c *scanServiceClient) GetLastSaveData(ctx context.Context, req *connect_go.Request[v1.GetLastSaveDataRequest]) (*connect_go.Response[v1.GetLastSaveDataResponse], error) {
+	return c.getLastSaveData.CallUnary(ctx, req)
 }
 
 // SendVR calls threedoclusion.v1.ScanService.SendVR.
@@ -469,6 +484,7 @@ type ScanServiceHandler interface {
 	SendMenuOption(context.Context, *connect_go.Request[v1.SendMenuOptionRequest]) (*connect_go.Response[v1.SendMenuOptionResponse], error)
 	SubscribeConnection(context.Context, *connect_go.Request[v1.SubscribeConnectionRequest], *connect_go.ServerStream[v1.SubscribeConnectionResponse]) error
 	UpdateConnectionStatus(context.Context, *connect_go.Request[v1.UpdateConnectionStatusRequest]) (*connect_go.Response[v1.UpdateConnectionStatusResponse], error)
+	GetLastSaveData(context.Context, *connect_go.Request[v1.GetLastSaveDataRequest]) (*connect_go.Response[v1.GetLastSaveDataResponse], error)
 	SendVR(context.Context, *connect_go.Request[v1.SendVRRequest]) (*connect_go.Response[v1.SendVRResponse], error)
 	Waiting(context.Context, *connect_go.Request[v1.WaitingRequest], *connect_go.ServerStream[v1.WaitingResponse]) error
 	AddScan(context.Context, *connect_go.Request[v1.AddScanRequest]) (*connect_go.Response[v1.AddScanResponse], error)
@@ -516,6 +532,11 @@ func NewScanServiceHandler(svc ScanServiceHandler, opts ...connect_go.HandlerOpt
 	mux.Handle(ScanServiceUpdateConnectionStatusProcedure, connect_go.NewUnaryHandler(
 		ScanServiceUpdateConnectionStatusProcedure,
 		svc.UpdateConnectionStatus,
+		opts...,
+	))
+	mux.Handle(ScanServiceGetLastSaveDataProcedure, connect_go.NewUnaryHandler(
+		ScanServiceGetLastSaveDataProcedure,
+		svc.GetLastSaveData,
 		opts...,
 	))
 	mux.Handle(ScanServiceSendVRProcedure, connect_go.NewUnaryHandler(
@@ -659,6 +680,10 @@ func (UnimplementedScanServiceHandler) SubscribeConnection(context.Context, *con
 
 func (UnimplementedScanServiceHandler) UpdateConnectionStatus(context.Context, *connect_go.Request[v1.UpdateConnectionStatusRequest]) (*connect_go.Response[v1.UpdateConnectionStatusResponse], error) {
 	return nil, connect_go.NewError(connect_go.CodeUnimplemented, errors.New("threedoclusion.v1.ScanService.UpdateConnectionStatus is not implemented"))
+}
+
+func (UnimplementedScanServiceHandler) GetLastSaveData(context.Context, *connect_go.Request[v1.GetLastSaveDataRequest]) (*connect_go.Response[v1.GetLastSaveDataResponse], error) {
+	return nil, connect_go.NewError(connect_go.CodeUnimplemented, errors.New("threedoclusion.v1.ScanService.GetLastSaveData is not implemented"))
 }
 
 func (UnimplementedScanServiceHandler) SendVR(context.Context, *connect_go.Request[v1.SendVRRequest]) (*connect_go.Response[v1.SendVRResponse], error) {

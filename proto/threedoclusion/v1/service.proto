@@ -10,6 +10,7 @@ service ScanService {
   rpc SendMenuOption(SendMenuOptionRequest) returns (SendMenuOptionResponse) {}
   rpc SubscribeConnection(SubscribeConnectionRequest) returns (stream SubscribeConnectionResponse) {}
   rpc UpdateConnectionStatus(UpdateConnectionStatusRequest) returns (UpdateConnectionStatusResponse) {}
+  rpc GetLastSaveData(GetLastSaveDataRequest) returns (GetLastSaveDataResponse) {}
 
   rpc SendVR(SendVRRequest) returns (SendVRResponse) {}
   rpc Waiting(WaitingRequest) returns (stream WaitingResponse) {}
@@ -266,6 +267,26 @@ message WaitingRequest {
 message WaitingResponse {
   bool redirect = 1;
   string url = 2;
+}
+
+message GetLastSaveDataRequest {
+  int32 id = 1;
+}
+
+message GetLastSaveDataResponse {
+  string timestamp_save = 1;
+  float lower_x = 2;
+  float lower_y = 3;
+  float lower_z = 4;
+  float lower_r_x = 5;
+  float lower_r_y = 6;
+  float lower_r_z = 7;
+  float upper_x = 8;
+  float upper_y = 9;
+  float upper_z = 10;
+  float upper_r_x = 11;
+  float upper_r_y = 12;
+  float upper_r_z = 13;
 }
 
 message DeletePatientByIdRequest{
