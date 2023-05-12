@@ -482,13 +482,13 @@ function loadObjects() {
 
 // define VR Headset position
 const VRHeadsetPosition = new THREE.Vector3();
-const VRHeadsetRotation = new THREE.Quaternion();
+const VRHeadsetQuaternion = new THREE.Quaternion();
 
 function afterLoad() {
   if (lowerjaw.loaded && upperjaw.loaded) {
     VRHeadsetPosition.setFromMatrixPosition(camera.matrixWorld);
-    VRHeadsetRotation.setFromRotationMatrix(camera.matrixWorld);
-    VRHeadsetRotation.setFromAxisAngle(
+    VRHeadsetQuaternion.setFromRotationMatrix(camera.matrixWorld);
+    VRHeadsetQuaternion.setFromAxisAngle(
       new THREE.Vector3(1, 0, 0),
       -Math.PI / 2
     );
@@ -496,25 +496,25 @@ function afterLoad() {
     lowerjaw.body.position.set(
       VRHeadsetPosition.x,
       VRHeadsetPosition.y + 0.3,
-      VRHeadsetPosition.z - 5.5
+      VRHeadsetPosition.z - 5
     );
     lowerjaw.body.quaternion.set(
-      VRHeadsetRotation.x,
-      VRHeadsetRotation.y,
-      VRHeadsetRotation.z,
-      VRHeadsetRotation.w
+      VRHeadsetQuaternion.x,
+      VRHeadsetQuaternion.y,
+      VRHeadsetQuaternion.z,
+      VRHeadsetQuaternion.w
     );
 
     upperjaw.body.position.set(
       VRHeadsetPosition.x,
       VRHeadsetPosition.y + 0.4,
-      VRHeadsetPosition.z - 5.5
+      VRHeadsetPosition.z - 5
     );
     upperjaw.body.quaternion.set(
-      VRHeadsetRotation.x,
-      VRHeadsetRotation.y,
-      VRHeadsetRotation.z,
-      VRHeadsetRotation.w
+      VRHeadsetQuaternion.x,
+      VRHeadsetQuaternion.y,
+      VRHeadsetQuaternion.z,
+      VRHeadsetQuaternion.w
     );
 
     lowerjaw.mesh.name = "lowerjaw.mesh";
@@ -884,31 +884,51 @@ function redoMovement() {
 function positionReset() {
   // IF BUTTON PRESSED IN MENU:
   VRHeadsetPosition.setFromMatrixPosition(camera.matrixWorld);
-  VRHeadsetRotation.setFromRotationMatrix(camera.matrixWorld);
-  VRHeadsetRotation.setFromAxisAngle(new THREE.Vector3(1, 0, 0), -Math.PI / 2);
+  VRHeadsetQuaternion.setFromRotationMatrix(camera.matrixWorld);
 
+  // create a quaternion for 90 degree rotation around x-axis
+  var xQuaternion = new THREE.Quaternion();
+  xQuaternion.setFromAxisAngle(new THREE.Vector3(1, 0, 0), -Math.PI / 2);
+
+  let finalQuaternion = new THREE.Quaternion();
+  finalQuaternion.multiplyQuaternions(VRHeadsetQuaternion, xQuaternion);
+
+  // Calculate offset vector to position object in front of user
+  let offsetVectorLower = new THREE.Vector3(0, 0.3, -2).applyQuaternion(
+    VRHeadsetQuaternion
+  );
+  let offsetVectorUpper = new THREE.Vector3(0, 0.4, -2).applyQuaternion(
+    VRHeadsetQuaternion
+  );
+
+  VRHeadsetPosition.add(offsetVectorLower);
+
+  // Set position and orientation
   lowerjaw.body.position.set(
     VRHeadsetPosition.x,
-    VRHeadsetPosition.y + 0.3,
-    VRHeadsetPosition.z - 2.5
+    VRHeadsetPosition.y,
+    VRHeadsetPosition.z
   );
   lowerjaw.body.quaternion.set(
-    VRHeadsetRotation.x,
-    VRHeadsetRotation.y,
-    VRHeadsetRotation.z,
-    VRHeadsetRotation.w
+    finalQuaternion.x,
+    finalQuaternion.y,
+    finalQuaternion.z,
+    finalQuaternion.w
   );
+
+  VRHeadsetPosition.sub(offsetVectorLower);
+  VRHeadsetPosition.add(offsetVectorUpper);
 
   upperjaw.body.position.set(
     VRHeadsetPosition.x,
-    VRHeadsetPosition.y + 0.4,
-    VRHeadsetPosition.z - 2.5
+    VRHeadsetPosition.y,
+    VRHeadsetPosition.z
   );
   upperjaw.body.quaternion.set(
-    VRHeadsetRotation.x,
-    VRHeadsetRotation.y,
-    VRHeadsetRotation.z,
-    VRHeadsetRotation.w
+    finalQuaternion.x,
+    finalQuaternion.y,
+    finalQuaternion.z,
+    finalQuaternion.w
   );
 }
 
