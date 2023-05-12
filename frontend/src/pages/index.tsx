@@ -3,8 +3,8 @@ import Image from 'next/image';
 import { Inter } from '@next/font/google';
 import styles from '@/styles/Home.module.css';
 
-//import StartPage from './login-page';
-import StartPage from './vr-bypass';
+import StartPage from './login-page';
+//import StartPage from './vr-bypass';
 
 //const inter = Inter({ subsets: ['latin'] });
 // import dotenv from 'dotenv';
