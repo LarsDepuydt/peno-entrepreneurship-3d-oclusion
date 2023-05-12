@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { useRouter } from 'next/router';
 import stylesButton from '@/styles/Buttons.module.css';
 import styleSidebar from '@/styles/Sidebar.module.css';
@@ -10,11 +10,17 @@ import Search_Name from '../search/search-name';
 import ReluLink from '../header/reluLink';
 import { WelcomingDoctor, WelcomingPatient } from './welcoming';
 import { useQuery } from '@tanstack/react-query';
-import { updatePatientById, getPatientById } from '@/gen/proto/threedoclusion/v1/service-ScanService_connectquery';
+import {
+  updatePatientById,
+  getPatientById,
+  getScanById,
+  updateScanById,
+} from '@/gen/proto/threedoclusion/v1/service-ScanService_connectquery';
 
 import NoteInput from '../OBJ_view/note-input';
 import NoteList from '../OBJ_view/note-list';
 import { useState } from 'react';
+import { GetScanByIdResponse } from '@/gen/proto/threedoclusion/v1/service_pb';
 
 interface HeaderPatientProps {
   patientfirstname: string;
@@ -40,11 +46,6 @@ interface patientValues {
 export function SidebarDoctor() {
   const router = useRouter();
 
-  const home = () => {
-    process.env.REACT_APP_PATIENT_ID = undefined;
-    router.push('/patient');
-  };
-
   const wait = () => router.push('/settings');
 
   return (
@@ -65,6 +66,35 @@ export function SidebarDoctor() {
   );
 }
 
+export function SidebarDoctorName() {
+  const router = useRouter();
+
+  const home = () => {
+    process.env.REACT_APP_PATIENT_ID = undefined;
+    router.push('/patient');
+  };
+
+  const wait = () => router.push('/settings');
+
+  return (
+    <>
+      <div className={styleSidebar.sidebar}>
+        <WelcomingDoctor />
+        <div className={stylesButton.sidebarButton}>
+          <New_Patient />
+          <Search_ID />
+          <Search_Name />
+        </div>
+        <div className={stylesButton.absoluteWrapper}>
+          <ReluLink />
+          <button type="button" className={stylesButton.relu_btn} id={stylesButton.homeIcon} onClick={home}></button>
+          <button type="button" className={stylesButton.relu_btn} id={stylesButton.waitIcon} onClick={wait}></button>
+        </div>
+      </div>
+    </>
+  );
+}
+
 export function SidebarPatient() {
   const router = useRouter();
   const home = () => {
@@ -75,13 +105,17 @@ export function SidebarPatient() {
   let patientID = process.env.REACT_APP_PATIENT_ID!;
 
   const { data: patientInfoRequest } = useQuery(getPatientById.useQuery({ id: parseInt(patientID) }));
-  console.log(patientInfoRequest);
 
   const queryupdate = updatePatientById.useQuery(patientInfoRequest);
   const { data, refetch } = useQuery(queryupdate.queryKey, queryupdate.queryFn, { enabled: false });
   //console.log(data)
 
   let notesPatient = patientInfoRequest?.notes;
+
+  //const [updatedNotes, setData] = useState(patientInfoRequest);
+
+  const [submitOK, setSubmitOK] = useState(false);
+  const [sendOK, setSendOK] = useState(false);
 
   /*const { data } = useQuery(
     UpdatePatientById.useQuery(patientinfo).queryKey,
@@ -91,23 +125,28 @@ export function SidebarPatient() {
   */
 
   const handleAddNotePatient = (note: string) => {
-    note = note.concat('@.');
+    //if (sendOK) {
+    setSendOK(false);
+    note = note.concat(' | ');
     notesPatient = patientInfoRequest?.notes + note;
-    refetch();
     patientInfoRequest.notes = notesPatient;
+    refetch();
     console.log(patientInfoRequest);
-    console.log(data);
+    setSubmitOK(true);
+    console.log('submitOK is set to true');
+    //}
   };
 
-  /*message UpdatePatientByIdRequest {
-    int32 id = 1;
-    string first_name = 2;
-    string last_name = 3;
-    bool pinned = 4;
-    string notes = 5;
-    int32 dentist_id = 6;
-  }
-  */
+  useEffect(() => {
+    if (submitOK) {
+      refetch();
+      setSendOK(false);
+      if (data != undefined) {
+        console.log('data is not undefined');
+      }
+      setSubmitOK(false);
+    }
+  }, [sendOK, submitOK, refetch, data]);
 
   if (patientInfoRequest != undefined) {
     return (
@@ -132,7 +171,7 @@ export function SidebarPatient() {
         <div className={styleSidebar.sidebar}>
           <WelcomingPatient />
           <NoteInput onAddNote={handleAddNotePatient} />
-          <NoteList notes="@." />
+          <NoteList notes=" | " />
           <div className={stylesButton.sidebarButton}>
             <New_Scan />
           </div>
@@ -149,8 +188,12 @@ export function SidebarPatient() {
 export function SidebarObj() {
   const router = useRouter();
 
+  let scanID = process.env.REACT_APP_SCAN_ID!;
+  console.log(scanID);
+
   const openScans = () => {
     let patientID = process.env.REACT_APP_PATIENT_ID!;
+    process.env.REACT_APP_SCAN_ID = undefined;
     router.push({
       pathname: '/scans-page',
       query: {
@@ -159,29 +202,86 @@ export function SidebarObj() {
     });
   };
 
-  const [notesScan, setNotes] = useState<string[]>([]);
+  const { data: scanInfoRequest } = useQuery(getScanById.useQuery({ id: parseInt(scanID) }));
+
+  const queryupdate = updateScanById.useQuery({
+    id: parseInt(scanID),
+    scanFile: scanInfoRequest?.scan,
+    notes: scanInfoRequest?.notes,
+    patientId: scanInfoRequest?.patientId,
+  });
+  const { data, refetch } = useQuery(queryupdate.queryKey, queryupdate.queryFn, { enabled: false });
+  //console.log(data)
+
+  let notesScan = scanInfoRequest?.notes;
+
+  //const [updatedNotes, setData] = useState(patientInfoRequest);
+
+  const [submitOK, setSubmitOK] = useState(false);
+  const [sendOK, setSendOK] = useState(false);
 
   const handleAddNoteScan = (note: string) => {
-    setNotes([...notesScan, note]);
+    //if (sendOK) {
+    setSendOK(false);
+    note = note.concat(' | ');
+    notesScan = scanInfoRequest?.notes + note;
+    scanInfoRequest.notes = notesScan;
+    console.log(scanInfoRequest);
+    setSubmitOK(true);
+    console.log('submitOK is set to true');
+    //}
   };
 
-  return (
-    <>
-      <div className={styleSidebar.sidebar}>
-        <WelcomingPatient />
-        <NoteInput onAddNote={handleAddNoteScan} />
-        {/* <NoteList notes={notesScan} /> */}
-        <div className={stylesButton.sidebarButton}>
-          <button
-            type="button"
-            className={stylesButton.relu_btn}
-            id={stylesButton.homeIcon}
-            onClick={openScans}
-          ></button>
+  useEffect(() => {
+    if (submitOK) {
+      refetch();
+      setSendOK(false);
+      if (data != undefined) {
+        console.log('data is not undefined');
+      }
+      setSubmitOK(false);
+    }
+  }, [sendOK, submitOK, refetch, data]);
 
-          <ReluLink />
+  if (scanInfoRequest != undefined) {
+    return (
+      <>
+        <div className={styleSidebar.sidebar}>
+          <WelcomingPatient />
+          <NoteInput onAddNote={handleAddNoteScan} />
+          <NoteList notes={notesScan} />
+          <div className={stylesButton.sidebarButton}>
+            <button
+              type="button"
+              className={stylesButton.relu_btn}
+              id={stylesButton.homeIcon}
+              onClick={openScans}
+            ></button>
+
+            <ReluLink />
+          </div>
         </div>
-      </div>
-    </>
-  );
+      </>
+    );
+  } else {
+    return (
+      <>
+        <div className={styleSidebar.sidebar}>
+          <WelcomingPatient />
+          <NoteInput onAddNote={handleAddNoteScan} />
+          <NoteList notes={' | '} />
+          <div className={stylesButton.sidebarButton}>
+            <button
+              type="button"
+              className={stylesButton.relu_btn}
+              id={stylesButton.homeIcon}
+              onClick={openScans}
+            ></button>
+
+            <ReluLink />
+          </div>
+        </div>
+      </>
+    );
+  }
 }
