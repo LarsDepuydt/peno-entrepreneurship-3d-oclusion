@@ -313,15 +313,9 @@ export default function BeforeAfter({ onVideoChunksChange }: {onVideoChunksChang
     // Ask position data from database
 
     useEffect(() => { // https://github.com/facebook/react/issues/24502
-        if (second_call){
-            init(containerRef.current);
-            initThree(containerRef.current);
-            animate(setVideoChunks, onVideoChunksChange);
-            console.log('Init executed!');
-        }
-        else {
-            second_call = true;
-        }
+        init(containerRef.current);
+        initThree(containerRef.current);
+        animate(setVideoChunks, onVideoChunksChange);
     }, [onVideoChunksChange]);
 
     return <div ref={containerRef} id="canvas">
