@@ -17,8 +17,7 @@ import scan1 from '../../../public/scan_pictures/scan1.png';
 import scan2 from '../../../public/scan_pictures/scan2.png';
 import scan3 from '../../../public/scan_pictures/scan3.png';
 import scan4 from '../../../public/scan_pictures/scan4.png';
-import { SubscribeConnectionRequest, SubscribeConnectionResponse } from "@/gen/proto/threedoclusion/v1/service_pb";
-
+import { SubscribeConnectionRequest, SubscribeConnectionResponse } from '@/gen/proto/threedoclusion/v1/service_pb';
 
 interface scanProfile {
   scanid: number;
@@ -100,6 +99,7 @@ export function SingleScan({ scanid, patientid, notes, date, setStream }: scanPr
             }}
           ></button>
           <div className={styles.dropDownButtonWrapper}>
+            <EditButton scanID={scanid} />
             <button className={styleB.relu_btn} id={styleB.dropDownButton}>
               export scan
             </button>
