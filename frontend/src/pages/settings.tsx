@@ -77,7 +77,6 @@ export default function ClientPage() {
         </div>
         <p className={stylesText.settingsText}>Enter the code above in your VR headset.</p>
         <div className={stylesText.settingsButtons}>
-          <p> Go back to patient overview: </p>
           <button type="button" className={stylesButton.relu_btn} id={stylesButton.homeIcon} onClick={home}></button>
         </div>
       </div>
