@@ -33,6 +33,9 @@ const (
 // reflection-formatted method names, remove the leading slash and convert the remaining slash to a
 // period.
 const (
+	// ScanServiceSaveScanDataProcedure is the fully-qualified name of the ScanService's SaveScanData
+	// RPC.
+	ScanServiceSaveScanDataProcedure = "/threedoclusion.v1.ScanService/SaveScanData"
 	// ScanServiceSendMenuOptionProcedure is the fully-qualified name of the ScanService's
 	// SendMenuOption RPC.
 	ScanServiceSendMenuOptionProcedure = "/threedoclusion.v1.ScanService/SendMenuOption"
@@ -109,6 +112,7 @@ const (
 
 // ScanServiceClient is a client for the threedoclusion.v1.ScanService service.
 type ScanServiceClient interface {
+	SaveScanData(context.Context, *connect_go.Request[v1.SaveScanDataRequest]) (*connect_go.Response[v1.SaveScanDataResponse], error)
 	SendMenuOption(context.Context, *connect_go.Request[v1.SendMenuOptionRequest]) (*connect_go.Response[v1.SendMenuOptionResponse], error)
 	SubscribeConnection(context.Context, *connect_go.Request[v1.SubscribeConnectionRequest]) (*connect_go.ServerStreamForClient[v1.SubscribeConnectionResponse], error)
 	UpdateConnectionStatus(context.Context, *connect_go.Request[v1.UpdateConnectionStatusRequest]) (*connect_go.Response[v1.UpdateConnectionStatusResponse], error)
@@ -149,6 +153,11 @@ type ScanServiceClient interface {
 func NewScanServiceClient(httpClient connect_go.HTTPClient, baseURL string, opts ...connect_go.ClientOption) ScanServiceClient {
 	baseURL = strings.TrimRight(baseURL, "/")
 	return &scanServiceClient{
+		saveScanData: connect_go.NewClient[v1.SaveScanDataRequest, v1.SaveScanDataResponse](
+			httpClient,
+			baseURL+ScanServiceSaveScanDataProcedure,
+			opts...,
+		),
 		sendMenuOption: connect_go.NewClient[v1.SendMenuOptionRequest, v1.SendMenuOptionResponse](
 			httpClient,
 			baseURL+ScanServiceSendMenuOptionProcedure,
@@ -294,6 +303,7 @@ func NewScanServiceClient(httpClient connect_go.HTTPClient, baseURL string, opts
 
 // scanServiceClient implements ScanServiceClient.
 type scanServiceClient struct {
+	saveScanData           *connect_go.Client[v1.SaveScanDataRequest, v1.SaveScanDataResponse]
 	sendMenuOption         *connect_go.Client[v1.SendMenuOptionRequest, v1.SendMenuOptionResponse]
 	subscribeConnection    *connect_go.Client[v1.SubscribeConnectionRequest, v1.SubscribeConnectionResponse]
 	updateConnectionStatus *connect_go.Client[v1.UpdateConnectionStatusRequest, v1.UpdateConnectionStatusResponse]
@@ -322,6 +332,11 @@ type scanServiceClient struct {
 	updateDentistById      *connect_go.Client[v1.UpdateDentistByIdRequest, v1.UpdateDentistByIdResponse]
 	login                  *connect_go.Client[v1.LoginRequest, v1.LoginResponse]
 	register               *connect_go.Client[v1.RegisterRequest, v1.RegisterResponse]
+}
+
+// SaveScanData calls threedoclusion.v1.ScanService.SaveScanData.
+func (c *scanServiceClient) SaveScanData(ctx context.Context, req *connect_go.Request[v1.SaveScanDataRequest]) (*connect_go.Response[v1.SaveScanDataResponse], error) {
+	return c.saveScanData.CallUnary(ctx, req)
 }
 
 // SendMenuOption calls threedoclusion.v1.ScanService.SendMenuOption.
@@ -466,6 +481,7 @@ func (c *scanServiceClient) Register(ctx context.Context, req *connect_go.Reques
 
 // ScanServiceHandler is an implementation of the threedoclusion.v1.ScanService service.
 type ScanServiceHandler interface {
+	SaveScanData(context.Context, *connect_go.Request[v1.SaveScanDataRequest]) (*connect_go.Response[v1.SaveScanDataResponse], error)
 	SendMenuOption(context.Context, *connect_go.Request[v1.SendMenuOptionRequest]) (*connect_go.Response[v1.SendMenuOptionResponse], error)
 	SubscribeConnection(context.Context, *connect_go.Request[v1.SubscribeConnectionRequest], *connect_go.ServerStream[v1.SubscribeConnectionResponse]) error
 	UpdateConnectionStatus(context.Context, *connect_go.Request[v1.UpdateConnectionStatusRequest]) (*connect_go.Response[v1.UpdateConnectionStatusResponse], error)
@@ -503,6 +519,11 @@ type ScanServiceHandler interface {
 // and JSON codecs. They also support gzip compression.
 func NewScanServiceHandler(svc ScanServiceHandler, opts ...connect_go.HandlerOption) (string, http.Handler) {
 	mux := http.NewServeMux()
+	mux.Handle(ScanServiceSaveScanDataProcedure, connect_go.NewUnaryHandler(
+		ScanServiceSaveScanDataProcedure,
+		svc.SaveScanData,
+		opts...,
+	))
 	mux.Handle(ScanServiceSendMenuOptionProcedure, connect_go.NewUnaryHandler(
 		ScanServiceSendMenuOptionProcedure,
 		svc.SendMenuOption,
@@ -648,6 +669,10 @@ func NewScanServiceHandler(svc ScanServiceHandler, opts ...connect_go.HandlerOpt
 
 // UnimplementedScanServiceHandler returns CodeUnimplemented from all methods.
 type UnimplementedScanServiceHandler struct{}
+
+func (UnimplementedScanServiceHandler) SaveScanData(context.Context, *connect_go.Request[v1.SaveScanDataRequest]) (*connect_go.Response[v1.SaveScanDataResponse], error) {
+	return nil, connect_go.NewError(connect_go.CodeUnimplemented, errors.New("threedoclusion.v1.ScanService.SaveScanData is not implemented"))
+}
 
 func (UnimplementedScanServiceHandler) SendMenuOption(context.Context, *connect_go.Request[v1.SendMenuOptionRequest]) (*connect_go.Response[v1.SendMenuOptionResponse], error) {
 	return nil, connect_go.NewError(connect_go.CodeUnimplemented, errors.New("threedoclusion.v1.ScanService.SendMenuOption is not implemented"))
