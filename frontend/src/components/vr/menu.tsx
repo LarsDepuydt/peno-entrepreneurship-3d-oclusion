@@ -39,7 +39,7 @@ function Menu({isOpen, setIsOpen, current_scan, client, onLoadItemClicked, onQui
   };
 
   const load = async () => {
-    const optionData = { case: "scanId", value: 111 };
+    const optionData = { case: "scanId", value: current_scan.scanId };
     sendMenuOption(1, client, optionData)
       .then((res) => {
         if (res) {
@@ -73,7 +73,7 @@ function Menu({isOpen, setIsOpen, current_scan, client, onLoadItemClicked, onQui
 
   const quit = async () => {
     console.log("I quit!")
-    const optionData = {case: "scanId", value: 111,} 
+    const optionData = {case: "scanId", value: current_scan.scanId,} 
     sendMenuOption(3, client, optionData)
       .then((res) => {
         console.log(res);
