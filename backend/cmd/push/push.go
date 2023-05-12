@@ -50,9 +50,6 @@ func GetWaitingResponse(req *connect.Request[threedoclusionv1.WaitingRequest], s
 			return err
 		}
 		return nil
-	case <-time.After(30 * time.Second): // No value has been received even after 30 seconds -> timeout error
-		err := fmt.Errorf("timeout after 30 sec")
-		return err
 	}
 }
 
