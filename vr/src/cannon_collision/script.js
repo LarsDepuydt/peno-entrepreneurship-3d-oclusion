@@ -9,11 +9,11 @@ import { default as CannonUtils } from 'cannon-utils';
 //import { sendPositionScan, getPositionScan } from '../../../frontend/src/gen/proto/threedoclusion/v1/service-ScanService_connectquery.ts'
 
 import { QuickHull } from './QuickHull.js';
-import { findSepAxis } from './findSepAxis.js'
+import { findSepAxis, ogSepAxis } from './findSepAxis.js'
 
 
 // overload cannon.js function findSeparatingAxis by an equivalent that uses web workers
-CANNON.ConvexPolyhedron.prototype.findSeparatingAxis = findSepAxis;
+CANNON.ConvexPolyhedron.prototype.findSeparatingAxis = ogSepAxis;
 
 
 let container;
