@@ -16,6 +16,8 @@ $patientBorder-width: 1.5px;
   flex-wrap: wrap;
   justify-content: space-evenly;
   align-items: center;
+
+  background-color: white;
 }
 
 .patientScan_container {
@@ -134,6 +136,21 @@ $patientBorder-width: 1.5px;
   flex-wrap: nowrap;
   //justify-content: space-evenly;
   align-items: center;
+  height: 100%;
+}
+
+.dropDownButtonEdit {
+  /* wrapper around the sub buttons in the dropdown */
+  padding: 8px 0px; /* make the buttons level with the exit dropdown button */
+  padding-left: 8px;
+  float: left;
+  width: 190px;
+
+  display: flex;
+  flex-direction: column;
+  flex-wrap: nowrap;
+  //justify-content: space-evenly;
+  align-items: top;
   height: 100%;
 }
 

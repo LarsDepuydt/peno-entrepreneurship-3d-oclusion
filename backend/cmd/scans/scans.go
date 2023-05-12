@@ -113,7 +113,7 @@ func GetScanById(req *connect.Request[threedoclusionv1.GetScanByIdRequest], data
 func UpdateScanById(req *connect.Request[threedoclusionv1.UpdateScanByIdRequest], database *sql.DB) (*connect.Response[threedoclusionv1.UpdateScanByIdResponse], error) {
 	const sqlStatement = `
 		UPDATE scan
-		SET scan_file=$2, notes=$3, patient_id=$4
+		SET scan=$2, notes=$3, patient_id=$4
 		WHERE id = $1
 		RETURNING id;`
 	var id int32

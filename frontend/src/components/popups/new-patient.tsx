@@ -33,7 +33,7 @@ export default function ModalForm() {
     lastName: '',
 
     pinned: false,
-    notes: '@.',
+    notes: ' | ',
     dentistId: 0,
   });
 
@@ -57,7 +57,7 @@ export default function ModalForm() {
       firstName: values.patientFirstName,
       lastName: values.patientLastName,
       pinned: values.pinned,
-      notes: values.notes + '@.',
+      notes: values.notes + ' | ',
 
       dentistId: parseInt(DentistID),
     };
@@ -93,7 +93,6 @@ export default function ModalForm() {
       refetch();
       console.log('were in the useEffect function inside the submitOK');
       console.log(patientinfo);
-      console.log(patientinfo.dentistId, ' foreign key error ', parseInt(DentistID));
       console.log('line 82');
       if (data != undefined) {
         setModal(false);

@@ -11,7 +11,8 @@ const DownloadButton = () => {
 
   if (loading) {
     return (
-      <button type="button" className={styleB.relu_btn} id={styleB.loadingIcon} disabled>
+      <button type="button" className={styleB.relu_btn} id={styleB.dropDownButton} disabled>
+        loading
       </button>
     );
   }
@@ -19,7 +20,7 @@ const DownloadButton = () => {
   if (error) {
     console.error(error);
     return (
-      <button type="button" className={styleB.relu_btn} id={styleB.exportIcon} disabled>
+      <button type="button" className={styleB.relu_btn} id={styleB.dropDownButton} disabled>
         Error
       </button>
     );
@@ -27,7 +28,9 @@ const DownloadButton = () => {
 
   return (
     <>
-      <button type="button" className={styleB.relu_btn} id={styleB.exportIcon} onClick={handleDownloadClick}></button>
+      <button type="button" className={styleB.relu_btn} id={styleB.dropDownButton} onClick={handleDownloadClick}>
+        Export scan
+      </button>
     </>
   );
 };
