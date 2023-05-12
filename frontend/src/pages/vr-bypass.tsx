@@ -20,10 +20,15 @@ export default function Home() {
     router.push('/all-vr');
   };
 
+  function toWait(link : any) {
+    if (link.endsWith("/wait")) { 
+      router.push('/wait');
+    }
+  };
+
   const toWebsite = () => {
     router.push('/login-page');
   };
-
   return (
     <>
       <Head>
@@ -35,7 +40,9 @@ export default function Home() {
         <div className={styleL.imgbox}>
           <Image className={styleL.image_left} src={Image_L} alt="relu logo" />
         </div>
-
+        <script>
+            toWait(window.location.href);
+        </script>
         <div className={styleL.loginbox}>
           <div className={styleB.VRbutton}>
             <button type="submit" className={styleB.VRbuttons} onClick={toVR}>
