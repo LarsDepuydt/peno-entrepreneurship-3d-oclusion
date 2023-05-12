@@ -2,21 +2,34 @@ import { getPatientById, updatePatientById  } from '@/gen/proto/threedoclusion/v
 import styleB from '@/styles/Buttons.module.css';
 import { useMutation, useQuery } from '@tanstack/react-query';
 import React, { useState } from 'react';
+import { queryClient } from '@/pages/_app';
 
 /* still needs to be implemented, just a dummy button */
 
 export default function PinPatientButton({ patientID }: { patientID: number }) {
   const query = getPatientById.useQuery({ id: patientID });
-  const { data, refetch } = useQuery(query.queryKey, query.queryFn, { enabled: true });
-  const mutation = useMutation(updatePatientById.useMutation());
+  const [modal, setModal] = useState(false);
+  
+  const toggleModal = () => setModal(!modal); // change state f -> t and t -> f
+
+  const updatePatient = () => {
+    refetch();
+    console.log('patient is updated');
+    setModal(!modal);
+    refetch();
+  };
+
   
 
-  const handleClick = async () => {
-    if (data) {
-      await mutation.mutateAsync({ id: patientID, });
-      refetch();
+  const refreshKey = updatePatientById.useQuery().queryKey;
+  const { data, refetch } = useQuery(
+    updatePatientById.useQuery({ id: patientID }).queryKey,
+    updatePatientById.useQuery({ id: patientID }).queryFn,
+    {
+      enabled: false,
+      onSuccess: () => queryClient.refetchQueries(refreshKey),
     }
-  };
+  );
 
   if (data != undefined) {
     const pinned = data.pinned;
