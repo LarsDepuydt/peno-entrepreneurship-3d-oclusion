@@ -4,7 +4,7 @@ import { VRButton } from 'three/examples/jsm/webxr/VRButton.js';
 import { XRControllerModelFactory } from 'three/examples/jsm/webxr/XRControllerModelFactory.js';
 import { OBJLoader } from 'three/examples/jsm/loaders/OBJLoader.js';
 import { useState, useEffect } from 'react';
-import { SendMenuOptionRequest, ScanSave } from "@/gen/proto/threedoclusion/v1/service_pb";
+import { SendMenuOptionRequest, ScanSave, SaveScanDataRequest } from "@/gen/proto/threedoclusion/v1/service_pb";
 import Menu from './menu';
 import { useRouter } from 'next/router';
 
@@ -22,6 +22,7 @@ let controller1: any, controller2 : any;
 let controllerGrip1 : any, controllerGrip2 : any;
 let controls : any;
 let raycaster : any;
+let clock = new THREE.Clock();
 
 //let second_call = false;
 
@@ -68,7 +69,7 @@ class Jaw {
    * @param {*} bodypath path to the body obj file used for collision detection
    * @param {*} meshpath path to the mesh obj file (visual), in debugging mode, use the body model instead
    */
-  constructor(bodypath : any, meshpath : any) {
+  constructor(bodypath : any, meshpath : any, save: () => void) {
     let sphere_geo = new THREE.SphereGeometry(0.05, 10, 5);
     this.target = new THREE.Mesh(sphere_geo, targetMaterial); // (invisible) THREE.Object3D, dat aanduidt waar de jaw zou moeten zijn obv de controller selection
     console.log(this);
@@ -101,14 +102,14 @@ class Jaw {
     world.addBody(this.body);
 
     if (DEBUGGING_MODE) {
-      this.loadMeshAndBody(bodypath);
+      this.loadMeshAndBody(bodypath, save);
     } else {
-      this.loadMesh(meshpath);
-      this.loadBody(bodypath);
+      this.loadMesh(meshpath, save);
+      this.loadBody(bodypath, save);
     }
   }
 
-  loadMeshAndBody(path) {
+  loadMeshAndBody(path, save: () => void) {
     const jaw = this;
 
     objLoader.load(
@@ -132,7 +133,7 @@ class Jaw {
 
         console.log("loading mesh succeeded");
         jaw.loaded = true;
-        afterLoad();
+        afterLoad(save);
       },
 
       // called when loading in progress
@@ -145,7 +146,7 @@ class Jaw {
     );
   }
 
-  loadMesh(path : any) {
+  loadMesh(path : any, save: () => void) {
     const jaw = this;
 
     objLoader.load(
@@ -167,7 +168,7 @@ class Jaw {
         if (jaw.mesh_loaded && jaw.body_loaded) {
           // actually this is a race condition, let's ignore that for now
           jaw.loaded = true;
-          afterLoad();
+          afterLoad(save);
         }
       },
 
@@ -181,7 +182,7 @@ class Jaw {
     );
   }
 
-  loadBody(path : any) {
+  loadBody(path : any, save: () => void) {
     const jaw = this;
 
     objLoader.load(
@@ -206,7 +207,7 @@ class Jaw {
         if (jaw.mesh_loaded && jaw.body_loaded) {
           // actually a race condition
           jaw.loaded = true;
-          afterLoad();
+          afterLoad(save);
         }
       },
 
@@ -317,6 +318,7 @@ function initCannon() {
 }
 
 function initThree(setOpenMenu: any, setCurrentScan: any) {
+  setOpenMenu(true);
   // create container
   container = document.createElement("div");
   document.body.appendChild(container);
@@ -471,30 +473,52 @@ function initThree(setOpenMenu: any, setCurrentScan: any) {
   //window.addEventListener("resize", onWindowResize);
 }
 
-function loadObjects() {
-    lowerjaw = new Jaw('/lower_180.obj', '/lower_ios_6.obj');
+function loadObjects(save: () => void) {
+    lowerjaw = new Jaw('/lower_180.obj', '/lower_ios_6.obj', save);
     //upperjaw = new Jaw('../../assets/simplified/upper_218.obj');
-    upperjaw = new Jaw('/upper_209.obj', '/upper_ios_6.obj');
+    upperjaw = new Jaw('/upper_209.obj', '/upper_ios_6.obj', save);
 
     curr_jaw = upperjaw;
 }
 
 // define VR Headset position
 const VRHeadsetPosition = new THREE.Vector3();
+const VRHeadsetQuaternion = new THREE.Quaternion();
 
-function afterLoad() {
+function afterLoad(save: () => void) {
   VRHeadsetPosition.setFromMatrixPosition(camera.matrixWorld);
   if (lowerjaw.loaded && upperjaw.loaded) {
+    VRHeadsetPosition.setFromMatrixPosition(camera.matrixWorld);
+    VRHeadsetQuaternion.setFromRotationMatrix(camera.matrixWorld);
+    VRHeadsetQuaternion.setFromAxisAngle(
+      new THREE.Vector3(1, 0, 0),
+      -Math.PI / 2
+    );
+
     lowerjaw.body.position.set(
       VRHeadsetPosition.x,
       VRHeadsetPosition.y + 0.3,
-      VRHeadsetPosition.z - 5.5
+      VRHeadsetPosition.z - 5
     );
+    lowerjaw.body.quaternion.set(
+      VRHeadsetQuaternion.x,
+      VRHeadsetQuaternion.y,
+      VRHeadsetQuaternion.z,
+      VRHeadsetQuaternion.w
+    );
+
     upperjaw.body.position.set(
       VRHeadsetPosition.x,
       VRHeadsetPosition.y + 0.4,
-      VRHeadsetPosition.z - 5.5
+      VRHeadsetPosition.z - 5
     );
+    upperjaw.body.quaternion.set(
+      VRHeadsetQuaternion.x,
+      VRHeadsetQuaternion.y,
+      VRHeadsetQuaternion.z,
+      VRHeadsetQuaternion.w
+    );
+
     lowerjaw.mesh.name = "lowerjaw.mesh";
     lowerjaw.sphere.name = "lowerjaw.sphere";
     lowerjaw.target.name = "lowerjaw.target";
@@ -503,12 +527,14 @@ function afterLoad() {
     upperjaw.target.name = "lowerjaw.target";
 
     console.log("starting animation");
-    renderer.setAnimationLoop(animate);
+    renderer.setAnimationLoop(function foo(){
+      animate(save);
+    });
   }
 }
 
-function animate() {
-  //checkTime(lj_mesh);
+function animate(save: () => void) {
+  autoSave(60, save); // 60 second interval
 
   frameNum += 1;
   updatePhysics();
@@ -628,7 +654,7 @@ function render() {
   beforeRender(controller1);
   beforeRender(controller2);
   cleanIntersected();
-  positionReset();
+  //positionReset();
   undoWhenPressed();
   redoWhenPressed();
 
@@ -859,19 +885,55 @@ function redoMovement() {
   }
 }
 
-// when thumbstick pressed resets position to original center position
-
 function positionReset() {
-  const session = renderer.xr.getSession();
-  if (session == null || session.inputSources == null) {
-    return;
-  } else {
-    for (const source of session.inputSources) {
-      if (source.gamepad.buttons[4].pressed) {
-        // undoStack
-      }
-    }
-  }
+  // IF BUTTON PRESSED IN MENU:
+  VRHeadsetPosition.setFromMatrixPosition(camera.matrixWorld);
+  VRHeadsetQuaternion.setFromRotationMatrix(camera.matrixWorld);
+
+  // create a quaternion for 90 degree rotation around x-axis
+  var xQuaternion = new THREE.Quaternion();
+  xQuaternion.setFromAxisAngle(new THREE.Vector3(1, 0, 0), -Math.PI / 2);
+
+  let finalQuaternion = new THREE.Quaternion();
+  finalQuaternion.multiplyQuaternions(VRHeadsetQuaternion, xQuaternion);
+
+  // Calculate offset vector to position object in front of user
+  let offsetVectorLower = new THREE.Vector3(0, 0.3, -2).applyQuaternion(
+    VRHeadsetQuaternion
+  );
+  let offsetVectorUpper = new THREE.Vector3(0, 0.4, -2).applyQuaternion(
+    VRHeadsetQuaternion
+  );
+
+  VRHeadsetPosition.add(offsetVectorLower);
+
+  // Set position and orientation
+  lowerjaw.body.position.set(
+    VRHeadsetPosition.x,
+    VRHeadsetPosition.y,
+    VRHeadsetPosition.z
+  );
+  lowerjaw.body.quaternion.set(
+    finalQuaternion.x,
+    finalQuaternion.y,
+    finalQuaternion.z,
+    finalQuaternion.w
+  );
+
+  VRHeadsetPosition.sub(offsetVectorLower);
+  VRHeadsetPosition.add(offsetVectorUpper);
+
+  upperjaw.body.position.set(
+    VRHeadsetPosition.x,
+    VRHeadsetPosition.y,
+    VRHeadsetPosition.z
+  );
+  upperjaw.body.quaternion.set(
+    finalQuaternion.x,
+    finalQuaternion.y,
+    finalQuaternion.z,
+    finalQuaternion.w
+  );
 }
 
 var curr_jaw : any;
@@ -977,6 +1039,20 @@ function loadPosition(positionData: any) {
   upperjaw.body.rotation.set(positionData.upperRX, positionData.upperRY, positionData.upperRZ);
 }
 
+function autoSave(interval: number, save: () => void ) {
+  const elapsedTime = clock.getElapsedTime();
+  
+  if (elapsedTime >= interval) {
+    save();
+    console.log(interval, "%d seconds have passed");
+
+    // Additional checks
+
+    // reset the clock
+    clock.start();
+  }
+}
+
 export default function DraggingView({ scanId, client, onQuit }: {scanId: number, client: any, onQuit: () => void}){
     const initialScan = new ScanSave({
         lowerX: 0,
@@ -1001,7 +1077,7 @@ export default function DraggingView({ scanId, client, onQuit }: {scanId: number
         //init(initialScan);   //FIXFIX
         initCannon();
         initThree(setOpenMenu, setCurrentScan);
-        loadObjects();
+        loadObjects(save);
         // animate(); // Sets 
         console.log('Init executed!');
 
@@ -1020,12 +1096,21 @@ export default function DraggingView({ scanId, client, onQuit }: {scanId: number
         };
     }, []);
 
+    const save = () => {
+      const req = new SaveScanDataRequest({ scan: current_scan });
+      client.saveScanData(req); // Data not used
+    }
+
     const onLoadItemClicked = (inputData: ScanSave) => {
         console.log(inputData)
         const {scanId, timestampSave, ...positionData } = inputData
         loadPosition(positionData);
     }
-    const props = {isOpen: openMenu, setIsOpen: setOpenMenu, current_scan, client, onLoadItemClicked, onQuit };
+
+    const onReset = () => {
+      positionReset();
+    }
+    const props = {isOpen: openMenu, setIsOpen: setOpenMenu, current_scan, client, onLoadItemClicked, onQuit, onReset };
 
     // resize
 
