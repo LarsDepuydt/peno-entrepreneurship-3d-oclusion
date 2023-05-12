@@ -17,6 +17,7 @@ export default function Home() {
 
   function toWait(link : any) {
     if (link.endsWith("/wait") || link.endsWith("/wait/")) { 
+
       console.log('oke');
       router.push('/wait');
     }

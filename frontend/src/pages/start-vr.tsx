@@ -7,8 +7,6 @@ import { useTransport } from '@bufbuild/connect-query';
 import {
   SubscribeConnectionRequest,
   SubscribeConnectionResponse,
-  SendMenuOptionRequest,
-  Scan,
 } from '@/gen/proto/threedoclusion/v1/service_pb';
 
 import dynamic from 'next/dynamic';
