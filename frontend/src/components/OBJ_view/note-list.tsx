@@ -8,7 +8,7 @@ const NoteList = ({ notes }: { notes: string }) => {
   const notesarray = temp.filter((str) => str !== '');
 
   return (
-    <div>
+    <div className={styleSidebar.NotesWrapper}>
       {notes.length > 0 && <h2 className={styleSidebar.sidebarTextNotes}>My Notes:</h2>}
       <ul className={stylesButton.note_list}>
         {notesarray.map((note) => (

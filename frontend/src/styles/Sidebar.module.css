@@ -38,6 +38,19 @@
   font-weight: 300;
   color: #1c3c4c;
   font-size: 18px;
-  margin: 0px;
-  margin-left: 3px;
+  margin: 0px 15px;
+}
+
+.NotesWrapper {
+  height: 60vh;
+  width: 0px;
+  padding: 5px 10vw;
+
+  display: flex;
+  flex-direction: column;
+  flex-wrap: nowrap;
+  justify-content: flex-start;
+  align-items: center;
+  overflow:hidden;
+  overflow-y:scroll;
 }
