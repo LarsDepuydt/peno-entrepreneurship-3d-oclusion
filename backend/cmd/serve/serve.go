@@ -13,6 +13,7 @@ import (
 	"github.com/LarsDepuydt/peno-entrepreneurship-3d-oclusion/cmd/push"
 	"github.com/LarsDepuydt/peno-entrepreneurship-3d-oclusion/cmd/scans"
 	"github.com/LarsDepuydt/peno-entrepreneurship-3d-oclusion/cmd/tags"
+	"github.com/LarsDepuydt/peno-entrepreneurship-3d-oclusion/cmd/vr"
 	threedoclusionv1 "github.com/LarsDepuydt/peno-entrepreneurship-3d-oclusion/gen/proto/threedoclusion/v1"
 	"github.com/LarsDepuydt/peno-entrepreneurship-3d-oclusion/gen/proto/threedoclusion/v1/threedoclusionv1connect"
 	"github.com/bufbuild/connect-go"
@@ -66,7 +67,15 @@ func Server(database *sql.DB) {
 
 }
 
-// PUSH
+// PUSH && VR
+func (s *ServerStruct) SaveScanData(
+	ctx context.Context,
+	req *connect.Request[threedoclusionv1.SaveScanDataRequest],
+) (*connect.Response[threedoclusionv1.SaveScanDataResponse], error) {
+	threedoclusionv1.S
+	return vr.SaveScanData(req, s.database)
+}
+
 func (s *ServerStruct) SendMenuOption(
 	ctx context.Context,
 	req *connect.Request[threedoclusionv1.SendMenuOptionRequest],
