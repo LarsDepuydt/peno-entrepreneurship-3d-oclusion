@@ -1,13 +1,13 @@
 .gitignore
 go.work
-<<<<<<< HEAD
 vr/src/cannon_collision/old_scene.html
 vr/src/cannon_collision/old_script.js
 vr/Firefox 2023-04-17 20.49 profile.json.gz
-=======
 frontend/node_modules/**
 vr/src/cannon_collision/old_scene.html
 vr/src/cannon_collision/old_script.js
+vr/src/cannon_collision/test.html
+vr/src/cannon_collision/test.js
 
 /node_modules
 package.json
@@ -23,4 +23,3 @@ frontend/.firebase
 
 
 *.cache
->>>>>>> origin/main
