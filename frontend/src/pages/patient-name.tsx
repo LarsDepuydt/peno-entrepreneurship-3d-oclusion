@@ -4,7 +4,7 @@ import styles from '@/styles/PatientPage.module.scss';
 import { HeaderDoctor } from '../components/header/header';
 import { SinglePatient as Patient } from '../components/patient/patient-individual-overview';
 import { useEffect } from 'react';
-import { SidebarDoctor } from '../components/header/sidebar';
+import { SidebarDoctorName } from '../components/header/sidebar';
 import Head from 'next/head';
 
 import { useQuery } from '@tanstack/react-query';
@@ -73,7 +73,7 @@ export default function PatientPage(this: any) {
         <link rel="icon" href="/relu_icon.ico" />
       </Head>
 
-      <div>
+      <div className={styles.white_background}>
         <div className={styles.scansWrapper}>
           {allPatients()}
 
@@ -89,7 +89,7 @@ export default function PatientPage(this: any) {
           <div className={styles.patient_filler}></div>
           <div className={styles.patient_filler}></div>
         </div>
-        <SidebarDoctor />
+        <SidebarDoctorName />
         <HeaderDoctor />
       </div>
     </>

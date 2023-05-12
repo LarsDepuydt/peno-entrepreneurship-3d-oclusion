@@ -1,68 +1,36 @@
 package vr
 
 import (
+	"database/sql"
+	"time"
+
+	threedoclusionv1 "github.com/LarsDepuydt/peno-entrepreneurship-3d-oclusion/gen/proto/threedoclusion/v1"
+	"github.com/bufbuild/connect-go"
 	_ "github.com/lib/pq"
 )
 
-/*
-func GetPositionScan(req *connect.Request[threedoclusionv1.GetPositionScanRequest],
-) (*connect.Response[threedoclusionv1.GetPositionScanResponse], error) {
-	// Connect to the database
-	database, error := help_functions.ConnectToDataBase()
-
-	if database == nil || error != nil {
-		return nil, error
-	}
-	defer database.Close()
-
-	// Prepare a statement with placeholders for the condition
-	statement := "SELECT * FROM scan WHERE id = $1;"
-
-	_, xArray, yArray, zArray, r_xArray, r_yArray, r_zArray, _, error := help_functions.GetResponseMakerScan(database, statement)
-	if error != nil {
-		panic(error)
-	}
-
-	res := connect.NewResponse(&threedoclusionv1.GetPositionScanResponse{
-		X:  xArray[0],
-		Y:  yArray[0],
-		Z:  zArray[0],
-		RX: r_xArray[0],
-		RY: r_yArray[0],
-		RZ: r_zArray[0],
-	})
-	return res, nil
-}*/
-
-/*
-func SendPositionScan(req *connect.Request[threedoclusionv1.SendPositionScanRequest],
-
-	) (*connect.Response[threedoclusionv1.SendPositionScanResponse], error) {
+func SaveScanData(req *connect.Request[threedoclusionv1.SaveScanDataRequest], database *sql.DB) (*connect.Response[threedoclusionv1.SaveScanDataResponse], error) {
 		// Connect to the database
-		database, error := help_functions.ConnectToDataBase()
-		if database == nil || error != nil {
-			return nil, error
-		}
-
-		defer database.Close()
-
-		statement, error := database.Prepare("INSERT INTO scan (id, x, y, z, r_x, r_y, r_z, date) VALUES ($1, $2, $3, $4, $5, $6, $7, $8)")
+		statement, error := database.Prepare("INSERT INTO scan_save (scan_id, lowerX, lowerY, lowerZ, lowerRX, lowerRY, lowerRZ, upperX, upperY, upperZ, upperRX, upperRY, upperRZ, timestamp_save) VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12, $13, $14)")
 		if error != nil {
 			return nil, error
 		}
 
 		t := time.Now()
-		formattedDate := t.Format("2006-01-02") // Format in yyyy-mm-dd
+		//formattedDate := t.Format("2006-01-02") // Format in yyyy-mm-dd
+		formattedTimestamp := t.Format("2006-01-02T15:04:05")
 
-		_, error = statement.Exec(req.Msg.ScanId, req.Msg.X, req.Msg.Y, req.Msg.Z, req.Msg.RX, req.Msg.RY, req.Msg.RZ, formattedDate)
+		save := req.Msg.GetScan()
+		_, error = statement.Exec(save.ScanId, save.LowerX, save.LowerY, save.LowerZ, save.LowerRX, save.LowerRY, save.LowerRZ, save.UpperX, save.UpperY, save.UpperZ, save.UpperRX, save.UpperRY, save.UpperRZ, formattedTimestamp)
 		if error != nil {
 			return nil, error
 		}
 
-		res := connect.NewResponse(&threedoclusionv1.SendPositionScanResponse{ // Confirm it's ok
-			Saved: true,
+		msg := "Saved successfully"
+		res := connect.NewResponse(&threedoclusionv1.SaveScanDataResponse{
+			Data: msg,
 		})
 		return res, nil
-	}
-*/
+}
+
 

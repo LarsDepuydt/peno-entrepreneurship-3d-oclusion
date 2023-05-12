@@ -250,7 +250,7 @@ export const GetScanByIdResponse = proto3.makeMessageType(
 export const UpdateScanByIdRequest = proto3.makeMessageType(
   "threedoclusion.v1.UpdateScanByIdRequest",
   () => [
-    { no: 1, name: "id", kind: "scalar", T: 9 /* ScalarType.STRING */ },
+    { no: 1, name: "id", kind: "scalar", T: 5 /* ScalarType.INT32 */ },
     { no: 2, name: "scan_file", kind: "scalar", T: 9 /* ScalarType.STRING */ },
     { no: 3, name: "notes", kind: "scalar", T: 9 /* ScalarType.STRING */ },
     { no: 4, name: "patient_id", kind: "scalar", T: 5 /* ScalarType.INT32 */ },
@@ -322,22 +322,22 @@ export const TagResponse = proto3.makeMessageType(
 );
 
 /**
- * @generated from message threedoclusion.v1.SendPositionScanRequest
+ * @generated from message threedoclusion.v1.SaveScanDataRequest
  */
-export const SendPositionScanRequest = proto3.makeMessageType(
-  "threedoclusion.v1.SendPositionScanRequest",
+export const SaveScanDataRequest = proto3.makeMessageType(
+  "threedoclusion.v1.SaveScanDataRequest",
   () => [
-    { no: 1, name: "scan", kind: "message", T: Scan },
+    { no: 1, name: "scan", kind: "message", T: ScanSave },
   ],
 );
 
 /**
- * @generated from message threedoclusion.v1.GetPositionScanResponse
+ * @generated from message threedoclusion.v1.SaveScanDataResponse
  */
-export const GetPositionScanResponse = proto3.makeMessageType(
-  "threedoclusion.v1.GetPositionScanResponse",
+export const SaveScanDataResponse = proto3.makeMessageType(
+  "threedoclusion.v1.SaveScanDataResponse",
   () => [
-    { no: 1, name: "scan", kind: "message", T: Scan },
+    { no: 1, name: "data", kind: "scalar", T: 9 /* ScalarType.STRING */ },
   ],
 );
 

@@ -6,8 +6,6 @@ import React, { useState } from 'react';
 /* still needs to be implemented, just a dummy button */
 
 export default function PinPatientButton({ patientID }: { patientID: number }) {
-  //const pinned =
-
   const query = getPatientById.useQuery({ id: patientID });
   const { data, refetch } = useQuery(query.queryKey, query.queryFn, { enabled: true });
 

@@ -7,6 +7,7 @@ option go_package = "github.com/LarsDepuydt/peno-entrepreneurship-3d-oclusion";
 
 
 service ScanService {
+  rpc SaveScanData(SaveScanDataRequest) returns (SaveScanDataResponse) {}
   rpc SendMenuOption(SendMenuOptionRequest) returns (SendMenuOptionResponse) {}
   rpc SubscribeConnection(SubscribeConnectionRequest) returns (stream SubscribeConnectionResponse) {}
   rpc UpdateConnectionStatus(UpdateConnectionStatusRequest) returns (UpdateConnectionStatusResponse) {}
@@ -155,7 +156,7 @@ message GetScanByIdResponse {
 }
 
 message UpdateScanByIdRequest {
-  string id = 1;
+  int32 id = 1;
   string scan_file = 2;
   string notes = 3;
   int32 patient_id = 4;
@@ -195,14 +196,13 @@ message TagResponse {
 }
 
 
-message SendPositionScanRequest {
-  Scan scan = 1;
+message SaveScanDataRequest {
+  ScanSave scan = 1;
 }
 
-message GetPositionScanResponse {
-  Scan scan = 1;
+message SaveScanDataResponse {
+  string data = 1;
 }
-
 
 message SendMenuOptionRequest {
   enum Option {

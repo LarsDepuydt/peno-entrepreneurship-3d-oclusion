@@ -3,8 +3,8 @@ import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls';
 import { VRButton } from 'three/examples/jsm/webxr/VRButton.js';
 import { XRControllerModelFactory } from 'three/examples/jsm/webxr/XRControllerModelFactory.js';
 import { OBJLoader } from 'three/examples/jsm/loaders/OBJLoader.js';
-import { useState, useEffect, useRef } from 'react';
-import { SendMenuOptionRequest, ScanSave } from "@/gen/proto/threedoclusion/v1/service_pb";
+import { useState, useEffect } from 'react';
+import { SendMenuOptionRequest, ScanSave, SaveScanDataRequest } from "@/gen/proto/threedoclusion/v1/service_pb";
 import Menu from './menu';
 import {HTMLMesh} from 'three/examples/jsm/interactive/HTMLMesh.js'
 
@@ -22,11 +22,10 @@ let controller1: any, controller2 : any;
 let controllerGrip1 : any, controllerGrip2 : any;
 let controls : any;
 let raycaster : any;
+let clock = new THREE.Clock();
 
 let menu_toggled = true;
 let  menuDiv: HTMLElement, menuMesh: HTMLMesh;
-
-let second_call = false;
 
 
 const intersected = []; // global list that holds the first objects the controllers are pointing at
@@ -72,7 +71,7 @@ class Jaw {
    * @param {*} bodypath path to the body obj file used for collision detection
    * @param {*} meshpath path to the mesh obj file (visual), in debugging mode, use the body model instead
    */
-  constructor(bodypath : any, meshpath : any, callback?: () => void) {
+  constructor(bodypath : any, meshpath : any, save: () => void, callback: () => void) {
     let sphere_geo = new THREE.SphereGeometry(0.05, 10, 5);
     this.target = new THREE.Mesh(sphere_geo, targetMaterial); // (invisible) THREE.Object3D, dat aanduidt waar de jaw zou moeten zijn obv de controller selection
     console.log(this);
@@ -105,14 +104,14 @@ class Jaw {
     world.addBody(this.body);
 
     if (DEBUGGING_MODE) {
-      this.loadMeshAndBody(bodypath, callback);
+      this.loadMeshAndBody(bodypath, save, callback);
     } else {
-      this.loadMesh(meshpath, callback);
-      this.loadBody(bodypath, callback);
+      this.loadMesh(meshpath, save, callback);
+      this.loadBody(bodypath, save, callback);
     }
   }
 
-  loadMeshAndBody(path, callback?: () => void) {
+  loadMeshAndBody(path, save: () => void, callback: () => void) {
     const jaw = this;
 
     objLoader.load(
@@ -136,7 +135,7 @@ class Jaw {
 
         console.log("loading mesh succeeded");
         jaw.loaded = true;
-        afterLoad(callback);
+        afterLoad(save, callback);
       },
 
       // called when loading in progress
@@ -149,7 +148,7 @@ class Jaw {
     );
   }
 
-  loadMesh(path : any, callback?: () => void) {
+  loadMesh(path : any, save: () => void, callback: () => void) {
     const jaw = this;
 
     objLoader.load(
@@ -171,7 +170,7 @@ class Jaw {
         if (jaw.mesh_loaded && jaw.body_loaded) {
           // actually this is a race condition, let's ignore that for now
           jaw.loaded = true;
-          afterLoad(callback);
+          afterLoad(save, callback);
         }
       },
 
@@ -185,7 +184,7 @@ class Jaw {
     );
   }
 
-  loadBody(path : any, callback?: () => void) {
+  loadBody(path : any, save: () => void, callback: () => void) {
     const jaw = this;
 
     objLoader.load(
@@ -210,7 +209,7 @@ class Jaw {
         if (jaw.mesh_loaded && jaw.body_loaded) {
           // actually a race condition
           jaw.loaded = true;
-          afterLoad(callback);
+          afterLoad(save, callback);
         }
       },
 
@@ -321,6 +320,7 @@ function initCannon() {
 }
 
 function initThree(setOpenMenu: any, setCurrentScan: any) {
+  setOpenMenu(true);
   // create container
   container = document.createElement("div");
   document.body.appendChild(container);
@@ -446,32 +446,58 @@ function initThree(setOpenMenu: any, setCurrentScan: any) {
 
   // allow additional button inputs (for axis locking)
   session = renderer.xr.getSession();
+
+  // resize
+
+  //window.addEventListener("resize", onWindowResize);
 }
 
-function loadObjects(callback?: () => void) {
-    lowerjaw = new Jaw('/lower_180.obj', '/lower_ios_6.obj', callback);
+function loadObjects(save: () => void, callback: () => void) {
+    lowerjaw = new Jaw('/lower_180.obj', '/lower_ios_6.obj', save, callback);
     //upperjaw = new Jaw('../../assets/simplified/upper_218.obj');
-    upperjaw = new Jaw('/upper_209.obj', '/upper_ios_6.obj', callback);
+    upperjaw = new Jaw('/upper_209.obj', '/upper_ios_6.obj', save, callback);
 
     curr_jaw = upperjaw;
 }
 
 // define VR Headset position
 const VRHeadsetPosition = new THREE.Vector3();
+const VRHeadsetQuaternion = new THREE.Quaternion();
 
-function afterLoad(callback?: () => void) {
+function afterLoad(save: () => void, callback: () => void) {
   VRHeadsetPosition.setFromMatrixPosition(camera.matrixWorld);
   if (lowerjaw.loaded && upperjaw.loaded) {
+    VRHeadsetPosition.setFromMatrixPosition(camera.matrixWorld);
+    VRHeadsetQuaternion.setFromRotationMatrix(camera.matrixWorld);
+    VRHeadsetQuaternion.setFromAxisAngle(
+      new THREE.Vector3(1, 0, 0),
+      -Math.PI / 2
+    );
+
     lowerjaw.body.position.set(
       VRHeadsetPosition.x,
       VRHeadsetPosition.y + 0.3,
-      VRHeadsetPosition.z - 5.5
+      VRHeadsetPosition.z - 5
     );
+    lowerjaw.body.quaternion.set(
+      VRHeadsetQuaternion.x,
+      VRHeadsetQuaternion.y,
+      VRHeadsetQuaternion.z,
+      VRHeadsetQuaternion.w
+    );
+
     upperjaw.body.position.set(
       VRHeadsetPosition.x,
       VRHeadsetPosition.y + 0.4,
-      VRHeadsetPosition.z - 5.5
+      VRHeadsetPosition.z - 5
     );
+    upperjaw.body.quaternion.set(
+      VRHeadsetQuaternion.x,
+      VRHeadsetQuaternion.y,
+      VRHeadsetQuaternion.z,
+      VRHeadsetQuaternion.w
+    );
+
     lowerjaw.mesh.name = "lowerjaw.mesh";
     lowerjaw.sphere.name = "lowerjaw.sphere";
     lowerjaw.target.name = "lowerjaw.target";
@@ -481,13 +507,13 @@ function afterLoad(callback?: () => void) {
 
     console.log("starting animation");
     renderer.setAnimationLoop(function foo(){
-        animate(callback);
+      animate(save, callback);
     });
   }
 }
 
-function animate(callback?: () => void) {
-  //checkTime(lj_mesh);
+function animate(save: () => void, callback: () => void) {
+  autoSave(60, save); // 60 second interval
 
   frameNum += 1;
   updatePhysics();
@@ -503,7 +529,7 @@ var optionChanged_B = false;
 var prevButtonState_B = 0;
 
 // using X/A buttons on the controllers
-function beforeRender(controller, callback?: () => void) {
+function beforeRender(controller, callback: () => void) {
     //console.log(curr_jaw);
     if (curr_jaw.selected) {
         switch (movement_mode) {
@@ -557,6 +583,12 @@ function beforeRender(controller, callback?: () => void) {
         callback();
       }
 
+      /*if (data.buttons[5] == 1){ // Y pressed, ends webXR session; restart session when "x" is clicked in menu
+        const session = renderer.xr.getSession();
+        session?.end().then(setOpenMenu(true));
+        updateScanData(setCurrentScan);
+      }*/
+
       movement_mode = currentOption;
     }
   }
@@ -600,11 +632,13 @@ function showAxes(axis_num : any, curr_jaw : any) {
     curr_jaw.mesh.add(ArrowHelper);
 } 
 
-function render(callback?: () => void) {
+function render(callback: () => void) {
   beforeRender(controller1, callback);
   beforeRender(controller2, callback);
   cleanIntersected();
-  positionReset();
+  
+  undoWhenPressed();
+  redoWhenPressed();
 
   if (!menu_toggled){ // Eig !menu_toggled
     // So no interactions with jaws when menu is toggled
@@ -886,19 +920,55 @@ function redoMovement() {
   }
 }
 
-// when thumbstick pressed resets position to original center position
-
 function positionReset() {
-  const session = renderer.xr.getSession();
-  if (session == null || session.inputSources == null) {
-    return;
-  } else {
-    for (const source of session.inputSources) {
-      if (source.gamepad.buttons[4].pressed) {
-        // undoStack
-      }
-    }
-  }
+  // IF BUTTON PRESSED IN MENU:
+  VRHeadsetPosition.setFromMatrixPosition(camera.matrixWorld);
+  VRHeadsetQuaternion.setFromRotationMatrix(camera.matrixWorld);
+
+  // create a quaternion for 90 degree rotation around x-axis
+  var xQuaternion = new THREE.Quaternion();
+  xQuaternion.setFromAxisAngle(new THREE.Vector3(1, 0, 0), -Math.PI / 2);
+
+  let finalQuaternion = new THREE.Quaternion();
+  finalQuaternion.multiplyQuaternions(VRHeadsetQuaternion, xQuaternion);
+
+  // Calculate offset vector to position object in front of user
+  let offsetVectorLower = new THREE.Vector3(0, 0.3, -2).applyQuaternion(
+    VRHeadsetQuaternion
+  );
+  let offsetVectorUpper = new THREE.Vector3(0, 0.4, -2).applyQuaternion(
+    VRHeadsetQuaternion
+  );
+
+  VRHeadsetPosition.add(offsetVectorLower);
+
+  // Set position and orientation
+  lowerjaw.body.position.set(
+    VRHeadsetPosition.x,
+    VRHeadsetPosition.y,
+    VRHeadsetPosition.z
+  );
+  lowerjaw.body.quaternion.set(
+    finalQuaternion.x,
+    finalQuaternion.y,
+    finalQuaternion.z,
+    finalQuaternion.w
+  );
+
+  VRHeadsetPosition.sub(offsetVectorLower);
+  VRHeadsetPosition.add(offsetVectorUpper);
+
+  upperjaw.body.position.set(
+    VRHeadsetPosition.x,
+    VRHeadsetPosition.y,
+    VRHeadsetPosition.z
+  );
+  upperjaw.body.quaternion.set(
+    finalQuaternion.x,
+    finalQuaternion.y,
+    finalQuaternion.z,
+    finalQuaternion.w
+  );
 }
 
 var curr_jaw : any;
@@ -907,7 +977,8 @@ function meshToJaw(mesh : any) {
         curr_jaw = lowerjaw;
         return lowerjaw;
     } else if (mesh === upperjaw.mesh) {
-        curr_jaw = lowerjaw;
+        curr_jaw = upperjaw;
+
         return upperjaw;
     } else {
         console.warn("Selected mesh is not a jaw, returning null");
@@ -975,32 +1046,49 @@ function redoWhenPressed() {
 }
 
 
-function updateScanData(setCurrentScan: any) {
-    let newScan = new ScanSave({scanId: 111, timestampSave: "2006-01-02T15:04:05"});
+function updateScanData(scanID: number, setCurrentScan: any) { // Use when menu is triggered for last position
+    let newScan = new ScanSave({scanId: scanID, timestampSave: "2006-01-02T15:04:05"});
         if (lowerjaw.body.name == "lowerjaw"){
             newScan.lowerX = lowerjaw.body.position.x;
             newScan.lowerY = lowerjaw.body.position.y;
             newScan.lowerZ = lowerjaw.body.position.z;
-            newScan.lowerRX = lowerjaw.body.quaterion.x;
-            newScan.lowerRY = lowerjaw.body.quaterion.y;
-            newScan.lowerRZ = lowerjaw.body.quaterion.z;
-            //newScan.lowerRZ = lowerjaw.body.quaterion.w;
-            
+            newScan.lowerRX = lowerjaw.body.rotation.x;
+            newScan.lowerRY = lowerjaw.body.rotation.y;
+            newScan.lowerRZ = lowerjaw.body.rotation.z;
         }
         else if (upperjaw.body.name == "upperjaw"){
             newScan.upperX = upperjaw.body.position.x;
             newScan.upperY = upperjaw.body.position.y;
             newScan.upperZ = upperjaw.body.position.z;
-            newScan.upperRX = upperjaw.body.quaternion.x;
-            newScan.upperRY = upperjaw.body.quaternion.y;
-            newScan.upperRZ = upperjaw.body.quaternion.z;
-            //newScan.upperRZ = upperjaw.body.quaternion.w;
+            newScan.upperRX = upperjaw.body.rotation.x;
+            newScan.upperRY = upperjaw.body.rotation.y;
+            newScan.upperRZ = upperjaw.body.rotation.z;
         }
-    }
-    //setCurrentScan(newScan);  //FIXFIX
-//}
+    setCurrentScan(newScan);
+}
 
-export default function DraggingView({ stream, client, onQuit }: {stream: any, client: any, onQuit: () => void}){
+function loadPosition(positionData: any) {
+  lowerjaw.body.position.set(positionData.lowerX, positionData.lowerY, positionData.lowerZ);
+  lowerjaw.body.rotation.set(positionData.lowerRX, positionData.lowerRY, positionData.lowerRZ);
+  upperjaw.body.position.set(positionData.upperX, positionData.upperY, positionData.upperZ);
+  upperjaw.body.rotation.set(positionData.upperRX, positionData.upperRY, positionData.upperRZ);
+}
+
+function autoSave(interval: number, save: () => void ) {
+  const elapsedTime = clock.getElapsedTime();
+  
+  if (elapsedTime >= interval) {
+    save();
+    console.log(interval, "%d seconds have passed");
+
+    // Additional checks
+
+    // reset the clock
+    clock.start();
+  }
+}
+
+export default function DraggingView({ scanId, client, onQuit }: {scanId: number, client: any, onQuit: () => void}){
     const initialScan = new ScanSave({
         lowerX: 0,
         lowerY: 2,
@@ -1014,24 +1102,18 @@ export default function DraggingView({ stream, client, onQuit }: {stream: any, c
         upperRX: 1.5 * Math.PI,
         upperRY: 0,
         upperRZ: 0,
-        scanId: 111,
+        scanId: scanId,
         timestampSave: "2006-01-02T15:04:05"
     });
     const [current_scan, setCurrentScan] = useState<ScanSave>(initialScan);
     const [openMenu, setOpenMenu] = useState(true); // SET TO false
 
     useEffect(() => { // https://github.com/facebook/react/issues/24502
-        if (second_call){
-            //init(initialScan);   //FIXFIX
-            initCannon();
-            initThree(setOpenMenu, setCurrentScan);
-            loadObjects(()=> {setOpenMenu(true);}); // menu_toggled...
-            // animate(); // Sets 
-            console.log('Init executed!');
-        }
-        else {
-            second_call = true;
-        }
+        //init(initialScan);   //FIXFIX
+        initCannon();
+        initThree(setOpenMenu, setCurrentScan);
+        loadObjects(save, ()=> {setOpenMenu(true);});
+        // animate(); // Sets 
 
         return () => { // Clean up when unmounted
             if (renderer) {
@@ -1049,16 +1131,25 @@ export default function DraggingView({ stream, client, onQuit }: {stream: any, c
         };
     }, []);
 
+    const save = () => {
+      const req = new SaveScanDataRequest({ scan: current_scan });
+      client.saveScanData(req); // Data not used
+    }
+
     const onLoadItemClicked = (inputData: ScanSave) => {
         console.log(inputData)
         const {scanId, timestampSave, ...positionData } = inputData
-        //loadPosition(positionData);  //FIXFIX
+        loadPosition(positionData);
     }
-    const props = {isOpen: openMenu, setIsOpen: setOpenMenu, current_scan, stream, client, onLoadItemClicked, onQuit };
+
+    const onReset = () => {
+      positionReset();
+    }
+    const props = {isOpen: openMenu, setIsOpen: setOpenMenu, current_scan, client, onLoadItemClicked, onQuit, onReset };
 
     // resize
 
-    window.addEventListener( 'resize', onWindowResize );
+    //window.addEventListener( 'resize', onWindowResize );
     const zoomInButton = document.getElementById("zoom-in");
     const zoomOutButton = document.getElementById("zoom-out");
 

@@ -8,6 +8,7 @@ import styleB from '@/styles/Buttons.module.css';
 
 import LoginPage from './login-page';
 import { useRouter } from 'next/router';
+import { useEffect } from 'react';
 
 const inter = Inter({ subsets: ['latin'] });
 // import dotenv from 'dotenv';
@@ -20,10 +21,20 @@ export default function Home() {
     router.push('/all-vr');
   };
 
+  const toWait = (link : any) => {
+    if (link.endsWith("/wait")) { 
+      router.push('/wait');
+    }
+  };
+
+  useEffect(() => {
+    console.log(window.location.href);
+    toWait(window.location.href);
+  }, []);
+
   const toWebsite = () => {
     router.push('/login-page');
   };
-
   return (
     <>
       <Head>
@@ -35,7 +46,6 @@ export default function Home() {
         <div className={styleL.imgbox}>
           <Image className={styleL.image_left} src={Image_L} alt="relu logo" />
         </div>
-
         <div className={styleL.loginbox}>
           <div className={styleB.VRbutton}>
             <button type="submit" className={styleB.VRbuttons} onClick={toVR}>

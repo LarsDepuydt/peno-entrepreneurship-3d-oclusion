@@ -5,7 +5,7 @@ import styles from '@/styles/Modal.module.css';
 import styleB from '@/styles/Buttons.module.css';
 
 import { useQuery } from '@tanstack/react-query';
-import { addScan, getAllPatients } from '@/gen/proto/threedoclusion/v1/service-ScanService_connectquery';
+import { addScan, getAllPatients, getAllScans } from '@/gen/proto/threedoclusion/v1/service-ScanService_connectquery';
 import useStorage from '@/hooks/useStorage';
 import { queryClient } from '@/pages/_app';
 
@@ -51,7 +51,7 @@ export default function ModalForm() {
 
   const [scaninfo, setData] = useState({
     scanFile: path,
-    notes: '',
+    notes: ' | ',
 
     patientId: parseInt(PatientID),
   });
@@ -62,7 +62,7 @@ export default function ModalForm() {
   let year = date.getFullYear();
   let currentDate = `${day}-${month}-${year}`;
 
-  const refreshKey = getAllPatients.useQuery().queryKey;
+  const refreshKey = getAllScans.useQuery().queryKey;
   const { data, refetch } = useQuery(addScan.useQuery(scaninfo).queryKey, addScan.useQuery(scaninfo).queryFn, {
     enabled: false,
     onSuccess: () => queryClient.refetchQueries(refreshKey),
@@ -77,7 +77,7 @@ export default function ModalForm() {
 
   const submitFunction = (values: scanValues) => {
     refetch();
-    scaninfo.notes = values.notes;
+    scaninfo.notes = values.notes + ' | ';
 
     if (sendOK && modal) {
       setSendOK(false);
