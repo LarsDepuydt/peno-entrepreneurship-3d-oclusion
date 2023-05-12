@@ -23,10 +23,19 @@ class Collector {
     vector;             // CANNON.Vec3
     finished = false;   // true if the result of findSepAxis is known
 
+    // a Promise, that is resolved when the result is ready
+    // it can be resolved using the function resolvePromise
+    ready;
+    resolveReady;
+
     constructor(coll_id, num_expected) {
-        this.id = coll_id;
+        this.collID = coll_id;
         this.vector = new CANNON.Vec3();
         this.numExpected = num_expected;
+
+        this.ready = new Promise((resolve, reject) => {
+            this.resolveReady = resolve;
+        });
 
         WORKERS.forEach((worker) => {
             worker.collectors[this.collID] = this;
@@ -52,6 +61,7 @@ function workerOnMessage(event) {
     if (d==false) {
         collector.dmin = false;
         collector.finished = true;
+        collector.resolveReady();
     } else if (d < collector.dmin) {
         collector.dmin = d;
         collector.vector = event.data[2];
@@ -60,6 +70,7 @@ function workerOnMessage(event) {
     collector.numAcquired += 1;
     if (collector.numAcquired == collector.numExpected) {
         collector.finished = true;
+        collector.resolveReady();
     }
 }
 
@@ -72,7 +83,7 @@ function findSepAxisOverload(hullB, posA, quatA, posB, quatB, target, faceListA,
 // alternative to cannon.js function findSeparatingAxis that uses web workers
 // return false if a separation axis is found, true otherwise
 // the separating axis is saved in target
-function findSepAxis(hullA, hullB, posA, quatA, posB, quatB, target, faceListA, faceListB) {
+async function findSepAxis(hullA, hullB, posA, quatA, posB, quatB, target, faceListA, faceListB) {
     const faceANormalWS3 = new CANNON.Vec3();
     const Worldnormal1 = new CANNON.Vec3();
     const deltaC = new CANNON.Vec3();
@@ -150,10 +161,9 @@ function findSepAxis(hullA, hullB, posA, quatA, posB, quatB, target, faceListA, 
         }
     }
 
-    while (!collector.finished) {
-        console.log("waiting for collector to finish");
-    }
-    dmin = collector.dmin;
+    console.log("waiting for collector");
+    await collector.ready;
+    console.log("collector is ready");
     target = collector.vector;
 
     posB.vsub(posA, deltaC);
