@@ -99,12 +99,8 @@ export function SingleScan({ scanid, patientid, notes, date, setStream }: scanPr
             }}
           ></button>
           <div className={styles.dropDownButtonWrapper}>
-
             <ExportButton />
-
             <EditButton scanID={scanid} />
-
-
             <button className={styleB.relu_btn} id={styleB.dropDownButton} onClick={handleRedirectVideo}>
               Show video
             </button>
