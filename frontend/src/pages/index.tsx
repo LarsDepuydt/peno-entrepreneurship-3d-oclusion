@@ -6,7 +6,7 @@ import styles from '@/styles/Home.module.css';
 //import StartPage from './login-page';
 import StartPage from './vr-bypass';
 
-const inter = Inter({ subsets: ['latin'] });
+//const inter = Inter({ subsets: ['latin'] });
 // import dotenv from 'dotenv';
 // dotenv.config();
 
@@ -20,7 +20,6 @@ export default function Home() {
       <main className="vh-100 d-flex justify-content-center align-items-center">
         <StartPage />
       </main>
-
     </>
   );
 }

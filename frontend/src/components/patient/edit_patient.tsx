@@ -116,7 +116,6 @@ export default function EditPatientButton({ patientID }: { patientID: number }) 
       refetch();
       console.log('were in the useEffect function inside the submitOK');
       console.log(patientinfo);
-      console.log('line 82');
       if (data != undefined) {
         setModal(false);
       }
@@ -128,6 +127,7 @@ export default function EditPatientButton({ patientID }: { patientID: number }) 
     <>
       <div>
         <button type="button" className={styleB.relu_btn} id={styleB.editIcon} onClick={toggleModal} />
+        <div />
 
         {modal && patientInfoRequest.firstName != '' && (
           <div className={styles.modal}>
