@@ -385,12 +385,47 @@ function initThree(setOpenMenu: any, setCurrentScan: any) {
 
 
   menuDiv = document.querySelector(".menu-div");
-  const foo = () => {console.log("Clicked")}
-  menuDiv.addEventListener("click", foo);
+
+  
+  const handleMenuClick = (event) => {
+    const target = event.target;
+    console.log(target);
+  
+    // If the click event target is a child element of the 'menu-div', call the corresponding handler function
+    if (target.closest(".menu-div") === target) {
+      console.log("menu-div")
+      if (target.closest(".menu-close")) {
+        //toggleMenu();
+        console.log("Close!")
+      }
+  
+      if (target.closest(".menu-option")) {
+        const optionClass = target.closest(".menu-option")?.dataset.option;
+        if (optionClass) {
+          switch (optionClass) {
+            case "load":
+              console.log("Load")
+              break;
+            case "save":
+              console.log("Save")
+              break;
+            case "saveAndQuit":
+              console.log("Save and quit")
+              break;
+            case "quit":
+              console.log("Quit")
+              break;
+          }
+        }
+      }
+    }
+  };
+  
+  menuDiv.addEventListener("click", handleMenuClick);
 
   menuMesh = new HTMLMesh(menuDiv);
-  menuMesh.position.set(3, 0, -3); // Base off camera position and maybe update every frame so it follows around, also stop interaction with jaws while menu is enabled
-  menuMesh.scale.setScalar(8);
+  menuMesh.position.set(0, 1.5, -1); // Base off camera position and maybe update every frame so it follows around, also stop interaction with jaws while menu is enabled
+  menuMesh.scale.setScalar(3);
   scene.add(menuMesh);
 
 
@@ -723,12 +758,12 @@ function onSelectStart(event) {
         y: (1 - normalizedY) * menuDivHeight
       };
 
-      console.log(menuDivPosition.x);
-      console.log(menuDivPosition.y);
-
       const clickEvent = new MouseEvent('click', {
         clientX: menuDivPosition.x,
-        clientY: menuDivPosition.y
+        clientY: menuDivPosition.y,
+        view: window,
+        bubbles: true,
+        cancelable: true
       })
       menuDiv.dispatchEvent(clickEvent);
     }

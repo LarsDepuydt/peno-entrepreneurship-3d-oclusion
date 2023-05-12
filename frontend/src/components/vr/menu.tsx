@@ -43,7 +43,7 @@ function Menu({isOpen, setIsOpen, current_scan, client, onLoadItemClicked, onQui
         if (res) {
           console.log("Load!");
           const extractedTimestamps: string[] = [];
-          const dictTimeStamps: { [timestamp: string]: Scan } = {};
+          const dictTimeStamps: { [timestamp: string]: ScanSave } = {};
           for (const scan of res.wrap.loadData) {
             dictTimeStamps[scan.timestamp] = scan; // Maybe omit id and timestamp values since unnecessary
             extractedTimestamps.push(scan.timestamp);
@@ -134,7 +134,6 @@ function Menu({isOpen, setIsOpen, current_scan, client, onLoadItemClicked, onQui
           position: relative;
           border: 1px solid #000; // Add border around the menu
           margin: auto;
-          left: -50%;
           z-index: 999;
           display: flex;
           justify-content: center;
@@ -192,8 +191,7 @@ function Menu({isOpen, setIsOpen, current_scan, client, onLoadItemClicked, onQui
       `}</style>
       </div>
     ) : null
-  );
-  
+  )
 };
 
 export default Menu;
