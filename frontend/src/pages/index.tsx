@@ -16,7 +16,8 @@ export default function Home() {
   const router = useRouter();
 
   function toWait(link : any) {
-    if (link.endsWith("/wait")) { 
+    if (link.endsWith("/wait") || link.endsWith("/wait/")) { 
+
       console.log('oke');
       router.push('/wait');
     }
