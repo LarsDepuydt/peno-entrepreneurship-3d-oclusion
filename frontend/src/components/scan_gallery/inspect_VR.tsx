@@ -41,8 +41,8 @@ export function InspectVR({ patientID, scanID, setStream }: InspectVRProps){
 
   const handleSendVR = () => {
     const req = new SendVRRequest({scanId: scanID, clientId });
-    client.sendVR(req);
-    makeStreamOnID(scanID, client);
+    client.sendVR(req); // Not using data
+    setStream(makeStreamOnID(scanID, client));
   };
 
   

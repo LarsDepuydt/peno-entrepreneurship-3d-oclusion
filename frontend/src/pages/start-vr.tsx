@@ -18,16 +18,20 @@ const VRView = dynamic(() => import('@/components/vr/vr-view'), { ssr: false });
 const DraggingView = dynamic(() => import('@/components/vr/dragging'), { ssr: false });
 const BeforeAfter = dynamic(() => import('@/components/vr/before-after'), { ssr: false });
 
-export default function StartVRPage() {
-  const scanId = 111; // Change with prop
-  const [isComponentMounted, setIsComponentMounted] = useState(false);
+export default function StartVRPage(){ 
+  const [isComponentMounted, setIsComponentMounted] = useState(false)
   const [client, setClient] = useState<any>(null);
   const [stream, setStream] = useState<AsyncIterable<SubscribeConnectionResponse> | null>(null);
   const transport = useTransport();
   const router = useRouter();
+  const { scanIdString } = router.query;
+  const scanId = parseInt(scanIdString as string, 10);
 
-  useEffect(() => setIsComponentMounted(true), []);
+  useEffect(() => setIsComponentMounted(true), [])
 
+  if(!isComponentMounted) {
+      return null 
+  }
   if (!isComponentMounted) {
     return null;
   }
@@ -49,7 +53,7 @@ export default function StartVRPage() {
     router.push('/end-vr');
   };
 
-  const props = { stream, client, onQuit };
+    const props = { scanId, client, onQuit };
 
   return (
     // Only executed on the client side

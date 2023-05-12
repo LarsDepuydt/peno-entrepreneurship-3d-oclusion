@@ -37,7 +37,7 @@ export default function ScanPage(this: any) {
     let targetpatientID = process.env.REACT_APP_PATIENT_ID!;
     const [stream, setStream] = useState<AsyncIterable<SubscribeConnectionResponse> | null>(null);
 
-  const { data, refetch } = useQuery(getAllScans.useQuery({ enabled: true }));
+    const { data, refetch } = useQuery(getAllScans.useQuery({ enabled: true }));
 
     if (stream != null){ 
         checkConnected(stream);
