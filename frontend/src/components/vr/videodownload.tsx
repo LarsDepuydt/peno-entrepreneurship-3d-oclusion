@@ -1,3 +1,4 @@
+import stylesButton from '@/styles/Buttons.module.css';
 export default function VideoDownload({ videoChunks }: {videoChunks: any}) {
   const downloadVideo = () => {
     // Create a blob object from the videoChunks array and url for it
@@ -16,7 +17,7 @@ export default function VideoDownload({ videoChunks }: {videoChunks: any}) {
 
   return (
     <>
-      <button onClick={downloadVideo}>Download video</button>
+      <button className={stylesButton.relu_btn} onClick={downloadVideo}>Download video</button>
     </>
   );
 }
