@@ -30,3 +30,8 @@ const bodyB = new CANNON.Body({
 console.log("start test");
 findSepAxis(hullA, hullB, posA, quatA, posB, quatB);
 console.log("end test");
+
+const axis = new CANNON.Vec3(0,0,1);
+const minmaxA = [];
+CANNON.ConvexPolyhedron.project(hullA, axis, posA, quatA, minmaxA);
+console.log("minmaxA: ", minmaxA);

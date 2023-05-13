@@ -1,7 +1,7 @@
 import * as CANNON from 'cannon-es';
 import Worker from "worker-loader!./worker.js"
 
-const NUM_WORKERS = 3;
+const NUM_WORKERS = 1;
 const WORKERS = new Array();
 let collect_id = 0;
 let worker_id = 0;
@@ -24,7 +24,7 @@ class Collector {
     numExpected;        // the number of expected results
     numAcquired = 0;    // the number of acquired results
     dmin = Number.MAX_VALUE;
-    vector;             // CANNON.Vec3
+    axis;               // CANNON.Vec3
     finished = false;   // true if the result of findSepAxis is known
 
     // a Promise, that is resolved when the result is ready
@@ -34,7 +34,7 @@ class Collector {
 
     constructor(coll_id, num_expected) {
         this.collID = coll_id;
-        this.vector = new CANNON.Vec3();
+        this.axis = new CANNON.Vec3();
         this.numExpected = num_expected;
 
         this.ready = new Promise((resolve, reject) => {
@@ -46,10 +46,10 @@ class Collector {
         });
     }
 
-    sendTask(vector, posA, quatA, posB, quatB) {
+    sendTask(axis, posA, quatA, posB, quatB) {
         worker = WORKERS[worker_id];
         worker_id = (worker_id+1)%NUM_WORKERS;
-        worker.postMessage([this.collID, posA, quatA, posB, quatB, vector]);
+        worker.postMessage([this.collID, posA, quatA, posB, quatB, axis]);
     }
 }
 
@@ -68,7 +68,7 @@ function workerOnMessage(event) {
         collector.resolveReady();
     } else if (d < collector.dmin) {
         collector.dmin = d;
-        collector.vector = event.data[2];
+        collector.axis = dictToVec(event.data[2]);
     }
 
     collector.numAcquired += 1;
@@ -180,7 +180,7 @@ async function findSepAxis(hullA, hullB, posA, quatA, posB, quatB, target, faceL
     console.log("waiting for collector");
     await collector.ready;
     console.log("collector is ready");
-    target = collector.vector;
+    target = collector.axis;
 
     posB.vsub(posA, deltaC);
     if (deltaC.dot(target) > 0.0) {
@@ -292,6 +292,10 @@ async function ogSepAxis(hullB, posA, quatA, posB, quatB, target, faceListA, fac
         target.negate(target);
     }
     return true;
+}
+
+function dictToVec(dict) {
+    return new CANNON.Vec3(dict['x'], dict['y'], dict['z']);
 }
 
 

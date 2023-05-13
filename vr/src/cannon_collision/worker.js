@@ -2,10 +2,10 @@
 This worker will implement the function testSepAxis in a separate thread in order to improve performance
 
 Main->worker format:
-[collID, posA: Vec3, quatA: Quaternion, posB: Vec3, quatB: Quaternion, vector: Vec3]
+[collID, posA: Vec3, quatA: Quaternion, posB: Vec3, quatB: Quaternion, axis: Vec3]
 
 Worker->main format:
-- [collID, number, vector: Vec3] (wanneer overlap)
+- [collID, depth, axis: Vec3] (wanneer overlap)
 of
 - [collID, false] (wanneer geen overlap)
 */
@@ -15,43 +15,75 @@ of
 IMPORTANT NOTES (learnt by pure suffering)
 - Firefox does not support module web workers (so no import statements allowed)
 - Chrome does not support import maps in web workers
+- thanks to webpack import maps are possible!
 */
 import * as CANNON from 'cannon-es'
-import { OBJLoader } from "../../node_modules/three/examples/jsm/loaders/OBJLoader.js";
+import { QuickHull } from './QuickHull.js';
+import { OBJLoader } from "three/addons/loaders/OBJLoader.js";
 
 
 
 
-const LOWER_PATH = '../../assets/simplified/lower_180.obj';
-const UPPER_PATH = '../../assets/simplified/upper_209.obj';
+const LOWER_PATH = '../../../assets/simplified/lower_180.obj';
+const UPPER_PATH = '../../../assets/simplified/upper_209.obj';
 
 
-let lj_shape, uj_shape;
-
-
+// loadedA, loadedB are promises that can be resolved with functions resolveLoadedA, resolveLoadedB
+let shapeA, shapeB;
+let resolveLoadedA, resolveLoadedB;
+const loadedA = new Promise((resolve, reject) => {
+    resolveLoadedA = resolve;
+});
+const loadedB = new Promise((resolve, reject) => {
+    resolveLoadedB = resolve;
+});
 
 
 console.log("starting worker");
+loadObjects();
+
+
+
 self.addEventListener("message", handleMessage);
 
 
+async function handleMessage(event) {
+    await loadedA;
+    await loadedB;
 
-function handleMessage(event) {
     const collID = event.data[0];
-    const posA = event.data[1];
-    const quatA = event.data[2];
-    const posB = event.data[3];
-    const quatB = event.data[4];
-    const vector = event.data[5];
+    const posA = dictToVec(event.data[1]);
+    const quatA = dictToQuat(event.data[2]);
+    const posB = dictToVec(event.data[3]);
+    const quatB = dictToQuat(event.data[4]);
+    const axis = dictToVec(event.data[5]);
 
-    console.log("test test");
-    postMessage([collID, false]);
+    // project each shape onto axis
+    const maxminA = [];     // array of length 2 that will contain (maxA, minA)
+    const maxminB = [];
+    CANNON.ConvexPolyhedron.project(shapeA, axis, posA, quatA, maxminA);
+    CANNON.ConvexPolyhedron.project(shapeB, axis, posB, quatB, maxminB);
+    const maxA = maxminA[0];
+    const minA = maxminA[1];
+    const maxB = maxminB[0];
+    const minB = maxminB[1];
+
+    if (maxA < minB || maxB < minA) {
+        // Separated
+        postMessage([collID, false]);
+    } else {
+        // Overlap
+        const d0 = maxA - minB
+        const d1 = maxB - minA
+        const depth = d0 < d1 ? d0 : d1
+        postMessage([collID, depth, axis]);
+    }  
 }
 
 
 
-function loadObjects(loaderClass) {
-    const loader = new loaderClass();
+function loadObjects() {
+    const loader = new OBJLoader();
 
     // load lowerjaw shape
     loader.load(
@@ -62,8 +94,9 @@ function loadObjects(loaderClass) {
             let lj_buffergeo = getFirstBufferGeometry(object);
             lj_buffergeo.scale(0.01, 0.01, 0.01);
             
-            lj_shape = threeGeometryToConvexCannonMesh(lj_buffergeo);
-            console.log("worker: loading lj_shape succeeded");
+            shapeA = threeGeometryToConvexCannonMesh(lj_buffergeo);
+            resolveLoadedA();
+            console.log("worker: loading lowerjaw shape succeeded");
         },
         
         // called when loading in progress
@@ -71,7 +104,7 @@ function loadObjects(loaderClass) {
 
         // called when loading has errors
         function (error) {
-            console.log('An error happened while loading lj_shape: ' + error);
+            console.log('An error happened while loading lowerjaw shape: ' + error);
         }
     );
 
@@ -81,11 +114,12 @@ function loadObjects(loaderClass) {
         
         // called when resource is loaded
         function (object) {         // object is a 'Group', which is a subclass of 'Object3D'
-            let lj_buffergeo = getFirstBufferGeometry(object);
-            lj_buffergeo.scale(0.01, 0.01, 0.01);
+            let uj_buffergeo = getFirstBufferGeometry(object);
+            uj_buffergeo.scale(0.01, 0.01, 0.01);
             
-            lj_shape = threeGeometryToConvexCannonMesh(lj_buffergeo);
-            console.log("worker: loading lj_shape succeeded");
+            shapeB = threeGeometryToConvexCannonMesh(uj_buffergeo);
+            resolveLoadedB();
+            console.log("worker: loading upperjaw shape succeeded");
         },
         
         // called when loading in progress
@@ -93,7 +127,7 @@ function loadObjects(loaderClass) {
 
         // called when loading has errors
         function (error) {
-            console.log('An error happened while loading lj_shape: ' + error);
+            console.log('An error happened while loading upperjaw shape: ' + error);
         }
     );
 }
@@ -138,4 +172,12 @@ function getFirstBufferGeometry(object) {
         }
         return null;
     }
+}
+
+function dictToVec(dict) {
+    return new CANNON.Vec3(dict['x'], dict['y'], dict['z']);
+}
+
+function dictToQuat(dict) {
+    return new CANNON.Quaternion(dict['x'], dict['y'], dict['z'], dict['w']);
 }
