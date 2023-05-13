@@ -39,7 +39,7 @@ export default function ListView({
     <div className={stylesVR.list_container}>
       <div className={stylesVR.list_view}>
         <div className={stylesVR.list_view_header}>
-          <button className={stylesVR.back_arrow} onClick={onBackClicked}></button>
+          <button id={stylesVR.leftIcon} className={stylesVR.icon_btn} onClick={onBackClicked}></button>
         </div>
         <div className={stylesVR.list_view_content}>
           {data.slice(startIndex, endIndex).map((item, index) => (
@@ -49,8 +49,8 @@ export default function ListView({
           ))}
         </div>
         <div className={stylesVR.list_controls}>
-          <button className={stylesVR.arrow_btn} onClick={handlePrev}></button>
-          <button className={stylesVR.arrow_btn} onClick={handleNext}></button>
+          <button id={stylesVR.leftIcon} className={stylesVR.icon_btn} onClick={handlePrev}></button>
+          <button id={stylesVR.rightIcon} className={stylesVR.icon_btn} onClick={handleNext}></button>
         </div>
       </div>
     </div>
