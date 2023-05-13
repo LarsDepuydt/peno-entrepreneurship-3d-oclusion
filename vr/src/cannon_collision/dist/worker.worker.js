@@ -1,0 +1,1 @@
+(()=>{"use strict";console.log("starting worker"),self.addEventListener("message",(function(t){const a=t.data[0];t.data[1],t.data[2],t.data[3],t.data[4],t.data[5],console.log("test test"),postMessage([a,!1])}))})();

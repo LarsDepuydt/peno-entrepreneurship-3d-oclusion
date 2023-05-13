@@ -10,10 +10,17 @@ of
 - [collID, false] (wanneer geen overlap)
 */
 
-import * as CANNON from 'cannon-es'
-import { OBJLoader } from 'three/addons/loaders/OBJLoader.js'
 
-import { getFirstBufferGeometry, threeGeometryToConvexCannonMesh } from './util.js';
+/*
+IMPORTANT NOTES (learnt by pure suffering)
+- Firefox does not support module web workers (so no import statements allowed)
+- Chrome does not support import maps in web workers
+*/
+import * as CANNON from 'cannon-es'
+import { OBJLoader } from "../../node_modules/three/examples/jsm/loaders/OBJLoader.js";
+
+
+
 
 const LOWER_PATH = '../../assets/simplified/lower_180.obj';
 const UPPER_PATH = '../../assets/simplified/upper_209.obj';
@@ -43,8 +50,8 @@ function handleMessage(event) {
 
 
 
-function loadObjects() {
-    const loader = new OBJLoader();
+function loadObjects(loaderClass) {
+    const loader = new loaderClass();
 
     // load lowerjaw shape
     loader.load(
@@ -89,4 +96,46 @@ function loadObjects() {
             console.log('An error happened while loading lj_shape: ' + error);
         }
     );
+}
+
+
+function toCannonVertices(geometry) {
+    const positions = geometry.attributes.position;
+    const vertices = [];
+    for (let index = 0; index < positions.count; index++) {
+        vertices.push(
+            new CANNON.Vec3(
+                positions.getX(index),
+                positions.getY(index),
+                positions.getZ(index)
+            )
+        );
+    }
+    return vertices;
+}
+
+function threeGeometryToConvexCannonMesh(geometry) {
+    let points = toCannonVertices(geometry);
+    const faces = QuickHull.createHull(points);
+    return new CANNON.ConvexPolyhedron({vertices:points, faces:faces});
+}
+
+/**
+ * Traverse the object hierarchy and return the first buffergeometry found
+ * @param {*} object 
+ * @returns 
+ */
+function getFirstBufferGeometry(object) {
+    if (object.geometry !== undefined && object.geometry.isBufferGeometry) {
+        return object.geometry;
+    } else {
+        let geo;
+        for (const o of object.children) {
+            geo = getFirstBufferGeometry(o);
+            if (geo != null) {
+                return geo;
+            }
+        }
+        return null;
+    }
 }

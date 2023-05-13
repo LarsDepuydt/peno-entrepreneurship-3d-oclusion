@@ -5,5 +5,9 @@
     "cannon-utils": "^0.1.4",
     "dat.gui": "^0.7.9",
     "fs": "^0.0.1-security"
+  },
+  "devDependencies": {
+    "webpack-cli": "^5.1.1",
+    "worker-loader": "^3.0.8"
   }
 }

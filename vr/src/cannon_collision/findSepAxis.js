@@ -1,4 +1,5 @@
 import * as CANNON from 'cannon-es';
+import Worker from "worker-loader!./worker.js"
 
 const NUM_WORKERS = 3;
 const WORKERS = new Array();
@@ -7,10 +8,13 @@ let worker_id = 0;
 
 // initialize WORKERS
 // give each worker an extra attribute 'collectors' which is a dict {collID: Collector}
+// also give an attribute 'id' for debugging purposes
 let worker;
 for (let i=0; i<NUM_WORKERS; i++) {
-    worker = new Worker('worker.js');
+    worker = new Worker('worker.js', { type: "module" });
     worker.onmessage = workerOnMessage;
+    worker.onerror = workerOnError;
+    worker.id = i;
     worker.collectors = new Object();
     WORKERS[i] = worker;
 }
@@ -72,6 +76,18 @@ function workerOnMessage(event) {
         collector.finished = true;
         collector.resolveReady();
     }
+}
+
+
+function workerOnError(error) {
+    console.log("error occurred in worker " + error.srcElement.id + ':'
+    + '\n' + error.message
+    + '\n' + error.filename
+    + '\n' + error.lineno)
+    + "the above lines may be 'undefined' in Chrome";
+
+    // window.alert("error");
+    throw error;
 }
 
 

@@ -4,7 +4,6 @@ import { VRButton } from 'three/addons/webxr/VRButton.js';
 import { XRControllerModelFactory } from 'three/addons/webxr/XRControllerModelFactory.js';
 import { OBJLoader } from 'three/addons/loaders/OBJLoader.js';
 import * as CANNON from 'cannon-es';
-import { MeshBVH, acceleratedRaycast } from 'three-mesh-bvh';
 import { default as CannonUtils } from 'cannon-utils';
 //import { sendPositionScan, getPositionScan } from '../../../frontend/src/gen/proto/threedoclusion/v1/service-ScanService_connectquery.ts'
 
