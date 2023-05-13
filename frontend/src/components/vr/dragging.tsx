@@ -6,7 +6,7 @@ import { OBJLoader } from 'three/examples/jsm/loaders/OBJLoader.js';
 import { useState, useEffect } from 'react';
 import { SendMenuOptionRequest, ScanSave, SaveScanDataRequest } from "@/gen/proto/threedoclusion/v1/service_pb";
 import Menu from './menu';
-import { useRouter } from 'next/router';
+import {HTMLMesh} from 'three/examples/jsm/interactive/HTMLMesh.js'
 
 import * as CANNON from 'cannon-es';
 import { getFirstMesh, getFirstBufferGeometry, threeMeshToConvexThreeMesh, threeMeshToConvexCannonMesh, threeMeshToCannonMesh, checkTime, cannonMeshToCannonConvexPolyhedron, vec3ToVector3, vector3ToVec3, threeQuaternionToCannonQuaternion, applyQuaternion, sqnorm, quatDot, minusQuat } from './util.js'
@@ -24,7 +24,8 @@ let controls : any;
 let raycaster : any;
 let clock = new THREE.Clock();
 
-//let second_call = false;
+let menu_toggled = false;
+let  menuDiv: HTMLElement, menuMesh: HTMLMesh;
 
 const intersected = []; // global list that holds the first objects the controllers are pointing at
 const tempMatrix = new THREE.Matrix4();
@@ -69,7 +70,7 @@ class Jaw {
    * @param {*} bodypath path to the body obj file used for collision detection
    * @param {*} meshpath path to the mesh obj file (visual), in debugging mode, use the body model instead
    */
-  constructor(bodypath : any, meshpath : any, save: () => void) {
+  constructor(bodypath : any, meshpath : any, save: () => void, callback: () => void) {
     let sphere_geo = new THREE.SphereGeometry(0.05, 10, 5);
     this.target = new THREE.Mesh(sphere_geo, targetMaterial); // (invisible) THREE.Object3D, dat aanduidt waar de jaw zou moeten zijn obv de controller selection
     console.log(this);
@@ -98,14 +99,14 @@ class Jaw {
     world.addBody(this.body);
 
     if (DEBUGGING_MODE) {
-      this.loadMeshAndBody(bodypath, save);
+      this.loadMeshAndBody(bodypath, save, callback);
     } else {
-      this.loadMesh(meshpath, save);
-      this.loadBody(bodypath, save);
+      this.loadMesh(meshpath, save, callback);
+      this.loadBody(bodypath, save, callback);
     }
   }
 
-  loadMeshAndBody(path, save: () => void) {
+  loadMeshAndBody(path, save: () => void, callback: () => void) {
     const jaw = this;
 
     objLoader.load(
@@ -129,7 +130,7 @@ class Jaw {
 
         console.log("loading mesh succeeded");
         jaw.loaded = true;
-        afterLoad(save);
+        afterLoad(save, callback);
       },
 
       // called when loading in progress
@@ -142,7 +143,7 @@ class Jaw {
     );
   }
 
-  loadMesh(path : any, save: () => void) {
+  loadMesh(path : any, save: () => void, callback: () => void) {
     const jaw = this;
 
     objLoader.load(
@@ -164,7 +165,7 @@ class Jaw {
         if (jaw.mesh_loaded && jaw.body_loaded) {
           // actually this is a race condition, let's ignore that for now
           jaw.loaded = true;
-          afterLoad(save);
+          afterLoad(save, callback);
         }
       },
 
@@ -178,7 +179,7 @@ class Jaw {
     );
   }
 
-  loadBody(path : any, save: () => void) {
+  loadBody(path : any, save: () => void, callback: () => void) {
     const jaw = this;
 
     objLoader.load(
@@ -203,7 +204,7 @@ class Jaw {
         if (jaw.mesh_loaded && jaw.body_loaded) {
           // actually a race condition
           jaw.loaded = true;
-          afterLoad(save);
+          afterLoad(save, callback);
         }
       },
 
@@ -309,7 +310,6 @@ function initCannon() {
 }
 
 function initThree(setOpenMenu: any, setCurrentScan: any) {
-  setOpenMenu(true);
   // create container
   container = document.createElement("div");
   document.body.appendChild(container);
@@ -371,6 +371,15 @@ function initThree(setOpenMenu: any, setCurrentScan: any) {
   renderer.xr.enabled = true;
   container.appendChild(renderer.domElement);
 
+
+
+  menuDiv = document.querySelector(".menu-div");  
+  menuMesh = new HTMLMesh(menuDiv);
+  menuMesh.position.set(0, 1.5, -1); // Base off camera position and maybe update every frame so it follows around, also stop interaction with jaws while menu is enabled
+  menuMesh.scale.setScalar(3);
+  scene.add(menuMesh);
+
+
   document.body.appendChild(VRButton.createButton(renderer));
 
   // controllers
@@ -425,10 +434,10 @@ function initThree(setOpenMenu: any, setCurrentScan: any) {
   session = renderer.xr.getSession();
 }
 
-function loadObjects(save: () => void) {
-    lowerjaw = new Jaw('/lower_180.obj', '/lower_ios_6.obj', save);
+function loadObjects(save: () => void, callback: () => void) {
+    lowerjaw = new Jaw('/lower_180.obj', '/lower_ios_6.obj', save, callback);
     //upperjaw = new Jaw('../../assets/simplified/upper_218.obj');
-    upperjaw = new Jaw('/upper_209.obj', '/upper_ios_6.obj', save);
+    upperjaw = new Jaw('/upper_209.obj', '/upper_ios_6.obj', save, callback);
 
     curr_jaw = upperjaw;
 }
@@ -437,7 +446,7 @@ function loadObjects(save: () => void) {
 const VRHeadsetPosition = new THREE.Vector3();
 const VRHeadsetQuaternion = new THREE.Quaternion();
 
-function afterLoad(save: () => void) {
+function afterLoad(save: () => void, callback: () => void) {
   VRHeadsetPosition.setFromMatrixPosition(camera.matrixWorld);
   if (lowerjaw.loaded && upperjaw.loaded) {
     VRHeadsetPosition.setFromMatrixPosition(camera.matrixWorld);
@@ -480,17 +489,17 @@ function afterLoad(save: () => void) {
 
     console.log("starting animation");
     renderer.setAnimationLoop(function foo(){
-      animate(save);
+      animate(save, callback);
     });
   }
 }
 
-function animate(save: () => void) {
-  autoSave(60, save); // 60 second interval
+function animate(save: () => void, callback: () => void) {
+  //autoSave(60, save); // 60 second interval
 
   frameNum += 1;
   updatePhysics();
-  render();
+  render(callback);
 }
 
 let currentOption = 3; // initialize to free movement
@@ -502,7 +511,7 @@ var optionChanged_B = false;
 var prevButtonState_B = 0;
 
 // using X/A buttons on the controllers
-function beforeRender(controller) {
+function beforeRender(controller, callback: () => void) {
     //console.log(curr_jaw);
     if (curr_jaw.selected) {
         switch (movement_mode) {
@@ -551,12 +560,9 @@ function beforeRender(controller) {
         optionChanged = false; // reset flag when squeeze button is released
       }
       prevButtonState = data.buttons[4]; // save button state for next frame
-
-      /*if (data.buttons[5] == 1){ // Y pressed, ends webXR session; restart session when "x" is clicked in menu
-        const session = renderer.xr.getSession();
-        session?.end().then(setOpenMenu(true));
-        updateScanData(setCurrentScan);
-      }*/
+      if (data.buttons[5] == 1) { // Y pressed
+        callback();
+      }
 
       movement_mode = currentOption;
     }
@@ -599,18 +605,20 @@ function showAxes(axis_num : any, curr_jaw : any) {
 
     // add the arrow to the scene
     curr_jaw.mesh.add(ArrowHelper);
-  } 
+} 
 
-function render() {
-  beforeRender(controller1);
-  beforeRender(controller2);
+function render(callback: () => void) {
   cleanIntersected();
-  //positionReset();
-  undoWhenPressed();
-  redoWhenPressed();
-
-  intersectObjects(controller1);
-  intersectObjects(controller2);
+  
+  if (!menu_toggled){
+    // So no interactions with jaws when menu is toggled
+    beforeRender(controller1, callback);
+    beforeRender(controller2, callback);
+    undoWhenPressed();
+    redoWhenPressed();
+    intersectObjects(controller1);
+    intersectObjects(controller2);
+  }
 
   renderer.render(scene, camera);
 }
@@ -640,20 +648,59 @@ function onWindowResize() {
 function onSelectStart(event) {
   const controller = event.target;
 
-  const intersections = getIntersections(controller);
+  if (!menu_toggled){
+    const intersections = getIntersections(controller);
 
-  if (intersections.length > 0) {
-    const intersection = intersections[0];
-    const jaw = meshToJaw(intersection.object);
+    if (intersections.length > 0) {
+      const intersection = intersections[0];
+      const jaw = meshToJaw(intersection.object);
 
-    if (!jaw.selected) {
-      jaw.mesh.material.emissive.b = 1;
-      jaw.setTarget();
-      controller.attach(jaw.target);
-      jaw.selected = true;
-      jaw.body.type = CANNON.Body.DYNAMIC;
-      controller.userData.selected = jaw;
-      addMovementToUndoStack(jaw.body);
+      if (!jaw.selected) {
+        jaw.mesh.material.emissive.b = 1;
+        jaw.setTarget();
+        controller.attach(jaw.target);
+        jaw.selected = true;
+        jaw.body.type = CANNON.Body.DYNAMIC;
+        controller.userData.selected = jaw;
+        addMovementToUndoStack(jaw.body);
+        console.log(undoStack);
+        //console.log(jaw.body);
+      }
+    }
+  } else {
+    const intersects = getIntersectionMenu(controller); // Further interactions necessary
+    if (intersects.length > 0) {
+      // Local intersection point relative to the menuMesh
+      const localIntersectionPoint = menuMesh.worldToLocal(intersects[0].point.clone());
+      const meshWidth = menuMesh.geometry.parameters.width;
+      const meshHeight = menuMesh.geometry.parameters.height;
+      // Normalize based on the menuMesh dimensions
+      const normalizedX = (localIntersectionPoint.x + meshWidth / 2) / meshWidth;
+      const normalizedY = (localIntersectionPoint.y + meshHeight / 2) / meshHeight;
+      // Convert to corresponding 2D point on menuDiv
+      const menuDivWidth = menuDiv.offsetWidth;
+      const menuDivHeight = menuDiv.offsetHeight;
+
+      const menuDivPosition = {
+        x: normalizedX * menuDivWidth,
+        y: (1 - normalizedY) * menuDivHeight
+      };
+
+      const intersectionPoint = new THREE.Vector2(
+        menuDivPosition.x,
+        menuDivPosition.y
+      );
+
+      const deepestIntersectedElement = findDeepestIntersectedElement(menuDiv, intersectionPoint);
+
+      const clickEvent = new MouseEvent('click', {
+        clientX: menuDivPosition.x,
+        clientY: menuDivPosition.y,
+        bubbles: true,
+        cancelable: true
+      })
+      //menuDiv.dispatchEvent(clickEvent);
+      deepestIntersectedElement.dispatchEvent(clickEvent);
     }
   }
 }
@@ -729,6 +776,33 @@ function getIntersections(controller : any) {
 
   return raycaster.intersectObjects([lowerjaw.mesh, upperjaw.mesh], true);
 }
+
+function getIntersectionMenu(controller : any) {
+  tempMatrix.identity().extractRotation(controller.matrixWorld);
+
+  raycaster.ray.origin.setFromMatrixPosition(controller.matrixWorld);
+  raycaster.ray.direction.set(0, 0, -1).applyMatrix4(tempMatrix);
+
+  return raycaster.intersectObject(menuMesh, true);
+}
+
+function findDeepestIntersectedElement(element, intersectionPoint) {
+  const children = element.children;
+  for (let i = 0; i < children.length; i++) {
+    const child = children[i];
+    const rect = child.getBoundingClientRect();
+    if (
+      intersectionPoint.x >= rect.left &&
+      intersectionPoint.x <= rect.right &&
+      intersectionPoint.y >= rect.top &&
+      intersectionPoint.y <= rect.bottom
+    ) {
+      return findDeepestIntersectedElement(child, intersectionPoint);
+    }
+  }
+  return element;
+}
+
 
 // highlight the object the controller points at
 
@@ -931,33 +1005,33 @@ function undoWhenPressed() {
   
   // undoMovement();
   
-  function redoWhenPressed() {
-      let iiii = 0;
-    if (session) {
-      for (const source of session.inputSources) {
-        if (source && source.handedness) {
-          var handedness = source.handedness; //left or right controllers
-          if (handedness == 'left') {continue} // we willen enkel de 'X' knop van de rechtercontroller
-        }
-        if (!source.gamepad) continue;
-        const controller = renderer.xr.getController(iiii++);
-        const old = prevGamePads.get(source);
-        const data = {
-          handedness: handedness,
-          buttons: source.gamepad.buttons.map((b) => b.value),
-          axes: source.gamepad.axes.slice(0)
-        };
-        //console.log(source.handedness);
-        if (data.buttons[5] == 1 && prevButtonState_B == 0 && !optionChanged_B) {
-          optionChanged_B = true; // set flag to true to indicate that the option has changed
-          redoMovement();
-        } else if (data.buttons[5] == 0 && prevButtonState_B == 0 && optionChanged_B) {
-          optionChanged_B = false; // reset flag when squeeze button is released
-        }
-        prevButtonState_B = data.buttons[5]; // save button state for next frame
+function redoWhenPressed() {
+    let iiii = 0;
+  if (session) {
+    for (const source of session.inputSources) {
+      if (source && source.handedness) {
+        var handedness = source.handedness; //left or right controllers
+        if (handedness == 'left') {continue} // we willen enkel de 'X' knop van de rechtercontroller
       }
+      if (!source.gamepad) continue;
+      const controller = renderer.xr.getController(iiii++);
+      const old = prevGamePads.get(source);
+      const data = {
+        handedness: handedness,
+        buttons: source.gamepad.buttons.map((b) => b.value),
+        axes: source.gamepad.axes.slice(0)
+      };
+      //console.log(source.handedness);
+      if (data.buttons[5] == 1 && prevButtonState_B == 0 && !optionChanged_B) {
+        optionChanged_B = true; // set flag to true to indicate that the option has changed
+        redoMovement();
+      } else if (data.buttons[5] == 0 && prevButtonState_B == 0 && optionChanged_B) {
+        optionChanged_B = false; // reset flag when squeeze button is released
+      }
+      prevButtonState_B = data.buttons[5]; // save button state for next frame
     }
   }
+}
 
 function quaternionToEuler(quat) {
   const qW = quat.w;
@@ -1013,7 +1087,6 @@ function autoSave(interval: number, save: () => void) {
   
   if (elapsedTime >= interval) {
     console.log(interval, "seconds have passed");
-
     // Additional checks, like only if an edit's been made
     save();
     // reset the clock
@@ -1041,17 +1114,22 @@ export default function DraggingView({ scanId, client, onQuit }: {scanId: number
     const [current_scan, setCurrentScan] = useState<ScanSave>(initialScan);
     const [openMenu, setOpenMenu] = useState(false);
 
+    const y_pressed = ()=> {
+      setOpenMenu(true);
+      menu_toggled = true;
+    }
+
     useEffect(() => { // https://github.com/facebook/react/issues/24502
         initCannon();
         initThree(setOpenMenu, setCurrentScan);
-        loadObjects(save);
-        console.log('Init executed!');
+        loadObjects(save, y_pressed);
 
         return () => { // Clean up when unmounted
             if (renderer) {
                 renderer.dispose();
                 renderer.setAnimationLoop(null); // Cancels animation
-                document.body.removeChild(container);
+                //document.body.removeChild(containerRef);
+                //document.body.removeChild(containerRef.current);
             }
             if (scene){
                 while (scene.children.length > 0) {
@@ -1077,6 +1155,8 @@ export default function DraggingView({ scanId, client, onQuit }: {scanId: number
 
     const onReset = () => {
       positionReset();
+      setOpenMenu(false); // Probably want to go out of the menu at that point
+      menu_toggled = false;
     }
     const props = {isOpen: openMenu, setIsOpen: setOpenMenu, current_scan, client, onLoadItemClicked, onQuit, onReset };
 
@@ -1113,15 +1193,15 @@ export default function DraggingView({ scanId, client, onQuit }: {scanId: number
             Math.PI
         );
     };
-
+    
     return (
         <div className="menu-div">
         <Menu {...props}/>
         <style jsx>{`
             .menu-div {
                 position: absolute;
-                width: 100%;
-                height: 100%;
+                width: 300px;
+                height: 350px;
             }
         `}</style>
         </div>
