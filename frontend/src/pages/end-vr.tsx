@@ -16,7 +16,7 @@ export default function EndVRPage() {
   const home = () => router.push('/wait');
 
 
-  const [timeLeft, setTimeLeft] = useState(10); // initial countdown time
+  const [timeLeft, setTimeLeft] = useState(15); // initial countdown time
   // const history = useHistory(); // hook to access the router history
 
   useEffect(() => {
