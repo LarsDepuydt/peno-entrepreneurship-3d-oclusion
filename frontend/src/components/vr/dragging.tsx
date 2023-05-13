@@ -487,6 +487,16 @@ function afterLoad(save: () => void, callback: () => void) {
     upperjaw.sphere.name = "lowerjaw.sphere";
     upperjaw.target.name = "lowerjaw.target";
 
+    lowerjaw.body.addEventListener("collide", function (e) {
+      console.log("collision detected!");
+      vibrateTrigger();
+    });
+
+    upperjaw.body.addEventListener("collide", function (e) {
+      console.log("collision detected!");
+      vibrateTrigger();
+    });
+
     console.log("starting animation");
     renderer.setAnimationLoop(function foo(){
       animate(save, callback);
@@ -627,6 +637,15 @@ function checkMenuButtons(){
     }
   }
   
+}
+
+
+
+function vibrateTrigger() { // Vibrate TRIGGER button
+  const session = renderer.xr.getSession();
+  for (const source of session!.inputSources) {
+      if (source.gamepad) (source.gamepad.hapticActuators[0] as any).pulse(0.8, 100);
+  }
 }
 
 function render(callback: () => void) {
