@@ -3,13 +3,10 @@ import { SendMenuOptionRequest, Scan, ScanSave } from "@/gen/proto/threedoclusio
 import ListView from "./list-view";
 
 async function sendMenuOption(optionNumber: number, clnt: any, oData: any){
-  //console.log(oData);
   let req = new SendMenuOptionRequest({});
   req.option = optionNumber;
   req.optionData = {value: oData.value, case: oData.case};
 
-  //console.log(req);
-  //console.log('req before sending:', JSON.stringify(req, null, 2));
   const res = await clnt.sendMenuOption(req);
   return res;
 }
@@ -21,7 +18,6 @@ function Menu({isOpen, setIsOpen, current_scan, client, onLoadItemClicked, onQui
 
   const toggleMenu = () => {
     onToggle();
-    //setIsOpen(!isOpen);
   };
 
   const handleLoadItemClicked = (inputData: ScanSave) => {
@@ -85,7 +81,6 @@ function Menu({isOpen, setIsOpen, current_scan, client, onLoadItemClicked, onQui
 
   const reset = async () => {
     console.log('Resetting position');
-    //positionReset();
     onReset();
   }
 

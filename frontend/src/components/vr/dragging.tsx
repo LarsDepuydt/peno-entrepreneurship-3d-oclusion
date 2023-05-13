@@ -1139,18 +1139,23 @@ export default function DraggingView({ scanId, client, onQuit }: {scanId: number
         loadObjects(save, toggleMenu);
 
         return () => { // Clean up when unmounted
-            if (renderer) {
-                renderer.dispose();
-                renderer.setAnimationLoop(null); // Cancels animation
-                //document.body.removeChild(containerRef);
-                //document.body.removeChild(containerRef.current);
+            if (session){ // Only if session's been started
+              session.end()
+              if (renderer) {
+                  renderer.dispose();
+                  renderer.setAnimationLoop(null); // Cancels animation
+                  //document.body.removeChild(containerRef);
+                  //document.body.removeChild(containerRef.current);
+              }
+              if (scene){
+                  while (scene.children.length > 0) {
+                      scene.remove(scene.children[0]);
+                  }
+              }
+              while (document.body.firstChild) { // Remove all from body
+                document.body.removeChild(document.body.firstChild)
+              }
             }
-            if (scene){
-                while (scene.children.length > 0) {
-                    scene.remove(scene.children[0]);
-                }
-            }
-
         };
     }, []);
 

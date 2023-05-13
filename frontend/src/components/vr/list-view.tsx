@@ -38,12 +38,12 @@ export default function ListView({ data, dictData, itemsPerPage, onItemClicked, 
               ))}
           </div>
           <div className="list-controls">
-              <button className="arrow-btn" onClick={handlePrev}>
+              <span className="arrow-btn" onClick={handlePrev}>
                 <span className="arrow-left"></span>
-            </button>
-              <button className="arrow-btn" onClick={handleNext}>
+              </span>
+              <span className="arrow-btn" onClick={handleNext}>
                 <span className="arrow-right"></span>
-              </button>
+              </span>
           </div>
         </div>
             <style jsx>{`
