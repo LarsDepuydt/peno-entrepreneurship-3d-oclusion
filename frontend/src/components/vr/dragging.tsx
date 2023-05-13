@@ -511,7 +511,7 @@ var optionChanged_B = false;
 var prevButtonState_B = 0;
 
 // using X/A buttons on the controllers
-function beforeRender(controller, callback: () => void) {
+function beforeRender(callback: () => void) {
     //console.log(curr_jaw);
     if (curr_jaw.selected) {
         switch (movement_mode) {
@@ -542,7 +542,7 @@ function beforeRender(controller, callback: () => void) {
     for (const source of session.inputSources) {
       if (source && source.handedness) {
         var handedness = source.handedness; //left or right controllers
-        if (handedness == 'right') {continue} // we willen enkel de 'X' knop van de rechtercontroller
+        if (handedness == 'right') {continue} // we willen enkel de 'X' knop van de linkercontroller
       }
       if (!source.gamepad) continue;
       const controller = renderer.xr.getController(ii++);
@@ -563,7 +563,6 @@ function beforeRender(controller, callback: () => void) {
       if (data.buttons[5] == 1) { // Y pressed
         callback();
       }
-
       movement_mode = currentOption;
     }
   }
@@ -607,17 +606,40 @@ function showAxes(axis_num : any, curr_jaw : any) {
     curr_jaw.mesh.add(ArrowHelper);
 } 
 
+function checkMenuButtons(){
+  session = renderer.xr.getSession();
+  let ii = 0;
+  if (session) {
+    for (const source of session.inputSources) {
+      if (source && source.handedness) {
+        var handedness = source.handedness; //left or right controllers
+      }
+      if (!source.gamepad) continue;
+      const controller = renderer.xr.getController(ii++);
+      const data = {
+        handedness: handedness,
+        buttons: source.gamepad.buttons.map((b) => b.value),
+        axes: source.gamepad.axes.slice(0)
+      };
+      if (data.buttons[4] == 1) { // X/A pressed
+        buttonPressMenu(controller);
+      }
+    }
+  }
+  
+}
+
 function render(callback: () => void) {
   cleanIntersected();
   
   if (!menu_open){ // So no unnecessary computations
-    beforeRender(controller1, callback);
-    beforeRender(controller2, callback);
+    beforeRender(callback)
     undoWhenPressed();
     redoWhenPressed();
     intersectObjects(controller1);
     intersectObjects(controller2);
   } else {
+    checkMenuButtons();
     // Update menu's position and rotation based on camera
     menuMesh.position.copy(camera.position);
     var cameraDirection = new THREE.Vector3();
@@ -626,7 +648,6 @@ function render(callback: () => void) {
     cameraDirection.y = 0; // Don't move in height
     menuMesh.position.add(cameraDirection);
     menuMesh.lookAt(new THREE.Vector3(camera.position.x, menuMesh.position.y, camera.position.z));
-
   }
 
   renderer.render(scene, camera);
@@ -652,8 +673,44 @@ function onWindowResize() {
   renderer.setSize(window.innerWidth, window.innerHeight);
 }
 
-// when controller pushes select button, select the object it is pointing to
+function buttonPressMenu(controller){
+  const intersects = getIntersectionMenu(controller); // Further interactions necessary
+  if (intersects.length > 0) {
+    // Local intersection point relative to the menuMesh
+    const localIntersectionPoint = menuMesh.worldToLocal(intersects[0].point.clone());
+    const meshWidth = menuMesh.geometry.parameters.width;
+    const meshHeight = menuMesh.geometry.parameters.height;
+    // Normalize based on the menuMesh dimensions
+    const normalizedX = (localIntersectionPoint.x + meshWidth / 2) / meshWidth;
+    const normalizedY = (localIntersectionPoint.y + meshHeight / 2) / meshHeight;
+    // Convert to corresponding 2D point on menuDiv
+    const menuDivWidth = menuDiv.offsetWidth;
+    const menuDivHeight = menuDiv.offsetHeight;
 
+    const menuDivPosition = {
+      x: normalizedX * menuDivWidth,
+      y: (1 - normalizedY) * menuDivHeight
+    };
+
+    const intersectionPoint = new THREE.Vector2(
+      menuDivPosition.x,
+      menuDivPosition.y
+    );
+
+    const deepestIntersectedElement = findDeepestIntersectedElement(menuDiv, intersectionPoint);
+
+    const clickEvent = new MouseEvent('click', {
+      clientX: menuDivPosition.x,
+      clientY: menuDivPosition.y,
+      bubbles: true,
+      cancelable: true
+    })
+    //menuDiv.dispatchEvent(clickEvent);
+    deepestIntersectedElement.dispatchEvent(clickEvent);
+  }
+}
+
+// when controller pushes select button, select the object it is pointing to
 function onSelectStart(event) {
   const controller = event.target;
 
@@ -677,40 +734,7 @@ function onSelectStart(event) {
       }
     }
   } else {
-    const intersects = getIntersectionMenu(controller); // Further interactions necessary
-    if (intersects.length > 0) {
-      // Local intersection point relative to the menuMesh
-      const localIntersectionPoint = menuMesh.worldToLocal(intersects[0].point.clone());
-      const meshWidth = menuMesh.geometry.parameters.width;
-      const meshHeight = menuMesh.geometry.parameters.height;
-      // Normalize based on the menuMesh dimensions
-      const normalizedX = (localIntersectionPoint.x + meshWidth / 2) / meshWidth;
-      const normalizedY = (localIntersectionPoint.y + meshHeight / 2) / meshHeight;
-      // Convert to corresponding 2D point on menuDiv
-      const menuDivWidth = menuDiv.offsetWidth;
-      const menuDivHeight = menuDiv.offsetHeight;
-
-      const menuDivPosition = {
-        x: normalizedX * menuDivWidth,
-        y: (1 - normalizedY) * menuDivHeight
-      };
-
-      const intersectionPoint = new THREE.Vector2(
-        menuDivPosition.x,
-        menuDivPosition.y
-      );
-
-      const deepestIntersectedElement = findDeepestIntersectedElement(menuDiv, intersectionPoint);
-
-      const clickEvent = new MouseEvent('click', {
-        clientX: menuDivPosition.x,
-        clientY: menuDivPosition.y,
-        bubbles: true,
-        cancelable: true
-      })
-      //menuDiv.dispatchEvent(clickEvent);
-      deepestIntersectedElement.dispatchEvent(clickEvent);
-    }
+    buttonPressMenu(controller);
   }
 }
 
@@ -993,7 +1017,7 @@ function undoWhenPressed() {
       for (const source of session.inputSources) {
         if (source && source.handedness) {
           var handedness = source.handedness; //left or right controllers
-          if (handedness == 'left') {continue} // we willen enkel de 'X' knop van de rechtercontroller
+          if (handedness == 'left') {continue} // we willen enkel de 'A' knop van de rechtercontroller
         }
         if (!source.gamepad) continue;
         const controller = renderer.xr.getController(iii++);
@@ -1024,7 +1048,7 @@ function redoWhenPressed() {
     for (const source of session.inputSources) {
       if (source && source.handedness) {
         var handedness = source.handedness; //left or right controllers
-        if (handedness == 'left') {continue} // we willen enkel de 'X' knop van de rechtercontroller
+        if (handedness == 'left') {continue} // we willen enkel de 'A' knop van de rechtercontroller
       }
       if (!source.gamepad) continue;
       const controller = renderer.xr.getController(iiii++);
@@ -1128,7 +1152,7 @@ export default function DraggingView({ scanId, client, onQuit }: {scanId: number
     const [openMenu, setOpenMenu] = useState(false);
 
     const toggleMenu = () => {
-      if (openMenu){  // So it doesn't render unnecessarily
+      if (openMenu){
         //scene.add(lowerjaw.mesh);
         //scene.add(upperjaw.mesh);
         scene.remove(menuMesh);
