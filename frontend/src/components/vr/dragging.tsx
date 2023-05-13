@@ -376,7 +376,7 @@ function initThree(setOpenMenu: any, setCurrentScan: any) {
   menuDiv = document.querySelector(".menu-div");  
   menuMesh = new HTMLMesh(menuDiv);
   menuMesh.position.set(0, 1.5, -1); // Base off camera position and maybe update every frame so it follows around, also stop interaction with jaws while menu is enabled
-  menuMesh.scale.setScalar(3);
+  menuMesh.scale.setScalar(1.8);
   scene.add(menuMesh);
 
 
@@ -617,6 +617,16 @@ function render(callback: () => void) {
     redoWhenPressed();
     intersectObjects(controller1);
     intersectObjects(controller2);
+  } else {
+    // Update menu's position and rotation based on camera
+    menuMesh.position.copy(camera.position);
+    var cameraDirection = new THREE.Vector3();
+    camera.getWorldDirection(cameraDirection);
+    cameraDirection.multiplyScalar(1);
+    cameraDirection.y = 0; // Don't move in height
+    menuMesh.position.add(cameraDirection);
+    menuMesh.lookAt(new THREE.Vector3(camera.position.x, menuMesh.position.y, camera.position.z));
+
   }
 
   renderer.render(scene, camera);
@@ -707,19 +717,17 @@ function onSelectStart(event) {
 // when controller releases select button
 
 function onSelectEnd(event : any) {
-  if (!menu_open){
-    const controller = event.target;
+  const controller = event.target;
 
-    if (controller.userData.selected !== undefined) {
-      const jaw = controller.userData.selected;
+  if (controller.userData.selected !== undefined) {
+    const jaw = controller.userData.selected;
 
-      jaw.mesh.material.emissive.b = 0;
-      scene.attach(jaw.target);
-      jaw.target.visible = false;
-      jaw.selected = false;
-      jaw.body.type = CANNON.Body.STATIC;
-      controller.userData.selected = undefined;
-    }
+    jaw.mesh.material.emissive.b = 0;
+    scene.attach(jaw.target);
+    jaw.target.visible = false;
+    jaw.selected = false;
+    jaw.body.type = CANNON.Body.STATIC;
+    controller.userData.selected = undefined;
   }
 }
 
