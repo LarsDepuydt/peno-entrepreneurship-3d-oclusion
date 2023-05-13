@@ -1002,7 +1002,7 @@ function updateScanData(scanID: number, setCurrentScan: any) { // Use when menu 
     newScan.upperX = upperjaw.body.position.x;
     newScan.upperY = upperjaw.body.position.y;
     newScan.upperZ = upperjaw.body.position.z;
-    Object.assign(newScan, (({ roll, pitch, yaw }) => ({ lowerRX: roll, lowerRY: pitch, lowerRZ: yaw }))(quaternionToEuler(lowerjaw.body.quaternion)));
+    Object.assign(newScan, (({ roll, pitch, yaw }) => ({ lowerRX: roll, lowerRY: pitch, lowerRZ: yaw }))(quaternionToEuler(upperjaw.body.quaternion)));
     setCurrentScan(newScan);
     return newScan;
 }
