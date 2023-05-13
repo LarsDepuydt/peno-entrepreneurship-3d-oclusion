@@ -741,14 +741,11 @@ function onSelectStart(event) {
     if (intersects.length > 0) {
       // Local intersection point relative to the menuMesh
       const localIntersectionPoint = menuMesh.worldToLocal(intersects[0].point.clone());
-
       const meshWidth = menuMesh.geometry.parameters.width;
       const meshHeight = menuMesh.geometry.parameters.height;
-
       // Normalize based on the menuMesh dimensions
       const normalizedX = (localIntersectionPoint.x + meshWidth / 2) / meshWidth;
       const normalizedY = (localIntersectionPoint.y + meshHeight / 2) / meshHeight;
-
       // Convert to corresponding 2D point on menuDiv
       const menuDivWidth = menuDiv.offsetWidth;
       const menuDivHeight = menuDiv.offsetHeight;
@@ -758,14 +755,21 @@ function onSelectStart(event) {
         y: (1 - normalizedY) * menuDivHeight
       };
 
+      const intersectionPoint = new THREE.Vector2(
+        menuDivPosition.x,
+        menuDivPosition.y
+      );
+
+      const deepestIntersectedElement = findDeepestIntersectedElement(menuDiv, intersectionPoint);
+
       const clickEvent = new MouseEvent('click', {
         clientX: menuDivPosition.x,
         clientY: menuDivPosition.y,
-        view: window,
         bubbles: true,
         cancelable: true
       })
-      menuDiv.dispatchEvent(clickEvent);
+      //menuDiv.dispatchEvent(clickEvent);
+      deepestIntersectedElement.dispatchEvent(clickEvent);
     }
   }
 }
@@ -850,6 +854,24 @@ function getIntersectionMenu(controller : any) {
 
   return raycaster.intersectObject(menuMesh, true);
 }
+
+function findDeepestIntersectedElement(element, intersectionPoint) {
+  const children = element.children;
+  for (let i = 0; i < children.length; i++) {
+    const child = children[i];
+    const rect = child.getBoundingClientRect();
+    if (
+      intersectionPoint.x >= rect.left &&
+      intersectionPoint.x <= rect.right &&
+      intersectionPoint.y >= rect.top &&
+      intersectionPoint.y <= rect.bottom
+    ) {
+      return findDeepestIntersectedElement(child, intersectionPoint);
+    }
+  }
+  return element;
+}
+
 
 // highlight the object the controller points at
 
