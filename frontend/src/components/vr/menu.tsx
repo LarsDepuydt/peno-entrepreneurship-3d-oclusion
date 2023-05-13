@@ -14,13 +14,14 @@ async function sendMenuOption(optionNumber: number, clnt: any, oData: any){
   return res;
 }
 
-function Menu({isOpen, setIsOpen, current_scan, client, onLoadItemClicked, onQuit, onReset}: {isOpen: boolean, setIsOpen: any, current_scan: ScanSave, client: any, onLoadItemClicked: (inputData: ScanSave) => void, onQuit: () => void, onReset: () => void}){ // Add props with positions, client...
+function Menu({isOpen, setIsOpen, current_scan, client, onLoadItemClicked, onQuit, onReset, onToggle}: {isOpen: boolean, setIsOpen: any, current_scan: ScanSave, client: any, onLoadItemClicked: (inputData: ScanSave) => void, onQuit: () => void, onReset: () => void, onToggle: () => void}){ // Add props with positions, client...
   const [showListView, setShowListView] = useState(false);
   const [listData, setListData] = useState<string[]>([]);
   const [listDictData, setListDictData] = useState({});
 
   const toggleMenu = () => {
-    setIsOpen(!isOpen);
+    onToggle();
+    //setIsOpen(!isOpen);
   };
 
   const handleLoadItemClicked = (inputData: ScanSave) => {

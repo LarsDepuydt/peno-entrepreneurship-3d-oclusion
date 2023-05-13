@@ -24,7 +24,7 @@ let controls : any;
 let raycaster : any;
 let clock = new THREE.Clock();
 
-let menu_toggled = false;
+let menu_open = false;
 let  menuDiv: HTMLElement, menuMesh: HTMLMesh;
 
 const intersected = []; // global list that holds the first objects the controllers are pointing at
@@ -610,8 +610,7 @@ function showAxes(axis_num : any, curr_jaw : any) {
 function render(callback: () => void) {
   cleanIntersected();
   
-  if (!menu_toggled){
-    // So no interactions with jaws when menu is toggled
+  if (!menu_open){ // So no unnecessary computations
     beforeRender(controller1, callback);
     beforeRender(controller2, callback);
     undoWhenPressed();
@@ -648,7 +647,7 @@ function onWindowResize() {
 function onSelectStart(event) {
   const controller = event.target;
 
-  if (!menu_toggled){
+  if (!menu_open){
     const intersections = getIntersections(controller);
 
     if (intersections.length > 0) {
@@ -708,17 +707,19 @@ function onSelectStart(event) {
 // when controller releases select button
 
 function onSelectEnd(event : any) {
-  const controller = event.target;
+  if (!menu_open){
+    const controller = event.target;
 
-  if (controller.userData.selected !== undefined) {
-    const jaw = controller.userData.selected;
+    if (controller.userData.selected !== undefined) {
+      const jaw = controller.userData.selected;
 
-    jaw.mesh.material.emissive.b = 0;
-    scene.attach(jaw.target);
-    jaw.target.visible = false;
-    jaw.selected = false;
-    jaw.body.type = CANNON.Body.STATIC;
-    controller.userData.selected = undefined;
+      jaw.mesh.material.emissive.b = 0;
+      scene.attach(jaw.target);
+      jaw.target.visible = false;
+      jaw.selected = false;
+      jaw.body.type = CANNON.Body.STATIC;
+      controller.userData.selected = undefined;
+    }
   }
 }
 
@@ -729,41 +730,44 @@ var pressedLeft = false;
 // zoom in gradually with right squeeze button
 
 function onSqueezeStartRight() {
-  //undoMovement();
-  pressedRight = true;
-  setTimeout(function () {
-    if (pressedRight) {
-      upperjaw.mesh.scale.multiplyScalar(1.002);
-      lowerjaw.mesh.scale.multiplyScalar(1.002);
-      onSqueezeStartRight();
-    }
-  }, 10);
+  if (!menu_open){
+    pressedRight = true;
+    setTimeout(function () {
+      if (pressedRight) {
+        upperjaw.mesh.scale.multiplyScalar(1.002);
+        lowerjaw.mesh.scale.multiplyScalar(1.002);
+        onSqueezeStartRight();
+      }
+    }, 10);
+  }
 }
 
 // zoom out gradually with left squeeze button
 
 function onSqueezeStartLeft() {
   //redoMovement();
-  pressedLeft = true;
-  setTimeout(function () {
-    if (pressedLeft) {
-      upperjaw.mesh.scale.multiplyScalar(0.998);
-      lowerjaw.mesh.scale.multiplyScalar(0.998);
-      onSqueezeStartLeft();
-    }
-  }, 10);
+  if (!menu_open){
+    pressedLeft = true;
+    setTimeout(function () {
+      if (pressedLeft) {
+        upperjaw.mesh.scale.multiplyScalar(0.998);
+        lowerjaw.mesh.scale.multiplyScalar(0.998);
+        onSqueezeStartLeft();
+      }
+    }, 10);
+  }
 }
 
 // stop gradual zoom-in
 
 function onSqueezeEndRight() {
-  pressedRight = false;
+  if (!menu_open){ pressedRight = false; }
 }
 
 // stop gradual zoom-out
 
 function onSqueezeEndLeft(event : any) {
-  pressedLeft = false;
+  if (!menu_open){ pressedLeft = false; }
 }
 
 // find objects the controller is pointing at and return as an Array sorted by distance
@@ -1114,15 +1118,25 @@ export default function DraggingView({ scanId, client, onQuit }: {scanId: number
     const [current_scan, setCurrentScan] = useState<ScanSave>(initialScan);
     const [openMenu, setOpenMenu] = useState(false);
 
-    const y_pressed = ()=> {
-      setOpenMenu(true);
-      menu_toggled = true;
+    const toggleMenu = () => {
+      if (openMenu){  // So it doesn't render unnecessarily
+        //scene.add(lowerjaw.mesh);
+        //scene.add(upperjaw.mesh);
+        scene.remove(menuMesh);
+      } else {
+        //scene.remove(lowerjaw.mesh);
+        //scene.remove(upperjaw.mesh);
+        scene.add(menuMesh);
+      }
+
+      menu_open = !openMenu;
+      setOpenMenu(!openMenu);
     }
 
     useEffect(() => { // https://github.com/facebook/react/issues/24502
         initCannon();
         initThree(setOpenMenu, setCurrentScan);
-        loadObjects(save, y_pressed);
+        loadObjects(save, toggleMenu);
 
         return () => { // Clean up when unmounted
             if (renderer) {
@@ -1155,10 +1169,9 @@ export default function DraggingView({ scanId, client, onQuit }: {scanId: number
 
     const onReset = () => {
       positionReset();
-      setOpenMenu(false); // Probably want to go out of the menu at that point
-      menu_toggled = false;
+      toggleMenu(); // Probably want to go out of the menu at that point
     }
-    const props = {isOpen: openMenu, setIsOpen: setOpenMenu, current_scan, client, onLoadItemClicked, onQuit, onReset };
+    const props = {isOpen: openMenu, setIsOpen: setOpenMenu, current_scan, client, onLoadItemClicked, onQuit, onReset, onToggle: toggleMenu };
 
     const zoomInButton = document.getElementById("zoom-in");
     const zoomOutButton = document.getElementById("zoom-out");
