@@ -921,7 +921,6 @@ function redoMovement() {
 }
 
 function positionReset() {
-  // IF BUTTON PRESSED IN MENU:
   VRHeadsetPosition.setFromMatrixPosition(camera.matrixWorld);
   VRHeadsetQuaternion.setFromRotationMatrix(camera.matrixWorld);
 
@@ -969,6 +968,8 @@ function positionReset() {
     finalQuaternion.z,
     finalQuaternion.w
   );
+  upperjaw.mesh.scale.set(1, 1, 1);
+  lowerjaw.mesh.scale.set(1, 1, 1);
 }
 
 var curr_jaw : any;
