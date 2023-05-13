@@ -7,6 +7,7 @@ import { useState, useEffect } from 'react';
 import { SendMenuOptionRequest, ScanSave, SaveScanDataRequest } from "@/gen/proto/threedoclusion/v1/service_pb";
 import Menu from './menu';
 import {HTMLMesh} from 'three/examples/jsm/interactive/HTMLMesh.js'
+import {InteractiveGroup} from 'three/examples/jsm/interactive/InteractiveGroup.js'
 
 import * as CANNON from 'cannon-es';
 import { getFirstMesh, getFirstBufferGeometry, threeMeshToConvexThreeMesh, threeMeshToConvexCannonMesh, threeMeshToCannonMesh, checkTime, cannonMeshToCannonConvexPolyhedron, vec3ToVector3, vector3ToVec3, threeQuaternionToCannonQuaternion, applyQuaternion, sqnorm, quatDot, minusQuat } from './util.js'
@@ -26,7 +27,7 @@ let clock = new THREE.Clock();
 
 let menu_toggled = true;
 let  menuDiv: HTMLElement, menuMesh: HTMLMesh;
-
+let group : InteractiveGroup;
 
 const intersected = []; // global list that holds the first objects the controllers are pointing at
 const tempMatrix = new THREE.Matrix4();
@@ -382,11 +383,14 @@ function initThree(setOpenMenu: any, setCurrentScan: any) {
   renderer.xr.enabled = true;
   container.appendChild(renderer.domElement);
 
+  group = new InteractiveGroup(renderer, camera);
+  scene.add(group);
+
 
 
   menuDiv = document.querySelector(".menu-div");
 
-  
+  /*
   const handleMenuClick = (event) => {
     const target = event.target;
     console.log(target);
@@ -421,11 +425,13 @@ function initThree(setOpenMenu: any, setCurrentScan: any) {
     }
   };
   
-  menuDiv.addEventListener("click", handleMenuClick);
+  menuDiv.addEventListener("click", handleMenuClick);*/
 
+  
   menuMesh = new HTMLMesh(menuDiv);
   menuMesh.position.set(0, 1.5, -1); // Base off camera position and maybe update every frame so it follows around, also stop interaction with jaws while menu is enabled
   menuMesh.scale.setScalar(3);
+  group.add(menuMesh);
   scene.add(menuMesh);
 
 
@@ -548,7 +554,7 @@ function afterLoad(save: () => void, callback: () => void) {
 }
 
 function animate(save: () => void, callback: () => void) {
-  autoSave(60, save); // 60 second interval
+  //autoSave(60, save); // 60 second interval
 
   frameNum += 1;
   updatePhysics();
@@ -733,23 +739,17 @@ function onSelectStart(event) {
   } else {
     const intersects = getIntersectionMenu(controller); // Further interactions necessary
     if (intersects.length > 0) {
-      // Calculate the 2D position of the intersection point
-      /*const point = intersects[0].point;
-      console.log(menuMesh.position.x + menuMesh.);
-      console.log(point.x );
-      console.log(point.y );*/
-
-      // 1. Calculate the local intersection point relative to the menuMesh
+      // Local intersection point relative to the menuMesh
       const localIntersectionPoint = menuMesh.worldToLocal(intersects[0].point.clone());
 
-      // 2. Normalize the local intersection point based on the menuMesh dimensions
       const meshWidth = menuMesh.geometry.parameters.width;
       const meshHeight = menuMesh.geometry.parameters.height;
 
+      // Normalize based on the menuMesh dimensions
       const normalizedX = (localIntersectionPoint.x + meshWidth / 2) / meshWidth;
       const normalizedY = (localIntersectionPoint.y + meshHeight / 2) / meshHeight;
 
-      // 3. Convert the normalized coordinates to the corresponding 2D point on the menuDiv
+      // Convert to corresponding 2D point on menuDiv
       const menuDivWidth = menuDiv.offsetWidth;
       const menuDivHeight = menuDiv.offsetHeight;
 
@@ -1114,7 +1114,7 @@ function autoSave(interval: number, save: () => void ) {
   
   if (elapsedTime >= interval) {
     save();
-    console.log(interval, "%d seconds have passed");
+    console.log(interval, "seconds have passed");
 
     // Additional checks
 
@@ -1222,7 +1222,7 @@ export default function DraggingView({ scanId, client, onQuit }: {scanId: number
             Math.PI
         );
     };
-
+    
     return (
         <div className="menu-div">
         <Menu {...props}/>

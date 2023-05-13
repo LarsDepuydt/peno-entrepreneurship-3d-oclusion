@@ -6488,6 +6488,15 @@ __metadata:
   languageName: node
   linkType: hard
 
+"three.interactive@npm:^1.7.0":
+  version: 1.7.0
+  resolution: "three.interactive@npm:1.7.0"
+  peerDependencies:
+    three: ">= 0.122.0"
+  checksum: ce12671cbf57993e4fd9d01ca1c2368e447a4ad8eb741c25ba2b457f04264e8c5a56904921d00ad67fea8d560b9eb0d7640421b7dcc2742ff55b80d73fc53af2
+  languageName: node
+  linkType: hard
+
 "three@npm:^0.150.1":
   version: 0.150.1
   resolution: "three@npm:0.150.1"
@@ -6548,6 +6557,7 @@ __metadata:
     sass: ^1.60.0
     sharp: ^0.32.0
     three: ^0.150.1
+    three.interactive: ^1.7.0
     typescript: 4.9.5
     unplugin-obj: ^0.1.2
     webpack: ^5.81.0
