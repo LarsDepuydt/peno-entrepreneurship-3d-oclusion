@@ -5,13 +5,13 @@ import { SendMenuOptionRequest, Scan, ScanSave } from "@/gen/proto/threedoclusio
 import ListView from "./list-view";
 
 async function sendMenuOption(optionNumber: number, clnt: any, oData: any){
-  console.log(oData);
+  //console.log(oData);
   let req = new SendMenuOptionRequest({});
   req.option = optionNumber;
   req.optionData = {value: oData.value, case: oData.case};
 
-  console.log(req);
-  console.log('req before sending:', JSON.stringify(req, null, 2));
+  //console.log(req);
+  //console.log('req before sending:', JSON.stringify(req, null, 2));
   const res = await clnt.sendMenuOption(req);
   return res;
 }
@@ -45,10 +45,11 @@ function Menu({isOpen, setIsOpen, current_scan, client, onLoadItemClicked, onQui
         if (res) {
           console.log("Load!");
           const extractedTimestamps: string[] = [];
-          const dictTimeStamps: { [timestamp: string]: Scan } = {};
+          const dictTimeStamps: { [timestamp: string]: ScanSave } = {};
+          console.log(res.wrap.loadData);
           for (const scan of res.wrap.loadData) {
-            dictTimeStamps[scan.timestamp] = scan; // Maybe omit id and timestamp values since unnecessary
-            extractedTimestamps.push(scan.timestamp);
+            dictTimeStamps[scan.timestampSave] = scan; // Maybe omit id and timestamp values since unnecessary
+            extractedTimestamps.push(scan.timestampSave);
           }
           setListData(extractedTimestamps.reverse()); // From most recent to oldest
           setListDictData(dictTimeStamps);
