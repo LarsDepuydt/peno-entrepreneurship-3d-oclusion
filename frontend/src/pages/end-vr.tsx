@@ -33,7 +33,7 @@ export default function EndVRPage() {
   return (
     <div>
       <Image className={stylesText.small_logo_log} src={reluLogo} alt="relu logo" />
-      <div className={styleVR.massageWrapper}>
+      <div className={styleVR.messageWrapper}>
         <div className={styleVR.text1}>The scan has been saved successfully.</div>
         <div className={styleVR.text2}>You can now exit safely by closing the window.</div>
 
