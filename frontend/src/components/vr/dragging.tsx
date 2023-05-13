@@ -95,10 +95,6 @@ class Jaw {
 
     let xaxis = new CANNON.Vec3(1, 0, 0);
     this.body.quaternion.setFromAxisAngle(xaxis, -Math.PI / 2);
-    // console.log(this.body.quaternion.x);
-    // console.log(this.body.quaternion.y);
-    // console.log(this.body.quaternion.z);
-    // console.log(this.body.quaternion.w);
     world.addBody(this.body);
 
     if (DEBUGGING_MODE) {
@@ -294,11 +290,6 @@ class Jaw {
   }
 }
 
-// for both cannon.js and three.js: x=red, y=green, z=blue
-//initCannon();
-//initThree(setOpenMenu, setCurrentScan);  //FIXFIX
-//loadObjects(); // animation is started after both objects are loaded
-
 function initCannon() {
   world = new CANNON.World();
   world.gravity.set(0, 0, 0);
@@ -432,10 +423,6 @@ function initThree(setOpenMenu: any, setCurrentScan: any) {
 
   // allow additional button inputs (for axis locking)
   session = renderer.xr.getSession();
-
-  // resize
-
-  //window.addEventListener("resize", onWindowResize);
 }
 
 function loadObjects(save: () => void) {
@@ -564,7 +551,6 @@ function beforeRender(controller) {
         optionChanged = false; // reset flag when squeeze button is released
       }
       prevButtonState = data.buttons[4]; // save button state for next frame
-      //console.log(currentOption);
 
       /*if (data.buttons[5] == 1){ // Y pressed, ends webXR session; restart session when "x" is clicked in menu
         const session = renderer.xr.getSession();
@@ -668,8 +654,6 @@ function onSelectStart(event) {
       jaw.body.type = CANNON.Body.DYNAMIC;
       controller.userData.selected = jaw;
       addMovementToUndoStack(jaw.body);
-      console.log(undoStack);
-      //console.log(jaw.body);
     }
   }
 }
@@ -995,8 +979,6 @@ function updateScanData(scanID: number, setCurrentScan: any) { // Use when menu 
     newScan.lowerX = lowerjaw.body.position.x;
     newScan.lowerY = lowerjaw.body.position.y;
     newScan.lowerZ = lowerjaw.body.position.z;
-    //const { roll: newScan.lowerRX, pitch: newScan.lowerRY, yaw: newScan.lowerRZ } = quaternionToEuler(lowerjaw.body.quaternion);
-    //newScan.lowerRX = roll; newScan.lowerRY = pitch; newScan.lowerRZ = yaw;
     Object.assign(newScan, (({ roll, pitch, yaw }) => ({ lowerRX: roll, lowerRY: pitch, lowerRZ: yaw }))(quaternionToEuler(lowerjaw.body.quaternion)));
     
     newScan.upperX = upperjaw.body.position.x;
@@ -1009,9 +991,7 @@ function updateScanData(scanID: number, setCurrentScan: any) { // Use when menu 
 
 function loadPosition(positionData: any) {
   lowerjaw.body.position.set(positionData.lowerX, positionData.lowerY, positionData.lowerZ);
-  //lowerjaw.body.rotation.set(positionData.lowerRX, positionData.lowerRY, positionData.lowerRZ);
   upperjaw.body.position.set(positionData.upperX, positionData.upperY, positionData.upperZ);
-  //upperjaw.body.rotation.set(positionData.upperRX, positionData.upperRY, positionData.upperRZ);
   eulerSetRotationBody(lowerjaw.body, positionData.lowerRX, positionData.lowerRY, positionData.lowerRZ);
   eulerSetRotationBody(upperjaw.body, positionData.lowerRX, positionData.lowerRY, positionData.lowerRZ);
 }
@@ -1032,11 +1012,10 @@ function autoSave(interval: number, save: () => void) {
   const elapsedTime = clock.getElapsedTime();
   
   if (elapsedTime >= interval) {
-    save();
     console.log(interval, "seconds have passed");
 
-    // Additional checks
-
+    // Additional checks, like only if an edit's been made
+    save();
     // reset the clock
     clock.start();
   }
@@ -1063,11 +1042,9 @@ export default function DraggingView({ scanId, client, onQuit }: {scanId: number
     const [openMenu, setOpenMenu] = useState(false);
 
     useEffect(() => { // https://github.com/facebook/react/issues/24502
-        //init(initialScan);   //FIXFIX
         initCannon();
         initThree(setOpenMenu, setCurrentScan);
         loadObjects(save);
-        // animate(); // Sets 
         console.log('Init executed!');
 
         return () => { // Clean up when unmounted
@@ -1103,9 +1080,6 @@ export default function DraggingView({ scanId, client, onQuit }: {scanId: number
     }
     const props = {isOpen: openMenu, setIsOpen: setOpenMenu, current_scan, client, onLoadItemClicked, onQuit, onReset };
 
-    // resize
-
-    //window.addEventListener( 'resize', onWindowResize );
     const zoomInButton = document.getElementById("zoom-in");
     const zoomOutButton = document.getElementById("zoom-out");
 
@@ -1115,15 +1089,11 @@ export default function DraggingView({ scanId, client, onQuit }: {scanId: number
     camera.updateProjectionMatrix();
     };
 
-    //zoomInButton.addEventListener("click", zoomInFunction);
-
     const zoomOutFunction = (e: any) => {
     const fov = getFov();
     camera.fov = clickZoom(fov, "zoomOut");
     camera.updateProjectionMatrix();
     };
-
-    //zoomOutButton.addEventListener("click", zoomOutFunction);
 
     const clickZoom = (value: any, zoomType: any) => {
     if (value >= 20 && zoomType === "zoomIn") {
