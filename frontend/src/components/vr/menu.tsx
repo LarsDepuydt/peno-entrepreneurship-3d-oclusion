@@ -3,6 +3,7 @@ import { Canvas } from '@react-three/fiber';
 import { Html, Plane } from '@react-three/drei';
 import { SendMenuOptionRequest, Scan, ScanSave } from "@/gen/proto/threedoclusion/v1/service_pb";
 import ListView from "./list-view";
+import stylesVR from '@/styles/MenuVR.module.css';
 
 async function sendMenuOption(optionNumber: number, clnt: any, oData: any){
   //console.log(oData);
@@ -95,106 +96,33 @@ function Menu({isOpen, setIsOpen, current_scan, client, onLoadItemClicked, onQui
     isOpen ? (
     <Canvas>
         <Html>
-          <div className="menu-container">
-            <div className={`menu-button ${isOpen ? "open" : ""}`} onClick={toggleMenu}>
-              <div className="menu-button-bar" />
-              <div className="menu-button-bar" />
-              <div className="menu-button-bar" />
+          <div className={stylesVR.menu_container}>
+            <div className={`menu_button ${isOpen ? "open" : ""}`} onClick={toggleMenu}>
+              <div className={stylesVR.menu_button_bar} />
+              <div className={stylesVR.menu_button_bar} />
+              <div className={stylesVR.menu_button_bar} />
             </div>
             {!showListView ? (
-              <div className="menu-content">
-                <div className="menu-header">
-                  <div className="menu-title">Menu</div>
-                  <div className="menu-close" onClick={toggleMenu}>
+              <div className={stylesVR.menu_content}>
+                <div className={stylesVR.menu_header}>
+                  <div className={stylesVR.menu_title}>Menu</div>
+                  <div className={stylesVR.menu_close} onClick={toggleMenu}>
                     &times;
                   </div>
                 </div>
-                <ul className="menu-options">
-                  <li className="menu-option" onClick={load}>Load</li>
-                  <li className="menu-option" onClick={save}>Save manually</li>
-                  <li className="menu-option" onClick={saveAndQuit}>Save and quit</li>
-                  <li className="menu-option" onClick={quit}>Quit</li>
-                  <li className="menu-option" onClick={reset}>Reset</li>
+                <ul className={stylesVR.menu_options}>
+                  <button className={stylesVR.menu_option} onClick={load}>Load</button>
+                  <button className={stylesVR.menu_option} onClick={save}>Save manually</button>
+                  <button className={stylesVR.menu_option} onClick={saveAndQuit}>Save and quit</button>
+                  <button className={stylesVR.menu_option} onClick={quit}>Quit</button>
+                  <button className={stylesVR.menu_option} onClick={reset}>Reset</button>
                 </ul>
               </div>
             ):(
-              <div className="list-view-container">
+              <div className={stylesVR.list_view_container}>
                 <ListView data={listData} dictData={listDictData}  itemsPerPage={4} onItemClicked={handleLoadItemClicked} onBackClicked={handleBackClick}/>
               </div>
             )}
-          <style jsx>{`
-              .list-view-container {
-                position: relative;
-                top: 0;
-                left: 0;
-                z-index: 999;
-                display: flex;
-                justify-content: center;
-                align-items: center;
-                width: 100%;
-                height: 100%;
-                background-color: #333;
-              }
-              .menu-container {
-                position: relative;
-                border: 1px solid #000; // Add border around the menu
-                margin: auto;
-                left: -50%;
-                z-index: 999;
-                display: flex;
-                justify-content: center;
-                align-items: center;
-                background-color: rgba(0, 0, 0, 0.8);
-                width: 300px;
-                height: 350px;
-              }
-              .menu-content {
-                z-index: 999;
-                position: relative;
-                display: flex;
-                flex-direction: column;
-                align-items: center;
-                justify-content: center;
-                width: 100%;
-                height: 100%;
-                background-color: #333;
-                border-radius: 10px;
-                color: #fff;
-                font-size: 20px;
-                text-align: center;
-              }
-              .menu-header {
-                display: flex;
-                justify-content: space-between;
-                align-items: center;
-                width: 100%;
-                padding: 10px;
-              }
-              .menu-title {
-                font-size: 24px;
-                font-weight: bold;
-              }
-              .menu-close {
-                cursor: pointer;
-                font-size: 30px;
-              }
-              .menu-options {
-                list-style: none;
-                margin: 0;
-                padding: 0;
-                display: flex;
-                flex-direction: column;
-                justify-content: center;
-                align-items: center;
-              }
-              .menu-option {
-                margin: 5px;
-                padding: 10px;
-                background-color: #444;
-                border-radius: 5px;
-                font-size: 15px;
-              }
-            `}</style>
           </div>
         </Html>
     </Canvas>
