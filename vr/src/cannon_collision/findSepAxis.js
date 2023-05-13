@@ -1,10 +1,12 @@
 import * as CANNON from 'cannon-es';
 import Worker from "worker-loader!./worker.js"
 
-const NUM_WORKERS = 1;
+const NUM_WORKERS = 7;
 const WORKERS = new Array();
 let collect_id = 0;
 let worker_id = 0;
+
+console.log("starting collision detection with " + NUM_WORKERS + " workers");
 
 // initialize WORKERS
 // give each worker an extra attribute 'collectors' which is a dict {collID: Collector}
@@ -47,9 +49,18 @@ class Collector {
     }
 
     sendTask(axis, posA, quatA, posB, quatB) {
-        worker = WORKERS[worker_id];
-        worker_id = (worker_id+1)%NUM_WORKERS;
-        worker.postMessage([this.collID, posA, quatA, posB, quatB, axis]);
+        // only send the task if the collector is not finished yet
+        if (!this.finished) {
+            worker = WORKERS[worker_id];
+            worker_id = (worker_id+1)%NUM_WORKERS;
+            worker.postMessage([this.collID, posA, quatA, posB, quatB, axis]);
+        }
+    }
+
+    remove() {
+        WORKERS.forEach((worker) => {
+            delete worker.collectors[this.collID];
+        })
     }
 }
 
@@ -57,10 +68,14 @@ class Collector {
 // a web worker that implements the testSepAxis function asynchronously
 // note that no locks must be used as the worker receiver objects are not multithreaded
 function workerOnMessage(event) {
-    console.log(event.data);
     const collID = event.data[0];
     const d = event.data[1];
     const collector = this.collectors[collID];
+
+    // collector can be undefined if the function call already finished
+    if (collector === undefined) {
+        return;
+    }
 
     if (d==false) {
         collector.dmin = false;
@@ -110,12 +125,18 @@ async function findSepAxis(hullA, hullB, posA, quatA, posB, quatB, target, faceL
 
     // calculate number of expected results
     let num_expected = hullA.uniqueEdges.length * hullB.uniqueEdges.length;
+
+    // numFaces only defined if hullA.uniqueAxes === undefined
+    let numFacesA = null;
+    let numFacesB = null;
     if (!hullA.uniqueAxes) {
+        numFacesA = faceListA ? faceListA.length : hullA.faces.length;
         num_expected += numFacesA;
     } else {
         num_expected += hullA.uniqueAxes.length;
     }
     if (!hullB.uniqueAxes) {
+        numFacesB = faceListB ? faceListB.length : hullB.faces.length;
         num_expected += numFacesB;
     } else {
         num_expected += hullB.uniqueAxes.length;
@@ -124,8 +145,8 @@ async function findSepAxis(hullA, hullB, posA, quatA, posB, quatB, target, faceL
     const collector = new Collector(collID, num_expected);
     collect_id += 1;
 
+    // send the right tasks to the workers
     if (!hullA.uniqueAxes) {
-        const numFacesA = faceListA ? faceListA.length : hullA.faces.length;
         // Test face normals from hullA
         for (let i = 0; i < numFacesA; i++) {
             const fi = faceListA ? faceListA[i] : i;
@@ -145,7 +166,6 @@ async function findSepAxis(hullA, hullB, posA, quatA, posB, quatB, target, faceL
     }
     if (!hullB.uniqueAxes) {
         // Test face normals from hullB
-        const numFacesB = faceListB ? faceListB.length : hullB.faces.length;
         for (let i = 0; i < numFacesB; i++) {
             const fi = faceListB ? faceListB[i] : i;
             Worldnormal1.copy(hullB.faceNormals[fi]);
@@ -177,16 +197,29 @@ async function findSepAxis(hullA, hullB, posA, quatA, posB, quatB, target, faceL
         }
     }
 
+    // wait for collector to finish
     console.log("waiting for collector");
     await collector.ready;
-    console.log("collector is ready");
-    target = collector.axis;
+    console.log(
+        "collector is ready with\n"
+        + "dmin = " + collector.dmin + '\n'
+        + "axis = " + collector.axis
+    );
 
-    posB.vsub(posA, deltaC);
-    if (deltaC.dot(target) > 0.0) {
-        target.negate(target);
+    if (collector.dmin === false) {
+        // Separated
+        collector.remove();
+        return false;
+    } else {
+        // Overlap
+        target = collector.axis;
+        posB.vsub(posA, deltaC);
+        if (deltaC.dot(target) > 0.0) {
+            target.negate(target);
+        }
+        collector.remove();
+        return true;
     }
-    return true;
 }
 
 // the original findSeparatingAxis function, but asynchronous

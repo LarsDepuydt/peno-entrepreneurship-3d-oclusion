@@ -8,11 +8,11 @@ import { default as CannonUtils } from 'cannon-utils';
 //import { sendPositionScan, getPositionScan } from '../../../frontend/src/gen/proto/threedoclusion/v1/service-ScanService_connectquery.ts'
 
 import { QuickHull } from './QuickHull.js';
-import { findSepAxis, ogSepAxis } from './findSepAxis.js'
+import { findSepAxis, findSepAxisOverload, ogSepAxis } from './findSepAxis.js'
 
 
 // overload cannon.js function findSeparatingAxis by an equivalent that uses web workers
-CANNON.ConvexPolyhedron.prototype.findSeparatingAxis = ogSepAxis;
+CANNON.ConvexPolyhedron.prototype.findSeparatingAxis = findSepAxisOverload;
 
 
 let container;
@@ -24,7 +24,7 @@ let controls;
 
 let raycaster;
 
-let world, timeStep=1/10;
+let world, timeStep=1/5;
 let frameNum = 0;
 
 
@@ -55,7 +55,7 @@ loadObjects();  // animation is started after both objects are loaded
 
 function initCannon() {
     world = new CANNON.World();
-    world.gravity.set(0,-0.02,0);
+    world.gravity.set(0,-0.001,0);
     world.broadphase = new CANNON.NaiveBroadphase();
     world.broadphase.useBoundingBoxes = true;
     world.solver.iterations = 4;     //10
@@ -397,7 +397,7 @@ function updatePhysics() {
 }
 
 function animate() {
-    //checkTime();
+    checkTime();
 
     // console.log("frame", frameNum);
     frameNum += 1;
@@ -455,9 +455,11 @@ function getPosition(){
 function checkTime() {
     const elapsedTime = clock.getElapsedTime();
     
-    if (elapsedTime >= 5) {
-      sendPosition(); // Send position after 5 seconds)
-      console.log("5 seconds have passed");
+    if (elapsedTime >= 15) {
+      // interrupt after 15 seconds
+      console.log("15 seconds have elapsed");
+
+      throw new Error("15 seconds have elapsed");
       
       // reset the clock
       clock.start();

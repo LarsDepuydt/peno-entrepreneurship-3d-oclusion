@@ -6,6 +6,7 @@ vr/Firefox 2023-04-17 20.49 profile.json.gz
 frontend/node_modules/**
 vr/src/cannon_collision/old_scene.html
 vr/src/cannon_collision/old_script.js
+vr/src/cannon_collision/Profile-20230513T160541.json
 
 /node_modules
 package.json
