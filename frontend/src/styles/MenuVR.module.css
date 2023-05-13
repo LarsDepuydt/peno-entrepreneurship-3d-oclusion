@@ -9,6 +9,7 @@
   width: 100%;
   height: 100%;
   background-color: #333;
+  border-radius: 1rem;
 }
 .menu_container {
   position: relative;
@@ -22,6 +23,7 @@
   background-color: rgba(0, 0, 0, 0.8);
   width: 300px;
   height: 350px;
+  border-radius: 1rem;
 }
 .menu_content {
   z-index: 999;
@@ -37,6 +39,7 @@
   color: #fff;
   font-size: 20px;
   text-align: center;
+  border-radius: 1rem;
 }
 .menu_header {
   display: flex;
