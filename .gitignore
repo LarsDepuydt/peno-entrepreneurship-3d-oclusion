@@ -1,8 +1,11 @@
 .gitignore
 go.work
 frontend/node_modules/**
+vr/assets/simplified/lower_1769.obj
+vr/assets/simplified/upper_1619.obj
 vr/src/cannon_collision/old_scene.html
 vr/src/cannon_collision/old_script.js
+vr/src/cannon_collision/Profile-**
 
 /node_modules
 package.json
