@@ -1,5 +1,4 @@
 import React, { useEffect, useState } from 'react';
-import Menu from '@/components/vr/menu';
 
 import { ScanService } from '@/gen/proto/threedoclusion/v1/service_connect';
 import { createPromiseClient } from '@bufbuild/connect';
@@ -12,9 +11,7 @@ import {
 import dynamic from 'next/dynamic';
 import { useRouter } from 'next/router';
 
-const VRView = dynamic(() => import('@/components/vr/vr-view'), { ssr: false });
 const DraggingView = dynamic(() => import('@/components/vr/dragging'), { ssr: false });
-const BeforeAfter = dynamic(() => import('@/components/vr/before-after'), { ssr: false });
 
 export default function StartVRPage(){ 
   const [isComponentMounted, setIsComponentMounted] = useState(false)
