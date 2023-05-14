@@ -30,7 +30,7 @@ let controls : any;
 let raycaster : any;
 let clock = new THREE.Clock();
 
-let menu_open = false; // SET TO FALSE
+let menu_open = true; // SET TO FALSE
 let  menuDiv: HTMLElement, menuMesh: HTMLMesh;
 //let listViewDiv: HTMLElement, listViewMesh: HTMLMesh;
 
@@ -397,12 +397,6 @@ function initThree(setOpenMenu: any, setCurrentScan: any) {
   menuMesh.position.set(0, 1.5, -1); // Base off camera position and maybe update every frame so it follows around, also stop interaction with jaws while menu is enabled
   menuMesh.scale.setScalar(1.8);
   scene.add(menuMesh);
-
-  /*
-  listViewDiv = menuDiv.querySelector(".list-container"); // Maybe remove
-  listViewMesh = new HTMLMesh(menuDiv);
-  listViewMesh.scale.setScalar(1.8);
-  menuMesh.add(listViewMesh);*/
 
 
   document.body.appendChild(VRButton.createButton(renderer));
@@ -1247,7 +1241,7 @@ export default function DraggingView({ scanId, client, onQuit }: {scanId: number
         timestampSave: "2006-01-02T15:04:05"
     });
     const [current_scan, setCurrentScan] = useState<ScanSave>(initialScan);
-    const [openMenu, setOpenMenu] = useState(false); // SET TO FALSE
+    const [openMenu, setOpenMenu] = useState(true); // SET TO FALSE
 
     const toggleMenu = () => {
       if (openMenu){
