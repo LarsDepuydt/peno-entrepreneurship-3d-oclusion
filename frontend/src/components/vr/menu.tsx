@@ -3,6 +3,7 @@ import { Canvas } from '@react-three/fiber';
 import { Html, Plane } from '@react-three/drei';
 import { SendMenuOptionRequest, Scan, ScanSave } from '@/gen/proto/threedoclusion/v1/service_pb';
 import ListView from './list-view';
+import { Legenda } from './legenda';
 import stylesVR from '@/styles/MenuVR.module.css';
 
 async function sendMenuOption(optionNumber: number, clnt: any, oData: any) {
@@ -110,6 +111,7 @@ function Menu({
   return isOpen ? (
     <Canvas>
       <Html>
+        <Legenda />
         <div className={stylesVR.menu_container}>
           <div className={`menu_button ${isOpen ? 'open' : ''}`} onClick={toggleMenu}>
             <div className={stylesVR.menu_button_bar} />
