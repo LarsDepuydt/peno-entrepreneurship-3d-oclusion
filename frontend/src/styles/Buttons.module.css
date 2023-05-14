@@ -65,7 +65,6 @@
   border: none;
 }
 
-#homeIconVideo,
 #homeIcon {
   width: 48px;
   height: 48px;
@@ -74,12 +73,6 @@
   background-repeat: no-repeat;
   background-position: center;
   border: none;
-}
-
-#homeIconVideo {
-  position: fixed;
-  bottom: 20px;
-  left: 20px;
 }
 
 #LinkIcon {

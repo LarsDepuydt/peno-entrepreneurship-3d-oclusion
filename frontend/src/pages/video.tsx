@@ -10,17 +10,20 @@ export default function VideoPage() {
   const BeforeAfterMemo = memo(BeforeAfter); // So no rerender
   const router = useRouter();
   const { scanID } = router.query;
+  const { patientID } = router.query;
   const scanId = parseInt(scanID as string, 10);
 
   const handleVideoChunks = (chunks: any) => {
     setVideoChunks(chunks);
   };
 
-  const home = () => router.push('/scans-page');
+  const home = () =>
+    router.push({
+      pathname: '/patient',
+    });
 
   return (
     <div className={stylesVideo.video_page}>
-      <button type="button" className={stylesButton.relu_btn} id={stylesButton.homeIconVideo} onClick={home}></button>
       <div className={stylesVideo.container}>
         <div className={stylesVideo.before_after_container}>
           <BeforeAfterMemo onVideoChunksChange={handleVideoChunks} />
@@ -28,10 +31,12 @@ export default function VideoPage() {
         {videoChunks.length > 0 ? (
           <div className={stylesVideo.download_container}>
             <VideoDownload videoChunks={videoChunks} />
+            <button type="button" className={stylesButton.relu_btn} id={stylesButton.homeIcon} onClick={home}></button>
           </div>
         ) : (
-          <div className={stylesVideo.loading_message}>
-            Please wait while the video is being prepared for download...
+          <div className={stylesVideo.bottomWrapper}>
+            <p className={stylesVideo.loading_message}>Please wait while the video is being prepared for download...</p>
+            <button type="button" className={stylesButton.relu_btn} id={stylesButton.homeIcon} onClick={home}></button>
           </div>
         )}
       </div>
