@@ -1,0 +1,224 @@
+.list_view_container {
+  position: relative;
+  top: 0;
+  left: 0;
+  z-index: 999;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  height: 100%;
+  background-color: #333;
+  border-radius: 1rem;
+}
+.menu_container {
+  position: relative;
+  border: 1px solid #000;
+  margin: auto;
+  left: -50%;
+  z-index: 999;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: rgba(0, 0, 0, 0.8);
+  width: 300px;
+  height: 350px;
+  border-radius: 1rem;
+}
+.menu_content {
+  z-index: 999;
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  height: 100%;
+  background-color: #333;
+  border-radius: 10px;
+  color: #fff;
+  font-size: 20px;
+  text-align: center;
+  border-radius: 1rem;
+}
+.menu_header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 100%;
+  padding: 10px;
+}
+.menu_title {
+  font-size: 24px;
+  font-weight: bold;
+  color: #fe7d00;
+}
+
+.menu_options {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+.menu_option {
+  margin: 5px;
+  padding: 10px;
+  background-color: #444;
+  border-radius: 5px;
+  font-size: 15px;
+  width: 80%;
+
+  background-color: transparent;
+  text-align: center;
+  padding: 5px 10px;
+
+  color: #fe7d00;
+  font-size: 1rem;
+  font-weight: 400;
+  line-height: 1.5;
+
+  border-color: #fe7d00;
+  border-width: 1px;
+  border-style: solid;
+  border-radius: 0.375rem;
+}
+
+.menu_option:hover {
+  background-color: rgba(254, 125, 0, 0.25);
+}
+
+.legenda {
+  position: fixed; /* <------------------- vage hacks om de positie te fixen, remove if needed*/
+  right: -48vw; /* <------------------- vage hacks om de positie te fixen, remove if needed*/
+  top: -48vh; /* <------------------- vage hacks om de positie te fixen, remove if needed*/
+  z-index: 999;
+
+  background-color: rgba(0, 0, 0, 0.8);
+  border: 1px solid #000;
+  width: 200px;
+  height: 400px;
+  border-radius: 1rem;
+
+  display: flex;
+  justify-content: space-evenly;
+  align-items: center;
+  flex-direction: row;
+  flex-wrap: nowrap;
+}
+
+.legenda_list {
+  display: flex;
+  justify-content: flex-start;
+  align-items: flex-start;
+  flex-direction: column;
+  flex-wrap: nowrap;
+}
+
+.legenda_list_item {
+  color: #fe7d00;
+  font-size: 1rem;
+  font-weight: 400;
+  line-height: 1;
+}
+
+#legenda_list_item_spacer,
+#legenda_list_item_underline {
+  font-weight: 550;
+  line-height: 1;
+  font-size: 1.5rem;
+  margin-top: 20px;
+}
+
+#legenda_list_item_spacer {
+  opacity: 0;
+}
+
+.list_container {
+  position: relative;
+  width: 100%;
+  height: 100%;
+}
+.list_view_header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 100%;
+  padding: 10px;
+}
+.list-view-content {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 100%;
+  height: 90%;
+  background-color: #333;
+  border-radius: 10px;
+  color: #fff;
+  font-size: 20px;
+  text-align: center;
+}
+.list_item {
+  margin: 10px;
+  padding: 10px;
+  background-color: #444;
+  border-radius: 5px;
+}
+.list_controls {
+  position: absolute;
+  bottom: 5%;
+  left: 50%;
+  transform: translateX(-50%);
+  display: flex;
+  align-items: center;
+}
+
+.icon_btn {
+  background-color: transparent;
+  text-align: center;
+
+  color: #fe7d00;
+  font-size: 1rem;
+  font-weight: 400;
+  line-height: 1.5;
+
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin: 0 10px;
+  z-index: 999;
+}
+
+#exitIcon {
+  width: 48px;
+  height: 48px;
+  margin: 8px;
+  background-image: url(../../public/Close_round.png);
+  background-repeat: no-repeat;
+  background-position: center;
+  border: none;
+}
+
+#leftIcon {
+  width: 48px;
+  height: 48px;
+  margin: 8px;
+  background-image: url(../../public/Arrow_drop_left.png);
+  background-repeat: no-repeat;
+  background-position: center;
+  border: none;
+}
+
+#rightIcon {
+  width: 48px;
+  height: 48px;
+  margin: 8px;
+  background-image: url(../../public/Arrow_drop_right.png);
+  background-repeat: no-repeat;
+  background-position: center;
+  border: none;
+}

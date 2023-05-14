@@ -33,10 +33,10 @@ const chunks: any = [];
 let stream: any;
 let recorder: any;
 
-function init(container: any) {
+function init() {
     // create container
-    container = document.createElement( 'div' );
-    document.body.appendChild( container );
+    const container = document.createElement( 'div' );
+    document.querySelector('#canvas').appendChild( container );
 
     // create scene and camera
     scene = new THREE.Scene();
@@ -115,13 +115,12 @@ function init(container: any) {
 
         // Get the center of the bounding box
         fitCameraToObject(camera, combinedBox);
-      };
-      
-      function fitCameraToObject(camera: THREE.PerspectiveCamera, boundingBox: THREE.Box3) {
+    };
+    
+    function fitCameraToObject(camera: THREE.PerspectiveCamera, boundingBox: THREE.Box3) {
         const referencePosition = initialPositionLower;
         const center = boundingBox.getCenter(new THREE.Vector3());
         const size = boundingBox.getSize(new THREE.Vector3());
-      
         //const distance = Math.max(size.x, size.y, size.z) / Math.tan(camera.fov * Math.PI / 360);
         const padding = 1.2; // 20% padding
         const distance = Math.max(size.x, size.y, size.z) / Math.tan(camera.fov * Math.PI / 360) * padding;
@@ -134,8 +133,8 @@ function init(container: any) {
 
         camera.lookAt(adjusted_center); // Normally just center
         
-      }
-      
+    }
+    
 
     // load lower jaw
     const loader = new OBJLoader(loadingManager);
@@ -201,17 +200,17 @@ function init(container: any) {
     );
 }
 
-function initThree(container: any){
+function initThree(canvas: any){
 
     // add renderer and enable VR
     renderer = new THREE.WebGLRenderer( { antialias: true } );
     renderer.setPixelRatio( window.devicePixelRatio );
     //renderer.setSize( window.innerWidth, window.innerHeight );
-    renderer.setSize( container.clientWidth, container.clientHeight );
+    renderer.setSize( canvas.clientWidth, canvas.clientHeight );
     renderer.outputEncoding = THREE.sRGBEncoding;
     renderer.shadowMap.enabled = true;
     renderer.xr.enabled = true;
-    container.appendChild( renderer.domElement );
+    canvas.appendChild( renderer.domElement );
 
     //document.body.appendChild( VRButton.createButton( renderer ) );
 
@@ -294,6 +293,7 @@ function moveWithFactor(duration: number, time_passed: number, jawToMove: any){
 }
 
 function animate(setVideoChunks: any, onVideoChunksChange: any) {
+    console.log("Animate!")
     renderer.setAnimationLoop( function(){
         render(setVideoChunks, onVideoChunksChange);
     });
@@ -306,18 +306,31 @@ function render(setVideoChunks: any, onVideoChunksChange: any) {
 }
 
 export default function BeforeAfter({ onVideoChunksChange }: {onVideoChunksChange: any}){
-    const containerRef = useRef(null);
+    const canvasRef = useRef(null);
     const [videoChunks, setVideoChunks] = useState([]);
 
     // Ask position data from database
 
     useEffect(() => { // https://github.com/facebook/react/issues/24502
-        init(containerRef.current);
-        initThree(containerRef.current);
+        init();
+        initThree(canvasRef.current);
         animate(setVideoChunks, onVideoChunksChange);
+
+        return () => { // Clean up when unmounted
+            if (renderer) {
+                renderer.dispose();
+                renderer.setAnimationLoop(null); // Cancels animation
+            }
+            if (scene){
+                while (scene.children.length > 0) {
+                    scene.remove(scene.children[0]);
+                }
+            }
+        };
     }, [onVideoChunksChange]);
 
-    return <div ref={containerRef} id="canvas">
+    
+    return <div ref={canvasRef} id="canvas">
         <style jsx>{`
         #canvas {
             width: 100%;
@@ -325,4 +338,5 @@ export default function BeforeAfter({ onVideoChunksChange }: {onVideoChunksChang
         }
         `}</style>
     </div>;
+    //return null;
 }
