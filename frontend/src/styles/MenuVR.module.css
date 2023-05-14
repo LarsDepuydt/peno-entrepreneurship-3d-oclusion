@@ -12,9 +12,8 @@
   border-radius: 1rem;
 }
 .menu_container {
-  position: relative;
-  border: 1px solid #000;
   margin: auto;
+  border: 1px solid #000;
   z-index: 999;
   display: flex;
   justify-content: center;
@@ -169,7 +168,7 @@
 }
 .list_controls {
   position: absolute;
-  bottom: 5%;
+  bottom: 0%;
   left: 50%;
   transform: translateX(-50%);
   display: flex;
@@ -181,8 +180,8 @@
   text-align: center;
 
   color: #fe7d00;
-  font-size: 1rem;
-  font-weight: 400;
+  font-size: 20px;
+  font-weight: 1000;
   line-height: 1.5;
 
   display: flex;
@@ -190,34 +189,9 @@
   align-items: center;
   margin: 0 10px;
   z-index: 999;
-}
 
-#exitIcon {
   width: 48px;
   height: 48px;
   margin: 8px;
-  background-image: url(../../public/Close_round.png);
-  background-repeat: no-repeat;
-  background-position: center;
-  border: none;
-}
-
-#leftIcon {
-  width: 48px;
-  height: 48px;
-  margin: 8px;
-  background-image: url(../../public/Arrow_drop_left.png);
-  background-repeat: no-repeat;
-  background-position: center;
-  border: none;
-}
-
-#rightIcon {
-  width: 48px;
-  height: 48px;
-  margin: 8px;
-  background-image: url(../../public/Arrow_drop_right.png);
-  background-repeat: no-repeat;
-  background-position: center;
   border: none;
 }

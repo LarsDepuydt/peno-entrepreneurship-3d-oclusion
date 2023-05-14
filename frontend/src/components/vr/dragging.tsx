@@ -541,7 +541,7 @@ function afterLoad(save: () => void, callback: () => void) {
 }
 
 function animate(save: () => void, callback: () => void) {
-  //autoSave(60, save); // 60 second interval, move out to render and out of menu
+  //autoSave(60, save); // 60 second interval, move out to render and out of menu; AND onlt save when session.xr active
 
   frameNum += 1;
   updatePhysics();
@@ -753,6 +753,10 @@ function buttonPressMenu(controller){
     );
 
     const deepestIntersectedElement = findDeepestIntersectedElement(menuDiv, intersectionPoint);
+    //console.log("Deepest:");
+    //console.log(deepestIntersectedElement);
+    console.log("Intersection point:");
+    console.log(intersectionPoint);
 
     const clickEvent = new MouseEvent('click', {
       clientX: menuDivPosition.x,

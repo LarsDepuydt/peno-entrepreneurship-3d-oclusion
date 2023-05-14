@@ -115,7 +115,7 @@ function Menu({
         <div className={stylesVR.menu_content}>
           <div className={stylesVR.menu_header}>
             <div className={stylesVR.menu_title}>Menu</div>
-            <button id={stylesVR.exitIcon} className={stylesVR.icon_btn} onClick={toggleMenu}></button>
+            <button className={stylesVR.icon_btn} onClick={toggleMenu}> X </button>
           </div>
           <ul className={stylesVR.menu_options}>
             <button className={stylesVR.menu_option} onClick={load}>
