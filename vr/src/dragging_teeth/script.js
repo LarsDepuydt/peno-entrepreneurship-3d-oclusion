@@ -42,9 +42,10 @@ const slipperyMaterial = new CANNON.Material("slippery"); // disabling friction 
 const sphereMaterial = teethMaterial;
 const targetMaterial = new THREE.MeshStandardMaterial({ color: 0xff0000 });
 const teethContactMaterial = new CANNON.ContactMaterial(
-    teethMaterial, teethMaterial, {
+    slipperyMaterial, slipperyMaterial, {
         friction: 0,
-        contactEquationStiffness: 1e10,
+        contactEquationStiffness: 1e20,
+        restitution: 1,
 });
 
 const objLoader = new OBJLoader();
@@ -52,7 +53,7 @@ const objLoader = new OBJLoader();
 // parameters
 const TIMESTEP = 1 / 30;
 const BODYMASS = 1; // when the body is not selected, the mass is 0 (= stationary)
-const IMPULSE_REACTIVITY = 0.1;
+const IMPULSE_REACTIVITY = 0.3;
 const ANGULAR_REACTIVITY = 5;
 const LINEAR_DAMPING = 0.9; // cannon.js default: 0.01
 const ANGULAR_DAMPING = 0.9; // idem
