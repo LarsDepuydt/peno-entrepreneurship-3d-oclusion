@@ -237,6 +237,7 @@ func GetLastSaveData(req *connect.Request[threedoclusionv1.GetLastSaveDataReques
 	WHERE scan_id = $1 AND timestamp_save = (
 		SELECT MAX(timestamp_save)
 		FROM scan_save
+		WHERE scan_id = $1
 	);`
 	var timestamp string;
 	var lowerx float32;
