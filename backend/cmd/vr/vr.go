@@ -11,7 +11,7 @@ import (
 
 func SaveScanData(req *connect.Request[threedoclusionv1.SaveScanDataRequest], database *sql.DB) (*connect.Response[threedoclusionv1.SaveScanDataResponse], error) {
 		// Connect to the database
-		statement, error := database.Prepare("INSERT INTO scan_save (scan_id, lowerX, lowerY, lowerZ, lowerRX, lowerRY, lowerRZ, upperX, upperY, upperZ, upperRX, upperRY, upperRZ, timestamp_save) VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12, $13, $14)")
+		statement, error := database.Prepare("INSERT INTO scan_save (scan_id, lowerX, lowerY, lowerZ, lowerRX, lowerRY, lowerRZ, lowerRW, upperX, upperY, upperZ, upperRX, upperRY, upperRZ, upperRW, timestamp_save) VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12, $13, $14, $15, $16)")
 		if error != nil {
 			return nil, error
 		}
@@ -21,7 +21,7 @@ func SaveScanData(req *connect.Request[threedoclusionv1.SaveScanDataRequest], da
 		formattedTimestamp := t.Format("2006-01-02T15:04:05")
 
 		save := req.Msg.GetScan()
-		_, error = statement.Exec(save.ScanId, save.LowerX, save.LowerY, save.LowerZ, save.LowerRX, save.LowerRY, save.LowerRZ, save.UpperX, save.UpperY, save.UpperZ, save.UpperRX, save.UpperRY, save.UpperRZ, formattedTimestamp)
+		_, error = statement.Exec(save.ScanId, save.LowerX, save.LowerY, save.LowerZ, save.LowerRX, save.LowerRY, save.LowerRZ, save.LowerRW, save.UpperX, save.UpperY, save.UpperZ, save.UpperRX, save.UpperRY, save.UpperRZ, save.UpperRW, formattedTimestamp)
 		if error != nil {
 			return nil, error
 		}
