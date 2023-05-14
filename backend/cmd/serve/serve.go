@@ -96,8 +96,6 @@ func (s *ServerStruct) UpdateConnectionStatus(
 	return push.UpdateConnectionStatus(req, s.connections, s.database)
 }
 
-
-
 func (s *ServerStruct) SendVR(
 	ctx context.Context,
 	req *connect.Request[threedoclusionv1.SendVRRequest],
@@ -110,6 +108,13 @@ func (s *ServerStruct) Waiting(
 	req *connect.Request[threedoclusionv1.WaitingRequest], stream *connect.ServerStream[threedoclusionv1.WaitingResponse],
 ) error {
 	return push.GetWaitingResponse(req, stream, s.redirectVRChannels)
+}
+
+func (s *ServerStruct) GetLastSaveData(
+	ctx context.Context,
+	req *connect.Request[threedoclusionv1.GetLastSaveDataRequest],
+) (*connect.Response[threedoclusionv1.GetLastSaveDataResponse], error) {
+	return push.GetLastSaveData(req, s.database)
 }
 
 // SCANS
