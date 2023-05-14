@@ -14,6 +14,11 @@ var movement_mode;
 var session;
 const prevGamePads = new Map();
 
+const curr_jaw = [];
+
+curr_jaw[0] = null;
+curr_jaw[1] = null;
+
 let container;
 let camera, scene, renderer;
 let controller1, controller2;
@@ -412,15 +417,15 @@ function initThree() {
   controller1 = renderer.xr.getController(0);
   controller1.addEventListener("selectstart", onSelectStart);
   controller1.addEventListener("selectend", onSelectEnd);
-  controller1.addEventListener("squeezestart", onSqueezeStartRight);
-  controller1.addEventListener("squeezeend", onSqueezeEndRight);
+  //controller1.addEventListener("squeezestart", onSqueezeStartRight);
+ // controller1.addEventListener("squeezeend", onSqueezeEndRight);
   scene.add(controller1);
 
   controller2 = renderer.xr.getController(1);
   controller2.addEventListener("selectstart", onSelectStart);
   controller2.addEventListener("selectend", onSelectEnd);
-  controller2.addEventListener("squeezestart", onSqueezeStartLeft);
-  controller2.addEventListener("squeezeend", onSqueezeEndLeft);
+  //controller2.addEventListener("squeezestart", onSqueezeStartLeft);
+  //controller2.addEventListener("squeezeend", onSqueezeEndLeft);
   scene.add(controller2);
 
   // add controller models
@@ -467,8 +472,6 @@ function loadObjects() {
     lowerjaw = new Jaw('../../assets/simplified/lower_180.obj', '../../assets/lower_ios_6.obj');
     //upperjaw = new Jaw('../../assets/simplified/upper_218.obj');
     upperjaw = new Jaw('../../assets/simplified/upper_209.obj', '../../assets/upper_ios_6.obj');
-
-    curr_jaw = upperjaw;
 }
 
 // define VR Headset position
@@ -518,29 +521,40 @@ var prevButtonState_B = 0;
 // using X/A buttons on the controllers
 function beforeRender(controller) {
     //console.log(curr_jaw);
-    if (curr_jaw.selected) {
+    let jawke = curr_jaw.findIndex(x => x == controller);
+    //console.log(jawke);
+    
+    let current_jaw;
+    if (jawke == 0) {
+        current_jaw = upperjaw;
+    }
+    else {
+        current_jaw = lowerjaw;
+    }
+
+    if (jawke != -1) {
         switch (movement_mode) {
             case 0: { // Restricted to x axis
-                showAxes(0, curr_jaw);
+                showAxes(0, current_jaw);
                 break;
             }
             case 1: { // Restricted to y axis
-                showAxes(1, curr_jaw);
+                showAxes(1, current_jaw);
                 break;
             }
             case 2: { // Restricted to z axis
-                showAxes(2, curr_jaw);
+                showAxes(2, current_jaw);
                 break;
             }
             case 3: { // Free movement (default)
-                showAxes(3, curr_jaw);
+                showAxes(3, current_jaw);
                 break;
             }
         }
     }
-    else {
-        curr_jaw.mesh.remove(ArrowHelper);
-    }
+    //else {
+      //  curr_jaw.mesh.remove(ArrowHelper);
+    //}
   session = renderer.xr.getSession();
   let ii = 0;
   if (session) {
@@ -558,13 +572,13 @@ function beforeRender(controller) {
         axes: source.gamepad.axes.slice(0)
       };
       //console.log(source.handedness);
-      if (data.buttons[4] == 1 && prevButtonState == 0 && !optionChanged) {
+      if (data.buttons[0] == 1 && prevButtonState == 0 && !optionChanged) {
         currentOption = (currentOption + 1) % 4; // cycle through 0, 1, 2, 3
         optionChanged = true; // set flag to true to indicate that the option has changed
-      } else if (data.buttons[4] == 0 && prevButtonState == 0 && optionChanged) {
+      } else if (data.buttons[0] == 0 && prevButtonState == 0 && optionChanged) {
         optionChanged = false; // reset flag when squeeze button is released
       }
-      prevButtonState = data.buttons[4]; // save button state for next frame
+      prevButtonState = data.buttons[0]; // save button state for next frame
       //console.log(currentOption);
 
       movement_mode = currentOption;
@@ -575,6 +589,7 @@ function beforeRender(controller) {
 var Axis;
 var ArrowHelper;
 function showAxes(axis_num, curr_jaw) {
+    //console.log(curr_jaw);
     switch (axis_num) {
         case 0: {
             Axis = new THREE.Vector3(1, 0, 0);
@@ -611,8 +626,8 @@ function showAxes(axis_num, curr_jaw) {
   } 
 
 function render() {
-  beforeRender(controller1);
-  beforeRender(controller2);
+  //beforeRender(controller1);
+  //beforeRender(controller2);
   cleanIntersected();
   positionReset();
   undoWhenPressed();
@@ -620,6 +635,8 @@ function render() {
 
   intersectObjects(controller1);
   intersectObjects(controller2);
+  beforeRender(controller1);
+  beforeRender(controller2);
 
   renderer.render(scene, camera);
 }
@@ -742,7 +759,7 @@ function getIntersections(controller) {
 }
 
 // highlight the object the controller points at
-
+//const old_jaw = [];
 function intersectObjects(controller) {
   // Do not highlight when already selected
 
@@ -758,11 +775,32 @@ function intersectObjects(controller) {
 
     // anders intersect het soms met de pijl om een of andere reden
     if (object.parent.type == 'ArrowHelper') {
-        return;
+        return -1;
+    }
+
+    if (meshToJaw(object) == upperjaw) {
+        //old_jaw = 0;
+        curr_jaw[0] = controller;
+    }
+    else {
+        //old_jaw = 1;
+        curr_jaw[1] = controller;
     }
 
     object.material.emissive.r = 1;
     intersected.push( object );
+  }
+  else {
+    let getal = curr_jaw.findIndex(x => x == controller);
+
+    if (getal == 0) {
+        upperjaw.mesh.remove(ArrowHelper);
+        curr_jaw[0] = null;
+    }
+    else if (getal == 1){
+        lowerjaw.mesh.remove(ArrowHelper);
+        curr_jaw[1] = null;
+    }
   }
 }
 // clean intersected array
@@ -860,13 +898,12 @@ function positionReset() {
   }
 }
 
-var curr_jaw;
 function meshToJaw(mesh) {
     if (mesh === lowerjaw.mesh) {
-        curr_jaw = lowerjaw;
+        //curr_jaw = lowerjaw;
         return lowerjaw;
     } else if (mesh === upperjaw.mesh) {
-        curr_jaw = upperjaw;
+        //curr_jaw = upperjaw;
         return upperjaw;
     } else {
         console.warn("Selected mesh is not a jaw, returning null");
