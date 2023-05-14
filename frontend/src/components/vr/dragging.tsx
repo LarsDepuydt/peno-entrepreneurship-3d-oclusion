@@ -24,8 +24,9 @@ let controls : any;
 let raycaster : any;
 let clock = new THREE.Clock();
 
-let menu_open = false;
+let menu_open = false; // SET TO FALSE
 let  menuDiv: HTMLElement, menuMesh: HTMLMesh;
+//let listViewDiv: HTMLElement, listViewMesh: HTMLMesh;
 
 const intersected = []; // global list that holds the first objects the controllers are pointing at
 const tempMatrix = new THREE.Matrix4();
@@ -379,6 +380,12 @@ function initThree(setOpenMenu: any, setCurrentScan: any) {
   menuMesh.scale.setScalar(1.8);
   scene.add(menuMesh);
 
+  /*
+  listViewDiv = menuDiv.querySelector(".list-container"); // Maybe remove
+  listViewMesh = new HTMLMesh(menuDiv);
+  listViewMesh.scale.setScalar(1.8);
+  menuMesh.add(listViewMesh);*/
+
 
   document.body.appendChild(VRButton.createButton(renderer));
 
@@ -505,7 +512,7 @@ function afterLoad(save: () => void, callback: () => void) {
 }
 
 function animate(save: () => void, callback: () => void) {
-  //autoSave(60, save); // 60 second interval
+  //autoSave(60, save); // 60 second interval, move out to render and out of menu
 
   frameNum += 1;
   updatePhysics();
@@ -1114,7 +1121,7 @@ function updateScanData(scanID: number, setCurrentScan: any) { // Use when menu 
     newScan.upperX = upperjaw.body.position.x;
     newScan.upperY = upperjaw.body.position.y;
     newScan.upperZ = upperjaw.body.position.z;
-    Object.assign(newScan, (({ roll, pitch, yaw }) => ({ lowerRX: roll, lowerRY: pitch, lowerRZ: yaw }))(quaternionToEuler(upperjaw.body.quaternion)));
+    Object.assign(newScan, (({ roll, pitch, yaw }) => ({ upperRX: roll, upperRY: pitch, upperRZ: yaw }))(quaternionToEuler(upperjaw.body.quaternion)));
     setCurrentScan(newScan);
     return newScan;
 }
@@ -1123,7 +1130,49 @@ function loadPosition(positionData: any) {
   lowerjaw.body.position.set(positionData.lowerX, positionData.lowerY, positionData.lowerZ);
   upperjaw.body.position.set(positionData.upperX, positionData.upperY, positionData.upperZ);
   eulerSetRotationBody(lowerjaw.body, positionData.lowerRX, positionData.lowerRY, positionData.lowerRZ);
-  eulerSetRotationBody(upperjaw.body, positionData.lowerRX, positionData.lowerRY, positionData.lowerRZ);
+  eulerSetRotationBody(upperjaw.body, positionData.upperRX, positionData.upperRY, positionData.upperRZ);
+
+  //putInFrontOfCamera();
+}
+
+function putInFrontOfCamera(){
+  const distanceFromBodyToCamera = 10;
+  const direction = new THREE.Vector3();
+  camera.getWorldDirection(direction);
+  const positionInFrontOfCamera = camera.position.clone().add(direction.multiplyScalar(distanceFromBodyToCamera));
+
+  const relativePosition = relativePosition2to1(lowerjaw, upperjaw);
+  const relativeQuaternion = relativeQuaternion2to1(lowerjaw, upperjaw);
+
+  lowerjaw.position.copy(positionInFrontOfCamera);
+  // Rotate the relative position using the rotation of lowerjaw
+  //const rotatedRelativePosition = lowerjaw.quaternion.vmult(relativePosition);
+
+  // Set the position of upperjaw
+  upperjaw.position.copy(lowerjaw.position);
+  upperjaw.position.vadd(relativePosition, upperjaw.position); // or rotatedRelative?
+  // Set the rotation of upperjaw
+  upperjaw.quaternion.copy(lowerjaw.quaternion);
+  upperjaw.quaternion.mult(relativeQuaternion, lowerjaw.quaternion);
+}
+
+function relativePosition2to1(body1: any, body2: any){
+  const body1Position = body1.position;
+  const body2Position = body2.position;
+
+  const relativePosition = body2Position.clone();
+  relativePosition.vsub(body1Position, relativePosition);
+  return relativePosition;
+}
+
+function relativeQuaternion2to1(body1: any, body2: any){
+  const body1Quaternion = body1.quaternion;
+  const body2Quaternion = body2.quaternion;
+
+  const body1QuaternionInverse = body1Quaternion.clone().inverse();
+  const relativeQuaternion = new CANNON.Quaternion();
+  body2Quaternion.mult(body1QuaternionInverse, relativeQuaternion);
+  return relativeQuaternion;
 }
 
 function eulerSetRotationBody(body: any, eulerX: number, eulerY: number, eulerZ: number){
@@ -1168,7 +1217,7 @@ export default function DraggingView({ scanId, client, onQuit }: {scanId: number
         timestampSave: "2006-01-02T15:04:05"
     });
     const [current_scan, setCurrentScan] = useState<ScanSave>(initialScan);
-    const [openMenu, setOpenMenu] = useState(false);
+    const [openMenu, setOpenMenu] = useState(false); // SET TO FALSE
 
     const toggleMenu = () => {
       if (openMenu){
@@ -1180,6 +1229,7 @@ export default function DraggingView({ scanId, client, onQuit }: {scanId: number
         //scene.remove(upperjaw.mesh);
         scene.add(menuMesh);
       }
+      updateScanData(scanId, setCurrentScan);
 
       menu_open = !openMenu;
       setOpenMenu(!openMenu);

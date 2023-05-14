@@ -64,6 +64,7 @@ function Menu({isOpen, setIsOpen, current_scan, client, onLoadItemClicked, onQui
     const optionData = {case: "saveData", value: current_scan,}
     const res = await sendMenuOption(2, client, optionData);
     console.log("Save and quit!")
+    onQuit()
   };
 
   const quit = async () => {

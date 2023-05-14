@@ -36,16 +36,16 @@ export default function ListView({ data, dictData, itemsPerPage, onItemClicked, 
                   {item}
                 </div>
               ))}
-          </div>
-          <div className="list-controls">
-              <span className="arrow-btn" onClick={() => {handlePrev()}}>
+            </div>
+            <div className="list-controls">
+              <span className="arrow-btn" onClick={handlePrev}>
                 <span className="arrow-left"></span>
               </span>
-              <span className="arrow-btn" onClick={() => {handleNext()}}>
+              <span className="arrow-btn" onClick={handleNext}>
                 <span className="arrow-right"></span>
               </span>
+            </div>
           </div>
-        </div>
             <style jsx>{`
             .list-container {
               position: relative;
