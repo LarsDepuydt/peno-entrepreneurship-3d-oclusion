@@ -8,6 +8,12 @@ import { OBJExporter } from 'three/addons/exporters/OBJExporter.js';
 
 import * as CANNON from 'cannon-es';
 import { getFirstMesh, getFirstBufferGeometry, threeMeshToConvexThreeMesh, threeMeshToConvexCannonMesh, threeMeshToCannonMesh, checkTime, cannonMeshToCannonConvexPolyhedron, vec3ToVector3, vector3ToVec3, threeQuaternionToCannonQuaternion, applyQuaternion, sqnorm, quatDot, minusQuat } from './util.js'
+import { findSepAxisNoEdges } from './findSepAxis.js'
+
+
+// overload cannon.js function findSeparatingAxis with an equivalent that doesn't check for edge collisions
+CANNON.ConvexPolyhedron.prototype.findSeparatingAxis = findSepAxisNoEdges;
+
 
 // axis locking parameters
 var movement_mode;
@@ -35,21 +41,33 @@ const teethMaterial = new THREE.MeshStandardMaterial({ color: 0x0000ff });
 const slipperyMaterial = new CANNON.Material("slippery"); // disabling friction leads to slightly better performance
 const sphereMaterial = teethMaterial;
 const targetMaterial = new THREE.MeshStandardMaterial({ color: 0xff0000 });
+const teethContactMaterial = new CANNON.ContactMaterial(
+    teethMaterial, teethMaterial, {
+        friction: 0,
+        contactEquationStiffness: 1e10,
+});
 
 const objLoader = new OBJLoader();
 
 // parameters
 const TIMESTEP = 1 / 30;
 const BODYMASS = 1; // when the body is not selected, the mass is 0 (= stationary)
-const IMPULSE_REACTIVITY = 1;
+const IMPULSE_REACTIVITY = 0.1;
 const ANGULAR_REACTIVITY = 5;
 const LINEAR_DAMPING = 0.9; // cannon.js default: 0.01
 const ANGULAR_DAMPING = 0.9; // idem
 
+// parameters that put the center-of-mass in the middle of the objects; determined based on the center locations of both jaws
+const LJ_OFFSET = new THREE.Vector3(-2.24, 45.35, 42.25);
+const UJ_OFFSET = new THREE.Vector3(-3.72, 46.93, 28.3);
+
 // set to true for debugging / development
 const DEBUGGING_MODE = false;
 
+
 class Jaw {
+  name; // 'lowerjaw' or 'upperjaw'
+  offset; // THREE.Vector3
   mesh; // THREE.Mesh
   body; // CANNON.Body
   sphere; // THREE.Mesh
@@ -64,7 +82,15 @@ class Jaw {
    * @param {*} bodypath path to the body obj file used for collision detection
    * @param {*} meshpath path to the mesh obj file (visual), in debugging mode, use the body model instead
    */
-  constructor(bodypath, meshpath) {
+  constructor(name, bodypath, meshpath) {
+
+    // common part for upper and lower jaw
+
+    if (name != 'lowerjaw' && name != 'upperjaw') {
+        throw Error("jaw name should be 'lowerjaw' or 'upperjaw', instead of " + name);
+    }
+    this.name = name;
+
     let sphere_geo = new THREE.SphereGeometry(0.05, 10, 5);
     this.target = new THREE.Mesh(sphere_geo, targetMaterial); // (invisible) THREE.Object3D, dat aanduidt waar de jaw zou moeten zijn obv de controller selection
     scene.add(this.target);
@@ -83,14 +109,22 @@ class Jaw {
       angularDamping: ANGULAR_DAMPING,
       type: CANNON.Body.STATIC,
     });
-    this.body.position.set(0, 2, 0);
+    
     let xaxis = new CANNON.Vec3(1, 0, 0);
     this.body.quaternion.setFromAxisAngle(xaxis, -Math.PI / 2);
-    // console.log(this.body.quaternion.x);
-    // console.log(this.body.quaternion.y);
-    // console.log(this.body.quaternion.z);
-    // console.log(this.body.quaternion.w);
     world.addBody(this.body);
+
+
+    // lowerjaw / upperjaw specific
+
+    if (this.name == 'lowerjaw') {
+        this.offset = LJ_OFFSET;
+    } else {
+        this.offset = UJ_OFFSET;
+    }
+
+
+    // loading the objects
 
     if (DEBUGGING_MODE) {
       this.loadMeshAndBody(bodypath);
@@ -111,12 +145,10 @@ class Jaw {
         // object is a 'Group', which is a subclass of 'Object3D'
         const buffergeo = getFirstBufferGeometry(object);
         jaw.mesh = new THREE.Mesh(buffergeo, teethMaterial.clone());
-        jaw.mesh.userData.originalScale = mesh.scale.clone();
+        jaw.mesh.userData.originalScale = jaw.mesh.scale.clone();
+
+        jaw.mesh.geometry.translate(jaw.offset.x, jaw.offset.y, jaw.offset.z);
         jaw.mesh.geometry.scale(0.01, 0.01, 0.01);
-        jaw.mesh.position.x = 0;
-        jaw.mesh.position.y = 0;
-        jaw.mesh.position.z = 0;
-        jaw.mesh.rotation.x = 1.5 * Math.PI;
         scene.add(jaw.mesh);
 
         const shape = threeMeshToConvexCannonMesh(jaw.mesh);
@@ -147,11 +179,8 @@ class Jaw {
       function (object) {
         // object is a 'Group', which is a subclass of 'Object3D'
         jaw.mesh = getFirstMesh(object);
+        jaw.mesh.geometry.translate(jaw.offset.x, jaw.offset.y, jaw.offset.z);
         jaw.mesh.geometry.scale(0.01, 0.01, 0.01);
-        jaw.mesh.position.x = 0;
-        jaw.mesh.position.y = 0;
-        jaw.mesh.position.z = 0;
-        jaw.mesh.rotation.x = 1.5 * Math.PI;
         scene.add(jaw.mesh);
 
         console.log("loading mesh succeeded");
@@ -184,11 +213,8 @@ class Jaw {
         // object is a 'Group', which is a subclass of 'Object3D'
         const buffergeo = getFirstBufferGeometry(object);
         const mesh = new THREE.Mesh(buffergeo, teethMaterial.clone());
+        mesh.geometry.translate(jaw.offset.x, jaw.offset.y, jaw.offset.z);
         mesh.geometry.scale(0.01, 0.01, 0.01);
-        mesh.position.x = 0;
-        mesh.position.y = 0;
-        mesh.position.z = 0;
-        mesh.rotation.x = 1.5 * Math.PI;
 
         const shape = threeMeshToConvexCannonMesh(mesh);
         jaw.body.addShape(shape);
@@ -296,6 +322,7 @@ function initCannon() {
   world.broadphase = new CANNON.NaiveBroadphase();
   world.broadphase.useBoundingBoxes = true;
   world.solver.iterations = 10; //10
+  world.addContactMaterial(teethContactMaterial);
   console.log(world);
 
   floor_body = new CANNON.Body({ mass: 0 });
@@ -464,9 +491,16 @@ function initThree() {
 }
 
 function loadObjects() {
-    lowerjaw = new Jaw('../../assets/simplified/lower_180.obj', '../../assets/lower_ios_6.obj');
-    //upperjaw = new Jaw('../../assets/simplified/upper_218.obj');
-    upperjaw = new Jaw('../../assets/simplified/upper_209.obj', '../../assets/upper_ios_6.obj');
+    lowerjaw = new Jaw(
+        'lowerjaw',
+        '../../assets/simplified/lower_1341.obj',
+        '../../assets/lower_ios_6.obj',
+    );
+    upperjaw = new Jaw(
+        'upperjaw',
+        '../../assets/simplified/upper_1480.obj',
+        '../../assets/upper_ios_6.obj'
+    );
 
     curr_jaw = upperjaw;
 }
@@ -484,7 +518,7 @@ function afterLoad() {
     );
     upperjaw.body.position.set(
       VRHeadsetPosition.x,
-      VRHeadsetPosition.y + 0.4,
+      VRHeadsetPosition.y + 0.45,
       VRHeadsetPosition.z - 5.5
     );
     lowerjaw.mesh.name = "lowerjaw.mesh";
