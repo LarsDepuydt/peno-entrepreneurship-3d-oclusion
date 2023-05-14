@@ -871,51 +871,51 @@ export declare class TagResponse extends Message<TagResponse> {
 }
 
 /**
- * @generated from message threedoclusion.v1.SendPositionScanRequest
+ * @generated from message threedoclusion.v1.SaveScanDataRequest
  */
-export declare class SendPositionScanRequest extends Message<SendPositionScanRequest> {
+export declare class SaveScanDataRequest extends Message<SaveScanDataRequest> {
   /**
-   * @generated from field: threedoclusion.v1.Scan scan = 1;
+   * @generated from field: threedoclusion.v1.ScanSave scan = 1;
    */
-  scan?: Scan;
+  scan?: ScanSave;
 
-  constructor(data?: PartialMessage<SendPositionScanRequest>);
+  constructor(data?: PartialMessage<SaveScanDataRequest>);
 
   static readonly runtime: typeof proto3;
-  static readonly typeName = "threedoclusion.v1.SendPositionScanRequest";
+  static readonly typeName = "threedoclusion.v1.SaveScanDataRequest";
   static readonly fields: FieldList;
 
-  static fromBinary(bytes: Uint8Array, options?: Partial<BinaryReadOptions>): SendPositionScanRequest;
+  static fromBinary(bytes: Uint8Array, options?: Partial<BinaryReadOptions>): SaveScanDataRequest;
 
-  static fromJson(jsonValue: JsonValue, options?: Partial<JsonReadOptions>): SendPositionScanRequest;
+  static fromJson(jsonValue: JsonValue, options?: Partial<JsonReadOptions>): SaveScanDataRequest;
 
-  static fromJsonString(jsonString: string, options?: Partial<JsonReadOptions>): SendPositionScanRequest;
+  static fromJsonString(jsonString: string, options?: Partial<JsonReadOptions>): SaveScanDataRequest;
 
-  static equals(a: SendPositionScanRequest | PlainMessage<SendPositionScanRequest> | undefined, b: SendPositionScanRequest | PlainMessage<SendPositionScanRequest> | undefined): boolean;
+  static equals(a: SaveScanDataRequest | PlainMessage<SaveScanDataRequest> | undefined, b: SaveScanDataRequest | PlainMessage<SaveScanDataRequest> | undefined): boolean;
 }
 
 /**
- * @generated from message threedoclusion.v1.GetPositionScanResponse
+ * @generated from message threedoclusion.v1.SaveScanDataResponse
  */
-export declare class GetPositionScanResponse extends Message<GetPositionScanResponse> {
+export declare class SaveScanDataResponse extends Message<SaveScanDataResponse> {
   /**
-   * @generated from field: threedoclusion.v1.Scan scan = 1;
+   * @generated from field: string data = 1;
    */
-  scan?: Scan;
+  data: string;
 
-  constructor(data?: PartialMessage<GetPositionScanResponse>);
+  constructor(data?: PartialMessage<SaveScanDataResponse>);
 
   static readonly runtime: typeof proto3;
-  static readonly typeName = "threedoclusion.v1.GetPositionScanResponse";
+  static readonly typeName = "threedoclusion.v1.SaveScanDataResponse";
   static readonly fields: FieldList;
 
-  static fromBinary(bytes: Uint8Array, options?: Partial<BinaryReadOptions>): GetPositionScanResponse;
+  static fromBinary(bytes: Uint8Array, options?: Partial<BinaryReadOptions>): SaveScanDataResponse;
 
-  static fromJson(jsonValue: JsonValue, options?: Partial<JsonReadOptions>): GetPositionScanResponse;
+  static fromJson(jsonValue: JsonValue, options?: Partial<JsonReadOptions>): SaveScanDataResponse;
 
-  static fromJsonString(jsonString: string, options?: Partial<JsonReadOptions>): GetPositionScanResponse;
+  static fromJsonString(jsonString: string, options?: Partial<JsonReadOptions>): SaveScanDataResponse;
 
-  static equals(a: GetPositionScanResponse | PlainMessage<GetPositionScanResponse> | undefined, b: GetPositionScanResponse | PlainMessage<GetPositionScanResponse> | undefined): boolean;
+  static equals(a: SaveScanDataResponse | PlainMessage<SaveScanDataResponse> | undefined, b: SaveScanDataResponse | PlainMessage<SaveScanDataResponse> | undefined): boolean;
 }
 
 /**

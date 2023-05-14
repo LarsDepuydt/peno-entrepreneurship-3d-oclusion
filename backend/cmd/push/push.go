@@ -89,7 +89,7 @@ func SendMenuOption(req *connect.Request[threedoclusionv1.SendMenuOptionRequest]
 	case 1:
 		log.Println("Menu option Load was chosen");
 
-		statement := "SELECT * FROM scan_save WHERE scan_id = $1;"
+		statement := "SELECT scan_id, lowerX, lowerY, lowerZ, lowerRX, lowerRY, lowerRZ, upperX, upperY, upperZ, upperRX, upperRY, upperRZ, timestamp_save FROM scan_save WHERE scan_id = $1;"
 		rows, error := database.Query(statement, req.Msg.GetScanId())
 		if error != nil {
 			return nil, error
