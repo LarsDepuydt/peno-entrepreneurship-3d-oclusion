@@ -52,7 +52,7 @@ const objLoader = new OBJLoader();
 // parameters
 const TIMESTEP = 1 / 30;
 const BODYMASS = 1; // when the body is not selected, the mass is 0 (= stationary)
-const IMPULSE_REACTIVITY = 1;
+const IMPULSE_REACTIVITY = 0.01;
 const ANGULAR_REACTIVITY = 5;
 const LINEAR_DAMPING = 0.9; // cannon.js default: 0.01
 const ANGULAR_DAMPING = 0.9; // idem
