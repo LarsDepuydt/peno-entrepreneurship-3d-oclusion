@@ -82,7 +82,10 @@ export function SingleScan({ scanid, patientid, notes, date, setStream }: scanPr
 
   const handleRedirectVideo = () => {
     process.env.REACT_APP_PATIENT_ID = undefined;
-    router.push('/video');
+    router.push({
+      pathname: '/video',
+      query: { scanID: scanid },
+    });
   };
 
   return (

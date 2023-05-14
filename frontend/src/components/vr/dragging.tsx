@@ -1096,32 +1096,27 @@ function redoWhenPressed() {
   }
 }
 
-function quaternionToEuler(quat) {
-  const qW = quat.w;
-  const qX = quat.x;
-  const qY = quat.y;
-  const qZ = quat.z;
-
-  const roll = Math.atan2(2 * (qW * qX + qY * qZ), 1 - 2 * (qX * qX + qY * qY));
-  const pitch = Math.asin(2 * (qW * qY - qZ * qX));
-  const yaw = Math.atan2(2 * (qW * qZ + qX * qY), 1 - 2 * (qY * qY + qZ * qZ));
-
-  return { roll, pitch, yaw };
-}
-  
-
 
 function updateScanData(scanID: number, setCurrentScan: any) { // Use when menu is triggered for last position
     let newScan = new ScanSave({scanId: scanID, timestampSave: "2006-01-02T15:04:05"});
     newScan.lowerX = lowerjaw.body.position.x;
     newScan.lowerY = lowerjaw.body.position.y;
     newScan.lowerZ = lowerjaw.body.position.z;
-    Object.assign(newScan, (({ roll, pitch, yaw }) => ({ lowerRX: roll, lowerRY: pitch, lowerRZ: yaw }))(quaternionToEuler(lowerjaw.body.quaternion)));
-    
+
+    newScan.lowerRX = lowerjaw.body.quaternion.x;
+    newScan.lowerRY = lowerjaw.body.quaternion.y;
+    newScan.lowerRZ = lowerjaw.body.quaternion.z;
+    newScan.lowerRW = lowerjaw.body.quaternion.w;
+
     newScan.upperX = upperjaw.body.position.x;
     newScan.upperY = upperjaw.body.position.y;
     newScan.upperZ = upperjaw.body.position.z;
-    Object.assign(newScan, (({ roll, pitch, yaw }) => ({ upperRX: roll, upperRY: pitch, upperRZ: yaw }))(quaternionToEuler(upperjaw.body.quaternion)));
+
+    newScan.upperRX = upperjaw.body.quaternion.x;
+    newScan.upperRY = upperjaw.body.quaternion.y;
+    newScan.upperRZ = upperjaw.body.quaternion.z;
+    newScan.upperRW = upperjaw.body.quaternion.w;
+
     setCurrentScan(newScan);
     return newScan;
 }
@@ -1129,8 +1124,8 @@ function updateScanData(scanID: number, setCurrentScan: any) { // Use when menu 
 function loadPosition(positionData: any) {
   lowerjaw.body.position.set(positionData.lowerX, positionData.lowerY, positionData.lowerZ);
   upperjaw.body.position.set(positionData.upperX, positionData.upperY, positionData.upperZ);
-  eulerSetRotationBody(lowerjaw.body, positionData.lowerRX, positionData.lowerRY, positionData.lowerRZ);
-  eulerSetRotationBody(upperjaw.body, positionData.upperRX, positionData.upperRY, positionData.upperRZ);
+  lowerjaw.body.quaternion.set(positionData.lowerRX, positionData.lowerRY, positionData.lowerRZ, positionData.lowerRW);
+  upperjaw.body.quaternion.set(positionData.upperRX, positionData.upperRY, positionData.upperRZ, positionData.upperRW);
 
   //putInFrontOfCamera();
 }
@@ -1207,12 +1202,14 @@ export default function DraggingView({ scanId, client, onQuit }: {scanId: number
         lowerRX: 1.5 * Math.PI,
         lowerRY: 0,
         lowerRZ: 0,
+        lowerRW: 0,
         upperX: 0,
         upperY: 2,
         upperZ: 0.12,
         upperRX: 1.5 * Math.PI,
         upperRY: 0,
         upperRZ: 0,
+        upperRW: 0,
         scanId: scanId,
         timestampSave: "2006-01-02T15:04:05"
     });
