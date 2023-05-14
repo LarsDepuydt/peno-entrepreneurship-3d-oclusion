@@ -727,8 +727,8 @@ function buttonPressMenu(controller){
   if (intersects.length > 0) {
     // Local intersection point relative to the menuMesh
     const localIntersectionPoint = menuMesh.worldToLocal(intersects[0].point.clone());
-    const meshWidth = menuMesh.geometry.parameters.width;
-    const meshHeight = menuMesh.geometry.parameters.height;
+    const meshWidth = (menuMesh.geometry as any).parameters.width;
+    const meshHeight = (menuMesh.geometry as any).parameters.height;
     // Normalize based on the menuMesh dimensions
     const normalizedX = (localIntersectionPoint.x + meshWidth / 2) / meshWidth;
     const normalizedY = (localIntersectionPoint.y + meshHeight / 2) / meshHeight;
