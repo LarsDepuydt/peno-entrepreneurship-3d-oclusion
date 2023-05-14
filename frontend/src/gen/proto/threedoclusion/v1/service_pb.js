@@ -478,6 +478,38 @@ export const WaitingResponse = proto3.makeMessageType(
 );
 
 /**
+ * @generated from message threedoclusion.v1.GetLastSaveDataRequest
+ */
+export const GetLastSaveDataRequest = proto3.makeMessageType(
+  "threedoclusion.v1.GetLastSaveDataRequest",
+  () => [
+    { no: 1, name: "id", kind: "scalar", T: 5 /* ScalarType.INT32 */ },
+  ],
+);
+
+/**
+ * @generated from message threedoclusion.v1.GetLastSaveDataResponse
+ */
+export const GetLastSaveDataResponse = proto3.makeMessageType(
+  "threedoclusion.v1.GetLastSaveDataResponse",
+  () => [
+    { no: 1, name: "timestamp_save", kind: "scalar", T: 9 /* ScalarType.STRING */ },
+    { no: 2, name: "lower_x", kind: "scalar", T: 2 /* ScalarType.FLOAT */ },
+    { no: 3, name: "lower_y", kind: "scalar", T: 2 /* ScalarType.FLOAT */ },
+    { no: 4, name: "lower_z", kind: "scalar", T: 2 /* ScalarType.FLOAT */ },
+    { no: 5, name: "lower_r_x", kind: "scalar", T: 2 /* ScalarType.FLOAT */ },
+    { no: 6, name: "lower_r_y", kind: "scalar", T: 2 /* ScalarType.FLOAT */ },
+    { no: 7, name: "lower_r_z", kind: "scalar", T: 2 /* ScalarType.FLOAT */ },
+    { no: 8, name: "upper_x", kind: "scalar", T: 2 /* ScalarType.FLOAT */ },
+    { no: 9, name: "upper_y", kind: "scalar", T: 2 /* ScalarType.FLOAT */ },
+    { no: 10, name: "upper_z", kind: "scalar", T: 2 /* ScalarType.FLOAT */ },
+    { no: 11, name: "upper_r_x", kind: "scalar", T: 2 /* ScalarType.FLOAT */ },
+    { no: 12, name: "upper_r_y", kind: "scalar", T: 2 /* ScalarType.FLOAT */ },
+    { no: 13, name: "upper_r_z", kind: "scalar", T: 2 /* ScalarType.FLOAT */ },
+  ],
+);
+
+/**
  * @generated from message threedoclusion.v1.DeletePatientByIdRequest
  */
 export const DeletePatientByIdRequest = proto3.makeMessageType(
