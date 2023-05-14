@@ -16,7 +16,7 @@ export default function EndVRPage() {
   const home = () => router.push('/wait');
 
 
-  const [timeLeft, setTimeLeft] = useState(10); // initial countdown time
+  const [timeLeft, setTimeLeft] = useState(15); // initial countdown time
   // const history = useHistory(); // hook to access the router history
 
   useEffect(() => {
@@ -33,7 +33,7 @@ export default function EndVRPage() {
   return (
     <div>
       <Image className={stylesText.small_logo_log} src={reluLogo} alt="relu logo" />
-      <div className={styleVR.massageWrapper}>
+      <div className={styleVR.messageWrapper}>
         <div className={styleVR.text1}>The scan has been saved successfully.</div>
         <div className={styleVR.text2}>You can now exit safely by closing the window.</div>
 
