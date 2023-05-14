@@ -2,8 +2,8 @@ import { useState, memo } from 'react';
 import BeforeAfter from '@/components/vr/before-after';
 import VideoDownload from '@/components/vr/videodownload';
 import stylesVideo from '@/styles/Video.module.css';
+import stylesButton from '@/styles/Buttons.module.css';
 import { useRouter } from 'next/router';
-
 
 export default function VideoPage() {
   const [videoChunks, setVideoChunks] = useState([]);
@@ -12,13 +12,15 @@ export default function VideoPage() {
   const { scanID } = router.query;
   const scanId = parseInt(scanID as string, 10);
 
-
   const handleVideoChunks = (chunks: any) => {
     setVideoChunks(chunks);
   };
 
+  const home = () => router.push('/scans-page');
+
   return (
     <div className={stylesVideo.video_page}>
+      <button type="button" className={stylesButton.relu_btn} id={stylesButton.homeIconVideo} onClick={home}></button>
       <div className={stylesVideo.container}>
         <div className={stylesVideo.before_after_container}>
           <BeforeAfterMemo onVideoChunksChange={handleVideoChunks} />
