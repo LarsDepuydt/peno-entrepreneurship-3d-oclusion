@@ -3,7 +3,6 @@
   position: fixed;
   height: 100vh;
   bottom: -15px;
-  left: -15px;
   width: 20vw;
   background-color: #f8f8f8;
   box-shadow: 0px 0px 15px 1px #c6c6c6 inset; /* fix: can't get shadow only on one side, fixed by making position negative ^ */
@@ -39,6 +38,19 @@
   font-weight: 300;
   color: #1c3c4c;
   font-size: 18px;
-  margin: 0px;
-  margin-left: 3px;
+  margin: 0px 15px;
+}
+
+.NotesWrapper {
+  height: 60vh;
+  width: 0px;
+  padding: 5px 10vw;
+
+  display: flex;
+  flex-direction: column;
+  flex-wrap: nowrap;
+  justify-content: flex-start;
+  align-items: center;
+  overflow:hidden;
+  overflow-y:scroll;
 }

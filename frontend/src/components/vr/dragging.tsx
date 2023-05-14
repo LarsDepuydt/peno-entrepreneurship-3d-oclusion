@@ -4,7 +4,7 @@ import { VRButton } from 'three/examples/jsm/webxr/VRButton.js';
 import { XRControllerModelFactory } from 'three/examples/jsm/webxr/XRControllerModelFactory.js';
 import { OBJLoader } from 'three/examples/jsm/loaders/OBJLoader.js';
 import { useState, useEffect } from 'react';
-import { SendMenuOptionRequest, ScanSave } from "@/gen/proto/threedoclusion/v1/service_pb";
+import { SendMenuOptionRequest, ScanSave, SaveScanDataRequest } from "@/gen/proto/threedoclusion/v1/service_pb";
 import Menu from './menu';
 import { useRouter } from 'next/router';
 
@@ -22,6 +22,7 @@ let controller1: any, controller2 : any;
 let controllerGrip1 : any, controllerGrip2 : any;
 let controls : any;
 let raycaster : any;
+let clock = new THREE.Clock();
 
 //let second_call = false;
 
@@ -68,7 +69,7 @@ class Jaw {
    * @param {*} bodypath path to the body obj file used for collision detection
    * @param {*} meshpath path to the mesh obj file (visual), in debugging mode, use the body model instead
    */
-  constructor(bodypath : any, meshpath : any) {
+  constructor(bodypath : any, meshpath : any, save: () => void) {
     let sphere_geo = new THREE.SphereGeometry(0.05, 10, 5);
     this.target = new THREE.Mesh(sphere_geo, targetMaterial); // (invisible) THREE.Object3D, dat aanduidt waar de jaw zou moeten zijn obv de controller selection
     console.log(this);
@@ -94,21 +95,17 @@ class Jaw {
 
     let xaxis = new CANNON.Vec3(1, 0, 0);
     this.body.quaternion.setFromAxisAngle(xaxis, -Math.PI / 2);
-    // console.log(this.body.quaternion.x);
-    // console.log(this.body.quaternion.y);
-    // console.log(this.body.quaternion.z);
-    // console.log(this.body.quaternion.w);
     world.addBody(this.body);
 
     if (DEBUGGING_MODE) {
-      this.loadMeshAndBody(bodypath);
+      this.loadMeshAndBody(bodypath, save);
     } else {
-      this.loadMesh(meshpath);
-      this.loadBody(bodypath);
+      this.loadMesh(meshpath, save);
+      this.loadBody(bodypath, save);
     }
   }
 
-  loadMeshAndBody(path) {
+  loadMeshAndBody(path, save: () => void) {
     const jaw = this;
 
     objLoader.load(
@@ -132,7 +129,7 @@ class Jaw {
 
         console.log("loading mesh succeeded");
         jaw.loaded = true;
-        afterLoad();
+        afterLoad(save);
       },
 
       // called when loading in progress
@@ -145,7 +142,7 @@ class Jaw {
     );
   }
 
-  loadMesh(path : any) {
+  loadMesh(path : any, save: () => void) {
     const jaw = this;
 
     objLoader.load(
@@ -167,7 +164,7 @@ class Jaw {
         if (jaw.mesh_loaded && jaw.body_loaded) {
           // actually this is a race condition, let's ignore that for now
           jaw.loaded = true;
-          afterLoad();
+          afterLoad(save);
         }
       },
 
@@ -181,7 +178,7 @@ class Jaw {
     );
   }
 
-  loadBody(path : any) {
+  loadBody(path : any, save: () => void) {
     const jaw = this;
 
     objLoader.load(
@@ -206,7 +203,7 @@ class Jaw {
         if (jaw.mesh_loaded && jaw.body_loaded) {
           // actually a race condition
           jaw.loaded = true;
-          afterLoad();
+          afterLoad(save);
         }
       },
 
@@ -293,11 +290,6 @@ class Jaw {
   }
 }
 
-// for both cannon.js and three.js: x=red, y=green, z=blue
-//initCannon();
-//initThree(setOpenMenu, setCurrentScan);  //FIXFIX
-//loadObjects(); // animation is started after both objects are loaded
-
 function initCannon() {
   world = new CANNON.World();
   world.gravity.set(0, 0, 0);
@@ -381,41 +373,6 @@ function initThree(setOpenMenu: any, setCurrentScan: any) {
 
   document.body.appendChild(VRButton.createButton(renderer));
 
-  // save scene
-
-  var step = 0;
-
-  var controls = new (function () {
-    this.saveScene = function () {
-      //const exporter = new OBJExporter();
-      // Parse the input and generate the OBJ output
-      //const data = exporter.parse( scene );
-      //var target = new THREE.Vector3();
-      //uj_mesh.getWorldPosition(target);
-      //console.log("X:",target.x,"Y:",target.y,"Z:",target.z);
-    };
-
-    this.importScene = function () {
-      // var json = (localStorage.getItem('scene'));
-      // var sceneLoader = new THREE.SceneLoader();
-
-      // sceneLoader.parse(JSON.parse(json), function (e) {
-      //     scene = e.scene;
-      // }, '.');
-      /*uj_mesh.position.x = upperX;
-      uj_mesh.position.y = upperY;
-      uj_mesh.position.z = upperZ;
-
-      lj_mesh.position.x = lowerX;
-      lj_mesh.position.y = lowerY;
-      lj_mesh.position.z = lowerZ;  */
-    };
-  })();
-
-  //var gui = new dat.GUI();
-  //gui.add(controls, "saveScene");
-  //gui.add(controls, "importScene");
-
   // controllers
 
   controller1 = renderer.xr.getController(0);
@@ -466,16 +423,12 @@ function initThree(setOpenMenu: any, setCurrentScan: any) {
 
   // allow additional button inputs (for axis locking)
   session = renderer.xr.getSession();
-
-  // resize
-
-  //window.addEventListener("resize", onWindowResize);
 }
 
-function loadObjects() {
-    lowerjaw = new Jaw('/lower_180.obj', '/lower_ios_6.obj');
+function loadObjects(save: () => void) {
+    lowerjaw = new Jaw('/lower_180.obj', '/lower_ios_6.obj', save);
     //upperjaw = new Jaw('../../assets/simplified/upper_218.obj');
-    upperjaw = new Jaw('/upper_209.obj', '/upper_ios_6.obj');
+    upperjaw = new Jaw('/upper_209.obj', '/upper_ios_6.obj', save);
 
     curr_jaw = upperjaw;
 }
@@ -484,7 +437,8 @@ function loadObjects() {
 const VRHeadsetPosition = new THREE.Vector3();
 const VRHeadsetQuaternion = new THREE.Quaternion();
 
-function afterLoad() {
+function afterLoad(save: () => void) {
+  VRHeadsetPosition.setFromMatrixPosition(camera.matrixWorld);
   if (lowerjaw.loaded && upperjaw.loaded) {
     VRHeadsetPosition.setFromMatrixPosition(camera.matrixWorld);
     VRHeadsetQuaternion.setFromRotationMatrix(camera.matrixWorld);
@@ -525,12 +479,14 @@ function afterLoad() {
     upperjaw.target.name = "lowerjaw.target";
 
     console.log("starting animation");
-    renderer.setAnimationLoop(animate);
+    renderer.setAnimationLoop(function foo(){
+      animate(save);
+    });
   }
 }
 
-function animate() {
-  //checkTime(lj_mesh);
+function animate(save: () => void) {
+  autoSave(60, save); // 60 second interval
 
   frameNum += 1;
   updatePhysics();
@@ -595,7 +551,6 @@ function beforeRender(controller) {
         optionChanged = false; // reset flag when squeeze button is released
       }
       prevButtonState = data.buttons[4]; // save button state for next frame
-      //console.log(currentOption);
 
       /*if (data.buttons[5] == 1){ // Y pressed, ends webXR session; restart session when "x" is clicked in menu
         const session = renderer.xr.getSession();
@@ -699,8 +654,6 @@ function onSelectStart(event) {
       jaw.body.type = CANNON.Body.DYNAMIC;
       controller.userData.selected = jaw;
       addMovementToUndoStack(jaw.body);
-      console.log(undoStack);
-      //console.log(jaw.body);
     }
   }
 }
@@ -1006,33 +959,66 @@ function undoWhenPressed() {
     }
   }
 
+function quaternionToEuler(quat) {
+  const qW = quat.w;
+  const qX = quat.x;
+  const qY = quat.y;
+  const qZ = quat.z;
+
+  const roll = Math.atan2(2 * (qW * qX + qY * qZ), 1 - 2 * (qX * qX + qY * qY));
+  const pitch = Math.asin(2 * (qW * qY - qZ * qX));
+  const yaw = Math.atan2(2 * (qW * qZ + qX * qY), 1 - 2 * (qY * qY + qZ * qZ));
+
+  return { roll, pitch, yaw };
+}
+  
+
 
 function updateScanData(scanID: number, setCurrentScan: any) { // Use when menu is triggered for last position
     let newScan = new ScanSave({scanId: scanID, timestampSave: "2006-01-02T15:04:05"});
-        if (lowerjaw.body.name == "lowerjaw"){
-            newScan.lowerX = lowerjaw.body.position.x;
-            newScan.lowerY = lowerjaw.body.position.y;
-            newScan.lowerZ = lowerjaw.body.position.z;
-            newScan.lowerRX = lowerjaw.body.rotation.x;
-            newScan.lowerRY = lowerjaw.body.rotation.y;
-            newScan.lowerRZ = lowerjaw.body.rotation.z;
-        }
-        else if (upperjaw.body.name == "upperjaw"){
-            newScan.upperX = upperjaw.body.position.x;
-            newScan.upperY = upperjaw.body.position.y;
-            newScan.upperZ = upperjaw.body.position.z;
-            newScan.upperRX = upperjaw.body.rotation.x;
-            newScan.upperRY = upperjaw.body.rotation.y;
-            newScan.upperRZ = upperjaw.body.rotation.z;
-        }
+    newScan.lowerX = lowerjaw.body.position.x;
+    newScan.lowerY = lowerjaw.body.position.y;
+    newScan.lowerZ = lowerjaw.body.position.z;
+    Object.assign(newScan, (({ roll, pitch, yaw }) => ({ lowerRX: roll, lowerRY: pitch, lowerRZ: yaw }))(quaternionToEuler(lowerjaw.body.quaternion)));
+    
+    newScan.upperX = upperjaw.body.position.x;
+    newScan.upperY = upperjaw.body.position.y;
+    newScan.upperZ = upperjaw.body.position.z;
+    Object.assign(newScan, (({ roll, pitch, yaw }) => ({ lowerRX: roll, lowerRY: pitch, lowerRZ: yaw }))(quaternionToEuler(upperjaw.body.quaternion)));
     setCurrentScan(newScan);
+    return newScan;
 }
 
 function loadPosition(positionData: any) {
   lowerjaw.body.position.set(positionData.lowerX, positionData.lowerY, positionData.lowerZ);
-  lowerjaw.body.rotation.set(positionData.lowerRX, positionData.lowerRY, positionData.lowerRZ);
   upperjaw.body.position.set(positionData.upperX, positionData.upperY, positionData.upperZ);
-  upperjaw.body.rotation.set(positionData.upperRX, positionData.upperRY, positionData.upperRZ);
+  eulerSetRotationBody(lowerjaw.body, positionData.lowerRX, positionData.lowerRY, positionData.lowerRZ);
+  eulerSetRotationBody(upperjaw.body, positionData.lowerRX, positionData.lowerRY, positionData.lowerRZ);
+}
+
+function eulerSetRotationBody(body: any, eulerX: number, eulerY: number, eulerZ: number){
+  const quatX = new CANNON.Quaternion();
+  const quatY = new CANNON.Quaternion();
+  const quatZ = new CANNON.Quaternion();
+  quatX.setFromAxisAngle(new CANNON.Vec3(1, 0, 0), eulerX);
+  quatY.setFromAxisAngle(new CANNON.Vec3(0, 1, 0), eulerY);
+  quatZ.setFromAxisAngle(new CANNON.Vec3(0, 0, 1), eulerZ);
+  const combinedQuaternion = quatX.mult(quatY).mult(quatZ);
+  combinedQuaternion.normalize();
+  body.quaternion.copy(combinedQuaternion);
+}
+
+function autoSave(interval: number, save: () => void) {
+  const elapsedTime = clock.getElapsedTime();
+  
+  if (elapsedTime >= interval) {
+    console.log(interval, "seconds have passed");
+
+    // Additional checks, like only if an edit's been made
+    save();
+    // reset the clock
+    clock.start();
+  }
 }
 
 export default function DraggingView({ scanId, client, onQuit }: {scanId: number, client: any, onQuit: () => void}){
@@ -1056,11 +1042,9 @@ export default function DraggingView({ scanId, client, onQuit }: {scanId: number
     const [openMenu, setOpenMenu] = useState(false);
 
     useEffect(() => { // https://github.com/facebook/react/issues/24502
-        //init(initialScan);   //FIXFIX
         initCannon();
         initThree(setOpenMenu, setCurrentScan);
-        loadObjects();
-        // animate(); // Sets 
+        loadObjects(save);
         console.log('Init executed!');
 
         return () => { // Clean up when unmounted
@@ -1078,19 +1062,24 @@ export default function DraggingView({ scanId, client, onQuit }: {scanId: number
         };
     }, []);
 
+    const save = () => {
+      const newScan = updateScanData(scanId, setCurrentScan); // Voor als niet snel genoeg
+      const req = new SaveScanDataRequest({ scan: newScan });
+      client.saveScanData(req); // Data not used
+    }
+
     const onLoadItemClicked = (inputData: ScanSave) => {
         console.log(inputData)
         const {scanId, timestampSave, ...positionData } = inputData
+        console.log(positionData);
         loadPosition(positionData);
     }
+
     const onReset = () => {
       positionReset();
     }
     const props = {isOpen: openMenu, setIsOpen: setOpenMenu, current_scan, client, onLoadItemClicked, onQuit, onReset };
 
-    // resize
-
-    //window.addEventListener( 'resize', onWindowResize );
     const zoomInButton = document.getElementById("zoom-in");
     const zoomOutButton = document.getElementById("zoom-out");
 
@@ -1100,15 +1089,11 @@ export default function DraggingView({ scanId, client, onQuit }: {scanId: number
     camera.updateProjectionMatrix();
     };
 
-    //zoomInButton.addEventListener("click", zoomInFunction);
-
     const zoomOutFunction = (e: any) => {
     const fov = getFov();
     camera.fov = clickZoom(fov, "zoomOut");
     camera.updateProjectionMatrix();
     };
-
-    //zoomOutButton.addEventListener("click", zoomOutFunction);
 
     const clickZoom = (value: any, zoomType: any) => {
     if (value >= 20 && zoomType === "zoomIn") {
