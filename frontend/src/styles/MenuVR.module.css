@@ -174,11 +174,9 @@
 }
 .list_item {
   margin: 10px;
-  padding: 10px;
+  padding: 5px 0px;
   border-radius: 5px;
-
-  font-size: 15px;
-  width: 80%;
+  width: 95%;
 
   background-color: transparent;
   text-align: center;
@@ -187,7 +185,7 @@
   color: #fe7d00;
   font-size: 1rem;
   font-weight: 400;
-  line-height: 1.5;
+  line-height: 1;
 
   border-color: #fe7d00;
   border-width: 1px;
