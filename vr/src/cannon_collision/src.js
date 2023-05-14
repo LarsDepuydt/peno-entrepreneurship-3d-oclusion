@@ -8,11 +8,13 @@ import { default as CannonUtils } from 'cannon-utils';
 //import { sendPositionScan, getPositionScan } from '../../../frontend/src/gen/proto/threedoclusion/v1/service-ScanService_connectquery.ts'
 
 import { QuickHull } from './QuickHull.js';
-import { findSepAxis, findSepAxisOverload, ogSepAxis } from './findSepAxis.js'
+import { findSepAxis, findSepAxisOverload, ogSepAxisNoEdges } from './findSepAxis.js'
+
+
 
 
 // overload cannon.js function findSeparatingAxis by an equivalent that uses web workers
-CANNON.ConvexPolyhedron.prototype.findSeparatingAxis = findSepAxisOverload;
+CANNON.ConvexPolyhedron.prototype.findSeparatingAxis = ogSepAxisNoEdges;
 
 
 let container;
@@ -24,7 +26,9 @@ let controls;
 
 let raycaster;
 
-let world, timeStep=1/5;
+let world;
+const TARGET_DT = 1/10;
+const clock = new THREE.Clock();
 let frameNum = 0;
 
 
@@ -42,7 +46,6 @@ let lj_loaded = false, uj_loaded = false;
 const teeth_material = new THREE.MeshBasicMaterial({color: 0x0000ff});
 
 let target = new THREE.Vector3();
-const clock = new THREE.Clock();
 let lj_target = new THREE.Vector3();
 let uj_target = new THREE.Vector3();
 
@@ -55,7 +58,7 @@ loadObjects();  // animation is started after both objects are loaded
 
 function initCannon() {
     world = new CANNON.World();
-    world.gravity.set(0,-0.001,0);
+    world.gravity.set(0,-1,0);
     world.broadphase = new CANNON.NaiveBroadphase();
     world.broadphase.useBoundingBoxes = true;
     world.solver.iterations = 4;     //10
@@ -382,10 +385,10 @@ function ToVertices(geometry) {
 
 // main loops
 
-function updatePhysics() {
+async function updatePhysics(timestep) {
 
     // Step the physics world
-    world.step(timeStep);
+    await world.step(timestep);
 
     // Copy coordinates from Cannon.js to Three.js
     lj_mesh.position.copy(lj_body.position);
@@ -396,12 +399,15 @@ function updatePhysics() {
     uj_sphere.position.copy(uj_body.position);
 }
 
-function animate() {
-    checkTime();
+let delta;
+async function animate() {
+    // checkTime();
 
     // console.log("frame", frameNum);
     frameNum += 1;
-    updatePhysics();
+
+    delta = clock.getDelta();
+    await updatePhysics(delta);
     render();
 }
 
