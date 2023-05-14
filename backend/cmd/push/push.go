@@ -251,7 +251,7 @@ func GetLastSaveData(req *connect.Request[threedoclusionv1.GetLastSaveDataReques
 	var upperrz float32;
 	var upperrw float32;
 
-	error := database.QueryRow(sqlStatement, req.Msg.Id).Scan(&timestamp, &lowerx, &lowery, &lowerz, &lowerrx, &lowerry, &lowerrz, &upperx, &uppery, &upperz, &upperrx, &upperry, &upperrz)
+	error := database.QueryRow(sqlStatement, req.Msg.Id).Scan(&timestamp, &lowerx, &lowery, &lowerz, &lowerrx, &lowerry, &lowerrz, &lowerrw, &upperx, &uppery, &upperz, &upperrx, &upperry, &upperrz, &upperrw)
 	if error != nil {
 		return nil, error
 	}
