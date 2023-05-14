@@ -1,9 +1,6 @@
 import { useState } from 'react';
-import { Canvas } from '@react-three/fiber';
-import { Html, Plane } from '@react-three/drei';
 import { SendMenuOptionRequest, Scan, ScanSave } from '@/gen/proto/threedoclusion/v1/service_pb';
 import ListView from './list-view';
-import { Legenda } from './legenda';
 import stylesVR from '@/styles/MenuVR.module.css';
 
 async function sendMenuOption(optionNumber: number, clnt: any, oData: any) {
@@ -109,53 +106,48 @@ function Menu({
   };
 
   return isOpen ? (
-    <Canvas>
-      <Html>
-        <Legenda />
-        <div className={stylesVR.menu_container}>
-          <div className={`menu_button ${isOpen ? 'open' : ''}`} onClick={toggleMenu}>
-            <div className={stylesVR.menu_button_bar} />
-            <div className={stylesVR.menu_button_bar} />
-            <div className={stylesVR.menu_button_bar} />
+    <div className={stylesVR.menu_container}>
+      <div className={`menu_button ${isOpen ? 'open' : ''}`} onClick={toggleMenu}>
+        <div className={stylesVR.menu_button_bar} />
+        <div className={stylesVR.menu_button_bar} />
+        <div className={stylesVR.menu_button_bar} />
+      </div>
+      {!showListView ? (
+        <div className={stylesVR.menu_content}>
+          <div className={stylesVR.menu_header}>
+            <div className={stylesVR.menu_title}>Menu</div>
+            <button id={stylesVR.exitIcon} className={stylesVR.icon_btn} onClick={toggleMenu}></button>
           </div>
-          {!showListView ? (
-            <div className={stylesVR.menu_content}>
-              <div className={stylesVR.menu_header}>
-                <div className={stylesVR.menu_title}>Menu</div>
-                <button id={stylesVR.exitIcon} className={stylesVR.icon_btn} onClick={toggleMenu}></button>
-              </div>
-              <ul className={stylesVR.menu_options}>
-                <button className={stylesVR.menu_option} onClick={load}>
-                  Load
-                </button>
-                <button className={stylesVR.menu_option} onClick={save}>
-                  Save manually
-                </button>
-                <button className={stylesVR.menu_option} onClick={saveAndQuit}>
-                  Save and quit
-                </button>
-                <button className={stylesVR.menu_option} onClick={quit}>
-                  Quit
-                </button>
-                <button className={stylesVR.menu_option} onClick={reset}>
-                  Reset
-                </button>
-              </ul>
-            </div>
-          ) : (
-            <div className={stylesVR.list_view_container}>
-              <ListView
-                data={listData}
-                dictData={listDictData}
-                itemsPerPage={4}
-                onItemClicked={handleLoadItemClicked}
-                onBackClicked={handleBackClick}
-              />
-            </div>
-          )}
+          <ul className={stylesVR.menu_options}>
+            <button className={stylesVR.menu_option} onClick={load}>
+              Load
+            </button>
+            <button className={stylesVR.menu_option} onClick={save}>
+              Save manually
+            </button>
+            <button className={stylesVR.menu_option} onClick={saveAndQuit}>
+              Save and quit
+            </button>
+            <button className={stylesVR.menu_option} onClick={quit}>
+              Quit
+            </button>
+            <button className={stylesVR.menu_option} onClick={reset}>
+              Reset
+            </button>
+          </ul>
         </div>
-      </Html>
-    </Canvas>
+      ) : (
+        <div className={stylesVR.list_view_container}>
+          <ListView
+            data={listData}
+            dictData={listDictData}
+            itemsPerPage={4}
+            onItemClicked={handleLoadItemClicked}
+            onBackClicked={handleBackClick}
+          />
+        </div>
+      )}
+    </div>
   ) : null;
 }
 
