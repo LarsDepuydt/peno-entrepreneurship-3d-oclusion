@@ -60,7 +60,7 @@ func SendMenuOption(req *connect.Request[threedoclusionv1.SendMenuOptionRequest]
 		log.Println("Menu option Save was chosen");
 		// req.Msg.GetSaveData() Pass this to the method -> make abstraction
 
-		statement, error := database.Prepare("INSERT INTO scan_save (scan_id, lowerX, lowerY, lowerZ, lowerRX, lowerRY, lowerRZ, upperX, upperY, upperZ, upperRX, upperRY, upperRZ, timestamp_save) VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12, $13, $14, $15, $16)")
+		statement, error := database.Prepare("INSERT INTO scan_save (scan_id, lowerX, lowerY, lowerZ, lowerRX, lowerRY, lowerRZ, lowerRW, upperX, upperY, upperZ, upperRX, upperRY, upperRZ, upperRW, timestamp_save) VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12, $13, $14, $15, $16)")
 		if error != nil {
 			return nil, error
 		}
