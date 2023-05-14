@@ -182,8 +182,8 @@
   text-align: center;
 
   color: #fe7d00;
-  font-size: 1rem;
-  font-weight: 400;
+  font-size: 1.5rem;
+  font-weight: 700;
   line-height: 1.5;
 
   display: flex;
@@ -191,34 +191,9 @@
   align-items: center;
   margin: 0 10px;
   z-index: 999;
-}
 
-#exitIcon {
   width: 48px;
   height: 48px;
   margin: 8px;
-  background-image: url(../../public/Close_round.png);
-  background-repeat: no-repeat;
-  background-position: center;
-  border: none;
-}
-
-#leftIcon {
-  width: 48px;
-  height: 48px;
-  margin: 8px;
-  background-image: url(../../public/Arrow_drop_left.png);
-  background-repeat: no-repeat;
-  background-position: center;
-  border: none;
-}
-
-#rightIcon {
-  width: 48px;
-  height: 48px;
-  margin: 8px;
-  background-image: url(../../public/Arrow_drop_right.png);
-  background-repeat: no-repeat;
-  background-position: center;
   border: none;
 }
