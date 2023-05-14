@@ -7,6 +7,7 @@ import { useState, useEffect } from 'react';
 import { SendMenuOptionRequest, ScanSave, SaveScanDataRequest } from '@/gen/proto/threedoclusion/v1/service_pb';
 import Menu from './menu';
 import { HTMLMesh } from 'three/examples/jsm/interactive/HTMLMesh.js';
+import { Legenda } from './legenda';
 
 import * as CANNON from 'cannon-es';
 import {
@@ -1300,15 +1301,18 @@ export default function DraggingView({ scanId, client, onQuit }: { scanId: numbe
   };
 
   return (
-    <div className="menu-div">
-      <Menu {...props} />
-      <style jsx>{`
-        .menu-div {
-          position: absolute;
-          width: 300px;
-          height: 350px;
-        }
-      `}</style>
+    <div>
+      <Legenda />
+      <div className="menu-div">
+        <Menu {...props} />
+        <style jsx>{`
+          .menu-div {
+            position: absolute;
+            width: 300px;
+            height: 350px;
+          }
+        `}</style>
+      </div>
     </div>
   );
 }
