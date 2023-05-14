@@ -10,6 +10,12 @@ import { useRouter } from 'next/router';
 
 import * as CANNON from 'cannon-es';
 import { getFirstMesh, getFirstBufferGeometry, threeMeshToConvexThreeMesh, threeMeshToConvexCannonMesh, threeMeshToCannonMesh, checkTime, cannonMeshToCannonConvexPolyhedron, vec3ToVector3, vector3ToVec3, threeQuaternionToCannonQuaternion, applyQuaternion, sqnorm, quatDot, minusQuat } from './util.js'
+import { findSepAxisNoEdges } from './findSepAxis.js'
+
+
+// overload cannon.js function findSeparatingAxis with an equivalent that doesn't check for edge collisions
+CANNON.ConvexPolyhedron.prototype.findSeparatingAxis = findSepAxisNoEdges;
+
 
 // axis locking parameters
 var movement_mode : any;
