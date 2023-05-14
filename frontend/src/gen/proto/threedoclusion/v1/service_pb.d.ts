@@ -1266,6 +1266,114 @@ export declare class WaitingResponse extends Message<WaitingResponse> {
 }
 
 /**
+ * @generated from message threedoclusion.v1.GetLastSaveDataRequest
+ */
+export declare class GetLastSaveDataRequest extends Message<GetLastSaveDataRequest> {
+  /**
+   * @generated from field: int32 id = 1;
+   */
+  id: number;
+
+  constructor(data?: PartialMessage<GetLastSaveDataRequest>);
+
+  static readonly runtime: typeof proto3;
+  static readonly typeName = "threedoclusion.v1.GetLastSaveDataRequest";
+  static readonly fields: FieldList;
+
+  static fromBinary(bytes: Uint8Array, options?: Partial<BinaryReadOptions>): GetLastSaveDataRequest;
+
+  static fromJson(jsonValue: JsonValue, options?: Partial<JsonReadOptions>): GetLastSaveDataRequest;
+
+  static fromJsonString(jsonString: string, options?: Partial<JsonReadOptions>): GetLastSaveDataRequest;
+
+  static equals(a: GetLastSaveDataRequest | PlainMessage<GetLastSaveDataRequest> | undefined, b: GetLastSaveDataRequest | PlainMessage<GetLastSaveDataRequest> | undefined): boolean;
+}
+
+/**
+ * @generated from message threedoclusion.v1.GetLastSaveDataResponse
+ */
+export declare class GetLastSaveDataResponse extends Message<GetLastSaveDataResponse> {
+  /**
+   * @generated from field: string timestamp_save = 1;
+   */
+  timestampSave: string;
+
+  /**
+   * @generated from field: float lower_x = 2;
+   */
+  lowerX: number;
+
+  /**
+   * @generated from field: float lower_y = 3;
+   */
+  lowerY: number;
+
+  /**
+   * @generated from field: float lower_z = 4;
+   */
+  lowerZ: number;
+
+  /**
+   * @generated from field: float lower_r_x = 5;
+   */
+  lowerRX: number;
+
+  /**
+   * @generated from field: float lower_r_y = 6;
+   */
+  lowerRY: number;
+
+  /**
+   * @generated from field: float lower_r_z = 7;
+   */
+  lowerRZ: number;
+
+  /**
+   * @generated from field: float upper_x = 8;
+   */
+  upperX: number;
+
+  /**
+   * @generated from field: float upper_y = 9;
+   */
+  upperY: number;
+
+  /**
+   * @generated from field: float upper_z = 10;
+   */
+  upperZ: number;
+
+  /**
+   * @generated from field: float upper_r_x = 11;
+   */
+  upperRX: number;
+
+  /**
+   * @generated from field: float upper_r_y = 12;
+   */
+  upperRY: number;
+
+  /**
+   * @generated from field: float upper_r_z = 13;
+   */
+  upperRZ: number;
+
+  constructor(data?: PartialMessage<GetLastSaveDataResponse>);
+
+  static readonly runtime: typeof proto3;
+  static readonly typeName = "threedoclusion.v1.GetLastSaveDataResponse";
+  static readonly fields: FieldList;
+
+  static fromBinary(bytes: Uint8Array, options?: Partial<BinaryReadOptions>): GetLastSaveDataResponse;
+
+  static fromJson(jsonValue: JsonValue, options?: Partial<JsonReadOptions>): GetLastSaveDataResponse;
+
+  static fromJsonString(jsonString: string, options?: Partial<JsonReadOptions>): GetLastSaveDataResponse;
+
+  static equals(a: GetLastSaveDataResponse | PlainMessage<GetLastSaveDataResponse> | undefined, b: GetLastSaveDataResponse | PlainMessage<GetLastSaveDataResponse> | undefined): boolean;
+}
+
+/**
  * @generated from message threedoclusion.v1.DeletePatientByIdRequest
  */
 export declare class DeletePatientByIdRequest extends Message<DeletePatientByIdRequest> {
