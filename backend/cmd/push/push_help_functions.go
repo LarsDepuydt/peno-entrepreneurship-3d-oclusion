@@ -12,8 +12,8 @@ func GetResponseMakerScan(rows *sql.Rows) ([]*threedoclusionv1.ScanSave, error) 
 	for rows.Next() {
 		rowData := &threedoclusionv1.ScanSave{}
 		error := rows.Scan(&rowData.ScanId,
-			&rowData.LowerX, &rowData.LowerY, &rowData.LowerZ, &rowData.LowerRX, &rowData.LowerRY, &rowData.LowerRZ, 
-			&rowData.UpperX, &rowData.UpperY, &rowData.UpperZ, &rowData.UpperRX, &rowData.UpperRY, &rowData.UpperRZ, 
+			&rowData.LowerX, &rowData.LowerY, &rowData.LowerZ, &rowData.LowerRX, &rowData.LowerRY, &rowData.LowerRZ, &rowData.LowerRW,
+			&rowData.UpperX, &rowData.UpperY, &rowData.UpperZ, &rowData.UpperRX, &rowData.UpperRY, &rowData.UpperRZ, &rowData.UpperRW,
 			&rowData.TimestampSave)
 		if error != nil { // id
 			return nil, error
