@@ -15,7 +15,6 @@
   position: relative;
   border: 1px solid #000;
   margin: auto;
-  left: -50%;
   z-index: 999;
   display: flex;
   justify-content: center;
