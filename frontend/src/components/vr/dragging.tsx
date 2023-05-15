@@ -164,20 +164,6 @@ class Jaw {
 
       // called when resource is loaded
       function (object) {
-        /*object.traverse(function (child) {
-          if (child instanceof THREE.Mesh) {
-            const mesh = new THREE.Mesh(child.geometry, teethMaterial.clone());
-            mesh.geometry.translate(jaw.offset.x, jaw.offset.y, jaw.offset.z);
-            mesh.geometry.scale(0.01, 0.01, 0.01);
-            jaw.body.addShape(cannonMeshToCannonConvexPolyhedron(mesh));
-          }
-        });
-        jaw.body_loaded = true;
-        if (jaw.mesh_loaded && jaw.body_loaded) {
-          // actually a race condition
-          jaw.loaded = true;
-          afterLoad(save, callback);
-        }*/
         for (const child of object.children){
           if ((child as any).geometry !== undefined && (child as any).geometry.isBufferGeometry) {
             const mesh = new THREE.Mesh((child as any).geometry, teethMaterial.clone());
@@ -188,15 +174,8 @@ class Jaw {
         } 
         jaw.mesh = new THREE.Mesh(mergedGeometry(object), teethMaterial.clone());
 
-        /*jaw.mesh.geometry.translate(jaw.offset.x, jaw.offset.y, jaw.offset.z);
-        jaw.mesh.geometry.scale(0.01, 0.01, 0.01);*/
-        //jaw.mesh.position.set(0, 0, 0);
         scene.add(jaw.mesh);
 
-        //const shape = threeMeshToConvexCannonMesh(jaw.mesh);
-        //jaw.body.addShape(shape);
-
-        // calculate inertia
         jaw.INERTIA_STATIC = jaw.body.inertia;
         jaw.INERTIA_DYNAMIC = jaw.INERTIA_STATIC.scale(BODYMASS_DYNAMIC / BODYMASS_STATIC);
         console.log(jaw.INERTIA_DYNAMIC, jaw.INERTIA_STATIC);
@@ -257,14 +236,14 @@ class Jaw {
 
       // called when resource is loaded
       function (object) {
-        // object is a 'Group', which is a subclass of 'Object3D'
-        const buffergeo = getFirstBufferGeometry(object);
-        const mesh = new THREE.Mesh(buffergeo, teethMaterial.clone());
-        mesh.geometry.translate(jaw.offset.x, jaw.offset.y, jaw.offset.z);
-        mesh.geometry.scale(0.01, 0.01, 0.01);
-
-        const shape = threeMeshToConvexCannonMesh(mesh);
-        jaw.body.addShape(shape);
+        for (const child of object.children){
+          if ((child as any).geometry !== undefined && (child as any).geometry.isBufferGeometry) {
+            const mesh = new THREE.Mesh((child as any).geometry, teethMaterial.clone());
+            mesh.geometry.translate(jaw.offset.x, jaw.offset.y, jaw.offset.z);
+            mesh.geometry.scale(0.01, 0.01, 0.01);
+            jaw.body.addShape(threeMeshToConvexCannonMesh(mesh));
+          }
+        }
 
         // calculate inertia
         jaw.INERTIA_STATIC = jaw.body.inertia;
