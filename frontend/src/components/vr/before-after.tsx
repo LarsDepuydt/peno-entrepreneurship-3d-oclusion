@@ -17,8 +17,9 @@ const initialPosition = new THREE.Vector3(0, 2, 0.12); const initialRotation = n
 const initialPositionLower = initialPosition; const initialPositionUpper = initialPosition;
 const initialRotationLower = initialRotation; const initialRotationUpper = initialRotation;
 
-const finalPositionLower = new THREE.Vector3(0, 2, 0.12); const finalPositionUpper = new THREE.Vector3(1, 3, 1.12);
-const finalRotationLower = new THREE.Euler(2 * Math.PI, 0, 0, "XYZ"); const finalRotationUpper = new THREE.Euler(2 * Math.PI, 0.5 * Math.PI, 0, "XYZ"); 
+const finalPositionLower = initialPositionLower; const finalPositionUpper = initialPositionUpper;
+const finalRotationLower = initialRotationLower; const finalRotationUpper = new THREE.Euler(1.45 * Math.PI, 0, 0, "XYZ"); 
+
 // Get from request
 
 const clock = new THREE.Clock();
