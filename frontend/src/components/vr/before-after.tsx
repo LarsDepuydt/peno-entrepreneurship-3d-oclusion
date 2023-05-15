@@ -18,8 +18,8 @@ const initialPositionLower = initialPosition; const initialPositionUpper = initi
 const initialRotationLower = initialRotation; const initialRotationUpper = initialRotation;
 
 const finalPositionLower = initialPositionLower; const finalPositionUpper = initialPositionUpper;
-const finalRotationLower = new THREE.Euler(0, 0, 0, "XYZ"); 
-const finalRotationUpper = new THREE.Euler(0, Math.PI/8, 0, "XYZ");
+const finalRotationLower = initialRotationLower; const finalRotationUpper = new THREE.Euler(1.45 * Math.PI, 0, 0, "XYZ"); 
+
 // Get from request
 
 const clock = new THREE.Clock();
