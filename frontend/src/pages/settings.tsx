@@ -5,6 +5,7 @@ import { useState, useEffect, SetStateAction } from 'react';
 const Cookies = require('js-cookie');
 import stylesButton from '@/styles/Buttons.module.css';
 import stylesText from '@/styles/Header.module.css';
+import styles from '@/styles/PatientPage.module.scss';
 import Image from 'next/image';
 import reluLogo from '../../public/relu-logo-small.png';
 import { useRouter } from 'next/router';
@@ -69,7 +70,7 @@ export default function ClientPage() {
   const home = () => router.push('/patient');
 
   return (
-    <div>
+    <div className={styles.white_background}>
       <Image className={stylesText.small_logo_log} src={reluLogo} alt="relu logo" />
       <div className={stylesText.settingsContainer}>
         <div className={stylesText.settingsCodeWrapper}>
