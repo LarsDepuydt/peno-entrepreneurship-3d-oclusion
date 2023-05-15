@@ -517,12 +517,12 @@ function afterLoad(save: () => void, callback: () => void) {
 
     lowerjaw.body.addEventListener('collide', function (e) {
       console.log('collision detected!');
-      vibrateTrigger();
+      //vibrateTrigger();
     });
 
     upperjaw.body.addEventListener('collide', function (e) {
       console.log('collision detected!');
-      vibrateTrigger();
+      //vibrateTrigger();
     });
 
     console.log('starting animation');
