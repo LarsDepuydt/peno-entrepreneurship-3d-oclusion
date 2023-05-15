@@ -164,23 +164,6 @@ class Jaw {
 
       // called when resource is loaded
       function (object) {
-<<<<<<< HEAD
-=======
-        /*object.traverse(function (child) {
-          if (child instanceof THREE.Mesh) {
-            const mesh = new THREE.Mesh(child.geometry, teethMaterial.clone());
-            mesh.geometry.translate(jaw.offset.x, jaw.offset.y, jaw.offset.z);
-            mesh.geometry.scale(0.01, 0.01, 0.01);
-            jaw.body.addShape(cannonMeshToCannonConvexPolyhedron(mesh));
-          }
-        });
-        jaw.body_loaded = true;
-        if (jaw.mesh_loaded && jaw.body_loaded) {
-          // actually a race condition
-          jaw.loaded = true;
-          afterLoad(save, callback);
-        }*/
->>>>>>> 65ad5ac5331a12b5ddd7ef8eaa1afca18ba6a1fc
         for (const child of object.children){
           if ((child as any).geometry !== undefined && (child as any).geometry.isBufferGeometry) {
             const mesh = new THREE.Mesh((child as any).geometry, teethMaterial.clone());
@@ -190,19 +173,8 @@ class Jaw {
           }
         } 
         jaw.mesh = new THREE.Mesh(mergedGeometry(object), teethMaterial.clone());
-<<<<<<< HEAD
 
         scene.add(jaw.mesh);
-=======
-
-        /*jaw.mesh.geometry.translate(jaw.offset.x, jaw.offset.y, jaw.offset.z);
-        jaw.mesh.geometry.scale(0.01, 0.01, 0.01);*/
-        //jaw.mesh.position.set(0, 0, 0);
-        scene.add(jaw.mesh);
-
-        //const shape = threeMeshToConvexCannonMesh(jaw.mesh);
-        //jaw.body.addShape(shape);
->>>>>>> 65ad5ac5331a12b5ddd7ef8eaa1afca18ba6a1fc
 
         jaw.INERTIA_STATIC = jaw.body.inertia;
         jaw.INERTIA_DYNAMIC = jaw.INERTIA_STATIC.scale(BODYMASS_DYNAMIC / BODYMASS_STATIC);
