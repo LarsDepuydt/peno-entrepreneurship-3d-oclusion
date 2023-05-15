@@ -27,6 +27,9 @@ import {
   minusQuat,
 } from './util.js';
 import { findSepAxisNoEdges } from './findSepAxis.js';
+import CameraControls from 'camera-controls';
+
+
 
 // overload cannon.js function findSeparatingAxis with an equivalent that doesn't check for edge collisions
 CANNON.ConvexPolyhedron.prototype.findSeparatingAxis = findSepAxisNoEdges;
@@ -80,8 +83,6 @@ const UJ_OFFSET = new THREE.Vector3(-3.72, 46.93, 28.3);
 // set to true for debugging / development
 const DEBUGGING_MODE = true;
 
-const SCALE_FACTOR = 1.02;
-let threeScale = 1;
 
 class Jaw {
   name: any; // 'lowerjaw or upperjaw'
@@ -156,7 +157,22 @@ class Jaw {
     objLoader.load(
       path,
 
+      // called when resource is loaded
       function (object) {
+        /*object.traverse(function (child) {
+          if (child instanceof THREE.Mesh) {
+            const mesh = new THREE.Mesh(child.geometry, teethMaterial.clone());
+            mesh.geometry.translate(jaw.offset.x, jaw.offset.y, jaw.offset.z);
+            mesh.geometry.scale(0.01, 0.01, 0.01);
+            jaw.body.addShape(cannonMeshToCannonConvexPolyhedron(mesh));
+          }
+        });
+        jaw.body_loaded = true;
+        if (jaw.mesh_loaded && jaw.body_loaded) {
+          // actually a race condition
+          jaw.loaded = true;
+          afterLoad(save, callback);
+        }*/
         for (const child of object.children){
           if (child.geometry !== undefined && child.geometry.isBufferGeometry) {
             const mesh = new THREE.Mesh(child.geometry, teethMaterial.clone());
@@ -166,7 +182,14 @@ class Jaw {
           }
         } 
         jaw.mesh = new THREE.Mesh(mergedGeometry(object), teethMaterial.clone());
+
+        /*jaw.mesh.geometry.translate(jaw.offset.x, jaw.offset.y, jaw.offset.z);
+        jaw.mesh.geometry.scale(0.01, 0.01, 0.01);*/
+        //jaw.mesh.position.set(0, 0, 0);
         scene.add(jaw.mesh);
+
+        //const shape = threeMeshToConvexCannonMesh(jaw.mesh);
+        //jaw.body.addShape(shape);
 
         console.log('loading mesh succeeded');
         jaw.loaded = true;
@@ -275,8 +298,7 @@ class Jaw {
   }
 
   impulseToTarget() {
-    const targetWorldPosition = vector3ToVec3(this.target.getWorldPosition(new THREE.Vector3().multiplyScalar(1/threeScale))); // Vec3
-
+    const targetWorldPosition = vector3ToVec3(this.target.getWorldPosition(new THREE.Vector3())); // Vec3
 
     let dp: any;
     switch (movement_mode) {
@@ -321,10 +343,6 @@ class Jaw {
   torqueToTarget() {
     const identityQuat = new CANNON.Quaternion(0, 0, 0, 1);
     return identityQuat.slerp(this.dthetaToTarget(), ANGULAR_REACTIVITY);
-  }
-
-  zoomScale(){
-    this.body.position.scale(1/threeScale, this.body.position);
   }
 }
 
@@ -691,8 +709,6 @@ function render(callback: () => void) {
 }
 
 function updatePhysics() {
-  lowerjaw.zoomScale();
-  upperjaw.zoomScale();
   // Apply impulses and torques for both jaws
   lowerjaw.applyForces();
   upperjaw.applyForces();
@@ -703,6 +719,13 @@ function updatePhysics() {
   // Copy coordinates from Cannon.js to Three.js
   lowerjaw.syncPhysics();
   upperjaw.syncPhysics();
+}
+
+function onWindowResize() {
+  camera.aspect = window.innerWidth / window.innerHeight;
+  camera.updateProjectionMatrix();
+
+  renderer.setSize(window.innerWidth, window.innerHeight);
 }
 
 function buttonPressMenu(controller) {
@@ -737,6 +760,36 @@ function buttonPressMenu(controller) {
     deepestIntersectedElement.dispatchEvent(clickEvent);
   }
 }
+
+function dragControls(controller){
+  const intersects = getIntersectionMesh(controller, legendMesh);
+  if (intersects.length > 0) {
+
+    const localIntersectionPoint = menuMesh.worldToLocal(intersects[0].point.clone());
+    const meshWidth = (legendMesh.geometry as any).parameters.width;
+    const meshHeight = (legendMesh.geometry as any).parameters.height;
+
+    const normalizedX = (localIntersectionPoint.x + meshWidth / 2) / meshWidth;
+    const normalizedY = (localIntersectionPoint.y + meshHeight / 2) / meshHeight;
+
+    const legendDivWidth = legendDiv.offsetWidth;
+    const legendDivHeight = legendDiv.offsetHeight;
+
+    const legendDivPosition = {
+      x: normalizedX * legendDivWidth,
+      y: (1 - normalizedY) * legendDivHeight,
+    };
+    
+    const clickEvent = new MouseEvent('click', {
+      clientX: legendDivPosition.x,
+      clientY: legendDivPosition.y,
+      bubbles: true,
+      cancelable: true,
+    });
+    legendDiv.dispatchEvent(clickEvent);
+  }
+}
+
 // when controller pushes select button, select the object it is pointing to
 function onSelectStart(event) {
   const controller = event.target;
@@ -805,9 +858,8 @@ function onSqueezeStartRight() {
     pressedRight = true;
     setTimeout(function () {
       if (pressedRight) {
-        threeScale = SCALE_FACTOR;
-        upperjaw.mesh.scale.multiplyScalar(threeScale);
-        lowerjaw.mesh.scale.multiplyScalar(threeScale);
+        upperjaw.mesh.scale.multiplyScalar(1.002);
+        lowerjaw.mesh.scale.multiplyScalar(1.002);
         onSqueezeStartRight();
       }
     }, 10);
@@ -822,9 +874,8 @@ function onSqueezeStartLeft() {
     pressedLeft = true;
     setTimeout(function () {
       if (pressedLeft) {
-        threeScale = 1/SCALE_FACTOR;
-        upperjaw.mesh.scale.multiplyScalar(threeScale);
-        lowerjaw.mesh.scale.multiplyScalar(threeScale);
+        upperjaw.mesh.scale.multiplyScalar(0.998);
+        lowerjaw.mesh.scale.multiplyScalar(0.998);
         onSqueezeStartLeft();
       }
     }, 10);
@@ -836,7 +887,6 @@ function onSqueezeStartLeft() {
 function onSqueezeEndRight() {
   if (!menu_open) {
     pressedRight = false;
-    threeScale = 1;
   }
 }
 
@@ -845,7 +895,6 @@ function onSqueezeEndRight() {
 function onSqueezeEndLeft(event: any) {
   if (!menu_open) {
     pressedLeft = false;
-    threeScale = 1;
   }
 }
 
@@ -1016,7 +1065,6 @@ function positionReset() {
   upperjaw.body.quaternion.set(finalQuaternion.x, finalQuaternion.y, finalQuaternion.z, finalQuaternion.w);
   upperjaw.mesh.scale.set(1, 1, 1);
   lowerjaw.mesh.scale.set(1, 1, 1);
-  threeScale = 1; // Overbodig?
 }
 
 var curr_jaw: any;
@@ -1121,7 +1169,7 @@ function updateScanData(scanID: number, setCurrentScan: any) {
   return newScan;
 }
 
-function loadPosition(positionData: any) { // TO DO: Save needs to take zoom into account because now meshes would be way too far apart after saving when zooming in
+function loadPosition(positionData: any) {
   lowerjaw.body.position.set(positionData.lowerX, positionData.lowerY, positionData.lowerZ);
   upperjaw.body.position.set(positionData.upperX, positionData.upperY, positionData.upperZ);
   lowerjaw.body.quaternion.set(positionData.lowerRX, positionData.lowerRY, positionData.lowerRZ, positionData.lowerRW);
@@ -1130,7 +1178,7 @@ function loadPosition(positionData: any) { // TO DO: Save needs to take zoom int
   //putInFrontOfCamera();
 }
 
-function putInFrontOfCamera() { // Untested
+function putInFrontOfCamera() {
   const distanceFromBodyToCamera = 10;
   const direction = new THREE.Vector3();
   camera.getWorldDirection(direction);
@@ -1168,18 +1216,6 @@ function relativeQuaternion2to1(body1: any, body2: any) {
   const relativeQuaternion = new CANNON.Quaternion();
   body2Quaternion.mult(body1QuaternionInverse, relativeQuaternion);
   return relativeQuaternion;
-}
-
-function eulerSetRotationBody(body: any, eulerX: number, eulerY: number, eulerZ: number) {
-  const quatX = new CANNON.Quaternion();
-  const quatY = new CANNON.Quaternion();
-  const quatZ = new CANNON.Quaternion();
-  quatX.setFromAxisAngle(new CANNON.Vec3(1, 0, 0), eulerX);
-  quatY.setFromAxisAngle(new CANNON.Vec3(0, 1, 0), eulerY);
-  quatZ.setFromAxisAngle(new CANNON.Vec3(0, 0, 1), eulerZ);
-  const combinedQuaternion = quatX.mult(quatY).mult(quatZ);
-  combinedQuaternion.normalize();
-  body.quaternion.copy(combinedQuaternion);
 }
 
 function autoSave(interval: number, save: () => void) {
@@ -1288,6 +1324,35 @@ export default function DraggingView({ scanId, client, onQuit }: { scanId: numbe
     onQuit,
     onReset,
     onToggle: toggleMenu,
+  };
+
+  const zoomInButton = document.getElementById('zoom-in');
+  const zoomOutButton = document.getElementById('zoom-out');
+
+  const zoomInFunction = (e: any) => {
+    const fov = getFov();
+    camera.fov = clickZoom(fov, 'zoomIn');
+    camera.updateProjectionMatrix();
+  };
+
+  const zoomOutFunction = (e: any) => {
+    const fov = getFov();
+    camera.fov = clickZoom(fov, 'zoomOut');
+    camera.updateProjectionMatrix();
+  };
+
+  const clickZoom = (value: any, zoomType: any) => {
+    if (value >= 20 && zoomType === 'zoomIn') {
+      return value - 5;
+    } else if (value <= 75 && zoomType === 'zoomOut') {
+      return value + 5;
+    } else {
+      return value;
+    }
+  };
+
+  const getFov = () => {
+    return Math.floor((2 * Math.atan(camera.getFilmHeight() / 2 / camera.getFocalLength()) * 180) / Math.PI);
   };
 
   return (
