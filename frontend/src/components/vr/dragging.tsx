@@ -46,7 +46,7 @@ let clock = new THREE.Clock();
 
 let menu_open = true; // SET TO FALSE
 let menuDiv: HTMLElement, menuMesh: HTMLMesh;
-//let listViewDiv: HTMLElement, listViewMesh: HTMLMesh;
+let legendDiv: HTMLElement, legendMesh: HTMLMesh;
 
 const intersected = []; // global list that holds the first objects the controllers are pointing at
 const tempMatrix = new THREE.Matrix4();
@@ -395,9 +395,15 @@ function initThree(setOpenMenu: any, setCurrentScan: any) {
 
   menuDiv = document.querySelector('.menu-div');
   menuMesh = new HTMLMesh(menuDiv);
-  menuMesh.position.set(0, 1.5, -1); // Base off camera position and maybe update every frame so it follows around, also stop interaction with jaws while menu is enabled
+  menuMesh.position.set(0, 1.5, -1);
   menuMesh.scale.setScalar(1.8);
   scene.add(menuMesh);
+
+  legendDiv = document.querySelector('.legend');
+  legendMesh = new HTMLMesh(legendDiv);
+  legendMesh.position.set(0, 1.4, -1);
+  legendMesh.scale.setScalar(1.8);
+  scene.add(legendMesh);
 
   document.body.appendChild(VRButton.createButton(renderer));
 
@@ -1311,6 +1317,8 @@ export default function DraggingView({ scanId, client, onQuit }: { scanId: numbe
             height: 350px;
           }
         `}</style>
+      </div>
+      <div className="legend">
         <Legenda />
       </div>
     </div>
