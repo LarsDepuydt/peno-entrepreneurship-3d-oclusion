@@ -44,7 +44,7 @@ let controls: any;
 let raycaster: any;
 let clock = new THREE.Clock();
 
-let menu_open = false; // SET TO FALSE
+let menu_open = true; // SET TO FALSE
 let menuDiv: HTMLElement, menuMesh: HTMLMesh;
 //let listViewDiv: HTMLElement, listViewMesh: HTMLMesh;
 
@@ -1195,7 +1195,7 @@ export default function DraggingView({ scanId, client, onQuit }: { scanId: numbe
     timestampSave: '2006-01-02T15:04:05',
   });
   const [current_scan, setCurrentScan] = useState<ScanSave>(initialScan);
-  const [openMenu, setOpenMenu] = useState(false); // SET TO FALSE
+  const [openMenu, setOpenMenu] = useState(true); // SET TO FALSE
 
   const toggleMenu = () => {
     if (openMenu) {
@@ -1302,7 +1302,6 @@ export default function DraggingView({ scanId, client, onQuit }: { scanId: numbe
 
   return (
     <div>
-      <Legenda />
       <div className="menu-div">
         <Menu {...props} />
         <style jsx>{`
@@ -1312,6 +1311,7 @@ export default function DraggingView({ scanId, client, onQuit }: { scanId: numbe
             height: 350px;
           }
         `}</style>
+        <Legenda />
       </div>
     </div>
   );

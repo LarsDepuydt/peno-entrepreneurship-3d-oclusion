@@ -4,7 +4,6 @@ import { ScanService } from '@/gen/proto/threedoclusion/v1/service_connect';
 import { createPromiseClient } from '@bufbuild/connect';
 import { useTransport } from '@bufbuild/connect-query';
 import { SubscribeConnectionRequest, SubscribeConnectionResponse } from '@/gen/proto/threedoclusion/v1/service_pb';
-import { Legenda } from '@/components/vr/legenda';
 import dynamic from 'next/dynamic';
 import { useRouter } from 'next/router';
 
@@ -50,7 +49,6 @@ export default function StartVRPage() {
   return (
     // Only executed on the client side
     <div>
-      <Legenda />
       {isNavigatorAvailable}
       <DraggingView {...props} />
     </div>

@@ -90,9 +90,6 @@
 }
 
 .legenda {
-  position: fixed; /* <------------------- vage hacks om de positie te fixen, remove if needed*/
-  right: -48vw; /* <------------------- vage hacks om de positie te fixen, remove if needed*/
-  top: -48vh; /* <------------------- vage hacks om de positie te fixen, remove if needed*/
   z-index: 999;
 
   background-color: rgba(0, 0, 0, 0.8);

@@ -21,7 +21,7 @@ function Menu({
   onLoadItemClicked,
   onQuit,
   onReset,
-  onToggle
+  onToggle,
 }: {
   isOpen: boolean;
   setIsOpen: any;
@@ -82,8 +82,8 @@ function Menu({
   const saveAndQuit = async () => {
     const optionData = { case: 'saveData', value: current_scan };
     const res = await sendMenuOption(2, client, optionData);
-    console.log("Save and quit!")
-    onQuit()
+    console.log('Save and quit!');
+    onQuit();
   };
 
   const quit = async () => {
@@ -115,7 +115,10 @@ function Menu({
         <div className={stylesVR.menu_content}>
           <div className={stylesVR.menu_header}>
             <div className={stylesVR.menu_title}>Menu</div>
-            <button className={stylesVR.icon_btn} onClick={toggleMenu}> X </button>
+            <button className={stylesVR.icon_btn} onClick={toggleMenu}>
+              {' '}
+              X{' '}
+            </button>
           </div>
           <ul className={stylesVR.menu_options}>
             <button className={stylesVR.menu_option} onClick={load}>
