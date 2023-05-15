@@ -16,7 +16,7 @@ import {
   threeMeshToConvexThreeMesh,
   threeMeshToConvexCannonMesh,
   threeMeshToCannonMesh,
-  checkTime,
+  mergedGeometry,
   cannonMeshToCannonConvexPolyhedron,
   vec3ToVector3,
   vector3ToVec3,
@@ -78,7 +78,8 @@ const LJ_OFFSET = new THREE.Vector3(-2.24, 45.35, 42.25);
 const UJ_OFFSET = new THREE.Vector3(-3.72, 46.93, 28.3);
 
 // set to true for debugging / development
-const DEBUGGING_MODE = false;
+const DEBUGGING_MODE = true;
+
 
 class Jaw {
   name: any; // 'lowerjaw or upperjaw'
@@ -155,16 +156,37 @@ class Jaw {
 
       // called when resource is loaded
       function (object) {
-        // object is a 'Group', which is a subclass of 'Object3D'
-        const buffergeo = getFirstBufferGeometry(object);
-        jaw.mesh = new THREE.Mesh(buffergeo, teethMaterial.clone());
-        //jaw.mesh.userData.originalScale = jaw.mesh.scale.clone();
-        jaw.mesh.geometry.translate(jaw.offset.x, jaw.offset.y, jaw.offset.z);
-        jaw.mesh.geometry.scale(0.01, 0.01, 0.01);
+        /*object.traverse(function (child) {
+          if (child instanceof THREE.Mesh) {
+            const mesh = new THREE.Mesh(child.geometry, teethMaterial.clone());
+            mesh.geometry.translate(jaw.offset.x, jaw.offset.y, jaw.offset.z);
+            mesh.geometry.scale(0.01, 0.01, 0.01);
+            jaw.body.addShape(cannonMeshToCannonConvexPolyhedron(mesh));
+          }
+        });
+        jaw.body_loaded = true;
+        if (jaw.mesh_loaded && jaw.body_loaded) {
+          // actually a race condition
+          jaw.loaded = true;
+          afterLoad(save, callback);
+        }*/
+        for (const child of object.children){
+          if (child.geometry !== undefined && child.geometry.isBufferGeometry) {
+            const mesh = new THREE.Mesh(child.geometry, teethMaterial.clone());
+            mesh.geometry.translate(jaw.offset.x, jaw.offset.y, jaw.offset.z);
+            mesh.geometry.scale(0.01, 0.01, 0.01);
+            jaw.body.addShape(threeMeshToConvexCannonMesh(mesh));
+          }
+        } 
+        jaw.mesh = new THREE.Mesh(mergedGeometry(object), teethMaterial.clone());
+
+        /*jaw.mesh.geometry.translate(jaw.offset.x, jaw.offset.y, jaw.offset.z);
+        jaw.mesh.geometry.scale(0.01, 0.01, 0.01);*/
+        //jaw.mesh.position.set(0, 0, 0);
         scene.add(jaw.mesh);
 
-        const shape = threeMeshToConvexCannonMesh(jaw.mesh);
-        jaw.body.addShape(shape);
+        //const shape = threeMeshToConvexCannonMesh(jaw.mesh);
+        //jaw.body.addShape(shape);
 
         console.log('loading mesh succeeded');
         jaw.loaded = true;
@@ -453,8 +475,8 @@ function initThree(setOpenMenu: any, setCurrentScan: any) {
 }
 
 function loadObjects(save: () => void, callback: () => void) {
-  lowerjaw = new Jaw('lowerjaw', '/lower_180.obj', '/lower_ios_6.obj', save, callback);
-  upperjaw = new Jaw('upperjaw', '/upper_209.obj', '/upper_ios_6.obj', save, callback);
+  lowerjaw = new Jaw('lowerjaw', '/lower-hacd.obj', '/lower_ios_6.obj', save, callback);
+  upperjaw = new Jaw('upperjaw', '/upper-hacd.obj', '/upper_ios_6.obj', save, callback);
 
   curr_jaw = upperjaw;
 }
