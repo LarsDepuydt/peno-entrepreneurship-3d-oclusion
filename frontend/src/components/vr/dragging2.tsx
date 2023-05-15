@@ -17,7 +17,7 @@ import {
   threeMeshToConvexThreeMesh,
   threeMeshToConvexCannonMesh,
   threeMeshToCannonMesh,
-  checkTime,
+  mergedGeometry,
   cannonMeshToCannonConvexPolyhedron,
   vec3ToVector3,
   vector3ToVec3,
