@@ -11,7 +11,7 @@ Run `make down` as sudo to stop the backend and database.
 
 
 ## Protobuf
-Run `make buf`to lint the schema and generate the code
+Run `make buf` to lint the schema and generate the code
 
 Send request to cloud backend and database
 ``` 

@@ -51,34 +51,44 @@ export declare class ScanSave extends Message<ScanSave> {
   lowerRZ: number;
 
   /**
-   * @generated from field: float upper_x = 9;
+   * @generated from field: float lower_r_w = 9;
+   */
+  lowerRW: number;
+
+  /**
+   * @generated from field: float upper_x = 10;
    */
   upperX: number;
 
   /**
-   * @generated from field: float upper_y = 10;
+   * @generated from field: float upper_y = 11;
    */
   upperY: number;
 
   /**
-   * @generated from field: float upper_z = 11;
+   * @generated from field: float upper_z = 12;
    */
   upperZ: number;
 
   /**
-   * @generated from field: float upper_r_x = 12;
+   * @generated from field: float upper_r_x = 13;
    */
   upperRX: number;
 
   /**
-   * @generated from field: float upper_r_y = 13;
+   * @generated from field: float upper_r_y = 14;
    */
   upperRY: number;
 
   /**
-   * @generated from field: float upper_r_z = 14;
+   * @generated from field: float upper_r_z = 15;
    */
   upperRZ: number;
+
+  /**
+   * @generated from field: float upper_r_w = 16;
+   */
+  upperRW: number;
 
   constructor(data?: PartialMessage<ScanSave>);
 
@@ -1329,34 +1339,44 @@ export declare class GetLastSaveDataResponse extends Message<GetLastSaveDataResp
   lowerRZ: number;
 
   /**
-   * @generated from field: float upper_x = 8;
+   * @generated from field: float lower_r_w = 8;
+   */
+  lowerRW: number;
+
+  /**
+   * @generated from field: float upper_x = 9;
    */
   upperX: number;
 
   /**
-   * @generated from field: float upper_y = 9;
+   * @generated from field: float upper_y = 10;
    */
   upperY: number;
 
   /**
-   * @generated from field: float upper_z = 10;
+   * @generated from field: float upper_z = 11;
    */
   upperZ: number;
 
   /**
-   * @generated from field: float upper_r_x = 11;
+   * @generated from field: float upper_r_x = 12;
    */
   upperRX: number;
 
   /**
-   * @generated from field: float upper_r_y = 12;
+   * @generated from field: float upper_r_y = 13;
    */
   upperRY: number;
 
   /**
-   * @generated from field: float upper_r_z = 13;
+   * @generated from field: float upper_r_z = 14;
    */
   upperRZ: number;
+
+  /**
+   * @generated from field: float upper_r_w = 15;
+   */
+  upperRW: number;
 
   constructor(data?: PartialMessage<GetLastSaveDataResponse>);
 
