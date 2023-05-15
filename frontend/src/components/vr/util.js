@@ -2,7 +2,6 @@ import * as THREE from 'three';
 import * as CANNON from 'cannon-es';
 
 import { QuickHull } from './QuickHull.js';
-//import { QuickHull } from './QuickHull_new.js';
 
 import { ConvexHull } from 'three/addons/math/ConvexHull.js';
 import { ConvexGeometry } from 'three/addons/geometries/ConvexGeometry.js'
