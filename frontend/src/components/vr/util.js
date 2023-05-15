@@ -2,9 +2,10 @@ import * as THREE from 'three';
 import * as CANNON from 'cannon-es';
 
 import { QuickHull } from './QuickHull.js';
+
 import { ConvexHull } from 'three/addons/math/ConvexHull.js';
 import { ConvexGeometry } from 'three/addons/geometries/ConvexGeometry.js'
-//import { sendPositionScan, getPositionScan } from '../../../frontend/src/gen/proto/threedoclusion/v1/service-ScanService_connectquery'
+import * as BufferGeometryUtils from "three/examples/jsm/utils/BufferGeometryUtils.js";
 
 
 /**
@@ -244,57 +245,6 @@ function compareVertexProjectionAngles(vertexIndex_a, vertexIndex_b) {
     return 0;
 }
 
-
-
-const clock = new THREE.Clock();
-function checkTime(lj_mesh) {
-    const elapsedTime = clock.getElapsedTime();
-    
-    if (elapsedTime >= 5) {
-      sendPosition(lj_mesh); // Send position after 5 seconds)
-      console.log("5 seconds have passed");
-      
-      // reset the clock
-      clock.start();
-    }
-}
-/*
-function sendPosition(lj_mesh){
-    const coordinate_info = lj_mesh.position;
-    const rotation_info = lj_mesh.rotation;
-
-    const {x, y, z} = coordinate_info;
-    const {r_x, r_y, r_z} = rotation_info;
-    /*
-    // Split into coordinates
-    const x = coordinate_info.x;
-    const y = coordinate_info.y;
-    const z = coordinate_info.z;
-    const r_x = rotation_info.x;
-    const r_y = rotation_info.y;
-    const r_z = rotation_info.z;
-    */
-    /*const scanID = 111; // Hardcoded
-    // Call service based on scan ID
-    
-    const {data} = useQuery(sendPositionScan.useQuery({ scanID, x, y, z, r_x, r_y, r_z }));
-    
-    if (!data.saved){ // Check if saved is OK else try again
-        // Maybe wait a bit?
-        sendPosition() // Repeat
-    }
-}*/
-
-/*function getPosition(lj_mesh){
-    target = lj_mesh.position;
-    // Call service based on scan ID
-    const scanID = 111; // Hardcoded
-    const {data} = useQuery(getPositionScan.useQuery({ scanID }));
-    
-    const {x, y, z, r_x, r_y, r_z} = data;
-    return x, y, z, r_x, r_y, r_z
-}*/
-
 function vector3ToVec3(vector) {
     return new CANNON.Vec3(vector.x, vector.y, vector.z);
 }
@@ -371,5 +321,19 @@ function minusQuat(q) {
     return new CANNON.Quaternion(-q.x, -q.y, -q.z, -q.w);
 }
 
+export function mergedGeometry(object){
+    const geometries = [];
 
-export { getFirstMesh, getFirstBufferGeometry, threeMeshToConvexThreeMesh, threeMeshToConvexCannonMesh, cannonMeshToCannonConvexPolyhedron, threeMeshToCannonMesh, checkTime, vector3ToVec3, vec3ToVector3, cannonQuaternionToThreeQuaternion, threeQuaternionToCannonQuaternion, applyQuaternion, sqnorm, quatDot, minusQuat, dictToVec3, invVec3 };
+    object.traverse((child) => {
+    if (child.isMesh) {
+        const bufferGeometry = child.geometry.isBufferGeometry
+        ? child.geometry
+        : new THREE.BufferGeometry().fromGeometry(child.geometry);
+        geometries.push(bufferGeometry);
+    }
+    });
+    return BufferGeometryUtils.mergeBufferGeometries(geometries);
+}
+
+
+export { getFirstMesh, getFirstBufferGeometry, threeMeshToConvexThreeMesh, threeMeshToConvexCannonMesh, cannonMeshToCannonConvexPolyhedron, threeMeshToCannonMesh, vector3ToVec3, vec3ToVector3, cannonQuaternionToThreeQuaternion, threeQuaternionToCannonQuaternion, applyQuaternion, sqnorm, quatDot, minusQuat, dictToVec3, invVec3 };
