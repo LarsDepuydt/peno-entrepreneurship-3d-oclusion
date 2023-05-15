@@ -179,8 +179,8 @@ class Jaw {
           afterLoad(save, callback);
         }*/
         for (const child of object.children){
-          if (child.geometry !== undefined && child.geometry.isBufferGeometry) {
-            const mesh = new THREE.Mesh(child.geometry, teethMaterial.clone());
+          if ((child as any).geometry !== undefined && (child as any).geometry.isBufferGeometry) {
+            const mesh = new THREE.Mesh((child as any).geometry, teethMaterial.clone());
             mesh.geometry.translate(jaw.offset.x, jaw.offset.y, jaw.offset.z);
             mesh.geometry.scale(0.01, 0.01, 0.01);
             jaw.body.addShape(threeMeshToConvexCannonMesh(mesh));
