@@ -9,8 +9,6 @@ async function sendMenuOption(optionNumber: number, clnt: any, oData: any) {
   req.option = optionNumber;
   req.optionData = { value: oData.value, case: oData.case };
 
-  //console.log(req);
-  //console.log('req before sending:', JSON.stringify(req, null, 2));
   const res = await clnt.sendMenuOption(req);
   return res;
 }
@@ -23,6 +21,7 @@ function Menu({
   onLoadItemClicked,
   onQuit,
   onReset,
+  onToggle,
 }: {
   isOpen: boolean;
   setIsOpen: any;
@@ -31,6 +30,7 @@ function Menu({
   onLoadItemClicked: (inputData: ScanSave) => void;
   onQuit: () => void;
   onReset: () => void;
+  onToggle: () => void;
 }) {
   // Add props with positions, client...
   const [showListView, setShowListView] = useState(false);
@@ -38,7 +38,7 @@ function Menu({
   const [listDictData, setListDictData] = useState({});
 
   const toggleMenu = () => {
-    setIsOpen(!isOpen);
+    onToggle();
   };
 
   const handleLoadItemClicked = (inputData: ScanSave) => {
@@ -61,7 +61,6 @@ function Menu({
           console.log('Load!');
           const extractedTimestamps: string[] = [];
           const dictTimeStamps: { [timestamp: string]: ScanSave } = {};
-          console.log(res.wrap.loadData);
           for (const scan of res.wrap.loadData) {
             dictTimeStamps[scan.timestampSave] = scan; // Maybe omit id and timestamp values since unnecessary
             extractedTimestamps.push(scan.timestampSave);
@@ -84,6 +83,7 @@ function Menu({
     const optionData = { case: 'saveData', value: current_scan };
     const res = await sendMenuOption(2, client, optionData);
     console.log('Save and quit!');
+    onQuit();
   };
 
   const quit = async () => {
@@ -101,7 +101,6 @@ function Menu({
 
   const reset = async () => {
     console.log('Resetting position');
-    //positionReset();
     onReset();
   };
 
@@ -116,7 +115,10 @@ function Menu({
         <div className={stylesVR.menu_content}>
           <div className={stylesVR.menu_header}>
             <div className={stylesVR.menu_title}>Menu</div>
-            <button id={stylesVR.exitIcon} className={stylesVR.icon_btn} onClick={toggleMenu}></button>
+            <button className={stylesVR.icon_btn} onClick={toggleMenu}>
+              {' '}
+              X{' '}
+            </button>
           </div>
           <ul className={stylesVR.menu_options}>
             <button className={stylesVR.menu_option} onClick={load}>
