@@ -1,6 +1,6 @@
 import * as THREE from 'three';
 import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls';
-import { VRButton } from 'three/examples/jsm/webxr/VRButton.js';
+import { ARButton } from 'three/examples/jsm/webxr/ARButton.js';
 import { XRControllerModelFactory } from 'three/examples/jsm/webxr/XRControllerModelFactory.js';
 import { OBJLoader } from 'three/examples/jsm/loaders/OBJLoader.js';
 import { useState, useEffect } from 'react';
@@ -8,8 +8,7 @@ import { SendMenuOptionRequest, ScanSave, SaveScanDataRequest } from '@/gen/prot
 import Menu from './menu';
 import { HTMLMesh } from 'three/examples/jsm/interactive/HTMLMesh.js';
 import { Legenda } from './legenda';
-import { useRouter } from 'next/router';
-import styles from '@/styles/ClientPage.module.css';
+//import ARButton from "https://cdn.rawgit.com/mrdoob/three.js/r117/examples/jsm/webxr/ARButton.js";
 
 import * as CANNON from 'cannon-es';
 import {
@@ -401,7 +400,7 @@ function initThree(setOpenMenu: any, setCurrentScan: any) {
 
   // create scene and camera
   scene = new THREE.Scene();
-  scene.background = new THREE.Color(0x808080);
+  //scene.background = new THREE.Color(0x808080);
   camera = new THREE.PerspectiveCamera(50, window.innerWidth / window.innerHeight, 0.1, 1000);
   camera.position.set(0, 1.6, 3);
 
@@ -417,7 +416,7 @@ function initThree(setOpenMenu: any, setCurrentScan: any) {
   }
 
   // add floor
-  const floorGeometry = new THREE.PlaneGeometry(4, 4);
+  /*const floorGeometry = new THREE.PlaneGeometry(4, 4);
   const floorMaterial = new THREE.MeshStandardMaterial({
     color: 0xeeeeee,
     roughness: 1.0,
@@ -426,7 +425,7 @@ function initThree(setOpenMenu: any, setCurrentScan: any) {
   const floor = new THREE.Mesh(floorGeometry, floorMaterial);
   floor.rotation.x = -Math.PI / 2;
   floor.receiveShadow = true;
-  scene.add(floor);
+  scene.add(floor);*/
 
   // light sources
   scene.add(new THREE.HemisphereLight(0x808080, 0x606060));
@@ -443,7 +442,7 @@ function initThree(setOpenMenu: any, setCurrentScan: any) {
 
   // add renderer and enable VR
 
-  renderer = new THREE.WebGLRenderer({ antialias: true });
+  renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true });
   renderer.setPixelRatio(window.devicePixelRatio);
   renderer.setSize(window.innerWidth, window.innerHeight);
   renderer.outputEncoding = THREE.sRGBEncoding;
@@ -463,7 +462,7 @@ function initThree(setOpenMenu: any, setCurrentScan: any) {
   legendMesh.scale.setScalar(1.8);
   scene.add(legendMesh);
 
-  document.body.appendChild(VRButton.createButton(renderer));
+  document.body.appendChild(ARButton.createButton(renderer));
 
   // controllers
 
@@ -1278,14 +1277,6 @@ function autoSave(interval: number, save: () => void) {
 }
 
 export default function DraggingView({ scanId, client, onQuit }: { scanId: number; client: any; onQuit: () => void }) {
-  const router = useRouter();
-  function goToAR() {
-    router.push({
-      pathname: '/start-ar',
-      query: { scanID: scanId },
-    });
-  }
-
   const initialScan = new ScanSave({
     lowerX: 0,
     lowerY: 2,
@@ -1331,7 +1322,6 @@ export default function DraggingView({ scanId, client, onQuit }: { scanId: numbe
 
     return () => {
       // Clean up when unmounted
-
       if (session) {
         // Only if session's been started
         session.end();
@@ -1413,7 +1403,6 @@ export default function DraggingView({ scanId, client, onQuit }: { scanId: numbe
 
   return (
     <div>
-      <button onClick={goToAR} className={styles.btn}>Go To AR</button>
       <div className="menu-div">
         <Menu {...props} />
         <style jsx>{`
