@@ -339,12 +339,8 @@ class Jaw {
       }
     }
 
-    // use lower reactivity when colliding and one object is static
-    if (this.colliding && (lowerjaw.body.type == CANNON.Body.STATIC || upperjaw.body.type == CANNON.Body.STATIC) ) {
-      return dp.scale(IMPULSE_REACTIVITY_COLLISION); // Vec3
-    } else {
-      return dp.scale(IMPULSE_REACTIVITY); // Vec3
-    }
+    const impulse = dp.scale(IMPULSE_REACTIVITY); // Vec3
+    return impulse;
   }
 
   dthetaToTarget() {
@@ -791,6 +787,7 @@ function buttonPressMenu(controller) {
   }
 }
 
+
 function dragControls(controller){
   const intersects = getIntersectionMesh(controller, legendMesh);
   if (intersects.length > 0) {
@@ -843,7 +840,6 @@ function onSelectStart(event) {
         jaw.body.invInertia = invVec3(jaw.INERTIA_DYNAMIC);
         controller.userData.selected = jaw;
         addMovementToUndoStack(jaw.body);
-        console.log(undoStack);
       }
     } else {
       const intersectionsLegend = getIntersectionMesh(controller, legendMesh);
@@ -1159,6 +1155,7 @@ function redoWhenPressed() {
         if (handedness == 'left') {
           continue;
         } // we willen enkel de 'A' knop van de rechtercontroller
+
       }
       if (!source.gamepad) continue;
       const controller = renderer.xr.getController(iiii++);
