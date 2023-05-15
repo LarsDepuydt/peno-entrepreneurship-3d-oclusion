@@ -12,10 +12,8 @@
   border-radius: 1rem;
 }
 .menu_container {
-  position: relative;
-  border: 1px solid #000;
   margin: auto;
-  left: -50%;
+  border: 1px solid #000;
   z-index: 999;
   display: flex;
   justify-content: center;
@@ -92,9 +90,6 @@
 }
 
 .legenda {
-  position: fixed; /* <------------------- vage hacks om de positie te fixen, remove if needed*/
-  right: -48vw; /* <------------------- vage hacks om de positie te fixen, remove if needed*/
-  top: -48vh; /* <------------------- vage hacks om de positie te fixen, remove if needed*/
   z-index: 999;
 
   background-color: rgba(0, 0, 0, 0.8);
@@ -142,6 +137,18 @@
   width: 100%;
   height: 100%;
 }
+
+.list_view {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-direction: column;
+  flex-wrap: nowrap;
+  z-index: 999;
+  width: 100%;
+  height: 100%;
+}
+
 .list_view_header {
   display: flex;
   justify-content: space-between;
@@ -149,32 +156,53 @@
   width: 100%;
   padding: 10px;
 }
-.list-view-content {
+.list_view_content {
   position: relative;
   display: flex;
   flex-direction: column;
   align-items: center;
-  width: 100%;
-  height: 90%;
+  width: 85%;
+  height: auto;
   background-color: #333;
   border-radius: 10px;
-  color: #fff;
+  color: #fe7d00;
   font-size: 20px;
   text-align: center;
 }
 .list_item {
-  margin: 10px;
-  padding: 10px;
-  background-color: #444;
+  margin: 5px;
+  padding: 6px;
   border-radius: 5px;
+
+  font-size: 15px;
+  width: 100%;
+
+  background-color: transparent;
+  text-align: center;
+  padding: 5px 10px;
+
+  color: #fe7d00;
+  font-size: 1rem;
+  font-weight: 400;
+  line-height: 1.5;
+
+  border-color: #fe7d00;
+  border-width: 1px;
+  border-style: solid;
+  border-radius: 0.375rem;
 }
 .list_controls {
-  position: absolute;
-  bottom: 5%;
-  left: 50%;
-  transform: translateX(-50%);
+  position: relative;
   display: flex;
   align-items: center;
+
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+  flex-direction: row;
+  flex-wrap: nowrap;
+  margin: 0 10px;
+  z-index: 999;
 }
 
 .icon_btn {
@@ -182,8 +210,8 @@
   text-align: center;
 
   color: #fe7d00;
-  font-size: 1rem;
-  font-weight: 400;
+  font-size: 20px;
+  font-weight: 1000;
   line-height: 1.5;
 
   display: flex;
@@ -191,34 +219,9 @@
   align-items: center;
   margin: 0 10px;
   z-index: 999;
-}
 
-#exitIcon {
   width: 48px;
   height: 48px;
   margin: 8px;
-  background-image: url(../../public/Close_round.png);
-  background-repeat: no-repeat;
-  background-position: center;
-  border: none;
-}
-
-#leftIcon {
-  width: 48px;
-  height: 48px;
-  margin: 8px;
-  background-image: url(../../public/Arrow_drop_left.png);
-  background-repeat: no-repeat;
-  background-position: center;
-  border: none;
-}
-
-#rightIcon {
-  width: 48px;
-  height: 48px;
-  margin: 8px;
-  background-image: url(../../public/Arrow_drop_right.png);
-  background-repeat: no-repeat;
-  background-position: center;
   border: none;
 }
