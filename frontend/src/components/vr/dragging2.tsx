@@ -1,6 +1,6 @@
 import * as THREE from 'three';
 import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls';
-import { VRButton } from 'three/examples/jsm/webxr/VRButton.js';
+import { ARButton } from 'three/examples/jsm/webxr/ARButton.js';
 import { XRControllerModelFactory } from 'three/examples/jsm/webxr/XRControllerModelFactory.js';
 import { OBJLoader } from 'three/examples/jsm/loaders/OBJLoader.js';
 import { useState, useEffect } from 'react';
@@ -8,8 +8,7 @@ import { SendMenuOptionRequest, ScanSave, SaveScanDataRequest } from '@/gen/prot
 import Menu from './menu';
 import { HTMLMesh } from 'three/examples/jsm/interactive/HTMLMesh.js';
 import { Legenda } from './legenda';
-import { useRouter } from 'next/router';
-import styles from '@/styles/ClientPage.module.css';
+//import ARButton from "https://cdn.rawgit.com/mrdoob/three.js/r117/examples/jsm/webxr/ARButton.js";
 
 import * as CANNON from 'cannon-es';
 import {
@@ -88,7 +87,6 @@ const UJ_OFFSET = new THREE.Vector3(-3.72, 46.93, 28.3);
 // set to true for debugging / development
 const DEBUGGING_MODE = false;
 
-
 class Jaw {
   name: any; // 'lowerjaw or upperjaw'
   offset: any; // THREE.Vector3
@@ -166,37 +164,17 @@ class Jaw {
 
       // called when resource is loaded
       function (object) {
-        /*object.traverse(function (child) {
-          if (child instanceof THREE.Mesh) {
-            const mesh = new THREE.Mesh(child.geometry, teethMaterial.clone());
-            mesh.geometry.translate(jaw.offset.x, jaw.offset.y, jaw.offset.z);
-            mesh.geometry.scale(0.01, 0.01, 0.01);
-            jaw.body.addShape(cannonMeshToCannonConvexPolyhedron(mesh));
-          }
-        });
-        jaw.body_loaded = true;
-        if (jaw.mesh_loaded && jaw.body_loaded) {
-          // actually a race condition
-          jaw.loaded = true;
-          afterLoad(save, callback);
-        }*/
-        for (const child of object.children){
-          if ((child as any).geometry !== undefined && (child as any).geometry.isBufferGeometry) {
-            const mesh = new THREE.Mesh((child as any).geometry, teethMaterial.clone());
-            mesh.geometry.translate(jaw.offset.x, jaw.offset.y, jaw.offset.z);
-            mesh.geometry.scale(0.01, 0.01, 0.01);
-            jaw.body.addShape(threeMeshToConvexCannonMesh(mesh));
-          }
-        } 
-        jaw.mesh = new THREE.Mesh(mergedGeometry(object), teethMaterial.clone());
-
-        /*jaw.mesh.geometry.translate(jaw.offset.x, jaw.offset.y, jaw.offset.z);
-        jaw.mesh.geometry.scale(0.01, 0.01, 0.01);*/
-        //jaw.mesh.position.set(0, 0, 0);
+        // object is a 'Group', which is a subclass of 'Object3D'
+        const buffergeo = getFirstBufferGeometry(object);
+        const mesh = new THREE.Mesh(buffergeo, teethMaterial.clone());
+        jaw.mesh = threeMeshToConvexThreeMesh(mesh);
+        //jaw.mesh.userData.originalScale = jaw.mesh.scale.clone();
+        jaw.mesh.geometry.translate(jaw.offset.x, jaw.offset.y, jaw.offset.z);
+        jaw.mesh.geometry.scale(0.01, 0.01, 0.01);
         scene.add(jaw.mesh);
 
-        //const shape = threeMeshToConvexCannonMesh(jaw.mesh);
-        //jaw.body.addShape(shape);
+        const shape = threeMeshToConvexCannonMesh(jaw.mesh);
+        jaw.body.addShape(shape);
 
         // calculate inertia
         jaw.INERTIA_STATIC = jaw.body.inertia;
@@ -422,7 +400,7 @@ function initThree(setOpenMenu: any, setCurrentScan: any) {
 
   // create scene and camera
   scene = new THREE.Scene();
-  scene.background = new THREE.Color(0x808080);
+  //scene.background = new THREE.Color(0x808080);
   camera = new THREE.PerspectiveCamera(50, window.innerWidth / window.innerHeight, 0.1, 1000);
   camera.position.set(0, 1.6, 3);
 
@@ -438,7 +416,7 @@ function initThree(setOpenMenu: any, setCurrentScan: any) {
   }
 
   // add floor
-  const floorGeometry = new THREE.PlaneGeometry(4, 4);
+  /*const floorGeometry = new THREE.PlaneGeometry(4, 4);
   const floorMaterial = new THREE.MeshStandardMaterial({
     color: 0xeeeeee,
     roughness: 1.0,
@@ -447,7 +425,7 @@ function initThree(setOpenMenu: any, setCurrentScan: any) {
   const floor = new THREE.Mesh(floorGeometry, floorMaterial);
   floor.rotation.x = -Math.PI / 2;
   floor.receiveShadow = true;
-  scene.add(floor);
+  scene.add(floor);*/
 
   // light sources
   scene.add(new THREE.HemisphereLight(0x808080, 0x606060));
@@ -464,7 +442,7 @@ function initThree(setOpenMenu: any, setCurrentScan: any) {
 
   // add renderer and enable VR
 
-  renderer = new THREE.WebGLRenderer({ antialias: true });
+  renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true });
   renderer.setPixelRatio(window.devicePixelRatio);
   renderer.setSize(window.innerWidth, window.innerHeight);
   renderer.outputEncoding = THREE.sRGBEncoding;
@@ -484,7 +462,7 @@ function initThree(setOpenMenu: any, setCurrentScan: any) {
   legendMesh.scale.setScalar(1.8);
   scene.add(legendMesh);
 
-  document.body.appendChild(VRButton.createButton(renderer));
+  document.body.appendChild(ARButton.createButton(renderer));
 
   // controllers
 
@@ -532,8 +510,8 @@ function initThree(setOpenMenu: any, setCurrentScan: any) {
 }
 
 function loadObjects(save: () => void, callback: () => void) {
-  lowerjaw = new Jaw('lowerjaw', '/lower-hacd.obj', '/lower_ios_6.obj', save, callback);
-  upperjaw = new Jaw('upperjaw', '/upper-hacd.obj', '/upper_ios_6.obj', save, callback);
+  lowerjaw = new Jaw('lowerjaw', '/lower_180.obj', '/lower_ios_6.obj', save, callback);
+  upperjaw = new Jaw('upperjaw', '/upper_209.obj', '/upper_ios_6.obj', save, callback);
 
   curr_jaw = upperjaw;
 }
@@ -580,7 +558,7 @@ function afterLoad(save: () => void, callback: () => void) {
 }
 
 function animate(save: () => void, callback: () => void) {
-  autoSave(60, save); // 60 second interval, move out to render and out of menu; AND onlt save when session.xr active
+  //autoSave(60, save); // 60 second interval, move out to render and out of menu; AND onlt save when session.xr active
 
   frameNum += 1;
   updatePhysics();
@@ -807,6 +785,36 @@ function buttonPressMenu(controller) {
       cancelable: true,
     });
     deepestIntersectedElement.dispatchEvent(clickEvent);
+  }
+}
+
+
+function dragControls(controller){
+  const intersects = getIntersectionMesh(controller, legendMesh);
+  if (intersects.length > 0) {
+
+    const localIntersectionPoint = menuMesh.worldToLocal(intersects[0].point.clone());
+    const meshWidth = (legendMesh.geometry as any).parameters.width;
+    const meshHeight = (legendMesh.geometry as any).parameters.height;
+
+    const normalizedX = (localIntersectionPoint.x + meshWidth / 2) / meshWidth;
+    const normalizedY = (localIntersectionPoint.y + meshHeight / 2) / meshHeight;
+
+    const legendDivWidth = legendDiv.offsetWidth;
+    const legendDivHeight = legendDiv.offsetHeight;
+
+    const legendDivPosition = {
+      x: normalizedX * legendDivWidth,
+      y: (1 - normalizedY) * legendDivHeight,
+    };
+    
+    const clickEvent = new MouseEvent('click', {
+      clientX: legendDivPosition.x,
+      clientY: legendDivPosition.y,
+      bubbles: true,
+      cancelable: true,
+    });
+    legendDiv.dispatchEvent(clickEvent);
   }
 }
 
@@ -1148,6 +1156,7 @@ function redoWhenPressed() {
         if (handedness == 'left') {
           continue;
         } // we willen enkel de 'A' knop van de rechtercontroller
+
       }
       if (!source.gamepad) continue;
       const controller = renderer.xr.getController(iiii++);
@@ -1261,23 +1270,13 @@ function autoSave(interval: number, save: () => void) {
   if (elapsedTime >= interval) {
     console.log(interval, 'seconds have passed');
     // Additional checks, like only if an edit's been made
-    if (!menu_open){
-      save();
-    }
+    save();
     // reset the clock
     clock.start();
   }
 }
 
 export default function DraggingView({ scanId, client, onQuit }: { scanId: number; client: any; onQuit: () => void }) {
-  const router = useRouter();
-  function goToAR() {
-    router.push({
-      pathname: '/start-ar',
-      query: { scanID: scanId },
-    });
-  }
-
   const initialScan = new ScanSave({
     lowerX: 0,
     lowerY: 2,
@@ -1323,7 +1322,6 @@ export default function DraggingView({ scanId, client, onQuit }: { scanId: numbe
 
     return () => {
       // Clean up when unmounted
-
       if (session) {
         // Only if session's been started
         session.end();
@@ -1405,7 +1403,6 @@ export default function DraggingView({ scanId, client, onQuit }: { scanId: numbe
 
   return (
     <div>
-      <button onClick={goToAR} className={styles.btn}>Go To AR</button>
       <div className="menu-div">
         <Menu {...props} />
         <style jsx>{`
