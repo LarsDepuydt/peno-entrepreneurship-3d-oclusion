@@ -1,5 +1,4 @@
-import { Canvas } from '@react-three/fiber';
-import { Html, Plane } from '@react-three/drei';
+
 import stylesVR from '@/styles/MenuVR.module.css';
 
 export function Legenda() {
