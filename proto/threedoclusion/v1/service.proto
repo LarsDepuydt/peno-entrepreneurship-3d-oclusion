@@ -11,6 +11,7 @@ service ScanService {
   rpc SendMenuOption(SendMenuOptionRequest) returns (SendMenuOptionResponse) {}
   rpc SubscribeConnection(SubscribeConnectionRequest) returns (stream SubscribeConnectionResponse) {}
   rpc UpdateConnectionStatus(UpdateConnectionStatusRequest) returns (UpdateConnectionStatusResponse) {}
+  rpc GetLastSaveData(GetLastSaveDataRequest) returns (GetLastSaveDataResponse) {}
 
   rpc SendVR(SendVRRequest) returns (SendVRResponse) {}
   rpc Waiting(WaitingRequest) returns (stream WaitingResponse) {}
@@ -52,12 +53,14 @@ message ScanSave {
   float lower_r_x = 6;
   float lower_r_y = 7;
   float lower_r_z = 8;
-  float upper_x = 9;
-  float upper_y = 10;
-  float upper_z = 11;
-  float upper_r_x = 12;
-  float upper_r_y = 13;
-  float upper_r_z = 14;
+  float lower_r_w = 9;
+  float upper_x = 10;
+  float upper_y = 11;
+  float upper_z = 12;
+  float upper_r_x = 13;
+  float upper_r_y = 14;
+  float upper_r_z = 15;
+  float upper_r_w = 16;
 }
 
 // TAGS
@@ -266,6 +269,28 @@ message WaitingRequest {
 message WaitingResponse {
   bool redirect = 1;
   string url = 2;
+}
+
+message GetLastSaveDataRequest {
+  int32 id = 1;
+}
+
+message GetLastSaveDataResponse {
+  string timestamp_save = 1;
+  float lower_x = 2;
+  float lower_y = 3;
+  float lower_z = 4;
+  float lower_r_x = 5;
+  float lower_r_y = 6;
+  float lower_r_z = 7;
+  float lower_r_w = 8;
+  float upper_x = 9;
+  float upper_y = 10;
+  float upper_z = 11;
+  float upper_r_x = 12;
+  float upper_r_y = 13;
+  float upper_r_z = 14;
+  float upper_r_w = 15;
 }
 
 message DeletePatientByIdRequest{

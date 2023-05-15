@@ -33,10 +33,6 @@ func SendToVR(req *connect.Request[threedoclusionv1.SendVRRequest], redirectVRCh
 func GetWaitingResponse(req *connect.Request[threedoclusionv1.WaitingRequest], stream *connect.ServerStream[threedoclusionv1.WaitingResponse], redirectVRChannels *help_datastructures.MapChannels) error {
 	log.Println("Request headers: ", req.Header())
 
-	// TO DO: Check if uniqueCode is valid with database
-
-	// TO DO: Use uniqueCode to get clientID from database
-	// For now just use unique_code = client_id
 	redirectVRChannel := redirectVRChannels.GetChannel(req.Msg.UniqueCode) // Use clientId to get channel
 
 	select { // Non blocking receive
@@ -64,7 +60,7 @@ func SendMenuOption(req *connect.Request[threedoclusionv1.SendMenuOptionRequest]
 		log.Println("Menu option Save was chosen");
 		// req.Msg.GetSaveData() Pass this to the method -> make abstraction
 
-		statement, error := database.Prepare("INSERT INTO scan_save (scan_id, lowerX, lowerY, lowerZ, lowerRX, lowerRY, lowerRZ, upperX, upperY, upperZ, upperRX, upperRY, upperRZ, timestamp_save) VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12, $13, $14)")
+		statement, error := database.Prepare("INSERT INTO scan_save (scan_id, lowerX, lowerY, lowerZ, lowerRX, lowerRY, lowerRZ, lowerRW, upperX, upperY, upperZ, upperRX, upperRY, upperRZ, upperRW, timestamp_save) VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12, $13, $14, $15, $16)")
 		if error != nil {
 			return nil, error
 		}
@@ -74,7 +70,7 @@ func SendMenuOption(req *connect.Request[threedoclusionv1.SendMenuOptionRequest]
 		formattedTimestamp := t.Format("2006-01-02T15:04:05")
 
 		save := req.Msg.GetSaveData()
-		_, error = statement.Exec(save.ScanId, save.LowerX, save.LowerY, save.LowerZ, save.LowerRX, save.LowerRY, save.LowerRZ, save.UpperX, save.UpperY, save.UpperZ, save.UpperRX, save.UpperRY, save.UpperRZ, formattedTimestamp)
+		_, error = statement.Exec(save.ScanId, save.LowerX, save.LowerY, save.LowerZ, save.LowerRX, save.LowerRY, save.LowerRZ, save.LowerRW, save.UpperX, save.UpperY, save.UpperZ, save.UpperRX, save.UpperRY, save.UpperRZ, save.UpperRW, formattedTimestamp)
 		if error != nil {
 			return nil, error
 		}
@@ -89,7 +85,7 @@ func SendMenuOption(req *connect.Request[threedoclusionv1.SendMenuOptionRequest]
 	case 1:
 		log.Println("Menu option Load was chosen");
 
-		statement := "SELECT scan_id, lowerX, lowerY, lowerZ, lowerRX, lowerRY, lowerRZ, upperX, upperY, upperZ, upperRX, upperRY, upperRZ, timestamp_save FROM scan_save WHERE scan_id = $1;"
+		statement := "SELECT scan_id, lowerX, lowerY, lowerZ, lowerRX, lowerRY, lowerRZ, lowerRW, upperX, upperY, upperZ, upperRX, upperRY, upperRZ, upperRW, timestamp_save FROM scan_save WHERE scan_id = $1;"
 		rows, error := database.Query(statement, req.Msg.GetScanId())
 		if error != nil {
 			return nil, error
@@ -110,7 +106,7 @@ func SendMenuOption(req *connect.Request[threedoclusionv1.SendMenuOptionRequest]
 	case 2:
 		log.Println("Menu option Save and Quit was chosen");
 		// Save And Quit data -> Scan save
-		statement, error := database.Prepare("INSERT INTO scan_save (scan_id, lowerX, lowerY, lowerZ, lowerRX, lowerRY, lowerRZ, upperX, upperY, upperZ, upperRX, upperRY, upperRZ , timestamp_save) VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12, $13, $14)")
+		statement, error := database.Prepare("INSERT INTO scan_save (scan_id, lowerX, lowerY, lowerZ, lowerRX, lowerRY, lowerRZ, lowerRW, upperX, upperY, upperZ, upperRX, upperRY, upperRZ, upperRW, timestamp_save) VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12, $13, $14, $15, $16)")
 		if error != nil {
 			return nil, error
 		}
@@ -119,7 +115,7 @@ func SendMenuOption(req *connect.Request[threedoclusionv1.SendMenuOptionRequest]
 		formattedTimestamp := t.Format("2006-01-02T15:04:05") // Format in yyyy-mm-dd T HH:MM:SS
 
 		save := req.Msg.GetSaveData()
-		_, error = statement.Exec(save.ScanId, save.LowerX, save.LowerY, save.LowerZ, save.LowerRX, save.LowerRY, save.LowerRZ, save.UpperX, save.UpperY, save.UpperZ, save.UpperRX, save.UpperRY, save.UpperRZ, formattedTimestamp)
+		_, error = statement.Exec(save.ScanId, save.LowerX, save.LowerY, save.LowerZ, save.LowerRX, save.LowerRY, save.LowerRZ, save.LowerRW, save.UpperX, save.UpperY, save.UpperZ, save.UpperRX, save.UpperRY, save.UpperRZ, save.UpperRW, formattedTimestamp)
 		if error != nil {
 			return nil, error
 		}
@@ -228,4 +224,58 @@ func UpdateConnectionStatus(req *connect.Request[threedoclusionv1.UpdateConnecti
     }
 
     return connect.NewResponse(&threedoclusionv1.UpdateConnectionStatusResponse{}), nil
+}
+
+func GetLastSaveData(req *connect.Request[threedoclusionv1.GetLastSaveDataRequest], database *sql.DB) (*connect.Response[threedoclusionv1.GetLastSaveDataResponse], error) {
+	const sqlStatement = `
+	SELECT  timestamp_save, lowerx, lowery, lowerz, lowerrx, lowerry, lowerrz, lowerrw, upperx, uppery, upperz, upperrx, upperry, upperrz, upperrw
+	FROM scan_save 
+	WHERE scan_id = $1 AND timestamp_save = (
+		SELECT MAX(timestamp_save)
+		FROM scan_save
+		WHERE scan_id = $1
+	);`
+	var timestamp string;
+	var lowerx float32;
+	var lowery float32;
+	var lowerz float32;
+	var lowerrx float32;
+	var lowerry float32;
+	var lowerrz float32;
+	var lowerrw float32;
+	var upperx float32;
+	var uppery float32;
+	var upperz float32;
+	var upperrx float32;
+	var upperry float32;
+	var upperrz float32;
+	var upperrw float32;
+
+	error := database.QueryRow(sqlStatement, req.Msg.Id).Scan(&timestamp, &lowerx, &lowery, &lowerz, &lowerrx, &lowerry, &lowerrz, &lowerrw, &upperx, &uppery, &upperz, &upperrx, &upperry, &upperrz, &upperrw)
+	if error != nil {
+		return nil, error
+	}
+
+	responseMessage := fmt.Sprintf("scan save with id: %d returned with succes;", req.Msg.Id)
+	fmt.Println(responseMessage)
+
+	res := connect.NewResponse(&threedoclusionv1.GetLastSaveDataResponse{
+		TimestampSave: timestamp,
+		LowerX: lowerx,
+		LowerY: lowery,
+		LowerZ: lowerz,
+		LowerRX: lowerrx,
+		LowerRY: lowerry,
+		LowerRZ: lowerrz,
+		LowerRW: lowerrw,
+		UpperX: upperx,
+		UpperY: uppery,
+		UpperZ: upperz,
+		UpperRX: upperrx,
+		UpperRY: upperry,
+		UpperRZ: upperrz,
+		UpperRW: upperrw,
+	})
+
+	return res, nil
 }

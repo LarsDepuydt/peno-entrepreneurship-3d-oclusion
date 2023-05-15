@@ -307,6 +307,18 @@ function threeQuaternionToCannonQuaternion(quat) {
     return new CANNON.Quaternion(quat.x, quat.y, quat.z, quat.w);
 }
 
+function cannonQuaternionToThreeQuaternion(quat) {
+    return new THREE.Quaternion(quat.x, quat.y, quat.z, quat.w);
+}
+
+function dictToVec3(dict) {
+    return new CANNON.Vec3(dict.x, dict.y, dict.z);
+}
+
+function invVec3(vec) {
+    return new CANNON.Vec3(1/vec.x, 1/vec.y, 1/vec.z);
+}
+
 /** Apply a CANNON.Quaternion to a CANNON.Vec3, return the resulting vector
  * 
  * @param {*} vec 
@@ -360,4 +372,4 @@ function minusQuat(q) {
 }
 
 
-export { getFirstMesh, getFirstBufferGeometry, threeMeshToConvexThreeMesh, threeMeshToConvexCannonMesh, cannonMeshToCannonConvexPolyhedron, threeMeshToCannonMesh, checkTime, vector3ToVec3, vec3ToVector3, threeQuaternionToCannonQuaternion, applyQuaternion, sqnorm, quatDot, minusQuat };
+export { getFirstMesh, getFirstBufferGeometry, threeMeshToConvexThreeMesh, threeMeshToConvexCannonMesh, cannonMeshToCannonConvexPolyhedron, threeMeshToCannonMesh, checkTime, vector3ToVec3, vec3ToVector3, cannonQuaternionToThreeQuaternion, threeQuaternionToCannonQuaternion, applyQuaternion, sqnorm, quatDot, minusQuat, dictToVec3, invVec3 };

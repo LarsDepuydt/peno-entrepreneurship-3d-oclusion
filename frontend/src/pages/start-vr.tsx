@@ -1,23 +1,16 @@
 import React, { useEffect, useState } from 'react';
-import Menu from '@/components/vr/menu';
 
 import { ScanService } from '@/gen/proto/threedoclusion/v1/service_connect';
 import { createPromiseClient } from '@bufbuild/connect';
 import { useTransport } from '@bufbuild/connect-query';
-import {
-  SubscribeConnectionRequest,
-  SubscribeConnectionResponse,
-} from '@/gen/proto/threedoclusion/v1/service_pb';
-
+import { SubscribeConnectionRequest, SubscribeConnectionResponse } from '@/gen/proto/threedoclusion/v1/service_pb';
 import dynamic from 'next/dynamic';
 import { useRouter } from 'next/router';
 
-const VRView = dynamic(() => import('@/components/vr/vr-view'), { ssr: false });
 const DraggingView = dynamic(() => import('@/components/vr/dragging'), { ssr: false });
-const BeforeAfter = dynamic(() => import('@/components/vr/before-after'), { ssr: false });
 
-export default function StartVRPage(){ 
-  const [isComponentMounted, setIsComponentMounted] = useState(false)
+export default function StartVRPage() {
+  const [isComponentMounted, setIsComponentMounted] = useState(false);
   const [client, setClient] = useState<any>(null);
   const [stream, setStream] = useState<AsyncIterable<SubscribeConnectionResponse> | null>(null);
   const transport = useTransport();
@@ -25,10 +18,10 @@ export default function StartVRPage(){
   const { scanID } = router.query;
   const scanId = parseInt(scanID as string, 10);
 
-  useEffect(() => setIsComponentMounted(true), [])
+  useEffect(() => setIsComponentMounted(true), []);
 
-  if(!isComponentMounted) {
-      return null 
+  if (!isComponentMounted) {
+    return null;
   }
   if (!isComponentMounted) {
     return null;
@@ -51,7 +44,7 @@ export default function StartVRPage(){
     router.push('/end-vr');
   };
 
-    const props = { scanId, client, onQuit };
+  const props = { scanId, client, onQuit };
 
   return (
     // Only executed on the client side

@@ -51,34 +51,44 @@ export declare class ScanSave extends Message<ScanSave> {
   lowerRZ: number;
 
   /**
-   * @generated from field: float upper_x = 9;
+   * @generated from field: float lower_r_w = 9;
+   */
+  lowerRW: number;
+
+  /**
+   * @generated from field: float upper_x = 10;
    */
   upperX: number;
 
   /**
-   * @generated from field: float upper_y = 10;
+   * @generated from field: float upper_y = 11;
    */
   upperY: number;
 
   /**
-   * @generated from field: float upper_z = 11;
+   * @generated from field: float upper_z = 12;
    */
   upperZ: number;
 
   /**
-   * @generated from field: float upper_r_x = 12;
+   * @generated from field: float upper_r_x = 13;
    */
   upperRX: number;
 
   /**
-   * @generated from field: float upper_r_y = 13;
+   * @generated from field: float upper_r_y = 14;
    */
   upperRY: number;
 
   /**
-   * @generated from field: float upper_r_z = 14;
+   * @generated from field: float upper_r_z = 15;
    */
   upperRZ: number;
+
+  /**
+   * @generated from field: float upper_r_w = 16;
+   */
+  upperRW: number;
 
   constructor(data?: PartialMessage<ScanSave>);
 
@@ -1263,6 +1273,124 @@ export declare class WaitingResponse extends Message<WaitingResponse> {
   static fromJsonString(jsonString: string, options?: Partial<JsonReadOptions>): WaitingResponse;
 
   static equals(a: WaitingResponse | PlainMessage<WaitingResponse> | undefined, b: WaitingResponse | PlainMessage<WaitingResponse> | undefined): boolean;
+}
+
+/**
+ * @generated from message threedoclusion.v1.GetLastSaveDataRequest
+ */
+export declare class GetLastSaveDataRequest extends Message<GetLastSaveDataRequest> {
+  /**
+   * @generated from field: int32 id = 1;
+   */
+  id: number;
+
+  constructor(data?: PartialMessage<GetLastSaveDataRequest>);
+
+  static readonly runtime: typeof proto3;
+  static readonly typeName = "threedoclusion.v1.GetLastSaveDataRequest";
+  static readonly fields: FieldList;
+
+  static fromBinary(bytes: Uint8Array, options?: Partial<BinaryReadOptions>): GetLastSaveDataRequest;
+
+  static fromJson(jsonValue: JsonValue, options?: Partial<JsonReadOptions>): GetLastSaveDataRequest;
+
+  static fromJsonString(jsonString: string, options?: Partial<JsonReadOptions>): GetLastSaveDataRequest;
+
+  static equals(a: GetLastSaveDataRequest | PlainMessage<GetLastSaveDataRequest> | undefined, b: GetLastSaveDataRequest | PlainMessage<GetLastSaveDataRequest> | undefined): boolean;
+}
+
+/**
+ * @generated from message threedoclusion.v1.GetLastSaveDataResponse
+ */
+export declare class GetLastSaveDataResponse extends Message<GetLastSaveDataResponse> {
+  /**
+   * @generated from field: string timestamp_save = 1;
+   */
+  timestampSave: string;
+
+  /**
+   * @generated from field: float lower_x = 2;
+   */
+  lowerX: number;
+
+  /**
+   * @generated from field: float lower_y = 3;
+   */
+  lowerY: number;
+
+  /**
+   * @generated from field: float lower_z = 4;
+   */
+  lowerZ: number;
+
+  /**
+   * @generated from field: float lower_r_x = 5;
+   */
+  lowerRX: number;
+
+  /**
+   * @generated from field: float lower_r_y = 6;
+   */
+  lowerRY: number;
+
+  /**
+   * @generated from field: float lower_r_z = 7;
+   */
+  lowerRZ: number;
+
+  /**
+   * @generated from field: float lower_r_w = 8;
+   */
+  lowerRW: number;
+
+  /**
+   * @generated from field: float upper_x = 9;
+   */
+  upperX: number;
+
+  /**
+   * @generated from field: float upper_y = 10;
+   */
+  upperY: number;
+
+  /**
+   * @generated from field: float upper_z = 11;
+   */
+  upperZ: number;
+
+  /**
+   * @generated from field: float upper_r_x = 12;
+   */
+  upperRX: number;
+
+  /**
+   * @generated from field: float upper_r_y = 13;
+   */
+  upperRY: number;
+
+  /**
+   * @generated from field: float upper_r_z = 14;
+   */
+  upperRZ: number;
+
+  /**
+   * @generated from field: float upper_r_w = 15;
+   */
+  upperRW: number;
+
+  constructor(data?: PartialMessage<GetLastSaveDataResponse>);
+
+  static readonly runtime: typeof proto3;
+  static readonly typeName = "threedoclusion.v1.GetLastSaveDataResponse";
+  static readonly fields: FieldList;
+
+  static fromBinary(bytes: Uint8Array, options?: Partial<BinaryReadOptions>): GetLastSaveDataResponse;
+
+  static fromJson(jsonValue: JsonValue, options?: Partial<JsonReadOptions>): GetLastSaveDataResponse;
+
+  static fromJsonString(jsonString: string, options?: Partial<JsonReadOptions>): GetLastSaveDataResponse;
+
+  static equals(a: GetLastSaveDataResponse | PlainMessage<GetLastSaveDataResponse> | undefined, b: GetLastSaveDataResponse | PlainMessage<GetLastSaveDataResponse> | undefined): boolean;
 }
 
 /**
