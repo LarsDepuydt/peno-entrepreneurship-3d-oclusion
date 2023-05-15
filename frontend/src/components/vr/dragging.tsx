@@ -84,7 +84,7 @@ const LJ_OFFSET = new THREE.Vector3(-2.24, 45.35, 42.25);
 const UJ_OFFSET = new THREE.Vector3(-3.72, 46.93, 28.3);
 
 // set to true for debugging / development
-const DEBUGGING_MODE = true;
+const DEBUGGING_MODE = false;
 
 
 class Jaw {
