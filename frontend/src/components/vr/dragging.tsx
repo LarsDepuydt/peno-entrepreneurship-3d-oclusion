@@ -20,11 +20,14 @@ import {
   cannonMeshToCannonConvexPolyhedron,
   vec3ToVector3,
   vector3ToVec3,
+  cannonQuaternionToThreeQuaternion,
   threeQuaternionToCannonQuaternion,
   applyQuaternion,
   sqnorm,
   quatDot,
   minusQuat,
+  dictToVec3,
+  invVec3,
 } from './util.js';
 import { findSepAxisNoEdges } from './findSepAxis.js';
 
@@ -67,9 +70,12 @@ const objLoader = new OBJLoader();
 
 // parameters
 const TIMESTEP = 1 / 30;
-const BODYMASS = 1; // when the body is not selected, the mass is 0 (= stationary)
-const IMPULSE_REACTIVITY = 0.2;
-const ANGULAR_REACTIVITY = 5;
+const BODYMASS_DYNAMIC = 1;   // when selected
+const BODYMASS_STATIC = 1e8;  // when not selected, we make the body practically static by giving it a very large mass
+const IMPULSE_REACTIVITY = 5;
+const IMPULSE_REACTIVITY_COLLISION = 0.01;
+const ANGULAR_REACTIVITY = 1;
+const ANGULAR_REACTIVITY_COLLISION = 0.1;
 const LINEAR_DAMPING = 0.9; // cannon.js default: 0.01
 const ANGULAR_DAMPING = 0.9; // idem
 
@@ -91,6 +97,9 @@ class Jaw {
   body_loaded = false;
   mesh_loaded = false;
   selected = false;
+  colliding = false;
+  INERTIA_STATIC: any;
+  INERTIA_DYNAMIC: any;
 
   /**
    *
@@ -119,13 +128,12 @@ class Jaw {
 
     // add body
     this.body = new CANNON.Body({
-      mass: BODYMASS,
+      mass: BODYMASS_STATIC,
       material: slipperyMaterial,
       linearDamping: LINEAR_DAMPING,
       angularDamping: ANGULAR_DAMPING,
-      type: CANNON.Body.STATIC,
+      type: CANNON.Body.DYNAMIC,
     });
-    //this.body.position.set(initialScan.lowerX, initialScan.lowerY, initialScan.lowerZ);  //FIXFIX
 
     let xaxis = new CANNON.Vec3(1, 0, 0);
     this.body.quaternion.setFromAxisAngle(xaxis, -Math.PI / 2);
@@ -157,7 +165,8 @@ class Jaw {
       function (object) {
         // object is a 'Group', which is a subclass of 'Object3D'
         const buffergeo = getFirstBufferGeometry(object);
-        jaw.mesh = new THREE.Mesh(buffergeo, teethMaterial.clone());
+        const mesh = new THREE.Mesh(buffergeo, teethMaterial.clone());
+        jaw.mesh = threeMeshToConvexThreeMesh(mesh);
         //jaw.mesh.userData.originalScale = jaw.mesh.scale.clone();
         jaw.mesh.geometry.translate(jaw.offset.x, jaw.offset.y, jaw.offset.z);
         jaw.mesh.geometry.scale(0.01, 0.01, 0.01);
@@ -165,6 +174,11 @@ class Jaw {
 
         const shape = threeMeshToConvexCannonMesh(jaw.mesh);
         jaw.body.addShape(shape);
+
+        // calculate inertia
+        jaw.INERTIA_STATIC = jaw.body.inertia;
+        jaw.INERTIA_DYNAMIC = jaw.INERTIA_STATIC.scale(BODYMASS_DYNAMIC / BODYMASS_STATIC);
+        console.log(jaw.INERTIA_DYNAMIC, jaw.INERTIA_STATIC);
 
         console.log('loading mesh succeeded');
         jaw.loaded = true;
@@ -231,6 +245,11 @@ class Jaw {
         const shape = threeMeshToConvexCannonMesh(mesh);
         jaw.body.addShape(shape);
 
+        // calculate inertia
+        jaw.INERTIA_STATIC = jaw.body.inertia;
+        jaw.INERTIA_DYNAMIC = jaw.INERTIA_STATIC.scale(BODYMASS_DYNAMIC / BODYMASS_STATIC);
+        console.log(jaw.INERTIA_DYNAMIC, jaw.INERTIA_STATIC);
+
         console.log('loading mesh succeeded');
         jaw.body_loaded = true;
         if (jaw.mesh_loaded && jaw.body_loaded) {
@@ -264,16 +283,37 @@ class Jaw {
   }
 
   applyForces() {
-    if (this.selected) {
+    // don't do anything if body is static, or if not selected
+    if (this.body.type == CANNON.Body.STATIC) {
+      return;
+    }
+    if (!this.selected) {
+      return;
+    }
+
+    // selected and colliding => apply force
+    if (this.colliding) {
+      this.body.applyForce(this.impulseToTarget());
+    }
+    // selected and not colliding => apply impulse
+    else {
       this.body.applyImpulse(this.impulseToTarget());
-      if (movement_mode == 3) {
-        this.body.applyTorque(this.torqueToTarget());
-      }
+    }
+
+    // torque
+    if (movement_mode == 3) {
+      this.body.applyTorque(this.torqueToTarget());
     }
   }
 
+  /* return target world position as a Vec3
+  */
+  targetWorldPos() {
+    return vector3ToVec3(this.target.getWorldPosition(new THREE.Vector3()));
+  }
+
   impulseToTarget() {
-    const targetWorldPosition = vector3ToVec3(this.target.getWorldPosition(new THREE.Vector3())); // Vec3
+    const targetWorldPosition = this.targetWorldPos(); // Vec3
 
     let dp: any;
     switch (movement_mode) {
@@ -317,7 +357,12 @@ class Jaw {
 
   torqueToTarget() {
     const identityQuat = new CANNON.Quaternion(0, 0, 0, 1);
-    return identityQuat.slerp(this.dthetaToTarget(), ANGULAR_REACTIVITY);
+
+    if (this.colliding) {
+      return identityQuat.slerp(this.dthetaToTarget(), ANGULAR_REACTIVITY_COLLISION);
+    } else {
+      return identityQuat.slerp(this.dthetaToTarget(), ANGULAR_REACTIVITY);
+    }
   }
 }
 
@@ -334,6 +379,17 @@ function initCannon() {
   floor_body.addShape(floor_shape);
   floor_body.quaternion.setFromAxisAngle(new CANNON.Vec3(1, 0, 0), -Math.PI / 2); // rotate floor with normal along positive y axis
   world.addBody(floor_body);
+
+  world.addEventListener('beginContact', function (e) {
+    console.log('contact detected!');
+    lowerjaw.colliding = true;
+    upperjaw.colliding = true;
+  });
+  world.addEventListener('endContact', function (e) {
+    console.log('contact ended');
+    lowerjaw.colliding = false;
+    upperjaw.colliding = false;
+  })
 }
 
 function initThree(setOpenMenu: any, setCurrentScan: any) {
@@ -493,16 +549,6 @@ function afterLoad(save: () => void, callback: () => void) {
     upperjaw.sphere.name = 'lowerjaw.sphere';
     upperjaw.target.name = 'lowerjaw.target';
 
-    lowerjaw.body.addEventListener('collide', function (e) {
-      console.log('collision detected!');
-      vibrateTrigger();
-    });
-
-    upperjaw.body.addEventListener('collide', function (e) {
-      console.log('collision detected!');
-      vibrateTrigger();
-    });
-
     console.log('starting animation');
     renderer.setAnimationLoop(function foo() {
       animate(save, callback);
@@ -515,6 +561,9 @@ function animate(save: () => void, callback: () => void) {
 
   frameNum += 1;
   updatePhysics();
+  if (lowerjaw.colliding) {
+    vibrateTrigger();
+  }
   render(callback);
 }
 
@@ -654,7 +703,9 @@ function vibrateTrigger() {
   // Vibrate TRIGGER button
   const session = renderer.xr.getSession();
   for (const source of session!.inputSources) {
-    if (source.gamepad) (source.gamepad.hapticActuators[0] as any).pulse(0.8, 100);
+    if (source.gamepad && source.gamepad.hapticActuators) {
+      (source.gamepad.hapticActuators[0] as any).pulse(0.8, 100);
+    }
   }
 }
 
@@ -736,6 +787,7 @@ function buttonPressMenu(controller) {
   }
 }
 
+
 function dragControls(controller){
   const intersects = getIntersectionMesh(controller, legendMesh);
   if (intersects.length > 0) {
@@ -782,10 +834,12 @@ function onSelectStart(event) {
         controller.attach(jaw.target);
         jaw.selected = true;
         jaw.body.type = CANNON.Body.DYNAMIC;
+        jaw.body.mass = BODYMASS_DYNAMIC;
+        jaw.body.invMass = 1/BODYMASS_DYNAMIC;
+        jaw.body.inertia = jaw.INERTIA_DYNAMIC;
+        jaw.body.invInertia = invVec3(jaw.INERTIA_DYNAMIC);
         controller.userData.selected = jaw;
         addMovementToUndoStack(jaw.body);
-        console.log(undoStack);
-        //console.log(jaw.body);
       }
     } else {
       const intersectionsLegend = getIntersectionMesh(controller, legendMesh);
@@ -816,7 +870,10 @@ function onSelectEnd(event: any) {
     scene.attach(jaw.target);
     jaw.target.visible = false;
     jaw.selected = false;
-    jaw.body.type = CANNON.Body.STATIC;
+    jaw.body.mass = BODYMASS_STATIC;
+    jaw.body.invMass = 1/BODYMASS_STATIC;
+    jaw.body.inertia = jaw.INERTIA_STATIC;
+    jaw.body.inertia = invVec3(jaw.INERTIA_STATIC);
     controller.userData.selected = undefined;
   }
 
@@ -1098,6 +1155,7 @@ function redoWhenPressed() {
         if (handedness == 'left') {
           continue;
         } // we willen enkel de 'A' knop van de rechtercontroller
+
       }
       if (!source.gamepad) continue;
       const controller = renderer.xr.getController(iiii++);
