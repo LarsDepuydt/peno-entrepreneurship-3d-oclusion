@@ -44,7 +44,7 @@ let controls: any;
 let raycaster: any;
 let clock = new THREE.Clock();
 
-let menu_open = true; // SET TO FALSE
+let menu_open = false; // SET TO FALSE
 let menuDiv: HTMLElement, menuMesh: HTMLMesh;
 let legendDiv: HTMLElement, legendMesh: HTMLMesh;
 
@@ -704,7 +704,7 @@ function onWindowResize() {
 }
 
 function buttonPressMenu(controller) {
-  const intersects = getIntersectionMenu(controller); // Further interactions necessary
+  const intersects = getIntersectionMesh(controller, menuMesh);
   if (intersects.length > 0) {
     // Local intersection point relative to the menuMesh
     const localIntersectionPoint = menuMesh.worldToLocal(intersects[0].point.clone());
@@ -725,10 +725,6 @@ function buttonPressMenu(controller) {
     const intersectionPoint = new THREE.Vector2(menuDivPosition.x, menuDivPosition.y);
 
     const deepestIntersectedElement = findDeepestIntersectedElement(menuDiv, intersectionPoint);
-    //console.log("Deepest:");
-    //console.log(deepestIntersectedElement);
-    console.log('Intersection point:');
-    console.log(intersectionPoint);
 
     const clickEvent = new MouseEvent('click', {
       clientX: menuDivPosition.x,
@@ -736,8 +732,36 @@ function buttonPressMenu(controller) {
       bubbles: true,
       cancelable: true,
     });
-    //menuDiv.dispatchEvent(clickEvent);
     deepestIntersectedElement.dispatchEvent(clickEvent);
+  }
+}
+
+function dragControls(controller){
+  const intersects = getIntersectionMesh(controller, legendMesh);
+  if (intersects.length > 0) {
+
+    const localIntersectionPoint = menuMesh.worldToLocal(intersects[0].point.clone());
+    const meshWidth = (legendMesh.geometry as any).parameters.width;
+    const meshHeight = (legendMesh.geometry as any).parameters.height;
+
+    const normalizedX = (localIntersectionPoint.x + meshWidth / 2) / meshWidth;
+    const normalizedY = (localIntersectionPoint.y + meshHeight / 2) / meshHeight;
+
+    const legendDivWidth = legendDiv.offsetWidth;
+    const legendDivHeight = legendDiv.offsetHeight;
+
+    const legendDivPosition = {
+      x: normalizedX * legendDivWidth,
+      y: (1 - normalizedY) * legendDivHeight,
+    };
+    
+    const clickEvent = new MouseEvent('click', {
+      clientX: legendDivPosition.x,
+      clientY: legendDivPosition.y,
+      bubbles: true,
+      cancelable: true,
+    });
+    legendDiv.dispatchEvent(clickEvent);
   }
 }
 
@@ -763,6 +787,13 @@ function onSelectStart(event) {
         console.log(undoStack);
         //console.log(jaw.body);
       }
+    } else {
+      const intersectionsLegend = getIntersectionMesh(controller, legendMesh);
+      if (intersectionsLegend.length > 0) {
+        //const intersection = intersections[0];
+        controller.userData.selected = legendMesh;
+        controller.attach(legendMesh);
+      }
     }
   } else {
     buttonPressMenu(controller);
@@ -774,7 +805,11 @@ function onSelectStart(event) {
 function onSelectEnd(event: any) {
   const controller = event.target;
 
-  if (controller.userData.selected !== undefined) {
+  if (controller.userData.selected == legendMesh){
+    scene.attach(legendMesh)
+    controller.userData.selected = undefined;
+  }
+  else if (controller.userData.selected !== undefined) {
     const jaw = controller.userData.selected;
 
     jaw.mesh.material.emissive.b = 0;
@@ -784,6 +819,7 @@ function onSelectEnd(event: any) {
     jaw.body.type = CANNON.Body.STATIC;
     controller.userData.selected = undefined;
   }
+
 }
 
 // define pressed button booleans
@@ -848,13 +884,13 @@ function getIntersections(controller: any) {
   return raycaster.intersectObjects([lowerjaw.mesh, upperjaw.mesh], true);
 }
 
-function getIntersectionMenu(controller: any) {
+function getIntersectionMesh(controller: any, mesh: any) {
   tempMatrix.identity().extractRotation(controller.matrixWorld);
 
   raycaster.ray.origin.setFromMatrixPosition(controller.matrixWorld);
   raycaster.ray.direction.set(0, 0, -1).applyMatrix4(tempMatrix);
 
-  return raycaster.intersectObject(menuMesh, true);
+  return raycaster.intersectObject(mesh, true);
 }
 
 function findDeepestIntersectedElement(element, intersectionPoint) {
@@ -896,7 +932,7 @@ function intersectObjects(controller: any) {
 
     object.material.emissive.r = 1;
     intersected.push(object);
-  }
+  } 
 }
 // clean intersected array
 
@@ -1201,7 +1237,7 @@ export default function DraggingView({ scanId, client, onQuit }: { scanId: numbe
     timestampSave: '2006-01-02T15:04:05',
   });
   const [current_scan, setCurrentScan] = useState<ScanSave>(initialScan);
-  const [openMenu, setOpenMenu] = useState(true); // SET TO FALSE
+  const [openMenu, setOpenMenu] = useState(false); // SET TO FALSE
 
   const toggleMenu = () => {
     if (openMenu) {
