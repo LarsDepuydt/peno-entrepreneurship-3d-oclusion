@@ -578,7 +578,7 @@ function afterLoad(save: () => void, callback: () => void) {
 }
 
 function animate(save: () => void, callback: () => void) {
-  //autoSave(60, save); // 60 second interval, move out to render and out of menu; AND onlt save when session.xr active
+  autoSave(60, save); // 60 second interval, move out to render and out of menu; AND onlt save when session.xr active
 
   frameNum += 1;
   updatePhysics();
@@ -1259,7 +1259,9 @@ function autoSave(interval: number, save: () => void) {
   if (elapsedTime >= interval) {
     console.log(interval, 'seconds have passed');
     // Additional checks, like only if an edit's been made
-    save();
+    if (!menu_open){
+      save();
+    }
     // reset the clock
     clock.start();
   }
