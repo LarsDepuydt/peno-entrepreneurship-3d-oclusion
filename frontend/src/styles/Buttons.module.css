@@ -214,7 +214,6 @@
 .note_list {
   list-style-type: none;
   padding: 0;
-  margin-left: 15px;
 }
 
 .notes_btn {
@@ -237,7 +236,7 @@
   margin-left: 10px;
   margin-bottom: 10px;
 
-  width: 15vw;
+  width: 13vw;
 }
 
 .notes_btn:hover {
