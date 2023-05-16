@@ -4,23 +4,30 @@ import VideoDownload from '@/components/vr/videodownload';
 import stylesVideo from '@/styles/Video.module.css';
 import stylesButton from '@/styles/Buttons.module.css';
 import { useRouter } from 'next/router';
+import { constants } from 'crypto';
 
 export default function VideoPage() {
   const [videoChunks, setVideoChunks] = useState([]);
   const BeforeAfterMemo = memo(BeforeAfter); // So no rerender
   const router = useRouter();
   const { scanID } = router.query;
-  const { patientID } = router.query;
+  //const { patientID } = router.query;
+
+  const patientID = parseInt(process.env.REACT_APP_PATIENT_ID)
   const scanId = parseInt(scanID as string, 10);
 
   const handleVideoChunks = (chunks: any) => {
     setVideoChunks(chunks);
   };
 
-  const home = () =>
-    router.push({
-      pathname: '/patient',
-    });
+    const home = () => {
+      router.push({
+        pathname: '/scans-page',
+        query: {
+          patientID,
+        },
+      });
+    };
 
   return (
     <div className={stylesVideo.video_page}>
