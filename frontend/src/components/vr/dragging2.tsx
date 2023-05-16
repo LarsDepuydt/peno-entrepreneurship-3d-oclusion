@@ -8,7 +8,6 @@ import { SendMenuOptionRequest, ScanSave, SaveScanDataRequest } from '@/gen/prot
 import Menu from './menu';
 import { HTMLMesh } from 'three/examples/jsm/interactive/HTMLMesh.js';
 import { Legenda } from './legenda';
-//import ARButton from "https://cdn.rawgit.com/mrdoob/three.js/r117/examples/jsm/webxr/ARButton.js";
 
 import * as CANNON from 'cannon-es';
 import {
@@ -87,6 +86,7 @@ const UJ_OFFSET = new THREE.Vector3(-3.72, 46.93, 28.3);
 // set to true for debugging / development
 const DEBUGGING_MODE = false;
 
+
 class Jaw {
   name: any; // 'lowerjaw or upperjaw'
   offset: any; // THREE.Vector3
@@ -164,19 +164,18 @@ class Jaw {
 
       // called when resource is loaded
       function (object) {
-        // object is a 'Group', which is a subclass of 'Object3D'
-        const buffergeo = getFirstBufferGeometry(object);
-        const mesh = new THREE.Mesh(buffergeo, teethMaterial.clone());
-        jaw.mesh = threeMeshToConvexThreeMesh(mesh);
-        //jaw.mesh.userData.originalScale = jaw.mesh.scale.clone();
-        jaw.mesh.geometry.translate(jaw.offset.x, jaw.offset.y, jaw.offset.z);
-        jaw.mesh.geometry.scale(0.01, 0.01, 0.01);
+        for (const child of object.children){
+          if ((child as any).geometry !== undefined && (child as any).geometry.isBufferGeometry) {
+            const mesh = new THREE.Mesh((child as any).geometry, teethMaterial.clone());
+            mesh.geometry.translate(jaw.offset.x, jaw.offset.y, jaw.offset.z);
+            mesh.geometry.scale(0.01, 0.01, 0.01);
+            jaw.body.addShape(threeMeshToConvexCannonMesh(mesh));
+          }
+        } 
+        jaw.mesh = new THREE.Mesh(mergedGeometry(object), teethMaterial.clone());
+
         scene.add(jaw.mesh);
 
-        const shape = threeMeshToConvexCannonMesh(jaw.mesh);
-        jaw.body.addShape(shape);
-
-        // calculate inertia
         jaw.INERTIA_STATIC = jaw.body.inertia;
         jaw.INERTIA_DYNAMIC = jaw.INERTIA_STATIC.scale(BODYMASS_DYNAMIC / BODYMASS_STATIC);
         console.log(jaw.INERTIA_DYNAMIC, jaw.INERTIA_STATIC);
@@ -237,14 +236,14 @@ class Jaw {
 
       // called when resource is loaded
       function (object) {
-        // object is a 'Group', which is a subclass of 'Object3D'
-        const buffergeo = getFirstBufferGeometry(object);
-        const mesh = new THREE.Mesh(buffergeo, teethMaterial.clone());
-        mesh.geometry.translate(jaw.offset.x, jaw.offset.y, jaw.offset.z);
-        mesh.geometry.scale(0.01, 0.01, 0.01);
-
-        const shape = threeMeshToConvexCannonMesh(mesh);
-        jaw.body.addShape(shape);
+        for (const child of object.children){
+          if ((child as any).geometry !== undefined && (child as any).geometry.isBufferGeometry) {
+            const mesh = new THREE.Mesh((child as any).geometry, teethMaterial.clone());
+            mesh.geometry.translate(jaw.offset.x, jaw.offset.y, jaw.offset.z);
+            mesh.geometry.scale(0.01, 0.01, 0.01);
+            jaw.body.addShape(threeMeshToConvexCannonMesh(mesh));
+          }
+        }
 
         // calculate inertia
         jaw.INERTIA_STATIC = jaw.body.inertia;
@@ -510,8 +509,8 @@ function initThree(setOpenMenu: any, setCurrentScan: any) {
 }
 
 function loadObjects(save: () => void, callback: () => void) {
-  lowerjaw = new Jaw('lowerjaw', '/lower_180.obj', '/lower_ios_6.obj', save, callback);
-  upperjaw = new Jaw('upperjaw', '/upper_209.obj', '/upper_ios_6.obj', save, callback);
+  lowerjaw = new Jaw('lowerjaw', '/lower-hacd.obj', '/lower_ios_6.obj', save, callback);
+  upperjaw = new Jaw('upperjaw', '/upper-hacd.obj', '/upper_ios_6.obj', save, callback);
 
   curr_jaw = upperjaw;
 }
@@ -558,7 +557,7 @@ function afterLoad(save: () => void, callback: () => void) {
 }
 
 function animate(save: () => void, callback: () => void) {
-  //autoSave(60, save); // 60 second interval, move out to render and out of menu; AND onlt save when session.xr active
+  autoSave(60, save); // 60 second interval, move out to render and out of menu; AND onlt save when session.xr active
 
   frameNum += 1;
   updatePhysics();
@@ -785,36 +784,6 @@ function buttonPressMenu(controller) {
       cancelable: true,
     });
     deepestIntersectedElement.dispatchEvent(clickEvent);
-  }
-}
-
-
-function dragControls(controller){
-  const intersects = getIntersectionMesh(controller, legendMesh);
-  if (intersects.length > 0) {
-
-    const localIntersectionPoint = menuMesh.worldToLocal(intersects[0].point.clone());
-    const meshWidth = (legendMesh.geometry as any).parameters.width;
-    const meshHeight = (legendMesh.geometry as any).parameters.height;
-
-    const normalizedX = (localIntersectionPoint.x + meshWidth / 2) / meshWidth;
-    const normalizedY = (localIntersectionPoint.y + meshHeight / 2) / meshHeight;
-
-    const legendDivWidth = legendDiv.offsetWidth;
-    const legendDivHeight = legendDiv.offsetHeight;
-
-    const legendDivPosition = {
-      x: normalizedX * legendDivWidth,
-      y: (1 - normalizedY) * legendDivHeight,
-    };
-    
-    const clickEvent = new MouseEvent('click', {
-      clientX: legendDivPosition.x,
-      clientY: legendDivPosition.y,
-      bubbles: true,
-      cancelable: true,
-    });
-    legendDiv.dispatchEvent(clickEvent);
   }
 }
 
@@ -1156,7 +1125,6 @@ function redoWhenPressed() {
         if (handedness == 'left') {
           continue;
         } // we willen enkel de 'A' knop van de rechtercontroller
-
       }
       if (!source.gamepad) continue;
       const controller = renderer.xr.getController(iiii++);
@@ -1270,7 +1238,9 @@ function autoSave(interval: number, save: () => void) {
   if (elapsedTime >= interval) {
     console.log(interval, 'seconds have passed');
     // Additional checks, like only if an edit's been made
-    save();
+    if (!menu_open){
+      save();
+    }
     // reset the clock
     clock.start();
   }
