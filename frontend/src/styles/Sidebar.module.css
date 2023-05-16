@@ -43,14 +43,14 @@
 
 .NotesWrapper {
   height: 60vh;
-  width: 0px;
-  padding: 5px 10vw;
+  width: 0vw;
+  padding: 5px 9vw;
 
   display: flex;
   flex-direction: column;
   flex-wrap: nowrap;
   justify-content: flex-start;
   align-items: center;
-  overflow:hidden;
-  overflow-y:scroll;
+  overflow: hidden;
+  overflow-y: scroll;
 }
