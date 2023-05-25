@@ -25,6 +25,10 @@ export default function Home() {
 
   useEffect(() => {
     toWait(window.location.href);
+
+    if (window.location.href.endsWith("/start-ar")) {
+      router.push("/start-ar");
+    }
     
   }, []);
   return (
